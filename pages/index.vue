@@ -6,15 +6,18 @@
         Editable
       </label>
     </div>
+
     <bubble-menu
       :editor="editor"
       :tippy-options="{ duration: 100 }"
       v-if="editor"
     >
-      <div class="bubble-menu">
-        <button @click="editor.chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }">
-          Bold
+      <div class="bg-[#f6f6f680] border border-[#ececec] shadow-[inset_0_-1px_1px_rgba(0,0,0,0.05)] rounded-xl">
+        
+        <button @click="editor.chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }" class="p-2">
+          <Icon name="lucide:bold"></Icon>
         </button>
+
         <button @click="editor.chain().focus().toggleItalic().run()" :class="{ 'is-active': editor.isActive('italic') }">
           Italic
         </button>
@@ -23,6 +26,7 @@
         </button>
       </div>
     </bubble-menu>
+
   <div v-if="editor">
     <EditorContent :editor="editor" />
   </div></div>
@@ -48,9 +52,9 @@
 
   const isEditable = ref(true)
 
-const toggleEditable = () => {
-  isEditable.value = !isEditable.value
-}
+  const toggleEditable = () => {
+    isEditable.value = !isEditable.value
+  }
 
   const props = withDefaults(
     defineProps<{
