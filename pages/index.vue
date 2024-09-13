@@ -13,7 +13,7 @@
       :tippy-options="{ duration: 100 }"
       v-if="editor"
     >
-      <div class="flex p-1 bg-white/70 backdrop-blur-xl rounded-xl">
+      <div class="flex bg-white/60 backdrop-blur-xl rounded-xl text-black/80">
         <button @click="editor.chain().focus().toggleBold().run()" :class="{ 'bg-black/80 backdrop-blur-xl hover:bg-black/85 text-white': editor.isActive('bold') }" class="hover:bg-gray-200 rounded-l-lg p-1 px-2">
           <Icon name="lucide:bold" size="22" class="relative top-0.5"></Icon>
         </button>
