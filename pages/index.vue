@@ -1,28 +1,31 @@
 <template>
   <div class="container">
 
-    <div class="control-group">
+    <!-- <div class="control-group">
       <label>
         <input type="checkbox" :checked="isEditable" @change="() => isEditable = !isEditable">
         Editable
       </label>
-    </div>
+    </div> -->
 
     <bubble-menu
       :editor="editor"
       :tippy-options="{ duration: 100 }"
       v-if="editor"
     >
-      <div class="bubble-menu flex p-1 bg-white border border-gray-100 rounded-lg shadow">
-        <button @click="editor.chain().focus().toggleBold().run()" :class="{ 'bg-purple-500 hover:bg-purple-700 text-white': editor.isActive('bold') }" class="hover:bg-gray-200 rounded-xl">
-          Bold
+      <div class="flex p-1 bg-white/70 backdrop-blur-xl rounded-xl">
+        <button @click="editor.chain().focus().toggleBold().run()" :class="{ 'bg-black/80 backdrop-blur-xl hover:bg-black/85 text-white': editor.isActive('bold') }" class="hover:bg-gray-200 rounded-l-lg p-1 px-2">
+          <Icon name="lucide:bold" size="22" class="relative top-0.5"></Icon>
         </button>
-        <button @click="editor.chain().focus().toggleItalic().run()" :class="{ 'bg-purple-500 hover:bg-purple-700 text-white': editor.isActive('italic') }" class="hover:bg-gray-200">
-          Italic
+
+        <button @click="editor.chain().focus().toggleItalic().run()" :class="{ 'bg-black/85 backdrop-blur-xl hover:bg-black/80 text-white': editor.isActive('italic') }" class="hover:bg-gray-200 p-1 px-2">
+          <Icon name="lucide:italic" size="22" class="relative top-0.5"></Icon>
         </button>
-        <button @click="editor.chain().focus().toggleStrike().run()" :class="{ 'bg-purple-500 hover:bg-purple-700 text-white': editor.isActive('strike') }" class="hover:bg-gray-200">
-          Strike
+
+        <button @click="editor.chain().focus().toggleStrike().run()" :class="{ 'bg-black/80 backdrop-blur-xl hover:bg-black/85 text-white': editor.isActive('strike') }" class="hover:bg-gray-200 rounded-r-lg p-1 px-2">
+          <Icon name="lucide:strikethrough" size="22" class="relative top-0.5"></Icon>
         </button>
+
       </div>
     </bubble-menu>
 
@@ -72,7 +75,7 @@
     editorProps: {
       attributes: {
         class:
-          'max-h-[250px] text-black/70 text-[26px] min-h-[150px] w-full overflow-auto rounded-md rounded-bl-none rounded-br-none border-none border-b-0 border-input bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+          'max-h-[250px] text-black/60 text-[28px] min-h-[150px] w-full overflow-auto  border-none border-b-0 border-input bg-transparent px-3 py-2 ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
       },
     },
     onUpdate(val) {
