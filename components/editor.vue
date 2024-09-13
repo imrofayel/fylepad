@@ -2,62 +2,74 @@
   <div class="h-full flex flex-col">
     <div class="flex justify-between w-full p-5 py-4">
       <div class="flex space-x-2">
-        <input 
-          v-model="localTitle" 
-          @input="$emit('update:title', localTitle)"
-          placeholder="Untitled" 
-          class="w-full border border-none ring-0 focus:border-none px-3 text-black/80 outline-none bg-transparent rounded flex text-[22px]" 
-        />
+        <input v-model="localTitle" @input="$emit('update:title', localTitle)" placeholder="Untitled"
+          class="w-full border border-none ring-0 focus:border-none px-3 text-black/80 outline-none bg-transparent rounded flex text-[22px]" />
       </div>
     </div>
 
     <div class="flex-grow">
 
       <floating-menu :editor="editor" :tippy-options="{ duration: 100 }" v-if="editor">
-      <div class="flex overflow-hidden bg-[#f6f6f670] border backdrop-blur-xl rounded-xl text-black/70">
-        <button @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
-          :class="{ 'bg-gray-100': editor.isActive('heading', { level: 1 }) }"
-          class="rounded-l-lg hover:bg-gray-100 p-1 px-2">
-          <Icon name="lucide:heading-1" size="22" class="relative top-0.5"></Icon>
-        </button>
+        <div class="flex overflow-hidden bg-[#f6f6f670] border backdrop-blur-xl rounded-xl text-black/70">
+          <button @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
+            :class="{ 'bg-gray-100': editor.isActive('heading', { level: 1 }) }"
+            class="rounded-l-lg hover:bg-gray-100 p-1 px-2">
+            <Icon name="lucide:heading-1" size="22" class="relative top-0.5"></Icon>
+          </button>
 
-        <button @click="editor.chain().focus().toggleBulletList().run()"
-          :class="{ 'bg-gray-200/50': editor.isActive('bulletList') }" class="hover:bg-gray-100 p-1 px-2">
-          <Icon name="lucide:list" size="22" class="relative top-0.5"></Icon>
-        </button>
+          <button @click="editor.chain().focus().toggleBulletList().run()"
+            :class="{ 'bg-gray-200/50': editor.isActive('bulletList') }" class="hover:bg-gray-100 p-1 px-2">
+            <Icon name="lucide:list" size="22" class="relative top-0.5"></Icon>
+          </button>
 
-        <button @click="editor.chain().focus().toggleOrderedList().run()"
-          :class="{ 'bg-gray-100': editor.isActive('orderedList') }" class="hover:bg-gray-100 p-1 px-2 rounded-r-lg">
-          <Icon name="lucide:list-ordered" size="20" class="relative top-0.5"></Icon>
-        </button>
+          <button @click="editor.chain().focus().toggleOrderedList().run()"
+            :class="{ 'bg-gray-100': editor.isActive('orderedList') }" class="hover:bg-gray-100 p-1 px-2 rounded-r-lg">
+            <Icon name="lucide:list-ordered" size="20" class="relative top-0.5"></Icon>
+          </button>
 
-        <button @click="editor.chain().focus().toggleCode().run()" :class="{ 'bg-gray-100': editor.isActive('code') }"
-          class="hover:bg-gray-100 p-1 px-2">
-          <Icon name="lucide:code" size="20" class="relative top-0.5"></Icon>
-        </button>
-      </div>
-    </floating-menu>
+          <button @click="editor.chain().focus().toggleCode().run()" :class="{ 'bg-gray-100': editor.isActive('code') }"
+            class="hover:bg-gray-100 p-1 px-2">
+            <Icon name="lucide:code" size="20" class="relative top-0.5"></Icon>
+          </button>
+        </div>
+      </floating-menu>
 
-    <bubble-menu :editor="editor" :tippy-options="{ duration: 100 }" v-if="editor">
-      <div class="flex overflow-hidden bg-[#f6f6f670] border backdrop-blur-xl rounded-xl text-black/70">
-        <button @click="editor.chain().focus().toggleBold().run()" :class="{ 'bg-gray-100': editor.isActive('bold') }"
-          class="rounded-l-lg hover:bg-gray-100 p-1 px-2">
-          <Icon name="lucide:bold" size="22" class="relative top-0.5"></Icon>
-        </button>
-        <button @click="editor.chain().focus().toggleItalic().run()"
-          :class="{ 'bg-gray-200/50': editor.isActive('italic') }" class="hover:bg-gray-100 p-1 px-2">
-          <Icon name="lucide:italic" size="22" class="relative top-0.5"></Icon>
-        </button>
-        <button @click="editor.chain().focus().toggleStrike().run()"
-          :class="{ 'bg-gray-100': editor.isActive('strike') }" class="hover:bg-gray-100 p-1 px-2">
-          <Icon name="lucide:strikethrough" size="22" class="relative top-0.5"></Icon>
-        </button>
-        <button @click="editor.chain().focus().toggleHighlight().run()"
-          :class="{ 'bg-gray-100': editor.isActive('highlight') }" class="hover:bg-gray-100 p-1 px-2 rounded-r-lg">
-          <div class="w-5 h-5 bg-yellow-400 rounded-full border border-black/50"></div>
-        </button>
-      </div>
-    </bubble-menu>
+      <bubble-menu :editor="editor" :tippy-options="{ duration: 100 }" v-if="editor">
+        <div class="flex overflow-hidden bg-[#f6f6f670] border backdrop-blur-xl rounded-xl text-black/70">
+          <button @click="editor.chain().focus().toggleBold().run()" :class="{ 'bg-gray-100': editor.isActive('bold') }"
+            class="rounded-l-lg hover:bg-gray-100 p-2 px-2">
+
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24">
+              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8" class="relative top-0.5" />
+            </svg>
+
+          </button>
+          <button @click="editor.chain().focus().toggleItalic().run()"
+            :class="{ 'bg-gray-200/50': editor.isActive('italic') }" class="hover:bg-gray-100 p-2 px-2">
+
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24">
+              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19 4h-9m4 16H5M15 4L9 20" class="relative top-0.5" />
+            </svg>
+
+          </button>
+          <button @click="editor.chain().focus().toggleStrike().run()"
+            :class="{ 'bg-gray-100': editor.isActive('strike') }" class="hover:bg-gray-100 p-2 px-2">
+
+
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24">
+              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M16 4H9a3 3 0 0 0-2.83 4M14 12a4 4 0 0 1 0 8H6m-2-8h16" class="relative top-0.5" />
+            </svg>
+
+          </button>
+          <button @click="editor.chain().focus().toggleHighlight().run()"
+            :class="{ 'bg-gray-100': editor.isActive('highlight') }" class="hover:bg-gray-100 p-2 px-2 rounded-r-lg">
+            <div class="w-5 h-5 bg-yellow-400 rounded-full border border-black/50"></div>
+          </button>
+        </div>
+      </bubble-menu>
 
 
       <EditorContent :editor="editor" class="h-full" />
@@ -102,7 +114,7 @@ const editor = useEditor({
     },
   },
   extensions: [
-  Color.configure({ types: [TextStyle.name, ListItem.name] }),
+    Color.configure({ types: [TextStyle.name, ListItem.name] }),
     TextStyle,
     Table.configure({ resizable: true }),
     Superscript,
