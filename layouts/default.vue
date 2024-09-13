@@ -1,5 +1,6 @@
 <template>
   <div>
+    <AppHeader/>
     <slot />
   </div>
 </template>
@@ -11,7 +12,7 @@
 <style>
 
 body{
-  background-color: #fcfcfc;
+  background-color: #dbdbdb;
 }
 
 </style>

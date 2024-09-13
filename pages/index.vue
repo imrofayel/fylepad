@@ -1,5 +1,6 @@
 <template>
-    <div class="container">
+  <div class="container">
+
     <div class="control-group">
       <label>
         <input type="checkbox" :checked="isEditable" @change="() => isEditable = !isEditable">
@@ -12,24 +13,23 @@
       :tippy-options="{ duration: 100 }"
       v-if="editor"
     >
-      <div class="bg-[#f6f6f680] border border-[#ececec] shadow-[inset_0_-1px_1px_rgba(0,0,0,0.05)] rounded-xl">
-        
-        <button @click="editor.chain().focus().toggleBold().run()" :class="{ 'is-active': editor.isActive('bold') }" class="p-2">
-          <Icon name="lucide:bold"></Icon>
+      <div class="bubble-menu flex p-1 bg-white border border-gray-100 rounded-lg shadow">
+        <button @click="editor.chain().focus().toggleBold().run()" :class="{ 'bg-purple-500 hover:bg-purple-700 text-white': editor.isActive('bold') }" class="hover:bg-gray-200 rounded-xl">
+          Bold
         </button>
-
-        <button @click="editor.chain().focus().toggleItalic().run()" :class="{ 'is-active': editor.isActive('italic') }">
+        <button @click="editor.chain().focus().toggleItalic().run()" :class="{ 'bg-purple-500 hover:bg-purple-700 text-white': editor.isActive('italic') }" class="hover:bg-gray-200">
           Italic
         </button>
-        <button @click="editor.chain().focus().toggleStrike().run()" :class="{ 'is-active': editor.isActive('strike') }">
+        <button @click="editor.chain().focus().toggleStrike().run()" :class="{ 'bg-purple-500 hover:bg-purple-700 text-white': editor.isActive('strike') }" class="hover:bg-gray-200">
           Strike
         </button>
       </div>
     </bubble-menu>
 
-  <div v-if="editor">
-    <EditorContent :editor="editor" />
-  </div></div>
+    <div v-if="editor">
+      <EditorContent :editor="editor"/>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -72,7 +72,7 @@
     editorProps: {
       attributes: {
         class:
-          'max-h-[250px] min-h-[150px] w-full overflow-auto rounded-md rounded-bl-none rounded-br-none border-none border-b-0 border-input bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+          'max-h-[250px] text-black/70 text-[26px] min-h-[150px] w-full overflow-auto rounded-md rounded-bl-none rounded-br-none border-none border-b-0 border-input bg-transparent px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
       },
     },
     onUpdate(val) {
@@ -101,38 +101,9 @@
   });
 
   watch(isEditable, (value) => {
-  if (editor.value) {
-    editor.value.setEditable(value)
-  }
-})
+    if (editor.value) {
+      editor.value.setEditable(value)
+    }
+  })
   
 </script>
-
-<style>
-
-.bubble-menu {
-  background-color: var(--white);
-  border: 1px solid var(--gray-1);
-  border-radius: 0.7rem;
-  box-shadow: var(--shadow);
-  display: flex;
-  padding: 0.2rem;
-
-  button {
-    background-color: unset;
-
-    &:hover {
-      background-color: var(--gray-3);
-    }
-
-    &.is-active {
-      background-color: var(--purple);
-
-      &:hover {
-        background-color: var(--purple-contrast);
-      }
-    }
-  }
-}
-
-</style>
