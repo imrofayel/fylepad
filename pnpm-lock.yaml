@@ -20,6 +20,9 @@ importers:
       '@tiptap/extension-color':
         specifier: ^2.6.6
         version: 2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6))(@tiptap/extension-text-style@2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6)))
+      '@tiptap/extension-floating-menu':
+        specifier: ^2.6.6
+        version: 2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6))(@tiptap/pm@2.6.6)
       '@tiptap/extension-highlight':
         specifier: ^2.6.6
         version: 2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6))
@@ -27,6 +30,9 @@ importers:
         specifier: ^2.6.6
         version: 2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6))(@tiptap/pm@2.6.6)
       '@tiptap/extension-list-item':
+        specifier: ^2.6.6
+        version: 2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6))
+      '@tiptap/extension-list-keymap':
         specifier: ^2.6.6
         version: 2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6))
       '@tiptap/extension-subscript':
@@ -45,6 +51,12 @@ importers:
         specifier: ^2.6.6
         version: 2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6))
       '@tiptap/extension-table-row':
+        specifier: ^2.6.6
+        version: 2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6))
+      '@tiptap/extension-task-item':
+        specifier: ^2.6.6
+        version: 2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6))(@tiptap/pm@2.6.6)
+      '@tiptap/extension-task-list':
         specifier: ^2.6.6
         version: 2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6))
       '@tiptap/extension-text-style':
@@ -1184,6 +1196,11 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.6.6
 
+  '@tiptap/extension-list-keymap@2.6.6':
+    resolution: {integrity: sha512-Fn2eXDnxgWfqrtEcuILYaKveyZtv1gQ+IH5KybOMj88A1uIii746xJyqUODBrp7gWKtxnNOX4Stc89x2onxyWw==}
+    peerDependencies:
+      '@tiptap/core': ^2.6.6
+
   '@tiptap/extension-ordered-list@2.6.6':
     resolution: {integrity: sha512-AJwyfLXIi7iUGnK5twJbwdVVpQyh7fU6OK75h1AwDztzsOcoPcxtffDlZvUOd4ZtwuyhkzYqVkeI0f+abTWZTw==}
     peerDependencies:
@@ -1229,6 +1246,17 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.6.6
       '@tiptap/pm': ^2.6.6
+
+  '@tiptap/extension-task-item@2.6.6':
+    resolution: {integrity: sha512-fvzy8/TN5sm3A2HSokJzHj5ZvcOAsRdqPS6fPOpmf5dQZ+EIAJrlfyxqb9B6055pNXBbuXcMEXdeU44zCU0YRg==}
+    peerDependencies:
+      '@tiptap/core': ^2.6.6
+      '@tiptap/pm': ^2.6.6
+
+  '@tiptap/extension-task-list@2.6.6':
+    resolution: {integrity: sha512-0N4xCCJZu0PcKoCRDywQngNNW6qlB26hyVJGDGgW53p/2zk5gdlzAA6/NxElO3iSAXKFm0QOWAg/x8E+ggDu4w==}
+    peerDependencies:
+      '@tiptap/core': ^2.6.6
 
   '@tiptap/extension-text-style@2.6.6':
     resolution: {integrity: sha512-8fO8m0/QI+rFKgZLP28GG2Nz0zhYsYd76O2Y+HsDTmMypJl/cdiNcVOWWffAwXAfMN43BNX7b1VI1XwGAMgYlg==}
@@ -5128,6 +5156,10 @@ snapshots:
     dependencies:
       '@tiptap/core': 2.6.6(@tiptap/pm@2.6.6)
 
+  '@tiptap/extension-list-keymap@2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6))':
+    dependencies:
+      '@tiptap/core': 2.6.6(@tiptap/pm@2.6.6)
+
   '@tiptap/extension-ordered-list@2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6))':
     dependencies:
       '@tiptap/core': 2.6.6(@tiptap/pm@2.6.6)
@@ -5164,6 +5196,15 @@ snapshots:
     dependencies:
       '@tiptap/core': 2.6.6(@tiptap/pm@2.6.6)
       '@tiptap/pm': 2.6.6
+
+  '@tiptap/extension-task-item@2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6))(@tiptap/pm@2.6.6)':
+    dependencies:
+      '@tiptap/core': 2.6.6(@tiptap/pm@2.6.6)
+      '@tiptap/pm': 2.6.6
+
+  '@tiptap/extension-task-list@2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6))':
+    dependencies:
+      '@tiptap/core': 2.6.6(@tiptap/pm@2.6.6)
 
   '@tiptap/extension-text-style@2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6))':
     dependencies:

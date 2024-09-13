@@ -1,9 +1,5 @@
 <template>
-  <div class="flex justify-between p-5 py-4">
 
-    <div class="bg-[#f6f6f670] border backdrop-blur-lg flex px-3 p-1 rounded-2xl justify-center items-center text-black/70"><Icon name="lucide:ellipsis" size="24"></Icon></div>
-
-  </div>
 </template>
 
 <script lang="ts" setup>
