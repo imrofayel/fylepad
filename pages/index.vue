@@ -1,29 +1,26 @@
 <template>
   <div class="container">
-
-    <!-- <div class="control-group">
-      <label>
-        <input type="checkbox" :checked="isEditable" @change="() => isEditable = !isEditable">
-        Editable
-      </label>
-    </div> -->
-
     <bubble-menu
       :editor="editor"
       :tippy-options="{ duration: 100 }"
       v-if="editor"
     >
-      <div class="flex bg-white/60 backdrop-blur-xl rounded-xl text-black/80">
-        <button @click="editor.chain().focus().toggleBold().run()" :class="{ 'bg-black/80 backdrop-blur-xl hover:bg-black/85 text-white': editor.isActive('bold') }" class="hover:bg-gray-200 rounded-l-lg p-1 px-2">
+      <div class="flex overflow-hidden bg-[#f6f6f670] border backdrop-blur-xl rounded-xl text-black/70">
+
+        <button @click="editor.chain().focus().toggleBold().run()" :class="{ 'bg-gray-100': editor.isActive('bold') }" class="rounded-l-lg hover:bg-gray-100 p-1 px-2">
           <Icon name="lucide:bold" size="22" class="relative top-0.5"></Icon>
         </button>
 
-        <button @click="editor.chain().focus().toggleItalic().run()" :class="{ 'bg-black/85 backdrop-blur-xl hover:bg-black/80 text-white': editor.isActive('italic') }" class="hover:bg-gray-200 p-1 px-2">
+        <button @click="editor.chain().focus().toggleItalic().run()" :class="{ 'bg-gray-200/50': editor.isActive('italic') }" class="hover:bg-gray-100 p-1 px-2">
           <Icon name="lucide:italic" size="22" class="relative top-0.5"></Icon>
         </button>
 
-        <button @click="editor.chain().focus().toggleStrike().run()" :class="{ 'bg-black/80 backdrop-blur-xl hover:bg-black/85 text-white': editor.isActive('strike') }" class="hover:bg-gray-200 rounded-r-lg p-1 px-2">
+        <button @click="editor.chain().focus().toggleStrike().run()" :class="{ 'bg-gray-100': editor.isActive('strike') }" class="hover:bg-gray-100 p-1 px-2">
           <Icon name="lucide:strikethrough" size="22" class="relative top-0.5"></Icon>
+        </button>
+
+        <button @click="editor.chain().focus().toggleHighlight().run()" :class="{ 'bg-gray-100': editor.isActive('highlight') }" class="hover:bg-gray-100 p-1 px-2 rounded-r-lg">
+          <div class="w-5 h-5 bg-yellow-400 rounded-full border border-black/50"></div>
         </button>
 
       </div>
@@ -70,12 +67,13 @@
   );
 
   const editor = useEditor({
+
     content: model.value,
 
     editorProps: {
       attributes: {
         class:
-          'max-h-[250px] text-black/60 text-[28px] min-h-[150px] w-full overflow-auto  border-none border-b-0 border-input bg-transparent px-3 py-2 ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+          'max-h-[250px] opacity-90 p-8 py-2 text-black/80 text-[22px] min-h-[150px] w-full overflow-auto  border-none border-b-0 border-input bg-transparent ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
       },
     },
     onUpdate(val) {
@@ -100,6 +98,7 @@
       TableHeader,
       StarterKit,
       TableCell,
+      TextStyle
     ],
   });
 
@@ -110,3 +109,34 @@
   })
   
 </script>
+
+<style>
+
+mark {
+    background-color: #FAF594;
+    border-radius: 0.4rem;
+    box-decoration-break: clone;
+    padding: 0.1rem 0.3rem;
+  }
+
+code {
+  font-family: 'JetBrains Mono';
+  font-size: 20px;
+  background-color: #f6f6f6;
+  border-radius: 0.4rem;
+  box-decoration-break: clone;
+  padding: 0.1rem 0.3rem;
+}
+
+</style>
+
+
+
+
+
+    <!-- <div class="control-group">
+      <label>
+        <input type="checkbox" :checked="isEditable" @change="() => isEditable = !isEditable">
+        Editable
+      </label>
+    </div> -->

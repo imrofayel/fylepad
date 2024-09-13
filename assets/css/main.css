@@ -4,6 +4,11 @@
     font-family: "Inter", sans-serif;
 }
 
+@font-face {
+    font-family: 'JetBrains Mono';
+    src: url('/assets/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+}
+
 * {
     font-family: 'Inter';
 }
