@@ -1,7 +1,7 @@
     <template>
       <div class="h-screen flex flex-col">
         <!-- Tab bar -->
-        <div class="flex justify-between items-center w-full p-5 py-4 fixed bg-white/10 backdrop-blur-lg z-10">
+        <div class="flex justify-between items-center w-full p-5 py-4 fixed bg-white/70 backdrop-blur-lg z-10">
           <div class="flex space-x-2 overflow-x-auto">
             <div v-for="(tab, index) in tabs" :key="index" @click="activeTab = index"
               class="bg-[#f6f6f640] border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/70 cursor-pointer"
