@@ -1,7 +1,7 @@
 {
   "build": {
-    "beforeBuildCommand": "npm run build",
-    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "pnpm generate",
+    "beforeDevCommand": "pnpm dev",
     "devPath": "http://localhost:3000",
     "distDir": "../dist"
   },
@@ -28,7 +28,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "com.notepad.dev",
       "longDescription": "",
       "macOS": {
         "entitlements": null,

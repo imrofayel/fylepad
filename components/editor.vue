@@ -12,13 +12,53 @@
     </div>
 
     <div class="flex-grow">
-      <floating-menu :editor="editor" :tippy-options="{ duration: 100 }" v-if="editor">
-        <!-- Floating menu content (unchanged) -->
-      </floating-menu>
 
-      <bubble-menu :editor="editor" :tippy-options="{ duration: 100 }" v-if="editor">
-        <!-- Bubble menu content (unchanged) -->
-      </bubble-menu>
+      <floating-menu :editor="editor" :tippy-options="{ duration: 100 }" v-if="editor">
+      <div class="flex overflow-hidden bg-[#f6f6f670] border backdrop-blur-xl rounded-xl text-black/70">
+        <button @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
+          :class="{ 'bg-gray-100': editor.isActive('heading', { level: 1 }) }"
+          class="rounded-l-lg hover:bg-gray-100 p-1 px-2">
+          <Icon name="lucide:heading-1" size="22" class="relative top-0.5"></Icon>
+        </button>
+
+        <button @click="editor.chain().focus().toggleBulletList().run()"
+          :class="{ 'bg-gray-200/50': editor.isActive('bulletList') }" class="hover:bg-gray-100 p-1 px-2">
+          <Icon name="lucide:list" size="22" class="relative top-0.5"></Icon>
+        </button>
+
+        <button @click="editor.chain().focus().toggleOrderedList().run()"
+          :class="{ 'bg-gray-100': editor.isActive('orderedList') }" class="hover:bg-gray-100 p-1 px-2 rounded-r-lg">
+          <Icon name="lucide:list-ordered" size="20" class="relative top-0.5"></Icon>
+        </button>
+
+        <button @click="editor.chain().focus().toggleCode().run()" :class="{ 'bg-gray-100': editor.isActive('code') }"
+          class="hover:bg-gray-100 p-1 px-2">
+          <Icon name="lucide:code" size="20" class="relative top-0.5"></Icon>
+        </button>
+      </div>
+    </floating-menu>
+
+    <bubble-menu :editor="editor" :tippy-options="{ duration: 100 }" v-if="editor">
+      <div class="flex overflow-hidden bg-[#f6f6f670] border backdrop-blur-xl rounded-xl text-black/70">
+        <button @click="editor.chain().focus().toggleBold().run()" :class="{ 'bg-gray-100': editor.isActive('bold') }"
+          class="rounded-l-lg hover:bg-gray-100 p-1 px-2">
+          <Icon name="lucide:bold" size="22" class="relative top-0.5"></Icon>
+        </button>
+        <button @click="editor.chain().focus().toggleItalic().run()"
+          :class="{ 'bg-gray-200/50': editor.isActive('italic') }" class="hover:bg-gray-100 p-1 px-2">
+          <Icon name="lucide:italic" size="22" class="relative top-0.5"></Icon>
+        </button>
+        <button @click="editor.chain().focus().toggleStrike().run()"
+          :class="{ 'bg-gray-100': editor.isActive('strike') }" class="hover:bg-gray-100 p-1 px-2">
+          <Icon name="lucide:strikethrough" size="22" class="relative top-0.5"></Icon>
+        </button>
+        <button @click="editor.chain().focus().toggleHighlight().run()"
+          :class="{ 'bg-gray-100': editor.isActive('highlight') }" class="hover:bg-gray-100 p-1 px-2 rounded-r-lg">
+          <div class="w-5 h-5 bg-yellow-400 rounded-full border border-black/50"></div>
+        </button>
+      </div>
+    </bubble-menu>
+
 
       <EditorContent :editor="editor" class="h-full" />
     </div>
