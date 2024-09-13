@@ -5,22 +5,22 @@
           <div class="flex space-x-2 overflow-x-auto">
             <div v-for="(tab, index) in tabs" :key="index" @click="activeTab = index"
               class="bg-[#f6f6f640] border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/70 cursor-pointer"
-              :class="{ 'bg-gray-200': activeTab === index }">
+              :class="{ 'bg-gray-50': activeTab === index }">
               {{ tab.title || 'Untitled' }}
               <button @click.stop="closeTab(index)" class="ml-2 text-black/50 hover:text-black/70">&times;</button>
             </div>
+
             <button @click="newTab"
-              class="bg-[#f6f6f670] border backdrop-blur-lg flex px-3 p-1 rounded-2xl justify-center items-center text-black/70">
-              <Icon name="lucide:plus" size="22" />
+              class="bg-[#f6f6f670] border backdrop-blur-lg flex px-2 p-1 rounded-2xl justify-center items-center text-black/60">
+              <Icon name="lucide:plus" size="18"></Icon>
             </button>
+
           </div>
           <div class="flex space-x-3">
             <button @click="exportJson"
-              class="bg-[#f6f6f670] border backdrop-blur-lg flex px-3 p-1 rounded-2xl justify-center items-center text-black/70">Export
-              JSON</button>
+              class="bg-[#f6f6f670] border backdrop-blur-lg flex px-3 p-1 rounded-2xl justify-center items-center text-black/70">Save</button>
             <button @click="triggerFileInput"
-              class="bg-[#f6f6f670] border backdrop-blur-lg flex px-3 p-1 rounded-2xl justify-center items-center text-black/70">Import
-              JSON</button>
+              class="bg-[#f6f6f670] border backdrop-blur-lg flex px-3 p-1 rounded-2xl justify-center items-center text-black/70">Open</button>
             <input type="file" ref="fileInput" accept="application/json" @change="importJson" class="hidden" />
           </div>
         </div>
