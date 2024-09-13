@@ -1,81 +1,3 @@
-    <!-- <template>
-      <div class="h-screen flex flex-col">
-        <div class="flex justify-between items-center w-full p-5 py-4 fixed bg-white/10 backdrop-blur-lg z-10">
-          <div class="flex space-x-2 overflow-x-auto">
-            <div
-              v-for="(tab, index) in tabs"
-              :key="index"
-              @click="activeTab = index"
-              class="bg-[#f6f6f670] border backdrop-blur-lg flex px-3 p-1 rounded-2xl justify-center items-center text-black/70 cursor-pointer"
-              :class="{ 'bg-gray-200': activeTab === index }"
-            >
-              {{ tab.title || 'Untitled' }}
-              <button @click.stop="closeTab(index)" class="ml-2 text-black/50 hover:text-black/70">&times;</button>
-            </div>
-            <button @click="newTab" class="bg-[#f6f6f670] border backdrop-blur-lg flex px-3 p-1 rounded-2xl justify-center items-center text-black/70">
-              <Icon name="lucide:plus" size="22" />
-            </button>
-          </div>
-        </div>
-    
-        <div class="mt-16 flex-grow">
-          <Editor
-            v-if="tabs.length > 0"
-            :key="activeTab"
-            :title="tabs[activeTab].title"
-            :content="tabs[activeTab].content"
-            @update:title="updateTabTitle"
-            @update:content="updateTabContent"
-          />
-        </div>
-      </div>
-    </template>
-    
-    <script lang="ts" setup>
-    import { ref, reactive, watch } from 'vue';
-    
-    interface Tab {
-      title: string;
-      content: any;
-    }
-    
-    const tabs = reactive<Tab[]>([{ title: 'Untitled', content: '' }]);
-    const activeTab = ref(0);
-    
-    const newTab = () => {
-      tabs.push({ title: 'Untitled', content: '' });
-      activeTab.value = tabs.length - 1;
-    };
-    
-    const closeTab = (index: number) => {
-      if (tabs.length > 1) {
-        tabs.splice(index, 1);
-        if (activeTab.value >= index && activeTab.value > 0) {
-          activeTab.value--;
-        }
-      }
-    };
-    
-    const updateTabTitle = (newTitle: string) => {
-      tabs[activeTab.value].title = newTitle;
-    };
-    
-    const updateTabContent = (content: any) => {
-      tabs[activeTab.value].content = content;
-    };
-    
-    // Watch for changes in activeTab and log the current tab's content
-    watch(activeTab, (newActiveTab, oldActiveTab) => {
-      console.log(`Switched from tab ${oldActiveTab} to tab ${newActiveTab}`);
-      console.log('Current tab content:', tabs[newActiveTab].content);
-    });
-    </script>
-    
-    <style scoped>
-    /* You can add any scoped styles here if needed */
-    </style> -->
-
-
     <template>
       <div class="h-screen flex flex-col">
         <!-- Tab bar -->
@@ -85,7 +7,7 @@
               v-for="(tab, index) in tabs"
               :key="index"
               @click="activeTab = index"
-              class="bg-[#f6f6f670] border backdrop-blur-lg flex px-3 p-1 rounded-2xl justify-center items-center text-black/70 cursor-pointer"
+              class="bg-[#f6f6f640] border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/70 cursor-pointer"
               :class="{ 'bg-gray-200': activeTab === index }"
             >
               {{ tab.title || 'Untitled' }}
@@ -103,7 +25,7 @@
         </div>
     
         <!-- Editor container -->
-        <div class="mt-16 flex-grow">
+        <div class="mt-14 flex-grow">
           <Editor
             v-if="tabs.length > 0"
             :key="activeTab"
