@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@headlessui/vue": "^1.7.23",
     "@nuxt/icon": "^1.5.1",
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@tauri-apps/api": "^1.6.0",
