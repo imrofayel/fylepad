@@ -4,6 +4,9 @@ export default defineNuxtConfig({
   // Enable SSG
   ssr: false,
   // Enables the development server to be discoverable by other devices for mobile development
+
+  telemetry: false,
+
   devServer: { host: '0.0.0.0' },
   vite: {
     // Better support for Tauri CLI output
