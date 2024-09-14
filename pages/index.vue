@@ -1,6 +1,5 @@
 <template>
   <div class="h-screen flex flex-col">
-    <!-- Tab bar -->
     <div class="flex justify-between items-center w-full p-3 py-2 fixed bg-white/70 backdrop-blur-lg z-10 blur-[0.24px]">
       <div class="flex space-x-2 overflow-x-auto">
         <div v-for="(tab, index) in tabs" :key="index" @click="activeTab = index"
@@ -62,7 +61,6 @@
       </div>
     </div>
 
-    <!-- Editor container -->
     <div class="mt-14 flex-grow">
       <Editor v-if="tabs.length > 0" :key="activeTab" :title="tabs[activeTab].title"
         :content="tabs[activeTab].content" @update:title="updateTabTitle" @update:content="updateTabContent" />
