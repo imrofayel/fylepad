@@ -53,6 +53,34 @@
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-10"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 7L7 17m10 0H7V7"/></svg>Open
                   </button>
                 </MenuItem>
+
+                <MenuItem v-slot="{ active }" v-if="colorMode.value === 'dark'">
+                  <button
+                    @click="onClick('light')"
+                    :class="[
+                      active ? 'bg-white text-black' : 'text-black',
+                      'group flex opacity-70 w-full items-center px-4 py-2 bg-gray-50'
+                    ]"
+                  >
+
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-10"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 3v1m0 16v1m-9-9h1m16 0h1m-2.636-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m11.314 11.314l.707.707"/></g></svg>Light
+                  </button>
+                </MenuItem>
+
+                <MenuItem v-slot="{ active }" v-if="colorMode.value === 'light'">
+                  <button
+                    @click="onClick('dark')"
+                    :class="[
+                      active ? 'bg-white text-black' : 'text-black',
+                      'group flex opacity-70 w-full items-center px-4 py-2 bg-gray-50'
+                    ]"
+                  >
+
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-10"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3a6 6 0 0 0 9 9a9 9 0 1 1-9-9"/></svg>Dark
+                  </button>
+
+                </MenuItem>
+
               </div>
             </MenuItems>
           </transition>
@@ -71,6 +99,11 @@
 <script lang="ts" setup>
 import { ref, reactive } from 'vue';
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
+
+const colorMode = useColorMode()
+function onClick(val: string) {
+  colorMode.preference = val
+}
 
 interface Tab {
   title: string;

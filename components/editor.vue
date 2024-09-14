@@ -71,7 +71,6 @@
         </div>
       </bubble-menu>
 
-
       <EditorContent :editor="editor" class="h-full blur-[0.24px]" />
     </div>
   </div>
