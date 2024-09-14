@@ -11,14 +11,18 @@
             </div>
 
             <button @click="newTab"
-              class="bg-[#f6f6f670] border backdrop-blur-lg flex px-2 p-1 rounded-2xl justify-center items-center text-black/60">
-              <Icon name="lucide:plus" size="18"></Icon>
+              class="backdrop-blur-lg flex px-2 p-1 rounded-2xl justify-center items-center text-black/20 hover:text-black/60">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7-7v14"/></svg>
+
             </button>
 
           </div>
           <div class="flex space-x-3">
             <button @click="exportJson"
-              class="bg-[#f6f6f670] border backdrop-blur-lg flex px-3 p-1 rounded-2xl justify-center items-center text-black/70">Save</button>
+              class="bg-[#f6f6f660] border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/70 cursor-pointer">
+
+              Save</button>
             <button @click="triggerFileInput"
               class="bg-[#f6f6f670] border backdrop-blur-lg flex px-3 p-1 rounded-2xl justify-center items-center text-black/70">Open</button>
             <input type="file" ref="fileInput" accept="application/json" @change="importJson" class="hidden" />
