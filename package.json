@@ -24,6 +24,7 @@
     "@tiptap/extension-link": "^2.6.6",
     "@tiptap/extension-list-item": "^2.6.6",
     "@tiptap/extension-list-keymap": "^2.6.6",
+    "@tiptap/extension-placeholder": "^2.6.6",
     "@tiptap/extension-subscript": "^2.6.6",
     "@tiptap/extension-superscript": "^2.6.6",
     "@tiptap/extension-table": "^2.6.6",

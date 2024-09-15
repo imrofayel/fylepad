@@ -1,7 +1,7 @@
 <template>
   <div class="h-full flex flex-col">
-    <div class="flex justify-between w-full p-5 py-2 ">
-      <div class="flex space-x-2 w-full justify-between">
+    <div class="flex justify-between w-full p-2 py-2 ">
+      <div class="flex space-x-1 w-full justify-between">
         <input v-model="localTitle" @input="$emit('update:title', localTitle)" placeholder="Untitled"
           class="w-full border border-none ring-0 focus:border-none px-3 text-black/90 outline-none bg-transparent rounded flex text-[24px]" />
 
@@ -21,31 +21,31 @@
     <div class="flex-grow">
 
       <floating-menu :editor="editor" :tippy-options="{ duration: 100 }" v-if="editor">
-        <div class="flex overflow-hidden bg-[#f6f6f670] border backdrop-blur-xl rounded-xl text-black/80 ">
+        <div class="flex overflow-hidden bg-[#f6f6f670] border backdrop-blur-xl rounded-xl text-black/80 relative left-[7rem]">
           <button @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
             :class="{ 'bg-gray-100': editor.isActive('heading', { level: 1 }) }"
-            class="rounded-l-lg hover:bg-gray-100 p-1 px-2">
+            class="rounded-l-lg hover:bg-gray-100 p-2 px-2">
 
             <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24" ><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h8m-8 6V6m8 12V6m5 6l3-2v8"/></svg>
 
           </button>
 
           <button @click="editor.chain().focus().toggleBulletList().run()"
-            :class="{ 'bg-gray-200/50': editor.isActive('bulletList') }" class="hover:bg-gray-100 p-1 px-2">
+            :class="{ 'bg-gray-200/50': editor.isActive('bulletList') }" class="hover:bg-gray-100 p-2 px-2">
             
             <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
 
           </button>
 
           <button @click="editor.chain().focus().toggleOrderedList().run()"
-            :class="{ 'bg-gray-100': editor.isActive('orderedList') }" class="hover:bg-gray-100 p-1 px-2 rounded-r-lg">
+            :class="{ 'bg-gray-100': editor.isActive('orderedList') }" class="hover:bg-gray-100 p-2 px-2">
             
             <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
 
           </button>
 
           <button @click="editor.chain().focus().toggleCode().run()" :class="{ 'bg-gray-100': editor.isActive('code') }"
-            class="hover:bg-gray-100 p-1 px-2">
+            class="hover:bg-gray-100 p-2 px-2">
             
             <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m16 18l6-6l-6-6M8 6l-6 6l6 6"/></svg>
 
@@ -119,6 +119,7 @@ import TableRow from "@tiptap/extension-table-row";
 import TextStyle from "@tiptap/extension-text-style";
 import Typography from "@tiptap/extension-typography";
 import ListKeymap from '@tiptap/extension-list-keymap'
+import Placeholder from '@tiptap/extension-placeholder'
 
 import { Markdown } from 'tiptap-markdown';
 
@@ -127,7 +128,6 @@ import { fs, path } from '@tauri-apps/api';
 import { ColorHighlighter } from '../extensions/ColorHighlighter.ts'
 
 import { SmilieReplacer } from '../extensions/SmilieReplacer.ts'
-
 
 const props = defineProps<{
   title: string;
@@ -140,9 +140,10 @@ const localTitle = ref(props.title);
 
 const editor = useEditor({
   content: props.content,
+
   editorProps: {
     attributes: {
-      class: 'opacity-90 p-8 leading-loose py-2 text-black text-[19px] min-h-[150px] w-full overflow-auto border-none bg-transparent placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+      class: 'opacity-90 p-6 leading-loose py-2 text-black text-[19px] min-h-[150px] w-full overflow-auto border-none bg-transparent placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
     },
   },
   extensions: [
@@ -170,6 +171,16 @@ const editor = useEditor({
     SmilieReplacer,
 
     ColorHighlighter,
+
+    Placeholder.configure({
+          placeholder: ({ node }) => {
+            if (node.type.name === 'heading') {
+              return 'Heading'
+            }
+
+            return 'Start writing!'
+          },
+        }),
 
   ],
   onUpdate: ({ editor }) => {
@@ -295,6 +306,15 @@ code {
   margin-right: 0.3em;
   vertical-align: middle;
   width: 1em;
+}
+
+/* Placeholder for empty state */
+.tiptap .is-empty::before {
+  color: #b9b9b9;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
 }
 
 </style>
