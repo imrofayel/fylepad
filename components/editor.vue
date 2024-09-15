@@ -1,9 +1,16 @@
 <template>
   <div class="h-full flex flex-col">
     <div class="flex justify-between w-full p-2 py-2 ">
-      <div class="flex w-full justify-between">
+      <div class="flex w-full justify-between space-x-2">
         <input v-model="localTitle" @input="$emit('update:title', localTitle)" placeholder="Untitled"
           class="w-full border border-none ring-0 focus:border-none px-3 text-black/90 outline-none bg-transparent rounded flex text-[24px]" />
+
+        <button @click="handleExportPDF"
+          class="bg-gray-50/80 hover:bg-gray-100/30 border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/80 cursor-pointer">
+
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-10"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/></svg>
+          PDF
+        </button>
 
         <button @click="exportMarkdown"
           class="bg-gray-50/80 hover:bg-gray-100/30 border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/80 cursor-pointer">
@@ -138,6 +145,7 @@ import { ColorHighlighter } from '../extensions/ColorHighlighter.ts'
 
 import { SmilieReplacer } from '../extensions/SmilieReplacer.ts'
 
+import { md2pdf } from '../utils/exportPDF';
 
 const CustomDocument = Document.extend({
   content: 'taskList',
@@ -167,9 +175,6 @@ const editor = useEditor({
   extensions: [
     CustomDocument,
     CustomTaskItem,
-    Code,
-    Document,
-    Paragraph,
     Color.configure({ types: [TextStyle.name, ListItem.name] }),
     TextStyle,
     Table.configure({ resizable: true }),
@@ -177,7 +182,6 @@ const editor = useEditor({
     SubScript,
     Link,
     Typography,
-    Highlight,
     TableRow,
     TableHeader,
     TableCell,
@@ -185,7 +189,6 @@ const editor = useEditor({
     StarterKit,
     Highlight,
     TaskList,
-    CodeBlock,
     TaskItem.configure({
       nested: true,
     }),
@@ -238,6 +241,15 @@ const exportMarkdown = () => {
     link.download = `${localTitle.value || 'untitled'}.md`;
     link.click();
     URL.revokeObjectURL(url);
+  } else {
+    console.error('Editor instance is not available.');
+  }
+};
+
+const handleExportPDF = () => {
+  if (editor.value) {
+    const htmlContent = editor.value.getHTML();
+    md2pdf(htmlContent, localTitle.value);
   } else {
     console.error('Editor instance is not available.');
   }
@@ -372,17 +384,8 @@ ul[data-type="taskList"] label > input[type="checkbox"] {
 }
 
 ul[data-type="taskList"] label > input[type="checkbox"]:checked {
-  background-color: rgb(23 23 23);
+  background-color: rgb(23, 23, 23);
   border-color: rgb(23 23 23);
-}
-
-ul[data-type="taskList"] label > input[type="checkbox"]:checked::after {
-  content: '✔'; /* Checkmark symbol */
-  color: white;
-  font-size: 14px;
-  display: block;
-  text-align: center;
-  line-height: 18px;
 }
 
 ul[data-type="taskList"] label > div {
