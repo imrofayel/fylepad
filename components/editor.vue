@@ -72,7 +72,10 @@
       </bubble-menu>
 
       <EditorContent :editor="editor" class="h-full blur-[0.24px]" />
+
     </div>
+
+    <button :onclick="exportMarkdown">Export</button>
   </div>
 </template>
 
@@ -97,6 +100,9 @@ import Typography from "@tiptap/extension-typography";
 import ListKeymap from '@tiptap/extension-list-keymap'
 
 import { Markdown } from 'tiptap-markdown';
+
+import { fs, path } from '@tauri-apps/api';
+
 
 const props = defineProps<{
   title: string;
@@ -155,6 +161,22 @@ onBeforeUnmount(() => {
   editor.value?.destroy();
 });
 
+const exportMarkdown = () => {  
+  if (editor.value) {
+    const markdownContent = editor.value.storage.markdown.getMarkdown();
+    console.log('Markdown Content:', markdownContent);
+    
+    const blob = new Blob([markdownContent], { type: "text/markdown" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${localTitle.value || 'untitled'}.md`;
+    link.click();
+    URL.revokeObjectURL(url);
+  } else {
+    console.error('Editor instance is not available.');
+  }
+};
 
 </script>
 
