@@ -1,5 +1,5 @@
 <template>
-    <div><AppHeader/>
+    <div class="dark:bg-[#263029]"><AppHeader/>
     <slot />
   </div>
 </template>
@@ -9,4 +9,7 @@
 </script>
 
 <style>
+
+
+
 </style>
