@@ -125,13 +125,13 @@ export const md2pdf = (htmlContent: string, title: string = 'Untitled') => {
               position: relative;
             }
             ul[data-type="taskList"] label > input[type="checkbox"]:checked {
-              background-color: #00bcf0;
-              border-color: #00bcf0;
+              background-color: #0A0A0A;
+              border-color: #0A0A0A;
             }
 
             ul[data-type="taskList"] label > input[type="checkbox"]:checked::after {
               content: '✔'; /* Checkmark symbol */
-              color: #00bcf0;
+              color: #0A0A0A;
               font-size: 14px;
               display: block;
               text-align: center;
