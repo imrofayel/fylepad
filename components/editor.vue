@@ -1,9 +1,20 @@
 <template>
   <div class="h-full flex flex-col">
     <div class="flex justify-between w-full p-5 py-2 blur-[0.24px]">
-      <div class="flex space-x-2">
+      <div class="flex space-x-2 w-full justify-between">
         <input v-model="localTitle" @input="$emit('update:title', localTitle)" placeholder="Untitled"
           class="w-full border border-none ring-0 focus:border-none px-3 text-black/90 outline-none bg-transparent rounded flex text-[24px]" />
+
+        <button @click="exportMarkdown"
+          class="bg-gray-50/80 hover:bg-gray-100/30 border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/80 cursor-pointer">
+
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-10">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 17V3m-6 8l6 6l6-6m1 10H5" />
+          </svg>
+          Markdown
+        </button>
+
       </div>
     </div>
 
@@ -74,8 +85,6 @@
       <EditorContent :editor="editor" class="h-full blur-[0.24px]" />
 
     </div>
-
-    <button :onclick="exportMarkdown">Export</button>
   </div>
 </template>
 
@@ -161,11 +170,11 @@ onBeforeUnmount(() => {
   editor.value?.destroy();
 });
 
-const exportMarkdown = () => {  
+const exportMarkdown = () => {
   if (editor.value) {
     const markdownContent = editor.value.storage.markdown.getMarkdown();
     console.log('Markdown Content:', markdownContent);
-    
+
     const blob = new Blob([markdownContent], { type: "text/markdown" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
@@ -248,5 +257,4 @@ code {
   border-radius: 0.4rem;
   padding: 0.1rem 0.3rem;
 }
-
 </style>
