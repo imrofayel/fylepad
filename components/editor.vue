@@ -25,22 +25,30 @@
           <button @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
             :class="{ 'bg-gray-100': editor.isActive('heading', { level: 1 }) }"
             class="rounded-l-lg hover:bg-gray-100 p-1 px-2">
-            <Icon name="lucide:heading-1" size="22" class="relative top-0.5"></Icon>
+
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24" ><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h8m-8 6V6m8 12V6m5 6l3-2v8"/></svg>
+
           </button>
 
           <button @click="editor.chain().focus().toggleBulletList().run()"
             :class="{ 'bg-gray-200/50': editor.isActive('bulletList') }" class="hover:bg-gray-100 p-1 px-2">
-            <Icon name="lucide:list" size="22" class="relative top-0.5"></Icon>
+            
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+
           </button>
 
           <button @click="editor.chain().focus().toggleOrderedList().run()"
             :class="{ 'bg-gray-100': editor.isActive('orderedList') }" class="hover:bg-gray-100 p-1 px-2 rounded-r-lg">
-            <Icon name="lucide:list-ordered" size="20" class="relative top-0.5"></Icon>
+            
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+
           </button>
 
           <button @click="editor.chain().focus().toggleCode().run()" :class="{ 'bg-gray-100': editor.isActive('code') }"
             class="hover:bg-gray-100 p-1 px-2">
-            <Icon name="lucide:code" size="20" class="relative top-0.5"></Icon>
+            
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m16 18l6-6l-6-6M8 6l-6 6l6 6"/></svg>
+
           </button>
         </div>
       </floating-menu>
