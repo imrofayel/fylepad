@@ -10,12 +10,12 @@ export const md2pdf = (htmlContent: string, title: string = 'Untitled') => {
           <style>
             body {
               font-family: Inter, sans-serif;
-              line-height: 1.6;
+              line-height: 1;
               color: #333;
               max-width: 800px;
               margin: 0 auto;
-              padding: 20px;
-              font-size: 20px;
+              padding: 10px;
+              font-size: 18px;
             }
             h1 {
               font-size: 2rem;
@@ -131,10 +131,17 @@ export const md2pdf = (htmlContent: string, title: string = 'Untitled') => {
             ul[data-type="taskList"] label > div {
               flex: 1 1 auto;
             }
+
+            @media print {
+            mark {
+              background-color: #FAF594 !important; /* Ensure highlight color is shown when printing */
+              color: inherit;
+            }
+          }
           </style>
         </head>
         <body>
-          <h1>${title || 'Untitled'}</h1>
+          <h1 style="padding-bottom: 1rem; font-weight: normal;">${title || 'Untitled'}</h1>
           ${htmlContent}
         </body>
         </html>
