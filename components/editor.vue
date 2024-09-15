@@ -28,7 +28,7 @@
     <div class="flex-grow">
 
       <floating-menu :editor="editor" :tippy-options="{ duration: 100 }" v-if="editor">
-        <div class="flex overflow-hidden bg-[#f6f6f670] border backdrop-blur-xl rounded-xl text-black/80 relative left-[7rem]">
+        <div class="flex overflow-hidden bg-[#f6f6f670] border backdrop-blur-xl rounded-xl text-black/70 relative left-[7rem]">
           <button @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
             :class="{ 'bg-gray-100': editor.isActive('heading', { level: 1 }) }"
             class="rounded-l-lg hover:bg-gray-100 p-2 px-2">
