@@ -28,7 +28,7 @@
     <div class="flex-grow">
 
       <floating-menu :editor="editor" :tippy-options="{ duration: 100 }" v-if="editor">
-        <div class="flex overflow-hidden bg-[#f6f6f670] border backdrop-blur-xl rounded-xl text-black/80 relative left-[7rem]">
+        <div class="flex overflow-hidden bg-[#f6f6f670] border backdrop-blur-xl rounded-xl text-black/70 relative left-[7rem]">
           <button @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
             :class="{ 'bg-gray-100': editor.isActive('heading', { level: 1 }) }"
             class="rounded-l-lg hover:bg-gray-100 p-2 px-2">
@@ -384,8 +384,17 @@ ul[data-type="taskList"] label > input[type="checkbox"] {
 }
 
 ul[data-type="taskList"] label > input[type="checkbox"]:checked {
-  background-color: rgb(23, 23, 23);
-  border-color: rgb(23 23 23);
+  background-color: #00bcf0;
+  border-color: #00bcf0;
+}
+
+ul[data-type="taskList"] label > input[type="checkbox"]:checked::after {
+  content: '✔'; /* Checkmark symbol */
+  color: white;
+  font-size: 14px;
+  display: block;
+  text-align: center;
+  line-height: 18px;
 }
 
 ul[data-type="taskList"] label > div {
