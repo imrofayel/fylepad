@@ -120,6 +120,7 @@ import TextStyle from "@tiptap/extension-text-style";
 import Typography from "@tiptap/extension-typography";
 import ListKeymap from '@tiptap/extension-list-keymap'
 import Placeholder from '@tiptap/extension-placeholder'
+import CodeBlock from '@tiptap/extension-code-block'
 
 import { Markdown } from 'tiptap-markdown';
 
@@ -128,6 +129,15 @@ import { fs, path } from '@tauri-apps/api';
 import { ColorHighlighter } from '../extensions/ColorHighlighter.ts'
 
 import { SmilieReplacer } from '../extensions/SmilieReplacer.ts'
+
+
+const CustomDocument = Document.extend({
+  content: 'taskList',
+})
+
+const CustomTaskItem = TaskItem.extend({
+  content: 'inline*',
+})
 
 const props = defineProps<{
   title: string;
@@ -147,6 +157,11 @@ const editor = useEditor({
     },
   },
   extensions: [
+    CustomDocument,
+    CustomTaskItem,
+    Code,
+    Document,
+    Paragraph,
     Color.configure({ types: [TextStyle.name, ListItem.name] }),
     TextStyle,
     Table.configure({ resizable: true }),
@@ -162,6 +177,7 @@ const editor = useEditor({
     StarterKit,
     Highlight,
     TaskList,
+    CodeBlock,
     TaskItem.configure({
       nested: true,
     }),
@@ -316,5 +332,32 @@ code {
   height: 0;
   pointer-events: none;
 }
+
+/* Task list specific styles */
+ul[data-type="taskList"] {
+  list-style: none;
+  margin-left: 0;
+  padding: 0;
+}
+
+ul[data-type="taskList"] li {
+  align-items: center;
+  display: flex;
+}
+
+ul[data-type="taskList"] li > label {
+  flex: 0 0 auto;
+  margin-right: 0.5rem;
+  user-select: none;
+}
+
+ul[data-type="taskList"] li > div {
+  flex: 1 1 auto;
+}
+
+ul[data-type="taskList"] input[type="checkbox"] {
+  cursor: pointer;
+}
+
 
 </style>

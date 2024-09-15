@@ -38,6 +38,9 @@ importers:
       '@tiptap/extension-floating-menu':
         specifier: ^2.6.6
         version: 2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6))(@tiptap/pm@2.6.6)
+      '@tiptap/extension-font-family':
+        specifier: ^2.6.6
+        version: 2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6))(@tiptap/extension-text-style@2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6)))
       '@tiptap/extension-highlight':
         specifier: ^2.6.6
         version: 2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6))
@@ -1253,6 +1256,12 @@ packages:
     peerDependencies:
       '@tiptap/core': ^2.6.6
       '@tiptap/pm': ^2.6.6
+
+  '@tiptap/extension-font-family@2.6.6':
+    resolution: {integrity: sha512-bb1S6oSFDQe49W2Skqxrx1EQuoaXeYOm4PGMdt7sDIq/u4M4EkLhLxCx/EsDWNWTW0FpbVJRjgyP1yzkVJ4wnQ==}
+    peerDependencies:
+      '@tiptap/core': ^2.6.6
+      '@tiptap/extension-text-style': ^2.6.6
 
   '@tiptap/extension-gapcursor@2.6.6':
     resolution: {integrity: sha512-O2lQ2t0X0Vsbn3yLWxFFHrXY6C2N9Y6ZF/M7LWzpcDTUZeWuhoNkFE/1yOM0h6ZX1DO2A9hNIrKpi5Ny8yx+QA==}
@@ -5380,6 +5389,11 @@ snapshots:
       '@tiptap/core': 2.6.6(@tiptap/pm@2.6.6)
       '@tiptap/pm': 2.6.6
       tippy.js: 6.3.7
+
+  '@tiptap/extension-font-family@2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6))(@tiptap/extension-text-style@2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6)))':
+    dependencies:
+      '@tiptap/core': 2.6.6(@tiptap/pm@2.6.6)
+      '@tiptap/extension-text-style': 2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6))
 
   '@tiptap/extension-gapcursor@2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6))(@tiptap/pm@2.6.6)':
     dependencies:
