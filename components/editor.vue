@@ -96,6 +96,8 @@ import TextStyle from "@tiptap/extension-text-style";
 import Typography from "@tiptap/extension-typography";
 import ListKeymap from '@tiptap/extension-list-keymap'
 
+import { Markdown } from 'tiptap-markdown';
+
 const props = defineProps<{
   title: string;
   content: any;
@@ -131,6 +133,8 @@ const editor = useEditor({
     TaskItem.configure({
       nested: true,
     }),
+
+    Markdown,
   ],
   onUpdate: ({ editor }) => {
     emit('update:content', editor.getJSON());
