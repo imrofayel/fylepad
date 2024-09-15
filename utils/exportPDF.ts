@@ -9,13 +9,13 @@ export const md2pdf = (htmlContent: string, title: string = 'Untitled') => {
           <title>${title || 'Untitled'}</title>
           <style>
             body {
-              font-family: Arial, sans-serif;
+              font-family: Inter, sans-serif;
               line-height: 1.6;
               color: #333;
               max-width: 800px;
               margin: 0 auto;
               padding: 20px;
-              font-size: 16px;
+              font-size: 20px;
             }
             h1 {
               font-size: 2rem;
