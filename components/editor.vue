@@ -384,8 +384,17 @@ ul[data-type="taskList"] label > input[type="checkbox"] {
 }
 
 ul[data-type="taskList"] label > input[type="checkbox"]:checked {
-  background-color: rgb(23, 23, 23);
-  border-color: rgb(23 23 23);
+  background-color: #00bcf0;
+  border-color: #00bcf0;
+}
+
+ul[data-type="taskList"] label > input[type="checkbox"]:checked::after {
+  content: '✔'; /* Checkmark symbol */
+  color: white;
+  font-size: 14px;
+  display: block;
+  text-align: center;
+  line-height: 18px;
 }
 
 ul[data-type="taskList"] label > div {

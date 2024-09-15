@@ -90,7 +90,7 @@
         :content="tabs[activeTab].content" @update:title="updateTabTitle" @update:content="updateTabContent" />
     </div>
 
-    <div class="bg-gray-50 border-t text-gray-600 p-2 px-3 flex justify-between items-center fixed bottom-0 w-full">
+    <div class="bg-gray-50 border-t text-black/80 p-2 px-3 flex justify-between items-center fixed bottom-0 w-full">
       <div></div>
       <div class="flex items-center space-x-4">
         <div>UTF8</div>
@@ -194,7 +194,6 @@ const updateTabTitle = (newTitle: string) => {
 
 const updateTabContent = (content: any) => {
   tabs[activeTab.value].content = content;
-  updateCounts(content);
 };
 
 const exportJson = () => {
@@ -230,20 +229,6 @@ const importJson = (event: Event) => {
 
 const triggerFileInput = () => {
   fileInput.value?.click();
-};
-
-
-const characterCount = ref(0);
-const wordCount = ref(0);
-const lineCount = ref(1);
-const columnCount = ref(1);
-
-const updateCounts = (content: string) => {
-  characterCount.value = content.length;
-  wordCount.value = content.trim().split(/\s+/).filter(Boolean).length;
-  const lines = content.split('\n');
-  lineCount.value = lines.length;
-  columnCount.value = lines[lines.length - 1].length + 1;
 };
 
 </script>
