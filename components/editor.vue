@@ -44,6 +44,14 @@
 
           </button>
 
+          <button @click="editor.chain().focus().toggleTaskList({ level: 1 }).run()"
+            :class="{ 'bg-gray-100': editor.isActive('taskList', { level: 1 }) }"
+            class="hover:bg-gray-100 p-2 px-2">
+
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/><path d="M14 4h7m-7 5h7m-7 6h7m-7 5h7"/></g></svg>
+
+          </button>
+
           <button @click="editor.chain().focus().toggleCode().run()" :class="{ 'bg-gray-100': editor.isActive('code') }"
             class="hover:bg-gray-100 p-2 px-2">
             
@@ -336,28 +344,49 @@ code {
 /* Task list specific styles */
 ul[data-type="taskList"] {
   list-style: none;
-  margin-left: 0;
+  margin-left: 14px;
   padding: 0;
 }
 
 ul[data-type="taskList"] li {
   align-items: center;
   display: flex;
+  margin-bottom: 0.5rem; /* Optional: Add space between tasks */
 }
 
 ul[data-type="taskList"] li > label {
-  flex: 0 0 auto;
-  margin-right: 0.5rem;
+  display: flex;
+  align-items: center;
   user-select: none;
 }
 
-ul[data-type="taskList"] li > div {
+ul[data-type="taskList"] label > input[type="checkbox"] {
+  cursor: pointer;
+  appearance: none; /* Remove default appearance */
+  width: 20px;
+  height: 20px;
+  border: 2px solid #eaeaea; /* Border to match background */
+  border-radius: 8px; /* Rounded corners */
+  margin-right: 0.5rem; /* Space between checkbox and text */
+  position: relative;
+}
+
+ul[data-type="taskList"] label > input[type="checkbox"]:checked {
+  background-color: rgb(23 23 23);
+  border-color: rgb(23 23 23);
+}
+
+ul[data-type="taskList"] label > input[type="checkbox"]:checked::after {
+  content: '✔'; /* Checkmark symbol */
+  color: white;
+  font-size: 14px;
+  display: block;
+  text-align: center;
+  line-height: 18px;
+}
+
+ul[data-type="taskList"] label > div {
   flex: 1 1 auto;
 }
-
-ul[data-type="taskList"] input[type="checkbox"] {
-  cursor: pointer;
-}
-
 
 </style>
