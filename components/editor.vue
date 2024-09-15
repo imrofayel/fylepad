@@ -1,35 +1,69 @@
 <template>
   <div class="h-full flex flex-col">
-    <div class="flex justify-between w-full p-5 py-2 blur-[0.24px]">
-      <div class="flex space-x-2">
+    <div class="flex justify-between w-full p-2 py-2 ">
+      <div class="flex w-full justify-between space-x-2">
         <input v-model="localTitle" @input="$emit('update:title', localTitle)" placeholder="Untitled"
           class="w-full border border-none ring-0 focus:border-none px-3 text-black/90 outline-none bg-transparent rounded flex text-[24px]" />
+
+        <button @click="handleExportPDF"
+          class="bg-gray-50/80 hover:bg-gray-100/30 border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/80 cursor-pointer">
+
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-10"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20"/></svg>
+          PDF
+        </button>
+
+        <button @click="exportMarkdown"
+          class="bg-gray-50/80 hover:bg-gray-100/30 border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/80 cursor-pointer">
+
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-10">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 17V3m-6 8l6 6l6-6m1 10H5" />
+          </svg>
+          .md
+        </button>
+
       </div>
     </div>
 
     <div class="flex-grow">
 
       <floating-menu :editor="editor" :tippy-options="{ duration: 100 }" v-if="editor">
-        <div class="flex overflow-hidden bg-[#f6f6f670] border backdrop-blur-xl rounded-xl text-black/80 blur-[0.24px]">
+        <div class="flex overflow-hidden bg-[#f6f6f670] border backdrop-blur-xl rounded-xl text-black/80 relative left-[7rem]">
           <button @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
             :class="{ 'bg-gray-100': editor.isActive('heading', { level: 1 }) }"
-            class="rounded-l-lg hover:bg-gray-100 p-1 px-2">
-            <Icon name="lucide:heading-1" size="22" class="relative top-0.5"></Icon>
+            class="rounded-l-lg hover:bg-gray-100 p-2 px-2">
+
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24" ><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h8m-8 6V6m8 12V6m5 6l3-2v8"/></svg>
+
           </button>
 
           <button @click="editor.chain().focus().toggleBulletList().run()"
-            :class="{ 'bg-gray-200/50': editor.isActive('bulletList') }" class="hover:bg-gray-100 p-1 px-2">
-            <Icon name="lucide:list" size="22" class="relative top-0.5"></Icon>
+            :class="{ 'bg-gray-200/50': editor.isActive('bulletList') }" class="hover:bg-gray-100 p-2 px-2">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+
           </button>
 
           <button @click="editor.chain().focus().toggleOrderedList().run()"
-            :class="{ 'bg-gray-100': editor.isActive('orderedList') }" class="hover:bg-gray-100 p-1 px-2 rounded-r-lg">
-            <Icon name="lucide:list-ordered" size="20" class="relative top-0.5"></Icon>
+            :class="{ 'bg-gray-100': editor.isActive('orderedList') }" class="hover:bg-gray-100 p-2 px-2">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1"/></svg>
+
+          </button>
+
+          <button @click="editor.chain().focus().toggleTaskList({ level: 1 }).run()"
+            :class="{ 'bg-gray-100': editor.isActive('taskList', { level: 1 }) }"
+            class="hover:bg-gray-100 p-2 px-2">
+
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/><path d="M14 4h7m-7 5h7m-7 6h7m-7 5h7"/></g></svg>
+
           </button>
 
           <button @click="editor.chain().focus().toggleCode().run()" :class="{ 'bg-gray-100': editor.isActive('code') }"
-            class="hover:bg-gray-100 p-1 px-2">
-            <Icon name="lucide:code" size="20" class="relative top-0.5"></Icon>
+            class="hover:bg-gray-100 p-2 px-2">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m16 18l6-6l-6-6M8 6l-6 6l6 6"/></svg>
+
           </button>
         </div>
       </floating-menu>
@@ -71,8 +105,8 @@
         </div>
       </bubble-menu>
 
+      <EditorContent :editor="editor" class="h-full " />
 
-      <EditorContent :editor="editor" class="h-full blur-[0.24px]" />
     </div>
   </div>
 </template>
@@ -80,6 +114,10 @@
 <script lang="ts" setup>
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
 import { useEditor, EditorContent, BubbleMenu, FloatingMenu } from '@tiptap/vue-3';
+import Code from '@tiptap/extension-code'
+import Document from '@tiptap/extension-document'
+import Paragraph from '@tiptap/extension-paragraph'
+import Text from '@tiptap/extension-text'
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
 import TaskList from '@tiptap/extension-task-list';
@@ -96,6 +134,26 @@ import TableRow from "@tiptap/extension-table-row";
 import TextStyle from "@tiptap/extension-text-style";
 import Typography from "@tiptap/extension-typography";
 import ListKeymap from '@tiptap/extension-list-keymap'
+import Placeholder from '@tiptap/extension-placeholder'
+import CodeBlock from '@tiptap/extension-code-block'
+
+import { Markdown } from 'tiptap-markdown';
+
+import { fs, path } from '@tauri-apps/api';
+
+import { ColorHighlighter } from '../extensions/ColorHighlighter.ts'
+
+import { SmilieReplacer } from '../extensions/SmilieReplacer.ts'
+
+import { md2pdf } from '../utils/exportPDF';
+
+const CustomDocument = Document.extend({
+  content: 'taskList',
+})
+
+const CustomTaskItem = TaskItem.extend({
+  content: 'inline*',
+})
 
 const props = defineProps<{
   title: string;
@@ -108,12 +166,15 @@ const localTitle = ref(props.title);
 
 const editor = useEditor({
   content: props.content,
+
   editorProps: {
     attributes: {
-      class: 'opacity-90 p-8 leading-loose py-2 text-black text-[19px] min-h-[150px] w-full overflow-auto border-none bg-transparent placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+      class: 'opacity-90 p-6 leading-loose py-2 text-black text-[19px] min-h-[150px] w-full overflow-auto border-none bg-transparent placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
     },
   },
   extensions: [
+    CustomDocument,
+    CustomTaskItem,
     Color.configure({ types: [TextStyle.name, ListItem.name] }),
     TextStyle,
     Table.configure({ resizable: true }),
@@ -121,7 +182,6 @@ const editor = useEditor({
     SubScript,
     Link,
     Typography,
-    Highlight,
     TableRow,
     TableHeader,
     TableCell,
@@ -132,6 +192,23 @@ const editor = useEditor({
     TaskItem.configure({
       nested: true,
     }),
+
+    Markdown,
+
+    SmilieReplacer,
+
+    ColorHighlighter,
+
+    Placeholder.configure({
+          placeholder: ({ node }) => {
+            if (node.type.name === 'heading') {
+              return 'Heading'
+            }
+
+            return 'Start writing!'
+          },
+        }),
+
   ],
   onUpdate: ({ editor }) => {
     emit('update:content', editor.getJSON());
@@ -152,6 +229,31 @@ onBeforeUnmount(() => {
   editor.value?.destroy();
 });
 
+const exportMarkdown = () => {
+  if (editor.value) {
+    const markdownContent = editor.value.storage.markdown.getMarkdown();
+    console.log('Markdown Content:', markdownContent);
+
+    const blob = new Blob([markdownContent], { type: "text/markdown" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${localTitle.value || 'untitled'}.md`;
+    link.click();
+    URL.revokeObjectURL(url);
+  } else {
+    console.error('Editor instance is not available.');
+  }
+};
+
+const handleExportPDF = () => {
+  if (editor.value) {
+    const htmlContent = editor.value.getHTML();
+    md2pdf(htmlContent, localTitle.value);
+  } else {
+    console.error('Editor instance is not available.');
+  }
+};
 
 </script>
 
@@ -222,6 +324,72 @@ code {
   background-color: #F9FAFB;
   border-radius: 0.4rem;
   padding: 0.1rem 0.3rem;
+}
+
+/* Color swatches */
+.tiptap .color {
+  white-space: nowrap;
+}
+
+.tiptap .color::before {
+  background-color: var(--color);
+  /* border: 1px solid rgba(128, 128, 128, 0.3); */
+  border-radius: 8px;
+  content: " ";
+  display: inline-block;
+  height: 1em;
+  margin-bottom: 0.15em;
+  margin-right: 0.3em;
+  vertical-align: middle;
+  width: 1em;
+}
+
+/* Placeholder for empty state */
+.tiptap .is-empty::before {
+  color: #b9b9b9;
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  pointer-events: none;
+}
+
+/* Task list specific styles */
+ul[data-type="taskList"] {
+  list-style: none;
+  margin-left: 14px;
+  padding: 0;
+}
+
+ul[data-type="taskList"] li {
+  align-items: center;
+  display: flex;
+  margin-bottom: 0.5rem; /* Optional: Add space between tasks */
+}
+
+ul[data-type="taskList"] li > label {
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+
+ul[data-type="taskList"] label > input[type="checkbox"] {
+  cursor: pointer;
+  appearance: none; /* Remove default appearance */
+  width: 20px;
+  height: 20px;
+  border: 2px solid #eaeaea; /* Border to match background */
+  border-radius: 8px; /* Rounded corners */
+  margin-right: 0.5rem; /* Space between checkbox and text */
+  position: relative;
+}
+
+ul[data-type="taskList"] label > input[type="checkbox"]:checked {
+  background-color: rgb(23, 23, 23);
+  border-color: rgb(23 23 23);
+}
+
+ul[data-type="taskList"] label > div {
+  flex: 1 1 auto;
 }
 
 </style>

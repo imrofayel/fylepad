@@ -1,5 +1,5 @@
 <template>
-    <div class=""><AppHeader/>
+    <div><AppHeader/>
     <slot />
   </div>
 </template>
