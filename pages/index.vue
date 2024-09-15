@@ -89,6 +89,16 @@
       <Editor v-if="tabs.length > 0" :key="activeTab" :title="tabs[activeTab].title"
         :content="tabs[activeTab].content" @update:title="updateTabTitle" @update:content="updateTabContent" />
     </div>
+
+    <div class="bg-gray-50 border-t text-gray-600 text-sm p-2 px-3 flex justify-between items-center fixed bottom-0 w-full">
+      <div></div>
+      <div class="flex items-center space-x-4">
+        <div></div>
+        <div>0 characters</div>
+        <div>UTF8</div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -222,6 +232,7 @@ const importJson = (event: Event) => {
 const triggerFileInput = () => {
   fileInput.value?.click();
 };
+
 </script>
 
 <style scoped>
