@@ -1,6 +1,6 @@
 <template>
   <div class="h-screen flex flex-col">
-    <div class="flex justify-between items-center w-full p-3 py-2 fixed bg-white/70 backdrop-blur-lg z-10 blur-[0.24px]">
+    <div class="flex justify-between items-center w-full p-3 py-2 fixed bg-white/70 backdrop-blur-lg z-10">
       <div class="flex space-x-2 overflow-x-auto">
         <div v-for="(tab, index) in tabs" :key="index" @click="activeTab = index"
           class="bg-[#f6f6f640] border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/80 cursor-pointer"

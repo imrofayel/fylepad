@@ -1,6 +1,6 @@
 <template>
   <div class="h-full flex flex-col">
-    <div class="flex justify-between w-full p-5 py-2 blur-[0.24px]">
+    <div class="flex justify-between w-full p-5 py-2 ">
       <div class="flex space-x-2 w-full justify-between">
         <input v-model="localTitle" @input="$emit('update:title', localTitle)" placeholder="Untitled"
           class="w-full border border-none ring-0 focus:border-none px-3 text-black/90 outline-none bg-transparent rounded flex text-[24px]" />
@@ -21,7 +21,7 @@
     <div class="flex-grow">
 
       <floating-menu :editor="editor" :tippy-options="{ duration: 100 }" v-if="editor">
-        <div class="flex overflow-hidden bg-[#f6f6f670] border backdrop-blur-xl rounded-xl text-black/80 blur-[0.24px]">
+        <div class="flex overflow-hidden bg-[#f6f6f670] border backdrop-blur-xl rounded-xl text-black/80 ">
           <button @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
             :class="{ 'bg-gray-100': editor.isActive('heading', { level: 1 }) }"
             class="rounded-l-lg hover:bg-gray-100 p-1 px-2">
@@ -90,7 +90,7 @@
         </div>
       </bubble-menu>
 
-      <EditorContent :editor="editor" class="h-full blur-[0.24px]" />
+      <EditorContent :editor="editor" class="h-full " />
 
     </div>
   </div>
@@ -99,6 +99,10 @@
 <script lang="ts" setup>
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
 import { useEditor, EditorContent, BubbleMenu, FloatingMenu } from '@tiptap/vue-3';
+import Code from '@tiptap/extension-code'
+import Document from '@tiptap/extension-document'
+import Paragraph from '@tiptap/extension-paragraph'
+import Text from '@tiptap/extension-text'
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
 import TaskList from '@tiptap/extension-task-list';
@@ -119,6 +123,10 @@ import ListKeymap from '@tiptap/extension-list-keymap'
 import { Markdown } from 'tiptap-markdown';
 
 import { fs, path } from '@tauri-apps/api';
+
+import { ColorHighlighter } from '../extensions/ColorHighlighter.ts'
+
+import { SmilieReplacer } from '../extensions/SmilieReplacer.ts'
 
 
 const props = defineProps<{
@@ -158,6 +166,11 @@ const editor = useEditor({
     }),
 
     Markdown,
+
+    SmilieReplacer,
+
+    ColorHighlighter,
+
   ],
   onUpdate: ({ editor }) => {
     emit('update:content', editor.getJSON());
@@ -265,4 +278,23 @@ code {
   border-radius: 0.4rem;
   padding: 0.1rem 0.3rem;
 }
+
+/* Color swatches */
+.tiptap .color {
+  white-space: nowrap;
+}
+
+.tiptap .color::before {
+  background-color: var(--color);
+  /* border: 1px solid rgba(128, 128, 128, 0.3); */
+  border-radius: 8px;
+  content: " ";
+  display: inline-block;
+  height: 1em;
+  margin-bottom: 0.15em;
+  margin-right: 0.3em;
+  vertical-align: middle;
+  width: 1em;
+}
+
 </style>
