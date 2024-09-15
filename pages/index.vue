@@ -62,7 +62,6 @@
                       'group flex opacity-70 w-full items-center px-4 py-2 bg-gray-50'
                     ]"
                   >
-
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-10"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 3v1m0 16v1m-9-9h1m16 0h1m-2.636-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m11.314 11.314l.707.707"/></g></svg>Light
                   </button>
                 </MenuItem>
@@ -75,12 +74,9 @@
                       'group flex opacity-70 w-full items-center px-4 py-2 bg-gray-50'
                     ]"
                   >
-
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-10"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3a6 6 0 0 0 9 9a9 9 0 1 1-9-9"/></svg>Dark
                   </button>
-
                 </MenuItem>
-
               </div>
             </MenuItems>
           </transition>
@@ -97,8 +93,9 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, onMounted, watch } from 'vue';
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
+import { fs, path } from '@tauri-apps/api';
 
 const colorMode = useColorMode()
 function onClick(val: string) {
@@ -113,6 +110,61 @@ interface Tab {
 const tabs = reactive<Tab[]>([{ title: 'Untitled', content: '' }]);
 const activeTab = ref(0);
 const fileInput = ref<HTMLInputElement | null>(null);
+
+// Function to save the app state
+async function saveAppState() {
+  const appState = {
+    tabs: tabs,
+    activeTab: activeTab.value,
+    colorMode: colorMode.preference
+  };
+  
+  // Try to save using Tauri's fs API
+  try {
+    const appDir = await path.appDataDir();
+    const filePath = await path.join(appDir, 'app_state.json');
+    await fs.writeTextFile(filePath, JSON.stringify(appState));
+  } catch (error) {
+    // If Tauri's fs API fails, fall back to localStorage
+    localStorage.setItem('appState', JSON.stringify(appState));
+  }
+}
+
+// Function to load the app state
+async function loadAppState() {
+  let appState;
+
+  // Try to load using Tauri's fs API
+  try {
+    const appDir = await path.appDataDir();
+    const filePath = await path.join(appDir, 'app_state.json');
+    const contents = await fs.readTextFile(filePath);
+    appState = JSON.parse(contents);
+  } catch (error) {
+    // If Tauri's fs API fails, try localStorage
+    const storedState = localStorage.getItem('appState');
+    if (storedState) {
+      appState = JSON.parse(storedState);
+    }
+  }
+
+  // If we successfully loaded a state, apply it
+  if (appState) {
+    tabs.splice(0, tabs.length, ...appState.tabs);
+    activeTab.value = appState.activeTab;
+    colorMode.preference = appState.colorMode;
+  }
+}
+
+// Load the app state when the component mounts
+onMounted(async () => {
+  await loadAppState();
+});
+
+// Watch for changes and save the state
+watch([tabs, activeTab, () => colorMode.preference], async () => {
+  await saveAppState();
+}, { deep: true });
 
 const newTab = () => {
   tabs.push({ title: 'Untitled', content: '' });

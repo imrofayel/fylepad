@@ -38,6 +38,7 @@
     "@tiptap/starter-kit": "^2.6.6",
     "@tiptap/vue-3": "^2.6.6",
     "nuxt": "^3.13.0",
+    "tiptap-markdown": "^0.8.10",
     "vue": "latest",
     "vue-router": "latest"
   },
