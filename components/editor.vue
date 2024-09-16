@@ -139,21 +139,21 @@
       <EditorContent :editor="editor" class="h-full " />
 
       <div
-        class="bg-gray-50 dark:border-transparent border-t dark:bg-[#2d3d33] dark:text-white/40 text-black/90 p-1.5 px-3 flex justify-between items-center fixed bottom-0 w-full">
+        class="bg-gray-50 dark:border-transparent border-t dark:bg-[#2d3d33] dark:text-white/40 text-black/90 p-1.5 px-3 flex justify-between items-center fixed bottom-0 w-full" v-if="editor">
         <div class="flex space-x-4">
 
           <div
           class="bg-[#f6f6f640] text-base dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center dark:text-white/90 text-black/80 cursor-pointer">
           Text align
           </div>
-<!-- 
+
           <button @click="editor.chain().focus().setTextAlign('left').run()" :class="{ 'text-white/90': editor.isActive({ textAlign: 'left' }) }"><svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 6H3m12 6H3m14 6H3"/></svg></button>
 
           <button @click="editor.chain().focus().setTextAlign('center').run()" :class="{ 'text-white/90': editor.isActive({ textAlign: 'center' }) }"><svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 6H3m14 6H7m12 6H5"/></svg></button>
 
           <button @click="editor.chain().focus().setTextAlign('right').run()" :class="{ 'text-white/90': editor.isActive({ textAlign: 'right' }) }"><svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 6H3m18 6H9m12 6H7"/></svg></button>
 
-          <button @click="editor.chain().focus().setTextAlign('justify').run()" :class="{ 'text-white/90': editor.isActive({ textAlign: 'justify' }) }">          <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6h18M3 12h18M3 18h18"/></svg></button> -->
+          <button @click="editor.chain().focus().setTextAlign('justify').run()" :class="{ 'text-white/90': editor.isActive({ textAlign: 'justify' }) }">          <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6h18M3 12h18M3 18h18"/></svg></button>
 
         </div>
         <div class="flex items-center space-x-4 dark:text-white/80 text-black/90">
