@@ -139,21 +139,118 @@
       <EditorContent :editor="editor" class="h-full " />
 
       <div
-        class="bg-gray-50 dark:border-transparent border-t dark:bg-[#2d3d33] dark:text-white/40 text-black/90 p-1.5 px-3 flex justify-between items-center fixed bottom-0 w-full select-none" v-if="editor">
+        class="bg-gray-50 dark:border-transparent border-t dark:bg-[#2d3d33] dark:text-white/40 text-black/90 p-1.5 px-3 flex justify-between items-center fixed bottom-0 w-full select-none"
+        v-if="editor">
         <div class="flex space-x-4">
 
-          <div
-          class="bg-[#f6f6f640] text-base dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center dark:text-white/90 text-black/80 cursor-pointer">
-          Text align
+          <div class="flex space-x-4" v-if="!editor.can().deleteTable()">
+            <div
+              class="bg-[#f6f6f640] text-base dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center dark:text-white/90 text-black/80 cursor-pointer">
+              Text align
+            </div>
+
+            <button @click="editor.chain().focus().setTextAlign('left').run()"
+              :class="{ 'text-white/90': editor.isActive({ textAlign: 'left' }) }"><svg
+                xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M21 6H3m12 6H3m14 6H3" />
+              </svg></button>
+
+            <button @click="editor.chain().focus().setTextAlign('center').run()"
+              :class="{ 'text-white/90': editor.isActive({ textAlign: 'center' }) }"><svg
+                xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M21 6H3m14 6H7m12 6H5" />
+              </svg></button>
+
+            <button @click="editor.chain().focus().setTextAlign('right').run()"
+              :class="{ 'text-white/90': editor.isActive({ textAlign: 'right' }) }"><svg
+                xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M21 6H3m18 6H9m12 6H7" />
+              </svg></button>
+
+            <button @click="editor.chain().focus().setTextAlign('justify').run()"
+              :class="{ 'text-white/90': editor.isActive({ textAlign: 'justify' }) }"> <svg
+                xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3 6h18M3 12h18M3 18h18" />
+              </svg></button>
+
+            <div @click="editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()"
+              class="bg-[#f6f6f640] text-base dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center dark:text-white/90 text-black/80 cursor-pointer">
+              Insert Table
+            </div>
+
           </div>
 
-          <button @click="editor.chain().focus().setTextAlign('left').run()" :class="{ 'text-white/90': editor.isActive({ textAlign: 'left' }) }"><svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 6H3m12 6H3m14 6H3"/></svg></button>
+          <!-- Row Manipulation -->
 
-          <button @click="editor.chain().focus().setTextAlign('center').run()" :class="{ 'text-white/90': editor.isActive({ textAlign: 'center' }) }"><svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 6H3m14 6H7m12 6H5"/></svg></button>
+          <div class="flex space-x-2" v-if="editor.can().deleteTable()">
 
-          <button @click="editor.chain().focus().setTextAlign('right').run()" :class="{ 'text-white/90': editor.isActive({ textAlign: 'right' }) }"><svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 6H3m18 6H9m12 6H7"/></svg></button>
+            <div
+              class="bg-[#f6f6f640] text-base dark:bg-[#1f2920] dark:border-none border-gray-100 border backdrop-blur-xl flex px-3 rounded-xl justify-center items-center dark:text-white/90 text-black/80 cursor-pointer space-x-2">
 
-          <button @click="editor.chain().focus().setTextAlign('justify').run()" :class="{ 'text-white/90': editor.isActive({ textAlign: 'justify' }) }">          <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+              <span class="inline">Row</span>
+
+              <button @click="editor.chain().focus().addRowAfter().run()" :disabled="!editor.can().addRowAfter()">
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
+                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="2" d="M5 12h14m-7-7v14" />
+                </svg>
+
+              </button>
+
+              <button @click="editor.chain().focus().deleteRow().run()" :disabled="!editor.can().deleteRow()">
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="text-red-600">
+                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="2" d="M5 12h14" />
+                </svg>
+
+              </button>
+
+            </div>
+
+            <!-- Column Manipulation -->
+
+            <div class="flex space-x-2" v-if="editor.can().deleteTable()">
+
+              <div
+                class="bg-[#f6f6f640] text-base dark:bg-[#1f2920] dark:border-none border-gray-100 border backdrop-blur-xl flex px-3 rounded-xl justify-center items-center dark:text-white/90 text-black/80 cursor-pointer space-x-2">
+
+                <span class="inline">Column</span>
+
+                <button @click="editor.chain().focus().addColumnAfter().run()" :disabled="!editor.can().addColumnAfter()">
+
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                      stroke-width="2" d="M5 12h14m-7-7v14" />
+                  </svg>
+
+                </button>
+
+                <button @click="editor.chain().focus().deleteColumn().run()" :disabled="!editor.can().deleteColumn()">
+
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="text-red-600">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                      stroke-width="2" d="M5 12h14" />
+                  </svg>
+
+                </button>
+
+              </div>
+            </div>
+
+            <div @click="editor.chain().focus().toggleHeaderCell().run()" :disabled="!editor.can().toggleHeaderCell()"
+            class="bg-[#f6f6f640] text-base dark:bg-[#1f2920] dark:border-none border-gray-100 border backdrop-blur-xl flex px-3 rounded-xl justify-center items-center dark:text-white/90 text-black/80 cursor-pointer space-x-2">Header Cell</div>
+
+            <div @click="editor.chain().focus().deleteTable().run()"
+              class="bg-[#f6f6f640] text-base dark:hover:bg-[#ab11119c] dark:bg-[#860d0dcd] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center dark:text-white/90 text-black/80 cursor-pointer">
+              Delete</div>
+
+          </div>
 
         </div>
         <div class="flex items-center space-x-4 dark:text-white/80 text-black/90">
@@ -191,6 +288,7 @@ import ListKeymap from '@tiptap/extension-list-keymap'
 import Placeholder from '@tiptap/extension-placeholder'
 import CharacterCount from '@tiptap/extension-character-count'
 import TextAlign from '@tiptap/extension-text-align'
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 
 import { Markdown } from 'tiptap-markdown';
 
@@ -199,6 +297,23 @@ import { ColorHighlighter } from '../extensions/ColorHighlighter.ts'
 import { SmilieReplacer } from '../extensions/SmilieReplacer.ts'
 
 import { md2pdf } from '../utils/exportPDF';
+
+import css from 'highlight.js/lib/languages/css'
+import js from 'highlight.js/lib/languages/javascript'
+import ts from 'highlight.js/lib/languages/typescript'
+import html from 'highlight.js/lib/languages/xml'
+// load all languages with "all" or common languages with "common"
+import { all, createLowlight } from 'lowlight'
+
+// create a lowlight instance
+const lowlight = createLowlight(all)
+
+// you can also register languages
+lowlight.register('html', html)
+lowlight.register('css', css)
+lowlight.register('js', js)
+lowlight.register('ts', ts)
+
 
 const editor = ref<Editor | null>(null);
 
@@ -239,6 +354,11 @@ onMounted(() => {
       StarterKit,
       Highlight,
       TaskList,
+
+      CodeBlockLowlight.configure({
+        lowlight,
+      }),
+
       TextAlign.configure({
         types: ['heading', 'paragraph'],
       }),
@@ -315,6 +435,160 @@ const wordCount = computed(() => editor.value?.storage.characterCount.words() ??
 </script>
 
 <style>
+/* Basic editor styles */
+.tiptap {
+  :first-child {
+    margin-top: 0;
+  }
+
+  pre {
+    border-radius: 0.8rem;
+    font-family: 'Roboto Mono', monospace;
+    margin: 1.5rem 0;
+    padding: 0.75rem 1rem;
+    @apply bg-gray-50 dark:bg-[#2d3d33] inline-block px-8 pl-5;
+
+    ::spelling-error {
+      text-decoration: none;
+    }
+
+    ::grammar-error {
+      text-decoration: none;
+    }
+
+
+
+    code {
+      background: none;
+      color: inherit;
+      font-size: 1.1rem;
+      padding: 0;
+      font-family: 'Roboto Mono', monospace;
+    }
+
+    /* Code styling */
+    .hljs-comment,
+    .hljs-quote {
+      @apply text-[#616161] dark:text-[#616161];
+      /* Same color for both themes */
+      font-family: 'Roboto Mono', monospace;
+    }
+
+    .hljs-variable,
+    .hljs-template-variable,
+    .hljs-attribute,
+    .hljs-tag,
+    .hljs-name,
+    .hljs-regexp,
+    .hljs-link,
+    .hljs-name,
+    .hljs-selector-id,
+    .hljs-selector-class {
+      @apply text-[#d32f2f] dark:text-[#f98181];
+      /* Darker red for light theme */
+      font-family: 'Roboto Mono', monospace;
+    }
+
+    .hljs-number,
+    .hljs-meta,
+    .hljs-built_in,
+    .hljs-builtin-name,
+    .hljs-literal,
+    .hljs-type,
+    .hljs-params {
+      @apply text-[#e65100] dark:text-[#fbbc88];
+      /* Darker orange for light theme */
+      font-family: 'Roboto Mono', monospace;
+    }
+
+    .hljs-string,
+    .hljs-symbol,
+    .hljs-bullet {
+      @apply text-[#33691e] dark:text-[#b9f18d];
+      /* Darker green for light theme */
+      font-family: 'Roboto Mono', monospace;
+    }
+
+    .hljs-title,
+    .hljs-section {
+      @apply text-[#f9a825] dark:text-[#faf594];
+      /* Slightly darker yellow for light theme */
+      font-family: 'Roboto Mono', monospace;
+    }
+
+    .hljs-keyword,
+    .hljs-selector-tag {
+      @apply text-[#0277bd] dark:text-[#70cff8];
+      /* Darker blue for light theme */
+      font-family: 'Roboto Mono', monospace;
+    }
+
+    .hljs-emphasis {
+      font-style: italic;
+      font-family: 'Roboto Mono', monospace;
+    }
+
+    .hljs-strong {
+      font-weight: 700;
+      font-family: 'Roboto Mono', monospace;
+    }
+  }
+}
+
+/* Basic editor styles */
+.tiptap {
+  /* First child margin */
+  :first-child {
+    margin-top: 0;
+  }
+
+  /* Table-specific styling */
+  table {
+    @apply border-collapse w-full table-fixed overflow-hidden m-0;
+
+    td,
+    th {
+      @apply border box-border min-w-[1em] p-2 align-top relative;
+      
+      /* Adding transparent borders */
+      @apply border-black/10 dark:border-white/20;
+
+      /* Ensure child elements have no bottom margin */
+      >* {
+        @apply mb-0;
+      }
+    }
+
+    th {
+      @apply font-normal text-left;
+
+      /* Light and dark mode for table header */
+      @apply bg-gray-50 dark:bg-[#1f2920];
+    }
+
+    /* Selected cell styling */
+    .selectedCell:after {
+      content: "";
+      @apply absolute top-0 left-0 right-0 bottom-0 z-10 pointer-events-none;
+
+      /* Light and dark mode for selected cell */
+      @apply bg-gray-100 dark:bg-[#182021];
+    }
+
+  }
+
+  /* Table wrapper for horizontal scroll */
+  .tableWrapper {
+    @apply my-6 overflow-x-auto border-opacity-60;
+  }
+
+  /* Resize cursor */
+  &.resize-cursor {
+    @apply cursor-ew-resize;
+  }
+}
+
+
 h1 {
   font-size: 2rem;
   margin: 1rem 0;
@@ -378,10 +652,10 @@ mark {
 code {
   font-family: 'Roboto Mono';
   font-size: 18px;
-  background-color: #1f2920;
-  color: white;
-  border-radius: 0.4rem;
+  border-radius: 0.6rem;
   padding: 0.1rem 0.3rem;
+
+  @apply bg-gray-100/70 dark:bg-[#516b53] dark:text-white/80 text-black/80
 }
 
 /* Color swatches */

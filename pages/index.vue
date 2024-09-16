@@ -1,7 +1,31 @@
 <template>
   <div class="h-screen flex flex-col">
     <div class="flex justify-between items-center w-full p-3 py-2 fixed bg-white/70 dark:bg-[#263029] backdrop-blur-lg z-10">
-      <div class="flex space-x-2 overflow-x-auto">
+
+      <div class="flex space-x-2 overflow-x-auto justify-center items-center">
+
+        <div class="flex space-x-2">
+      <!-- Close button -->
+      <button @click="closeWindow()"
+        class="w-3 h-3 rounded-full transition-colors duration-200 flex items-center justify-center bg-red-400"
+      >
+      </button>
+
+      <!-- Minimize button -->
+      <button @click="minimizeWindow()"
+        class="w-3 h-3 rounded-full transition-colors duration-200 flex items-center justify-center bg-yellow-400 overflow-hidden"
+      >
+      </button>
+
+      <!-- Maximize button -->
+      <button @click="maximizeWindow()"
+        class="w-3 h-3 rounded-full transition-colors duration-200 flex items-center justify-center bg-green-400"
+      >
+      </button>
+
+      <div></div>
+    </div>
+
         <div v-for="(tab, index) in tabs" :key="index" @click="activeTab = index"
           class="bg-[#f6f6f640] dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center dark:text-white/90 text-black/80 cursor-pointer"
           :class="{ 'bg-gray-50 dark:bg-[#2d3d33]': activeTab === index }">
@@ -36,7 +60,7 @@
                     @click="exportJson"
                     :class="[
                       active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
-                      'group flex opacity-70 dark:text-white/90 dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-gray-50'
+                      'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-gray-50'
                     ]"
                   >
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h10v10M7 17L17 7"/></svg>Save
@@ -47,7 +71,7 @@
                     @click="triggerFileInput"
                     :class="[
                       active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
-                      'group flex opacity-70 dark:text-white/90 dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-gray-50'
+                      'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-gray-50'
                     ]"
                   >
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 7L7 17m10 0H7V7"/></svg>Open
@@ -59,7 +83,7 @@
                     @click="onClick('light')"
                     :class="[
                       active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
-                      'group flex opacity-70 dark:text-white/90 dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-gray-50'
+                      'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-gray-50'
                     ]"
                   >
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 3v1m0 16v1m-9-9h1m16 0h1m-2.636-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m11.314 11.314l.707.707"/></g></svg>Light
@@ -71,7 +95,7 @@
                     @click="onClick('dark')"
                     :class="[
                       active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
-                      'group flex opacity-70 dark:text-white/90 dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-gray-50'
+                      'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-gray-50'
                     ]"
                   >
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3a6 6 0 0 0 9 9a9 9 0 1 1-9-9"/></svg>Dark
@@ -98,7 +122,22 @@ import { ref, reactive, onMounted, watch } from 'vue';
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import { fs, path } from '@tauri-apps/api';
 
+import { appWindow } from '@tauri-apps/api/window';
+
+async function closeWindow() {
+  await appWindow.close();
+}
+
+async function minimizeWindow() {
+  await appWindow.minimize();
+}
+
+async function maximizeWindow() {
+  await appWindow.maximize();
+}
+
 const colorMode = useColorMode()
+
 function onClick(val: string) {
   colorMode.preference = val
 }

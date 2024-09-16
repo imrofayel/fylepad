@@ -11,6 +11,42 @@
   },
   "tauri": {
     "allowlist": {
+      "window": {
+        "all": true,
+        "center": false,
+        "close": false,
+        "create": false,
+        "hide": false,
+        "maximize": false,
+        "minimize": false,
+        "print": false,
+        "requestUserAttention": false,
+        "setAlwaysOnTop": false,
+        "setClosable": false,
+        "setContentProtected": false,
+        "setCursorGrab": false,
+        "setCursorIcon": false,
+        "setCursorPosition": false,
+        "setCursorVisible": false,
+        "setDecorations": false,
+        "setFocus": false,
+        "setFullscreen": false,
+        "setIcon": false,
+        "setIgnoreCursorEvents": false,
+        "setMaxSize": false,
+        "setMaximizable": false,
+        "setMinSize": false,
+        "setMinimizable": false,
+        "setPosition": false,
+        "setResizable": false,
+        "setSize": false,
+        "setSkipTaskbar": false,
+        "setTitle": false,
+        "show": false,
+        "startDragging": false,
+        "unmaximize": false,
+        "unminimize": false
+      },
       "fs": {
         "all": true,
         "readFile": true,
@@ -69,8 +105,10 @@
         "fullscreen": false,
         "height": 600,
         "resizable": true,
-        "title": "Notepad",
-        "width": 800
+        "title": "fyelpad",
+        "width": 800,
+        "minHeight": 600,
+        "minWidth": 600
       }
     ]
   }
