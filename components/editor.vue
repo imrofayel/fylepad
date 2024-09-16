@@ -139,7 +139,7 @@
       <EditorContent :editor="editor" class="h-full " />
 
       <div
-        class="bg-gray-50 dark:border-transparent border-t dark:bg-[#2d3d33] dark:text-white/40 text-black/90 p-1.5 px-3 flex justify-between items-center fixed bottom-0 w-full" v-if="editor">
+        class="bg-gray-50 dark:border-transparent border-t dark:bg-[#2d3d33] dark:text-white/40 text-black/90 p-1.5 px-3 flex justify-between items-center fixed bottom-0 w-full select-none" v-if="editor">
         <div class="flex space-x-4">
 
           <div
