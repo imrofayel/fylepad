@@ -1,6 +1,6 @@
 export default defineNuxtConfig({
   // (optional) Enable the Nuxt devtools
-  devtools: { enabled: true },
+  devtools: { enabled: false },
   // Enable SSG
   ssr: false,
   // Enables the development server to be discoverable by other devices for mobile development
