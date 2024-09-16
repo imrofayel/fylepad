@@ -253,7 +253,7 @@
           </div>
 
         </div>
-        <div class="flex items-center space-x-4 dark:text-white/80 text-black/90">
+        <div class="sm:flex items-center space-x-4 hidden dark:text-white/80 text-black/90">
           <div>{{ characterCount }} characters</div>
           <span class="text-sm opacity-40">|</span>
           <div>{{ wordCount }} words</div>
