@@ -3,21 +3,21 @@
     <div class="flex justify-between items-center w-full p-3 py-2 fixed bg-white/70 dark:bg-[#263029] backdrop-blur-lg z-10">
       <div class="flex space-x-2 overflow-x-auto">
         <div v-for="(tab, index) in tabs" :key="index" @click="activeTab = index"
-          class="bg-[#f6f6f640] dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center dark:text-white/80 text-black/80 cursor-pointer"
+          class="bg-[#f6f6f640] dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center dark:text-white/90 text-black/80 cursor-pointer"
           :class="{ 'bg-gray-50 dark:bg-[#2d3d33]': activeTab === index }">
           {{ tab.title || 'Untitled' }}
           <button @click.stop="closeTab(index)" class="ml-2 dark:text-white/30 dark:hover:text-white/80 text-black/50 hover:text-black/80">&times;</button>
         </div>
 
         <button @click="newTab"
-          class="backdrop-blur-lg flex px-2 p-1 rounded-2xl justify-center items-center text-black/10 hover:text-black/80">
+          class="backdrop-blur-lg flex px-2 p-1 rounded-2xl justify-center items-center text-black/10 dark:text-white/70 dark:hover:text-white hover:text-black/80">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7-7v14"/></svg>
         </button>
       </div>
       
       <div class="flex">
         <Menu as="div" class="relative inline-block text-left">
-          <MenuButton class="hover:bg-gray-50 opacity-70 dark:text-white/90 dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent border backdrop-blur-lg flex px-3 p-1 rounded-2xl justify-center items-center text-black">
+          <MenuButton class="hover:bg-gray-50 dark:text-white/90 dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent border backdrop-blur-lg flex px-3 p-1 rounded-2xl justify-center items-center text-black/80">
             <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></g></svg>
           </MenuButton>
 
@@ -88,13 +88,6 @@
     <div class="mt-14 flex-grow">
       <Editor v-if="tabs.length > 0" :key="activeTab" :title="tabs[activeTab].title"
         :content="tabs[activeTab].content" @update:title="updateTabTitle" @update:content="updateTabContent" />
-    </div>
-
-    <div class="bg-gray-50 dark:border-transparent border-t dark:bg-[#2d3d33] dark:text-white/80 text-black/80 p-2 px-3 flex justify-between items-center fixed bottom-0 w-full">
-      <div></div>
-      <div class="flex items-center space-x-4">
-        <div>UTF8</div>
-      </div>
     </div>
 
   </div>
