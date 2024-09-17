@@ -41,7 +41,7 @@
       
       <div class="flex">
         <Menu as="div" class="relative inline-block text-left">
-          <MenuButton class="bg-white/60 hover:bg-white/80 dark:text-white/90 dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent backdrop-blur-lg flex px-3 p-1 rounded-2xl justify-center items-center text-black/75">
+          <MenuButton class="bg-white/50 hover:bg-white/80 dark:text-white/90 dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent backdrop-blur-lg flex px-3 p-1 rounded-2xl justify-center items-center text-black/75">
             <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></g></svg>
           </MenuButton>
 
