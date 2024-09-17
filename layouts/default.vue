@@ -1,5 +1,5 @@
 <template>
-    <div class="dark:bg-[#263029]"><AppHeader/>
+    <div class=""><AppHeader/>
     <slot />
   </div>
 </template>
@@ -10,6 +10,7 @@
 
 <style>
 
-
-
+body{
+  @apply bg-[#fcfcfc] dark:bg-[#263029];
+}
 </style>

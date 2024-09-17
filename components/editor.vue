@@ -1,12 +1,83 @@
 <template>
   <div class="h-full flex flex-col">
-    <div class="flex justify-between w-full p-2 py-2 ">
+
+      <div class="flex fixed right-0 top-1 z-10 p-3 py-2">
+        <Menu as="div" class="relative inline-block text-left">
+          <MenuButton class="bg-gray-50 hover:bg-gray-100/60 dark:text-white/90 dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent backdrop-blur-lg border border-gray-100 flex px-3 p-1 rounded-2xl justify-center items-center text-black/75">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></g></svg>
+          </MenuButton>
+
+          <transition
+            enter-active-class="transition duration-100 ease-out"
+            enter-from-class="transform scale-95 opacity-0"
+            enter-to-class="transform scale-100 opacity-100"
+            leave-active-class="transition duration-75 ease-in"
+            leave-from-class="transform scale-100 opacity-100"
+            leave-to-class="transform scale-95 opacity-0"
+          >
+            <MenuItems class="absolute right-0 mt-2 origin-top-right divide-y divide-gray-100 rounded-xl dark:text-white/90 dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-none bg-gray-50 border border-gray-100 overflow-hidden">
+              <div>
+                <MenuItem v-slot="{ active }">
+                  <button
+                    @click="exportMarkdown"
+                    :class="[
+                      active ? 'bg-white/80 dark:bg-[#1f2920] text-black' : 'text-black',
+                      'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
+                    ]"
+                  >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h10v10M7 17L17 7"/></svg>Save
+                  </button>
+                </MenuItem>
+                <MenuItem v-slot="{ active }">
+                  <button
+                    @click="importMarkdownOrText"
+                    :class="[
+                      active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
+                      'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
+                    ]"
+                  >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 7L7 17m10 0H7V7"/></svg>Open
+                  </button>
+                </MenuItem>
+
+                <MenuItem v-slot="{ active }" v-if="colorMode.value === 'dark'">
+                  <button
+                    @click="onClick('light')"
+                    :class="[
+                      active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
+                      'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
+                    ]"
+                  >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 3v1m0 16v1m-9-9h1m16 0h1m-2.636-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m11.314 11.314l.707.707"/></g></svg>Light
+                  </button>
+                </MenuItem>
+
+                <MenuItem v-slot="{ active }" v-if="colorMode.value === 'light'">
+                  <button
+                    @click="onClick('dark')"
+                    :class="[
+                      active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
+                      'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
+                    ]"
+                  >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3a6 6 0 0 0 9 9a9 9 0 1 1-9-9"/></svg>Dark
+                  </button>
+                </MenuItem>
+
+              </div>
+            </MenuItems>
+          </transition>
+        </Menu>
+      </div>
+
+    <div class="flex justify-between w-full p-2 py-2">
+
       <div class="flex w-full justify-between space-x-2">
         <input v-model="localTitle" @input="$emit('update:title', localTitle)" placeholder="Untitled"
           class="w-full border border-none ring-0 focus:border-none px-3 dark:text-white text-black/90 outline-none bg-transparent rounded flex text-[24px]" />
 
         <button @click="handleExportPDF"
-          class="bg-gray-50/80 hover:bg-gray-100/30 dark:bg-[#2d3d33] dark:text-white/90 hover:dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/80 cursor-pointer">
+          class="bg-gray-50 hover:bg-white hover:bg-white/80 dark:bg-[#2d3d33] dark:text-white/90 hover:dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/75 cursor-pointer">
 
           <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20">
             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -14,25 +85,14 @@
           </svg>
           PDF
         </button>
-
-        <button @click="exportMarkdown"
-          class="dark:bg-[#2d3d33] dark:border-transparent dark:text-white/90 hover:dark:bg-[#1f2920] bg-gray-50/80 hover:bg-gray-100/30 border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/80 cursor-pointer">
-
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20">
-            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M12 17V3m-6 8l6 6l6-6m1 10H5" />
-          </svg>
-          .md
-        </button>
-
       </div>
     </div>
 
     <div class="flex-grow">
 
-      <floating-menu :editor="editor" :tippy-options="{ duration: 100 }" v-if="editor">
+      <floating-menu :editor="editor as any" :tippy-options="{ duration: 100 }" v-if="editor">
         <div
-          class="flex overflow-hidden bg-[#f6f6f670] dark:bg-[#2d3d33] dark:border-none  border backdrop-blur-xl rounded-xl text-black/70 dark:text-white/85 relative left-[5rem]">
+          class="flex overflow-hidden bg-white/60 dark:bg-[#2d3d33] dark:border-none backdrop-blur-xl rounded-xl border text-black/70 dark:text-white/85 relative left-[5rem]">
           <button @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
             :class="{ 'bg-gray-100 dark:bg-[#1f2920]': editor.isActive('heading', { level: 1 }) }"
             class="rounded-l-lg hover:bg-gray-100 hover:dark:bg-[#1f2920] p-2 px-2">
@@ -93,9 +153,9 @@
         </div>
       </floating-menu>
 
-      <bubble-menu :editor="editor" :tippy-options="{ duration: 100 }" v-if="editor">
+      <bubble-menu :editor="editor as any" :tippy-options="{ duration: 100 }" v-if="editor">
         <div
-          class="flex overflow-hidden dark:bg-[#2d3d33] dark:border-none bg-[#f6f6f670] border backdrop-blur-xl rounded-xl text-black/70 dark:text-white/85">
+          class="flex overflow-hidden dark:bg-[#2d3d33] dark:border-none bg-white/60 border backdrop-blur-xl rounded-xl text-black/70 dark:text-white/85">
           <button @click="editor.chain().focus().toggleBold().run()"
             :class="{ 'bg-gray-100 dark:bg-[#1f2920]': editor.isActive('bold') }"
             class="rounded-l-lg hover:dark:bg-[#1f2920] hover:bg-gray-100 p-2 px-2">
@@ -136,49 +196,49 @@
         </div>
       </bubble-menu>
 
-      <EditorContent :editor="editor" class="h-full " />
+      <EditorContent :editor="editor as any" class="h-full " />
 
       <div
-        class="bg-gray-50 dark:border-transparent border-t dark:bg-[#2d3d33] dark:text-white/40 text-black/90 p-1.5 px-3 flex justify-between items-center fixed bottom-0 w-full select-none"
+        class="bg-gray-50 dark:bg-[#2d3d33] dark:text-white/40 text-black/30 p-1.5 px-3 flex justify-between items-center fixed bottom-0 w-full select-none"
         v-if="editor">
         <div class="flex space-x-4">
 
           <div class="flex space-x-4" v-if="!editor.can().deleteTable()">
             <div
-              class="bg-[#f6f6f640] text-base dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center dark:text-white/90 text-black/80 cursor-pointer">
+              class="text-base bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center text-white/90  cursor-pointer border-gray-100 border">
               Text align
             </div>
 
             <button @click="editor.chain().focus().setTextAlign('left').run()"
-              :class="{ 'text-white/90': editor.isActive({ textAlign: 'left' }) }"><svg
+              :class="{ 'text-black/75 dark:text-white/90': editor.isActive({ textAlign: 'left' }) }"><svg
                 xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M21 6H3m12 6H3m14 6H3" />
               </svg></button>
 
             <button @click="editor.chain().focus().setTextAlign('center').run()"
-              :class="{ 'text-white/90': editor.isActive({ textAlign: 'center' }) }"><svg
+              :class="{ 'text-black/75 dark:text-white/90': editor.isActive({ textAlign: 'center' }) }"><svg
                 xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M21 6H3m14 6H7m12 6H5" />
               </svg></button>
 
             <button @click="editor.chain().focus().setTextAlign('right').run()"
-              :class="{ 'text-white/90': editor.isActive({ textAlign: 'right' }) }"><svg
+              :class="{ 'text-black/75 dark:text-white/90': editor.isActive({ textAlign: 'right' }) }"><svg
                 xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M21 6H3m18 6H9m12 6H7" />
               </svg></button>
 
             <button @click="editor.chain().focus().setTextAlign('justify').run()"
-              :class="{ 'text-white/90': editor.isActive({ textAlign: 'justify' }) }"> <svg
+              :class="{ 'text-black/75 dark:text-white/90': editor.isActive({ textAlign: 'justify' }) }"> <svg
                 xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M3 6h18M3 12h18M3 18h18" />
               </svg></button>
 
             <div @click="editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()"
-              class="bg-[#f6f6f640] text-base dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center dark:text-white/90 text-black/80 cursor-pointer">
+              class="text-base bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center text-white/90  cursor-pointer border-gray-100 border">
               Insert Table
             </div>
 
@@ -189,7 +249,7 @@
           <div class="flex space-x-2" v-if="editor.can().deleteTable()">
 
             <div
-              class="bg-[#f6f6f640] text-base dark:bg-[#1f2920] dark:border-none border-gray-100 border backdrop-blur-xl flex px-3 rounded-xl justify-center items-center dark:text-white/90 text-black/80 cursor-pointer space-x-2">
+              class="bg-[#ffffff] text-base dark:bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center dark:text-white/90 border-gray-100 border text-black/80 cursor-pointer space-x-2">
 
               <span class="inline">Row</span>
 
@@ -218,7 +278,7 @@
             <div class="flex space-x-2" v-if="editor.can().deleteTable()">
 
               <div
-                class="bg-[#f6f6f640] text-base dark:bg-[#1f2920] dark:border-none border-gray-100 border backdrop-blur-xl flex px-3 rounded-xl justify-center items-center dark:text-white/90 text-black/80 cursor-pointer space-x-2">
+                class="bg-[#ffffff] text-base dark:bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center border-gray-100 border dark:text-white/90 text-black/80 cursor-pointer space-x-2">
 
                 <span class="inline">Column</span>
 
@@ -244,20 +304,20 @@
             </div>
 
             <div @click="editor.chain().focus().toggleHeaderCell().run()" :disabled="!editor.can().toggleHeaderCell()"
-            class="bg-[#f6f6f640] text-base dark:bg-[#1f2920] dark:border-none border-gray-100 border backdrop-blur-xl flex px-3 rounded-xl justify-center items-center dark:text-white/90 text-black/80 cursor-pointer space-x-2">Header Cell</div>
+            class="bg-[#ffffff] text-base dark:bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center dark:text-white/90 border-gray-100 border text-black/80 cursor-pointer space-x-2">Header Cell</div>
 
             <div @click="editor.chain().focus().deleteTable().run()"
-              class="bg-[#f6f6f640] text-base dark:hover:bg-[#ab11119c] dark:bg-[#860d0dcd] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center dark:text-white/90 text-black/80 cursor-pointer">
+              class="text-base hover:bg-[#ab11119c] bg-[#860d0dcd] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center text-white cursor-pointer">
               Delete</div>
 
           </div>
 
         </div>
-        <div class="sm:flex items-center space-x-4 hidden dark:text-white/80 text-black/90">
+        <div class="sm:flex items-center space-x-4 hidden dark:text-white/80 text-black/80">
           <div>{{ characterCount }} characters</div>
-          <span class="text-sm opacity-40">|</span>
+          <span class="text-sm opacity-20">|</span>
           <div>{{ wordCount }} words</div>
-          <span class="text-sm opacity-40">|</span>
+          <span class="text-sm opacity-20">|</span>
           <div>UTF8</div>
         </div>
       </div>
@@ -289,6 +349,7 @@ import Placeholder from '@tiptap/extension-placeholder'
 import CharacterCount from '@tiptap/extension-character-count'
 import TextAlign from '@tiptap/extension-text-align'
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
+import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 
 import { Markdown } from 'tiptap-markdown';
 
@@ -298,22 +359,17 @@ import { SmilieReplacer } from '../extensions/SmilieReplacer.ts'
 
 import { md2pdf } from '../utils/exportPDF';
 
-import css from 'highlight.js/lib/languages/css'
-import js from 'highlight.js/lib/languages/javascript'
-import ts from 'highlight.js/lib/languages/typescript'
-import html from 'highlight.js/lib/languages/xml'
 // load all languages with "all" or common languages with "common"
 import { all, createLowlight } from 'lowlight'
 
+const colorMode = useColorMode()
+
+function onClick(val: string) {
+  colorMode.preference = val
+}
+
 // create a lowlight instance
 const lowlight = createLowlight(all)
-
-// you can also register languages
-lowlight.register('html', html)
-lowlight.register('css', css)
-lowlight.register('js', js)
-lowlight.register('ts', ts)
-
 
 const editor = ref<Editor | null>(null);
 
@@ -335,7 +391,7 @@ onMounted(() => {
     content: props.content,
     editorProps: {
       attributes: {
-        class: 'dark:text-white p-6 leading-loose py-2 text-black text-[19px] min-h-[150px] w-full overflow-auto border-none bg-transparent placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+        class: 'dark:text-white/90 p-6 leading-loose py-2 text-black/80 text-[19px] min-h-[150px] w-full h-full overflow-auto border-none bg-transparent placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
       },
     },
     extensions: [
@@ -418,6 +474,49 @@ const exportMarkdown = () => {
   } else {
     console.error('Editor instance is not available.');
   }
+};
+
+const importMarkdownOrText = () => {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.md,.txt';
+
+  input.onchange = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    const file = target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        const content = e.target?.result;
+        if (typeof content === 'string' && editor.value) {
+          editor.value.commands.setContent(content);
+          console.log('Content imported successfully');
+          
+          // Update the title based on the file name (optional)
+          const fileName = file.name.replace(/\.(md|txt)$/, '');
+          if (localTitle && typeof localTitle.value === 'string') {
+            localTitle.value = fileName;
+
+            // Update the title using the file name
+            emit('update:title', localTitle.value);
+          }
+        } else {
+          console.error('Failed to import content: Invalid content or editor not available');
+        }
+      };
+
+      reader.onerror = (e: ProgressEvent<FileReader>) => {
+        console.error('Error reading file:', e);
+      };
+
+      reader.readAsText(file);
+    } else {
+      console.error('No file selected');
+    }
+  };
+
+  input.click();
 };
 
 const handleExportPDF = () => {
@@ -644,7 +743,7 @@ blockquote {
 }
 
 mark {
-  background-color: #FAF594;
+  @apply bg-[#fcfada] text-amber-400 dark:bg-[#757142] dark:text-amber-100;
   border-radius: 0.4rem;
   padding: 0.1rem 0.3rem;
 }
@@ -655,7 +754,7 @@ code {
   border-radius: 0.6rem;
   padding: 0.1rem 0.3rem;
 
-  @apply bg-gray-100/70 dark:bg-[#516b53] dark:text-white/80 text-black/80
+  @apply bg-gray-200/70 dark:bg-[#516b53] dark:text-white/80 text-black/80
 }
 
 /* Color swatches */
