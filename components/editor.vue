@@ -6,7 +6,7 @@
           class="w-full border border-none ring-0 focus:border-none px-3 dark:text-white text-black/90 outline-none bg-transparent rounded flex text-[24px]" />
 
         <button @click="handleExportPDF"
-          class="bg-gray-50/80 hover:bg-gray-100/30 dark:bg-[#2d3d33] dark:text-white/90 hover:dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/80 cursor-pointer">
+          class="bg-white/60 hover:bg-white/80 dark:bg-[#2d3d33] dark:text-white/90 hover:dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/75 cursor-pointer">
 
           <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20">
             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -16,7 +16,7 @@
         </button>
 
         <button @click="exportMarkdown"
-          class="dark:bg-[#2d3d33] dark:border-transparent dark:text-white/90 hover:dark:bg-[#1f2920] bg-gray-50/80 hover:bg-gray-100/30 border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/80 cursor-pointer">
+          class="dark:bg-[#2d3d33] dark:border-transparent dark:text-white/90 hover:dark:bg-[#1f2920] bg-white/60 hover:bg-white/80 border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/75 cursor-pointer">
 
           <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20">
             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -32,7 +32,7 @@
 
       <floating-menu :editor="editor" :tippy-options="{ duration: 100 }" v-if="editor">
         <div
-          class="flex overflow-hidden bg-[#f6f6f670] dark:bg-[#2d3d33] dark:border-none  border backdrop-blur-xl rounded-xl text-black/70 dark:text-white/85 relative left-[5rem]">
+          class="flex overflow-hidden bg-white/60 dark:bg-[#2d3d33] dark:border-none backdrop-blur-xl rounded-xl border text-black/70 dark:text-white/85 relative left-[5rem]">
           <button @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
             :class="{ 'bg-gray-100 dark:bg-[#1f2920]': editor.isActive('heading', { level: 1 }) }"
             class="rounded-l-lg hover:bg-gray-100 hover:dark:bg-[#1f2920] p-2 px-2">
@@ -95,7 +95,7 @@
 
       <bubble-menu :editor="editor" :tippy-options="{ duration: 100 }" v-if="editor">
         <div
-          class="flex overflow-hidden dark:bg-[#2d3d33] dark:border-none bg-[#f6f6f670] border backdrop-blur-xl rounded-xl text-black/70 dark:text-white/85">
+          class="flex overflow-hidden dark:bg-[#2d3d33] dark:border-none bg-white/60 border backdrop-blur-xl rounded-xl text-black/70 dark:text-white/85">
           <button @click="editor.chain().focus().toggleBold().run()"
             :class="{ 'bg-gray-100 dark:bg-[#1f2920]': editor.isActive('bold') }"
             class="rounded-l-lg hover:dark:bg-[#1f2920] hover:bg-gray-100 p-2 px-2">
@@ -139,46 +139,46 @@
       <EditorContent :editor="editor" class="h-full " />
 
       <div
-        class="bg-gray-50 dark:border-transparent border-t dark:bg-[#2d3d33] dark:text-white/40 text-black/90 p-1.5 px-3 flex justify-between items-center fixed bottom-0 w-full select-none"
+        class="bg-[#efefef] dark:bg-[#2d3d33] dark:text-white/40 text-black/30 p-1.5 px-3 flex justify-between items-center fixed bottom-0 w-full select-none"
         v-if="editor">
         <div class="flex space-x-4">
 
           <div class="flex space-x-4" v-if="!editor.can().deleteTable()">
             <div
-              class="bg-[#f6f6f640] text-base dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center dark:text-white/90 text-black/80 cursor-pointer">
+              class="text-base bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center text-white/90  cursor-pointer border">
               Text align
             </div>
 
             <button @click="editor.chain().focus().setTextAlign('left').run()"
-              :class="{ 'text-white/90': editor.isActive({ textAlign: 'left' }) }"><svg
+              :class="{ 'text-black/75 dark:text-white/90': editor.isActive({ textAlign: 'left' }) }"><svg
                 xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M21 6H3m12 6H3m14 6H3" />
               </svg></button>
 
             <button @click="editor.chain().focus().setTextAlign('center').run()"
-              :class="{ 'text-white/90': editor.isActive({ textAlign: 'center' }) }"><svg
+              :class="{ 'text-black/75 dark:text-white/90': editor.isActive({ textAlign: 'center' }) }"><svg
                 xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M21 6H3m14 6H7m12 6H5" />
               </svg></button>
 
             <button @click="editor.chain().focus().setTextAlign('right').run()"
-              :class="{ 'text-white/90': editor.isActive({ textAlign: 'right' }) }"><svg
+              :class="{ 'text-black/75 dark:text-white/90': editor.isActive({ textAlign: 'right' }) }"><svg
                 xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M21 6H3m18 6H9m12 6H7" />
               </svg></button>
 
             <button @click="editor.chain().focus().setTextAlign('justify').run()"
-              :class="{ 'text-white/90': editor.isActive({ textAlign: 'justify' }) }"> <svg
+              :class="{ 'text-black/75 dark:text-white/90': editor.isActive({ textAlign: 'justify' }) }"> <svg
                 xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                   d="M3 6h18M3 12h18M3 18h18" />
               </svg></button>
 
             <div @click="editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()"
-              class="bg-[#f6f6f640] text-base dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center dark:text-white/90 text-black/80 cursor-pointer">
+              class="text-base bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center text-white/90  cursor-pointer border">
               Insert Table
             </div>
 
@@ -189,7 +189,7 @@
           <div class="flex space-x-2" v-if="editor.can().deleteTable()">
 
             <div
-              class="bg-[#f6f6f640] text-base dark:bg-[#1f2920] dark:border-none border-gray-100 border backdrop-blur-xl flex px-3 rounded-xl justify-center items-center dark:text-white/90 text-black/80 cursor-pointer space-x-2">
+              class="bg-[#ffffff] text-base dark:bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center dark:text-white/90 text-black/75 cursor-pointer space-x-2">
 
               <span class="inline">Row</span>
 
@@ -218,7 +218,7 @@
             <div class="flex space-x-2" v-if="editor.can().deleteTable()">
 
               <div
-                class="bg-[#f6f6f640] text-base dark:bg-[#1f2920] dark:border-none border-gray-100 border backdrop-blur-xl flex px-3 rounded-xl justify-center items-center dark:text-white/90 text-black/80 cursor-pointer space-x-2">
+                class="bg-[#ffffff] text-base dark:bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center dark:text-white/90 text-black/75 cursor-pointer space-x-2">
 
                 <span class="inline">Column</span>
 
@@ -244,20 +244,20 @@
             </div>
 
             <div @click="editor.chain().focus().toggleHeaderCell().run()" :disabled="!editor.can().toggleHeaderCell()"
-            class="bg-[#f6f6f640] text-base dark:bg-[#1f2920] dark:border-none border-gray-100 border backdrop-blur-xl flex px-3 rounded-xl justify-center items-center dark:text-white/90 text-black/80 cursor-pointer space-x-2">Header Cell</div>
+            class="bg-[#ffffff] text-base dark:bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center dark:text-white/90 text-black/75 cursor-pointer space-x-2">Header Cell</div>
 
             <div @click="editor.chain().focus().deleteTable().run()"
-              class="bg-[#f6f6f640] text-base dark:hover:bg-[#ab11119c] dark:bg-[#860d0dcd] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center dark:text-white/90 text-black/80 cursor-pointer">
+              class="text-base hover:bg-[#ab11119c] bg-[#860d0dcd] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center text-white cursor-pointer">
               Delete</div>
 
           </div>
 
         </div>
-        <div class="sm:flex items-center space-x-4 hidden dark:text-white/80 text-black/90">
+        <div class="sm:flex items-center space-x-4 hidden dark:text-white/80 text-black/80">
           <div>{{ characterCount }} characters</div>
-          <span class="text-sm opacity-40">|</span>
+          <span class="text-sm opacity-20">|</span>
           <div>{{ wordCount }} words</div>
-          <span class="text-sm opacity-40">|</span>
+          <span class="text-sm opacity-20">|</span>
           <div>UTF8</div>
         </div>
       </div>
@@ -335,7 +335,7 @@ onMounted(() => {
     content: props.content,
     editorProps: {
       attributes: {
-        class: 'dark:text-white p-6 leading-loose py-2 text-black text-[19px] min-h-[150px] w-full overflow-auto border-none bg-transparent placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+        class: 'dark:text-white p-6 leading-loose py-2 text-black/80 text-[19px] min-h-[150px] w-full h-full overflow-auto border-none bg-transparent placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
       },
     },
     extensions: [

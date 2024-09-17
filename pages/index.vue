@@ -1,6 +1,6 @@
 <template>
-  <div class="h-screen flex flex-col">
-    <div class="flex justify-between items-center w-full p-3 py-2 fixed bg-white/70 dark:bg-[#263029] backdrop-blur-lg z-10">
+  <div class="h-full w-full flex flex-col">
+    <div class="flex justify-between items-center w-full p-3 py-2 fixed bg-[#f4f4f4] dark:bg-[#263029] backdrop-blur-lg z-10">
 
       <div class="flex space-x-2 overflow-x-auto justify-center items-center">
 
@@ -27,21 +27,21 @@
     </div>
 
         <div v-for="(tab, index) in tabs" :key="index" @click="activeTab = index"
-          class="bg-[#f6f6f640] dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center dark:text-white/90 text-black/80 cursor-pointer"
-          :class="{ 'bg-gray-50 dark:bg-[#2d3d33]': activeTab === index }">
+          class="bg-[#e7e6e660] dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center dark:text-white/90 text-black/80 cursor-pointer"
+          :class="{ 'bg-white/60 dark:bg-[#2d3d33]': activeTab === index }">
           {{ tab.title || 'Untitled' }}
-          <button @click.stop="closeTab(index)" class="ml-2 dark:text-white/30 dark:hover:text-white/80 text-black/50 hover:text-black/80">&times;</button>
+          <button @click.stop="closeTab(index)" class="ml-2 dark:text-white/30 dark:hover:text-white/80 text-black/30 hover:text-black/80">&times;</button>
         </div>
 
         <button @click="newTab"
-          class="backdrop-blur-lg flex px-2 p-1 rounded-2xl justify-center items-center text-black/10 dark:text-white/70 dark:hover:text-white hover:text-black/80">
+          class="backdrop-blur-lg flex px-2 p-1 rounded-2xl justify-center items-center text-black/10 dark:text-white/70 dark:hover:text-white hover:text-black/60">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7-7v14"/></svg>
         </button>
       </div>
       
       <div class="flex">
         <Menu as="div" class="relative inline-block text-left">
-          <MenuButton class="hover:bg-gray-50 dark:text-white/90 dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent border backdrop-blur-lg flex px-3 p-1 rounded-2xl justify-center items-center text-black/90">
+          <MenuButton class="bg-white/60 hover:bg-white/80 dark:text-white/90 dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent backdrop-blur-lg flex px-3 p-1 rounded-2xl justify-center items-center text-black/75">
             <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></g></svg>
           </MenuButton>
 
@@ -53,14 +53,14 @@
             leave-from-class="transform scale-100 opacity-100"
             leave-to-class="transform scale-95 opacity-0"
           >
-            <MenuItems class="absolute right-0 mt-2 origin-top-right divide-y divide-gray-100 rounded-xl dark:text-white/90 dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-none bg-white border-gray-100 border overflow-hidden">
+            <MenuItems class="absolute right-0 mt-2 origin-top-right divide-y divide-gray-100 rounded-xl dark:text-white/90 dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-none bg-white overflow-hidden">
               <div>
                 <MenuItem v-slot="{ active }">
                   <button
                     @click="exportJson"
                     :class="[
-                      active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
-                      'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-gray-50'
+                      active ? 'bg-white/80 dark:bg-[#1f2920] text-black' : 'text-black',
+                      'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-[#e7e6e660]'
                     ]"
                   >
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h10v10M7 17L17 7"/></svg>Save
@@ -71,7 +71,7 @@
                     @click="triggerFileInput"
                     :class="[
                       active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
-                      'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-gray-50'
+                      'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-[#e7e6e660]'
                     ]"
                   >
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 7L7 17m10 0H7V7"/></svg>Open
@@ -83,7 +83,7 @@
                     @click="onClick('light')"
                     :class="[
                       active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
-                      'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-gray-50'
+                      'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-[#e7e6e660]'
                     ]"
                   >
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 3v1m0 16v1m-9-9h1m16 0h1m-2.636-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m11.314 11.314l.707.707"/></g></svg>Light
@@ -95,12 +95,13 @@
                     @click="onClick('dark')"
                     :class="[
                       active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
-                      'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-gray-50'
+                      'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-[#e7e6e660]'
                     ]"
                   >
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3a6 6 0 0 0 9 9a9 9 0 1 1-9-9"/></svg>Dark
                   </button>
                 </MenuItem>
+
               </div>
             </MenuItems>
           </transition>
