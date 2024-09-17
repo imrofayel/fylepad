@@ -497,6 +497,9 @@ const importMarkdownOrText = () => {
           const fileName = file.name.replace(/\.(md|txt)$/, '');
           if (localTitle && typeof localTitle.value === 'string') {
             localTitle.value = fileName;
+
+            // Update the title using the file name
+            emit('update:title', localTitle.value);
           }
         } else {
           console.error('Failed to import content: Invalid content or editor not available');
