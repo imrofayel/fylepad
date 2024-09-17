@@ -1,80 +1,90 @@
 <template>
   <div class="h-full flex flex-col">
 
-      <div class="flex fixed right-0 top-1 z-10 p-3 py-2">
-        <Menu as="div" class="relative inline-block text-left">
-          <MenuButton class="bg-gray-50 hover:bg-gray-100/60 dark:text-white/90 dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent backdrop-blur-lg border border-gray-100 flex px-3 p-1 rounded-2xl justify-center items-center text-black/75">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></g></svg>
-          </MenuButton>
+    <div class="flex fixed right-0 top-1 z-10 p-3 py-2">
+      <Menu as="div" class="relative inline-block text-left">
+        <MenuButton
+          class="bg-gray-50 dark:text-white/90 dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent backdrop-blur-lg border border-gray-100 flex px-3 p-1 rounded-2xl justify-center items-center text-black/75">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+              <circle cx="12" cy="12" r="1" />
+              <circle cx="19" cy="12" r="1" />
+              <circle cx="5" cy="12" r="1" />
+            </g>
+          </svg>
+        </MenuButton>
 
-          <transition
-            enter-active-class="transition duration-100 ease-out"
-            enter-from-class="transform scale-95 opacity-0"
-            enter-to-class="transform scale-100 opacity-100"
-            leave-active-class="transition duration-75 ease-in"
-            leave-from-class="transform scale-100 opacity-100"
-            leave-to-class="transform scale-95 opacity-0"
-          >
-            <MenuItems class="absolute right-0 mt-2 origin-top-right divide-y divide-gray-100 rounded-xl dark:text-white/90 dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-none bg-gray-50 border border-gray-100 overflow-hidden">
-              <div>
-                <MenuItem v-slot="{ active }">
-                  <button
-                    @click="exportMarkdown"
-                    :class="[
-                      active ? 'bg-white/80 dark:bg-[#1f2920] text-black' : 'text-black',
-                      'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
-                    ]"
-                  >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h10v10M7 17L17 7"/></svg>Save
-                  </button>
-                </MenuItem>
-                <MenuItem v-slot="{ active }">
-                  <button
-                    @click="importMarkdownOrText"
-                    :class="[
-                      active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
-                      'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
-                    ]"
-                  >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 7L7 17m10 0H7V7"/></svg>Open
-                  </button>
-                </MenuItem>
+        <transition enter-active-class="transition duration-100 ease-out"
+          enter-from-class="transform scale-95 opacity-0" enter-to-class="transform scale-100 opacity-100"
+          leave-active-class="transition duration-75 ease-in" leave-from-class="transform scale-100 opacity-100"
+          leave-to-class="transform scale-95 opacity-0">
+          <MenuItems
+            class="absolute right-0 mt-2 origin-top-right divide-y divide-gray-100 rounded-xl dark:text-white/90 dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-none bg-gray-50 border border-gray-100 overflow-hidden">
+            <div>
+              <MenuItem v-slot="{ active }">
+              <button @click="exportMarkdown" :class="[
+                active ? 'bg-white/80 dark:bg-[#1f2920] text-black' : 'text-black',
+                'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
+              ]">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20">
+                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="2" d="M7 7h10v10M7 17L17 7" />
+                </svg>Save
+              </button>
+              </MenuItem>
+              <MenuItem v-slot="{ active }">
+              <button @click="importMarkdownOrText" :class="[
+                active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
+                'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
+              ]">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20">
+                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="2" d="M17 7L7 17m10 0H7V7" />
+                </svg>Open
+              </button>
+              </MenuItem>
 
-                <MenuItem v-slot="{ active }" v-if="colorMode.value === 'dark'">
-                  <button
-                    @click="onClick('light')"
-                    :class="[
-                      active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
-                      'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
-                    ]"
-                  >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 3v1m0 16v1m-9-9h1m16 0h1m-2.636-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m11.314 11.314l.707.707"/></g></svg>Light
-                  </button>
-                </MenuItem>
+              <MenuItem v-slot="{ active }" v-if="colorMode.value === 'dark'">
+              <button @click="onClick('light')" :class="[
+                active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
+                'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
+              ]">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20">
+                  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <circle cx="12" cy="12" r="4" />
+                    <path
+                      d="M12 3v1m0 16v1m-9-9h1m16 0h1m-2.636-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m11.314 11.314l.707.707" />
+                  </g>
+                </svg>Light
+              </button>
+              </MenuItem>
 
-                <MenuItem v-slot="{ active }" v-if="colorMode.value === 'light'">
-                  <button
-                    @click="onClick('dark')"
-                    :class="[
-                      active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
-                      'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
-                    ]"
-                  >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3a6 6 0 0 0 9 9a9 9 0 1 1-9-9"/></svg>Dark
-                  </button>
-                </MenuItem>
+              <MenuItem v-slot="{ active }" v-if="colorMode.value === 'light'">
+              <button @click="onClick('dark')" :class="[
+                active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
+                'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
+              ]">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20">
+                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="2" d="M12 3a6 6 0 0 0 9 9a9 9 0 1 1-9-9" />
+                </svg>Dark
+              </button>
+              </MenuItem>
 
-              </div>
-            </MenuItems>
-          </transition>
-        </Menu>
-      </div>
+            </div>
+          </MenuItems>
+        </transition>
+      </Menu>
+    </div>
 
     <div class="flex justify-between w-full p-2 py-2">
 
       <div class="flex w-full justify-between space-x-2">
         <input v-model="localTitle" @input="$emit('update:title', localTitle)" placeholder="Untitled"
           class="w-full border border-none ring-0 focus:border-none px-3 dark:text-white text-black/90 outline-none bg-transparent rounded flex text-[24px]" />
+
+
+        <UiPopover :editor="editor as any"/>
 
         <button @click="handleExportPDF"
           class="bg-gray-50 hover:bg-white hover:bg-white/80 dark:bg-[#2d3d33] dark:text-white/90 hover:dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/75 cursor-pointer">
@@ -251,6 +261,15 @@
             <div
               class="bg-[#ffffff] text-base dark:bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center dark:text-white/90 border-gray-100 border text-black/80 cursor-pointer space-x-2">
 
+              <button @click="editor.chain().focus().deleteRow().run()" :disabled="!editor.can().deleteRow()">
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="text-red-600">
+                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="2" d="M5 12h14" />
+                </svg>
+
+              </button>
+
               <span class="inline">Row</span>
 
               <button @click="editor.chain().focus().addRowAfter().run()" :disabled="!editor.can().addRowAfter()">
@@ -258,15 +277,6 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
                   <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                     stroke-width="2" d="M5 12h14m-7-7v14" />
-                </svg>
-
-              </button>
-
-              <button @click="editor.chain().focus().deleteRow().run()" :disabled="!editor.can().deleteRow()">
-
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="text-red-600">
-                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                    stroke-width="2" d="M5 12h14" />
                 </svg>
 
               </button>
@@ -280,17 +290,6 @@
               <div
                 class="bg-[#ffffff] text-base dark:bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center border-gray-100 border dark:text-white/90 text-black/80 cursor-pointer space-x-2">
 
-                <span class="inline">Column</span>
-
-                <button @click="editor.chain().focus().addColumnAfter().run()" :disabled="!editor.can().addColumnAfter()">
-
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
-                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                      stroke-width="2" d="M5 12h14m-7-7v14" />
-                  </svg>
-
-                </button>
-
                 <button @click="editor.chain().focus().deleteColumn().run()" :disabled="!editor.can().deleteColumn()">
 
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="text-red-600">
@@ -300,14 +299,28 @@
 
                 </button>
 
+                <span class="inline">Column</span>
+
+
+                <button @click="editor.chain().focus().addColumnAfter().run()"
+                  :disabled="!editor.can().addColumnAfter()">
+
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
+                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                      stroke-width="2" d="M5 12h14m-7-7v14" />
+                  </svg>
+
+                </button>
+
               </div>
             </div>
 
             <div @click="editor.chain().focus().toggleHeaderCell().run()" :disabled="!editor.can().toggleHeaderCell()"
-            class="bg-[#ffffff] text-base dark:bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center dark:text-white/90 border-gray-100 border text-black/80 cursor-pointer space-x-2">Header Cell</div>
+              class="bg-[#ffffff] text-base dark:bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center dark:text-white/90 border-gray-100 border text-black/80 cursor-pointer space-x-2">
+              Header Cell</div>
 
             <div @click="editor.chain().focus().deleteTable().run()"
-              class="text-base hover:bg-[#ab11119c] bg-[#860d0dcd] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center text-white cursor-pointer">
+              class="text-base hover:bg-[#a61111] bg-[#b91010] dark:hover:bg-[#c10c0cd0] dark:bg-[#860d0dcd] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center text-white cursor-pointer">
               Delete</div>
 
           </div>
@@ -492,7 +505,7 @@ const importMarkdownOrText = () => {
         if (typeof content === 'string' && editor.value) {
           editor.value.commands.setContent(content);
           console.log('Content imported successfully');
-          
+
           // Update the title based on the file name (optional)
           const fileName = file.name.replace(/\.(md|txt)$/, '');
           if (localTitle && typeof localTitle.value === 'string') {
@@ -636,6 +649,7 @@ const wordCount = computed(() => editor.value?.storage.characterCount.words() ??
 
 /* Basic editor styles */
 .tiptap {
+
   /* First child margin */
   :first-child {
     margin-top: 0;
@@ -648,7 +662,7 @@ const wordCount = computed(() => editor.value?.storage.characterCount.words() ??
     td,
     th {
       @apply border box-border min-w-[1em] p-2 align-top relative;
-      
+
       /* Adding transparent borders */
       @apply border-black/10 dark:border-white/20;
 
