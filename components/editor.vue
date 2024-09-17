@@ -6,7 +6,7 @@
           class="w-full border border-none ring-0 focus:border-none px-3 dark:text-white text-black/90 outline-none bg-transparent rounded flex text-[24px]" />
 
         <button @click="handleExportPDF"
-          class="bg-white/50 hover:bg-white/80 dark:bg-[#2d3d33] dark:text-white/90 hover:dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/75 cursor-pointer">
+          class="bg-gray-50 hover:bg-white hover:bg-white/80 dark:bg-[#2d3d33] dark:text-white/90 hover:dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/75 cursor-pointer">
 
           <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20">
             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -16,7 +16,7 @@
         </button>
 
         <button @click="exportMarkdown"
-          class="dark:bg-[#2d3d33] dark:border-transparent dark:text-white/90 hover:dark:bg-[#1f2920] bg-white/50 hover:bg-white/80 border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/75 cursor-pointer">
+          class="dark:bg-[#2d3d33] dark:border-transparent dark:text-white/90 hover:dark:bg-[#1f2920] bg-gray-50 hover:bg-white border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/75 cursor-pointer">
 
           <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20">
             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -139,13 +139,13 @@
       <EditorContent :editor="editor" class="h-full " />
 
       <div
-        class="bg-[#efefef] dark:bg-[#2d3d33] dark:text-white/40 text-black/30 p-1.5 px-3 flex justify-between items-center fixed bottom-0 w-full select-none"
+        class="bg-gray-50 dark:bg-[#2d3d33] dark:text-white/40 text-black/30 p-1.5 px-3 flex justify-between items-center fixed bottom-0 w-full select-none"
         v-if="editor">
         <div class="flex space-x-4">
 
           <div class="flex space-x-4" v-if="!editor.can().deleteTable()">
             <div
-              class="text-base bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center text-white/90  cursor-pointer border">
+              class="text-base bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center text-white/90  cursor-pointer border-gray-100 border">
               Text align
             </div>
 
@@ -178,7 +178,7 @@
               </svg></button>
 
             <div @click="editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()"
-              class="text-base bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center text-white/90  cursor-pointer border">
+              class="text-base bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center text-white/90  cursor-pointer border-gray-100 border">
               Insert Table
             </div>
 
@@ -189,7 +189,7 @@
           <div class="flex space-x-2" v-if="editor.can().deleteTable()">
 
             <div
-              class="bg-[#ffffff] text-base dark:bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center dark:text-white/90 text-black/75 cursor-pointer space-x-2">
+              class="bg-[#ffffff] text-base dark:bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center dark:text-white/90 border-gray-100 border text-black/80 cursor-pointer space-x-2">
 
               <span class="inline">Row</span>
 
@@ -218,7 +218,7 @@
             <div class="flex space-x-2" v-if="editor.can().deleteTable()">
 
               <div
-                class="bg-[#ffffff] text-base dark:bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center dark:text-white/90 text-black/75 cursor-pointer space-x-2">
+                class="bg-[#ffffff] text-base dark:bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center border-gray-100 border dark:text-white/90 text-black/80 cursor-pointer space-x-2">
 
                 <span class="inline">Column</span>
 
@@ -244,7 +244,7 @@
             </div>
 
             <div @click="editor.chain().focus().toggleHeaderCell().run()" :disabled="!editor.can().toggleHeaderCell()"
-            class="bg-[#ffffff] text-base dark:bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center dark:text-white/90 text-black/75 cursor-pointer space-x-2">Header Cell</div>
+            class="bg-[#ffffff] text-base dark:bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center dark:text-white/90 border-gray-100 border text-black/80 cursor-pointer space-x-2">Header Cell</div>
 
             <div @click="editor.chain().focus().deleteTable().run()"
               class="text-base hover:bg-[#ab11119c] bg-[#860d0dcd] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center text-white cursor-pointer">
