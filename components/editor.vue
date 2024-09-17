@@ -644,7 +644,7 @@ blockquote {
 }
 
 mark {
-  background-color: #FAF594;
+  @apply bg-[#fcfada] text-amber-400 dark:bg-[#757142] dark:text-amber-100;
   border-radius: 0.4rem;
   padding: 0.1rem 0.3rem;
 }
@@ -655,7 +655,7 @@ code {
   border-radius: 0.6rem;
   padding: 0.1rem 0.3rem;
 
-  @apply bg-gray-100/70 dark:bg-[#516b53] dark:text-white/80 text-black/80
+  @apply bg-gray-200/70 dark:bg-[#516b53] dark:text-white/80 text-black/80
 }
 
 /* Color swatches */
