@@ -38,76 +38,6 @@
           <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7-7v14"/></svg>
         </button>
       </div>
-      
-      <div class="flex">
-        <Menu as="div" class="relative inline-block text-left">
-          <MenuButton class="bg-gray-50 hover:bg-gray-100/60 dark:text-white/90 dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent backdrop-blur-lg border border-gray-100 flex px-3 p-1 rounded-2xl justify-center items-center text-black/75">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></g></svg>
-          </MenuButton>
-
-          <transition
-            enter-active-class="transition duration-100 ease-out"
-            enter-from-class="transform scale-95 opacity-0"
-            enter-to-class="transform scale-100 opacity-100"
-            leave-active-class="transition duration-75 ease-in"
-            leave-from-class="transform scale-100 opacity-100"
-            leave-to-class="transform scale-95 opacity-0"
-          >
-            <MenuItems class="absolute right-0 mt-2 origin-top-right divide-y divide-gray-100 rounded-xl dark:text-white/90 dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-none bg-gray-50 border border-gray-100 overflow-hidden">
-              <div>
-                <MenuItem v-slot="{ active }">
-                  <button
-                    @click="exportJson"
-                    :class="[
-                      active ? 'bg-white/80 dark:bg-[#1f2920] text-black' : 'text-black',
-                      'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
-                    ]"
-                  >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h10v10M7 17L17 7"/></svg>Save
-                  </button>
-                </MenuItem>
-                <MenuItem v-slot="{ active }">
-                  <button
-                    @click="triggerFileInput"
-                    :class="[
-                      active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
-                      'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
-                    ]"
-                  >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 7L7 17m10 0H7V7"/></svg>Open
-                  </button>
-                </MenuItem>
-
-                <MenuItem v-slot="{ active }" v-if="colorMode.value === 'dark'">
-                  <button
-                    @click="onClick('light')"
-                    :class="[
-                      active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
-                      'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
-                    ]"
-                  >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 3v1m0 16v1m-9-9h1m16 0h1m-2.636-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m11.314 11.314l.707.707"/></g></svg>Light
-                  </button>
-                </MenuItem>
-
-                <MenuItem v-slot="{ active }" v-if="colorMode.value === 'light'">
-                  <button
-                    @click="onClick('dark')"
-                    :class="[
-                      active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
-                      'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
-                    ]"
-                  >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3a6 6 0 0 0 9 9a9 9 0 1 1-9-9"/></svg>Dark
-                  </button>
-                </MenuItem>
-
-              </div>
-            </MenuItems>
-          </transition>
-        </Menu>
-        <input type="file" ref="fileInput" accept="application/json" @change="importJson" class="hidden" />
-      </div>
     </div>
 
     <div class="mt-14 flex-grow">
@@ -120,7 +50,6 @@
 
 <script lang="ts" setup>
 import { ref, reactive, onMounted, watch } from 'vue';
-import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import { fs, path } from '@tauri-apps/api';
 
 import { appWindow } from '@tauri-apps/api/window';

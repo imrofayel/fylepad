@@ -1,6 +1,77 @@
 <template>
   <div class="h-full flex flex-col">
-    <div class="flex justify-between w-full p-2 py-2 ">
+
+      <div class="flex fixed right-0 top-1 z-10 p-3 py-2">
+        <Menu as="div" class="relative inline-block text-left">
+          <MenuButton class="bg-gray-50 hover:bg-gray-100/60 dark:text-white/90 dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent backdrop-blur-lg border border-gray-100 flex px-3 p-1 rounded-2xl justify-center items-center text-black/75">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></g></svg>
+          </MenuButton>
+
+          <transition
+            enter-active-class="transition duration-100 ease-out"
+            enter-from-class="transform scale-95 opacity-0"
+            enter-to-class="transform scale-100 opacity-100"
+            leave-active-class="transition duration-75 ease-in"
+            leave-from-class="transform scale-100 opacity-100"
+            leave-to-class="transform scale-95 opacity-0"
+          >
+            <MenuItems class="absolute right-0 mt-2 origin-top-right divide-y divide-gray-100 rounded-xl dark:text-white/90 dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-none bg-gray-50 border border-gray-100 overflow-hidden">
+              <div>
+                <MenuItem v-slot="{ active }">
+                  <button
+                    @click="exportMarkdown"
+                    :class="[
+                      active ? 'bg-white/80 dark:bg-[#1f2920] text-black' : 'text-black',
+                      'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
+                    ]"
+                  >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h10v10M7 17L17 7"/></svg>Save
+                  </button>
+                </MenuItem>
+                <MenuItem v-slot="{ active }">
+                  <button
+                    @click="importMarkdownOrText"
+                    :class="[
+                      active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
+                      'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
+                    ]"
+                  >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 7L7 17m10 0H7V7"/></svg>Open
+                  </button>
+                </MenuItem>
+
+                <MenuItem v-slot="{ active }" v-if="colorMode.value === 'dark'">
+                  <button
+                    @click="onClick('light')"
+                    :class="[
+                      active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
+                      'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
+                    ]"
+                  >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 3v1m0 16v1m-9-9h1m16 0h1m-2.636-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m11.314 11.314l.707.707"/></g></svg>Light
+                  </button>
+                </MenuItem>
+
+                <MenuItem v-slot="{ active }" v-if="colorMode.value === 'light'">
+                  <button
+                    @click="onClick('dark')"
+                    :class="[
+                      active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
+                      'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
+                    ]"
+                  >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3a6 6 0 0 0 9 9a9 9 0 1 1-9-9"/></svg>Dark
+                  </button>
+                </MenuItem>
+
+              </div>
+            </MenuItems>
+          </transition>
+        </Menu>
+      </div>
+
+    <div class="flex justify-between w-full p-2 py-2">
+
       <div class="flex w-full justify-between space-x-2">
         <input v-model="localTitle" @input="$emit('update:title', localTitle)" placeholder="Untitled"
           class="w-full border border-none ring-0 focus:border-none px-3 dark:text-white text-black/90 outline-none bg-transparent rounded flex text-[24px]" />
@@ -14,27 +85,6 @@
           </svg>
           PDF
         </button>
-
-        <button @click="exportMarkdown"
-          class="dark:bg-[#2d3d33] dark:border-transparent dark:text-white/90 hover:dark:bg-[#1f2920] bg-gray-50 hover:bg-white border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/75 cursor-pointer">
-
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20">
-            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M12 17V3m-6 8l6 6l6-6m1 10H5" />
-          </svg>
-          .md
-        </button>
-
-        <button @click="importMarkdownOrText"
-          class="dark:bg-[#2d3d33] dark:border-transparent dark:text-white/90 hover:dark:bg-[#1f2920] bg-gray-50 hover:bg-white border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/75 cursor-pointer">
-
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20">
-            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M12 17V3m-6 8l6 6l6-6m1 10H5" />
-          </svg>
-          .md
-        </button>
-
       </div>
     </div>
 
@@ -299,6 +349,7 @@ import Placeholder from '@tiptap/extension-placeholder'
 import CharacterCount from '@tiptap/extension-character-count'
 import TextAlign from '@tiptap/extension-text-align'
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
+import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 
 import { Markdown } from 'tiptap-markdown';
 
@@ -310,6 +361,12 @@ import { md2pdf } from '../utils/exportPDF';
 
 // load all languages with "all" or common languages with "common"
 import { all, createLowlight } from 'lowlight'
+
+const colorMode = useColorMode()
+
+function onClick(val: string) {
+  colorMode.preference = val
+}
 
 // create a lowlight instance
 const lowlight = createLowlight(all)
