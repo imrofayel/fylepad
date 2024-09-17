@@ -25,12 +25,22 @@
           .md
         </button>
 
+        <button @click="importMarkdownOrText"
+          class="dark:bg-[#2d3d33] dark:border-transparent dark:text-white/90 hover:dark:bg-[#1f2920] bg-gray-50 hover:bg-white border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/75 cursor-pointer">
+
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 17V3m-6 8l6 6l6-6m1 10H5" />
+          </svg>
+          .md
+        </button>
+
       </div>
     </div>
 
     <div class="flex-grow">
 
-      <floating-menu :editor="editor" :tippy-options="{ duration: 100 }" v-if="editor">
+      <floating-menu :editor="editor as any" :tippy-options="{ duration: 100 }" v-if="editor">
         <div
           class="flex overflow-hidden bg-white/60 dark:bg-[#2d3d33] dark:border-none backdrop-blur-xl rounded-xl border text-black/70 dark:text-white/85 relative left-[5rem]">
           <button @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
@@ -93,7 +103,7 @@
         </div>
       </floating-menu>
 
-      <bubble-menu :editor="editor" :tippy-options="{ duration: 100 }" v-if="editor">
+      <bubble-menu :editor="editor as any" :tippy-options="{ duration: 100 }" v-if="editor">
         <div
           class="flex overflow-hidden dark:bg-[#2d3d33] dark:border-none bg-white/60 border backdrop-blur-xl rounded-xl text-black/70 dark:text-white/85">
           <button @click="editor.chain().focus().toggleBold().run()"
@@ -136,7 +146,7 @@
         </div>
       </bubble-menu>
 
-      <EditorContent :editor="editor" class="h-full " />
+      <EditorContent :editor="editor as any" class="h-full " />
 
       <div
         class="bg-gray-50 dark:bg-[#2d3d33] dark:text-white/40 text-black/30 p-1.5 px-3 flex justify-between items-center fixed bottom-0 w-full select-none"
@@ -407,6 +417,46 @@ const exportMarkdown = () => {
   } else {
     console.error('Editor instance is not available.');
   }
+};
+
+const importMarkdownOrText = () => {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.md,.txt';
+
+  input.onchange = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    const file = target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        const content = e.target?.result;
+        if (typeof content === 'string' && editor.value) {
+          editor.value.commands.setContent(content);
+          console.log('Content imported successfully');
+          
+          // Update the title based on the file name (optional)
+          const fileName = file.name.replace(/\.(md|txt)$/, '');
+          if (localTitle && typeof localTitle.value === 'string') {
+            localTitle.value = fileName;
+          }
+        } else {
+          console.error('Failed to import content: Invalid content or editor not available');
+        }
+      };
+
+      reader.onerror = (e: ProgressEvent<FileReader>) => {
+        console.error('Error reading file:', e);
+      };
+
+      reader.readAsText(file);
+    } else {
+      console.error('No file selected');
+    }
+  };
+
+  input.click();
 };
 
 const handleExportPDF = () => {
