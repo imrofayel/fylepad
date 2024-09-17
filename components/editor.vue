@@ -298,22 +298,11 @@ import { SmilieReplacer } from '../extensions/SmilieReplacer.ts'
 
 import { md2pdf } from '../utils/exportPDF';
 
-import css from 'highlight.js/lib/languages/css'
-import js from 'highlight.js/lib/languages/javascript'
-import ts from 'highlight.js/lib/languages/typescript'
-import html from 'highlight.js/lib/languages/xml'
 // load all languages with "all" or common languages with "common"
 import { all, createLowlight } from 'lowlight'
 
 // create a lowlight instance
 const lowlight = createLowlight(all)
-
-// you can also register languages
-lowlight.register('html', html)
-lowlight.register('css', css)
-lowlight.register('js', js)
-lowlight.register('ts', ts)
-
 
 const editor = ref<Editor | null>(null);
 
