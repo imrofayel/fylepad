@@ -206,7 +206,7 @@
         </div>
       </bubble-menu>
 
-      <EditorContent :editor="editor as any" class="h-full " />
+      <EditorContent :editor="editor as any" class="h-full mb-10" />
 
       <div
         class="bg-gray-50 dark:bg-[#2d3d33] dark:text-white/40 text-black/30 p-1.5 px-3 flex justify-between items-center fixed bottom-0 w-full select-none"
@@ -326,7 +326,7 @@
           </div>
 
         </div>
-        <div class="sm:flex items-center space-x-3 hidden dark:text-white/80 text-black/80 relative right-8">
+        <div class="sm:hidden md:flex items-center space-x-3 hidden dark:text-white/80 text-black/80 relative right-8">
           <div>{{ characterCount }} characters</div>
           <span class="text-sm opacity-20">|</span>
           <div>{{ wordCount }} words</div>
