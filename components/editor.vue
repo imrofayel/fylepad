@@ -79,7 +79,7 @@
 
     <div class="flex justify-between w-full p-2 py-2">
 
-      <div class="flex w-full justify-between space-x-2">
+      <div class="flex w-full justify-between items-center space-x-2">
         <input v-model="localTitle" @input="$emit('update:title', localTitle)" placeholder="Untitled"
           class="w-full border border-none ring-0 focus:border-none px-3 dark:text-white text-black/90 outline-none bg-transparent rounded flex text-[24px]" />
 
@@ -363,6 +363,7 @@ import CharacterCount from '@tiptap/extension-character-count'
 import TextAlign from '@tiptap/extension-text-align'
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
+import FontFamily from '@tiptap/extension-font-family'
 
 import { Markdown } from 'tiptap-markdown';
 
@@ -423,6 +424,7 @@ onMounted(() => {
       StarterKit,
       Highlight,
       TaskList,
+      FontFamily,
 
       CodeBlockLowlight.configure({
         lowlight,
