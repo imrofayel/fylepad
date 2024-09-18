@@ -368,6 +368,11 @@ import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import FontFamily from '@tiptap/extension-font-family'
 
+import { Mathematics } from '@tiptap-pro/extension-mathematics'
+import Emoji, { gitHubEmojis } from '@tiptap-pro/extension-emoji'
+
+import 'katex/dist/katex.min.css'
+
 import { Markdown } from 'tiptap-markdown';
 
 import { ColorHighlighter } from '../extensions/ColorHighlighter.ts'
@@ -445,6 +450,13 @@ onMounted(() => {
       Highlight,
       TaskList,
       FontFamily,
+      Mathematics,
+
+      Emoji.configure({
+        emojis: gitHubEmojis,
+        forceFallbackImages: true,
+        enableEmoticons: true
+      }),
 
       CodeBlockLowlight.configure({
         lowlight,
@@ -463,6 +475,7 @@ onMounted(() => {
         limit: Infinity,
       }),
       Placeholder.configure({
+        includeChildren: true,
         placeholder: ({ node }) => {
           if (node.type.name === 'heading') {
             return 'heading'
@@ -569,6 +582,10 @@ const wordCount = computed(() => editor.value?.storage.characterCount.words() ??
 </script>
 
 <style>
+
+.emoji {
+    font-family: 'Segoe UI Emoji';
+}
 /* Basic editor styles */
 .tiptap {
   :first-child {
@@ -875,4 +892,13 @@ ul[data-type="taskList"] label>input[type="checkbox"]:checked::after {
 ul[data-type="taskList"] label>div {
   flex: 1 1 auto;
 }
+
+[data-type="emoji"] {
+    img {
+      height: 1.2em;
+      width: 1.2em;
+    }
+
+    @apply inline-block relative top-1
+  }
 </style>
