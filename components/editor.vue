@@ -1,7 +1,7 @@
 <template>
   <div class="h-full flex flex-col">
 
-    <div class="flex fixed right-0 top-1 z-10 p-3 py-2">
+    <div class="flex fixed right-0 top-1 z-10 p-3 py-2" :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
       <Menu as="div" class="relative inline-block text-left">
         <MenuButton
           class="bg-gray-50 dark:text-white/90 dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent backdrop-blur-lg border border-gray-100 flex px-3 p-1 rounded-2xl justify-center items-center text-black/75">
@@ -84,10 +84,10 @@
           class="w-full border border-none ring-0 focus:border-none px-3 dark:text-white text-black/90 outline-none bg-transparent rounded flex text-[24px]" />
 
 
-        <UiPopover :editor="editor as any"/>
+        <UiPopover :editor="editor as any" :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'"/>
 
         <button @click="handleExportPDF"
-          class="bg-gray-50 hover:bg-white hover:bg-white/80 dark:bg-[#2d3d33] dark:text-white/90 hover:dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/75 cursor-pointer">
+          class="bg-gray-50 hover:bg-white hover:bg-white/80 dark:bg-[#2d3d33] dark:text-white/90 hover:dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/75 cursor-pointer" :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
 
           <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20">
             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -210,7 +210,7 @@
 
       <div
         class="bg-gray-50 dark:bg-[#2d3d33] dark:text-white/40 text-black/30 p-1.5 px-3 flex justify-between items-center fixed bottom-0 w-full select-none"
-        v-if="editor">
+        v-if="editor" :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
         <div class="flex space-x-4">
 
           <div class="flex space-x-4" v-if="!editor.can().deleteTable()">
@@ -326,14 +326,17 @@
           </div>
 
         </div>
-        <div class="sm:flex items-center space-x-4 hidden dark:text-white/80 text-black/80">
+        <div class="sm:flex items-center space-x-3 hidden dark:text-white/80 text-black/80 relative right-8">
           <div>{{ characterCount }} characters</div>
           <span class="text-sm opacity-20">|</span>
           <div>{{ wordCount }} words</div>
           <span class="text-sm opacity-20">|</span>
           <div>UTF8</div>
+
         </div>
       </div>
+
+      <button class="fixed bottom-3.5 text-black/80 dark:text-white/90 right-3" title="Focus Mode" @click="focus"><svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zm20 0h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></button>
 
     </div>
   </div>
@@ -382,6 +385,20 @@ function onClick(val: string) {
   colorMode.preference = val
 }
 
+const focusMode = ref(false);
+
+function focus() {
+  if (focusMode.value == true) {
+    focusMode.value = false,
+    editor.value?.setEditable(true)
+  }
+  else{
+    focusMode.value = true,
+    editor.value?.setEditable(false)
+
+  }
+}
+
 // create a lowlight instance
 const lowlight = createLowlight(all)
 
@@ -403,6 +420,9 @@ const localTitle = ref(props.title);
 onMounted(() => {
   editor.value = new Editor({
     content: props.content,
+
+    editable: true,
+
     editorProps: {
       attributes: {
         class: 'dark:text-white/90 p-6 leading-loose py-2 text-black/80 text-[19px] min-h-[150px] w-full h-full overflow-auto border-none bg-transparent placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
