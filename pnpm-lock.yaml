@@ -29,6 +29,9 @@ importers:
       '@tauri-apps/cli':
         specifier: ^1.6.1
         version: 1.6.1
+      '@tiptap-pro/extension-mathematics':
+        specifier: ^2.11.2
+        version: 2.11.2(@tiptap/core@2.6.6(@tiptap/pm@2.6.6))(@tiptap/pm@2.6.6)(katex@0.16.11)
       '@tiptap/core':
         specifier: ^2.6.6
         version: 2.6.6(@tiptap/pm@2.6.6)
@@ -110,6 +113,9 @@ importers:
       '@tiptap/vue-3':
         specifier: ^2.6.6
         version: 2.6.6(@tiptap/core@2.6.6(@tiptap/pm@2.6.6))(@tiptap/pm@2.6.6)(vue@3.5.4)
+      katex:
+        specifier: ^0.16.11
+        version: 0.16.11
       lowlight:
         specifier: ^3.1.0
         version: 3.1.0
@@ -1216,6 +1222,13 @@ packages:
     resolution: {integrity: sha512-2S8WGmkz54Z9WxpaFVbUYsTiwx5OIEmdD5DDWRygX9VhaWwZg0y6DctsUtCRVre9I/Un/hTnmqkhZqPamCEx8A==}
     engines: {node: '>= 10'}
     hasBin: true
+
+  '@tiptap-pro/extension-mathematics@2.11.2':
+    resolution: {integrity: sha512-4EY2avFr1HwwQUNyDSNxiXgzn+4gR6QK34OzNxsik89xsGNBpiTJS6atqTCUnpHZi/zGbtjyiGI2mVeO2YTiUQ==}
+    peerDependencies:
+      '@tiptap/core': ^2.0.0
+      '@tiptap/pm': ^2.0.0
+      katex: ^0.16.4
 
   '@tiptap/core@2.6.6':
     resolution: {integrity: sha512-VO5qTsjt6rwworkuo0s5AqYMfDA0ZwiTiH6FHKFSu2G/6sS7HKcc/LjPq+5Legzps4QYdBDl3W28wGsGuS1GdQ==}
@@ -2663,6 +2676,10 @@ packages:
 
   jsonfile@6.1.0:
     resolution: {integrity: sha512-5dgndWOriYSm5cnYaJNhalLNDKOqFwyDB/rr1E9ZsGciGvKPs8R2xYGCacuf3z6K1YKDz182fd+fY3cn3pMqXQ==}
+
+  katex@0.16.11:
+    resolution: {integrity: sha512-RQrI8rlHY92OLf3rho/Ts8i/XvjgguEjOkO1BEXcU3N8BqPpSzBNwV/G0Ukr+P/l3ivvJUE/Fa/CwbS6HesGNQ==}
+    hasBin: true
 
   keygrip@1.1.0:
     resolution: {integrity: sha512-iYSchDJ+liQ8iwbSI2QqsQOvqv58eJCEanyJPJi+Khyu8smkcKSFUCbPwzFcL7YVtZ6eONjqRX/38caJ7QjRAQ==}
@@ -5420,6 +5437,12 @@ snapshots:
       '@tauri-apps/cli-win32-ia32-msvc': 1.6.1
       '@tauri-apps/cli-win32-x64-msvc': 1.6.1
 
+  '@tiptap-pro/extension-mathematics@2.11.2(@tiptap/core@2.6.6(@tiptap/pm@2.6.6))(@tiptap/pm@2.6.6)(katex@0.16.11)':
+    dependencies:
+      '@tiptap/core': 2.6.6(@tiptap/pm@2.6.6)
+      '@tiptap/pm': 2.6.6
+      katex: 0.16.11
+
   '@tiptap/core@2.6.6(@tiptap/pm@2.6.6)':
     dependencies:
       '@tiptap/pm': 2.6.6
@@ -6983,6 +7006,10 @@ snapshots:
       universalify: 2.0.1
     optionalDependencies:
       graceful-fs: 4.2.11
+
+  katex@0.16.11:
+    dependencies:
+      commander: 8.3.0
 
   keygrip@1.1.0:
     dependencies:
