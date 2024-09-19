@@ -82,8 +82,8 @@
               <div class="flex my-3 space-x-4 items-center">
                 <div
                   class="bg-white/80 dark:text-white/90 hover:dark:bg-[#1f2b24] dark:bg-[#1f2920] dark:border-transparent backdrop-blur-lg border border-gray-100 flex px-3 p-1 rounded-2xl justify-center items-center text-black/75">
-                  Color</div><input ref="colorPicker" type="color"
-                  @change="editor.chain().focus().setColor($event.target.value).run()" />
+                  Color</div><input ref="colorPicker" type="color" :value="editor.getAttributes('textStyle').color"
+                  @change="editor.chain().focus().setColor($event.target.value).run()"/>
 
                 <div
                   class="bg-white/80 dark:text-white/90 hover:dark:bg-[#1f2b24] dark:bg-[#1f2920] dark:border-transparent backdrop-blur-lg border border-gray-100 flex px-3 p-1 rounded-2xl justify-center items-center text-black/75 cursor-pointer"
