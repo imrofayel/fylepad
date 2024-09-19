@@ -743,6 +743,33 @@ const replaceAll = () => editor.value?.commands.replaceAll();
 
 onMounted(() => setTimeout(updateSearchReplace));
 
+
+// Shortcuts
+
+onMounted(() => {
+  setTimeout(updateSearchReplace);
+
+  // Add the event listener when the component is mounted
+  document.addEventListener('keydown', handleShortcut);
+});
+
+onBeforeUnmount(() => {
+  // Clean up the event listener to prevent memory leaks
+  document.removeEventListener('keydown', handleShortcut);
+});
+
+function handleShortcut(event: KeyboardEvent) {
+  if (event.ctrlKey && event.key === 'd') {
+    event.preventDefault(); // Prevent default browser behavior (bookmarking)
+    // Your custom action for CTRL + D
+    console.log('CTRL + D was pressed');
+
+    // Example: Toggle focus mode
+    focusMode.value = !focusMode.value;
+    editor.value?.setEditable(!focusMode.value);
+  }
+}
+
 </script>
 
 <style>
