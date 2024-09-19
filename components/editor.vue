@@ -1,7 +1,67 @@
 <template>
-  <div class="h-full flex flex-col">
 
-    <div class="flex fixed right-0 top-1 z-10 p-3 py-2" :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
+  <div class="fixed top-0 bg-gray-50 z-10 flex flex-col" v-if="showSearch">
+    <section class="flex gap-6">
+      <div>
+        <label for="search-term" class="block text-sm font-medium text-gray-700">Search</label>
+        <div class="mt-1">
+          <input v-model="searchTerm" @keydown.enter.prevent="updateSearchReplace" type="text" placeholder="Search..."
+            autofocus="true"
+            class="block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+        </div>
+      </div>
+
+      <div>
+        <label for="search-term" class="block text-sm font-medium text-gray-700">Replace</label>
+        <div class="mt-1">
+          <input v-model="replaceTerm" @keydown.enter.prevent="replace" type="text" placeholder="Replace..."
+            class="block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" />
+        </div>
+      </div>
+
+      <div>
+        <label for="search-term" class="block text-sm font-medium text-gray-700">Case sensitive</label>
+        <div class="mt-1">
+          <input v-model="caseSensitive" @input="updateSearchReplace" type="checkbox"
+            class="border-gray-300 rounded-md shadow-sm w-5 h-5 mt-2" />
+        </div>
+      </div>
+    </section>
+
+    <span class="inline-flex rounded-md isolate">
+      <button @click="clear" type="button"
+        class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-l-md hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+        Clear
+      </button>
+      <button @click="previous" type="button"
+        class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+        Previous
+      </button>
+      <button @click="next" type="button"
+        class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+        Next
+      </button>
+      <button @click="replace" type="button"
+        class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+        Replace
+      </button>
+      <button @click="replaceAll" type="button"
+        class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-r-md hover:bg-gray-50 focus:z-10 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+        Replace All
+      </button>
+
+      <div class="block text-sm font-medium text-gray-700 py-2 px-4">
+        Results: {{ editor?.storage?.searchAndReplace?.resultIndex + 1 }} / {{
+          editor?.storage?.searchAndReplace?.results.length }}
+      </div>
+    </span>
+  </div>
+
+
+  <div class="h-full flex flex-col tiptap">
+
+    <div class="flex fixed right-0 top-1 z-10 p-3 py-2"
+      :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
       <Menu as="div" class="relative inline-block text-left">
         <MenuButton
           class="bg-gray-50 dark:text-white/90 dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent backdrop-blur-lg border border-gray-100 flex px-3 p-1 rounded-2xl justify-center items-center text-black/75">
@@ -79,15 +139,18 @@
 
     <div class="flex justify-between w-full p-2 py-2">
 
+
       <div class="flex w-full justify-between items-center space-x-2">
         <input v-model="localTitle" @input="$emit('update:title', localTitle)" placeholder="Untitled"
           class="w-full border border-none ring-0 focus:border-none px-3 dark:text-white text-black/90 outline-none bg-transparent rounded flex text-[24px]" />
 
 
-        <UiPopover :editor="editor as any" :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'"/>
+        <UiPopover :editor="editor as any"
+          :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'" />
 
         <button @click="handleExportPDF"
-          class="bg-gray-50 hover:bg-white hover:bg-white/80 dark:bg-[#2d3d33] dark:text-white/90 hover:dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/75 cursor-pointer" :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
+          class="bg-gray-50 hover:bg-white hover:bg-white/80 dark:bg-[#2d3d33] dark:text-white/90 hover:dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/75 cursor-pointer"
+          :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
 
           <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20">
             <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -210,7 +273,8 @@
 
       <div
         class="bg-gray-50 dark:bg-[#2d3d33] dark:text-white/40 text-black/30 p-1.5 px-3 flex justify-between items-center fixed bottom-0 w-full select-none"
-        v-if="editor" :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
+        v-if="editor"
+        :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
         <div class="flex space-x-4">
 
           <div class="flex space-x-4" v-if="!editor.can().deleteTable()">
@@ -333,10 +397,16 @@
           <span class="text-sm opacity-20">|</span>
           <div>UTF8</div>
 
+          <button @click="toggleSearch">earch</button>
+
         </div>
       </div>
 
-      <button class="fixed bottom-3.5 text-black/80 dark:text-white/90 right-3" title="Focus Mode" @click="focus"><svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zm20 0h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></button>
+      <button class="fixed bottom-3.5 text-black/80 dark:text-white/90 right-3" title="Focus Mode" @click="focus"><svg
+          xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
+          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zm20 0h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+        </svg></button>
 
     </div>
   </div>
@@ -371,6 +441,9 @@ import FontFamily from '@tiptap/extension-font-family'
 import { Mathematics } from '@tiptap-pro/extension-mathematics'
 import Emoji, { gitHubEmojis } from '@tiptap-pro/extension-emoji'
 
+import { SearchAndReplace } from "../extensions/search&replace.ts";
+import { type Range as EditorRange } from '@tiptap/core'
+
 import 'katex/dist/katex.min.css'
 
 import { Markdown } from 'tiptap-markdown';
@@ -390,16 +463,27 @@ function onClick(val: string) {
   colorMode.preference = val
 }
 
+const showSearch = ref(false);
+
+function toggleSearch() {
+  if (showSearch.value == true) {
+    showSearch.value = false
+  }
+  else {
+    showSearch.value = true
+  }
+}
+
 const focusMode = ref(false);
 
 function focus() {
   if (focusMode.value == true) {
     focusMode.value = false,
-    editor.value?.setEditable(true)
+      editor.value?.setEditable(true)
   }
-  else{
+  else {
     focusMode.value = true,
-    editor.value?.setEditable(false)
+      editor.value?.setEditable(false)
 
   }
 }
@@ -451,6 +535,10 @@ onMounted(() => {
       TaskList,
       FontFamily,
       Mathematics,
+      SearchAndReplace.configure(),
+      Link.configure({
+        autolink: true,
+      }),
 
       Emoji.configure({
         emojis: gitHubEmojis,
@@ -579,13 +667,84 @@ const handleExportPDF = () => {
 const characterCount = computed(() => editor.value?.storage.characterCount.characters() ?? 0);
 const wordCount = computed(() => editor.value?.storage.characterCount.words() ?? 0);
 
+const searchTerm = ref<string>("tiptap");
+
+const replaceTerm = ref<string>("ProseMirror");
+
+const caseSensitive = ref<boolean>(false);
+
+const updateSearchReplace = (clearIndex: boolean = false) => {
+  if (!editor.value) return;
+
+  if (clearIndex) editor.value.commands.resetIndex();
+
+  editor.value.commands.setSearchTerm(searchTerm.value);
+  editor.value.commands.setReplaceTerm(replaceTerm.value);
+  editor.value.commands.setCaseSensitive(caseSensitive.value);
+};
+
+const goToSelection = () => {
+  if (!editor.value) return;
+
+  const { results, resultIndex } = editor.value.storage.searchAndReplace;
+  const position: EditorRange = results[resultIndex];
+
+  if (!position) return;
+
+  editor.value.commands.setTextSelection(position);
+
+  const { node } = editor.value.view.domAtPos(
+    editor.value.state.selection.anchor
+  );
+  node instanceof HTMLElement &&
+    node.scrollIntoView({ behavior: "smooth", block: "center" });
+};
+
+watch(
+  () => searchTerm.value.trim(),
+  (val, oldVal) => {
+    if (!val) clear();
+    if (val !== oldVal) updateSearchReplace(true);
+  }
+);
+
+watch(
+  () => replaceTerm.value.trim(),
+  (val, oldVal) => (val === oldVal ? null : updateSearchReplace())
+);
+
+watch(
+  () => caseSensitive.value,
+  (val, oldVal) => (val === oldVal ? null : updateSearchReplace(true))
+);
+
+const replace = () => {
+  editor.value?.commands.replace();
+  goToSelection();
+};
+
+const next = () => {
+  editor.value?.commands.nextSearchResult();
+  goToSelection();
+};
+
+const previous = () => {
+  editor.value?.commands.previousSearchResult();
+  goToSelection();
+};
+
+const clear = () => {
+  searchTerm.value = replaceTerm.value = "";
+  editor.value!.commands.resetIndex();
+};
+
+const replaceAll = () => editor.value?.commands.replaceAll();
+
+onMounted(() => setTimeout(updateSearchReplace));
+
 </script>
 
 <style>
-
-.emoji {
-    font-family: 'Segoe UI Emoji';
-}
 /* Basic editor styles */
 .tiptap {
   :first-child {
@@ -740,7 +899,6 @@ const wordCount = computed(() => editor.value?.storage.characterCount.words() ??
   }
 }
 
-
 h1 {
   font-size: 2rem;
   margin: 1rem 0;
@@ -894,11 +1052,31 @@ ul[data-type="taskList"] label>div {
 }
 
 [data-type="emoji"] {
-    img {
-      height: 1.2em;
-      width: 1.2em;
-    }
-
-    @apply inline-block relative top-1
+  img {
+    height: 1.2em;
+    width: 1.2em;
   }
+
+  @apply inline-block relative top-1
+}
+
+.tiptap {
+  display: flex;
+  flex-direction: column;
+  margin: 1em 0;
+}
+
+.tiptap .ProseMirror {
+  outline: none !important;
+  padding: 1em 2px;
+}
+
+.tiptap .ProseMirror .search-result {
+  background-color: rgba(255, 217, 0, 0.5);
+}
+
+.tiptap .ProseMirror .search-result-current {
+  background-color: rgba(13, 255, 0, 0.5);
+}
+
 </style>
