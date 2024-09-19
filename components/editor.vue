@@ -1,14 +1,14 @@
 <template>
 
-  <div class="w-full flex justify-center"><div class="m-8 fixed top-0 p-4 rounded-xl border border-gray-100 bg-gray-50/60 backdrop-blur-xl z-10 flex flex-col space-y-6" v-if="showSearch">
+  <div class="w-full flex justify-center"><div class="m-8 fixed top-0 p-4 rounded-xl border border-gray-100 dark:border-none dark:bg-[#2d3d33] bg-gray-50/60 backdrop-blur-xl z-10 flex flex-col space-y-6" v-if="showSearch">
     <section class="flex gap-2">
       <div>
         <div class="mt-1 p-2 bg-white/80 border dark:border-none border-gray-100 backdrop-blur-xl rounded-xl dark:bg-[#171f18] text-black/75 dark:text-white/90 flex justify-center">
           <input v-model="searchTerm" @keydown.enter.prevent="updateSearchReplace" type="text" placeholder="Search"
             autofocus="true"
-            class="placeholder:text-gray-200 dark:placeholder:text-gray-50 outline-none" />
+            class="placeholder:text-gray-200 dark:placeholder:text-gray-200/80 bg-transparent outline-none" />
 
-            <button title="Case Sensitive" @click="toggleCase" class="px-1.5" :class="caseSensitive ? 'opacity-90' : 'opacity-20'">
+            <button title="Case Sensitive" @click="toggleCase" class="px-1.5" :class="caseSensitive ? 'opacity-90 dark:opacity-100' : 'opacity-20 dark:opacity-50'">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m3 15l4-8l4 8m-7-2h6"/><circle cx="18" cy="12" r="3"/><path d="M21 9v6"/></g></svg>
             </button>
         </div>
@@ -17,7 +17,7 @@
       <div>
         <div class="mt-1">
           <input v-model="replaceTerm" @keydown.enter.prevent="replace" type="text" placeholder="Replace"
-            class="placeholder:text-gray-200 dark:placeholder:text-gray-50 outline-none p-2 bg-white/80 border dark:border-none border-gray-100 backdrop-blur-xl rounded-xl dark:bg-[#171f18] text-black/75 dark:text-white/90" />
+            class="placeholder:text-gray-200 dark:placeholder:text-gray-200/80 outline-none p-2 bg-white/80 border dark:border-none border-gray-100 backdrop-blur-xl rounded-xl dark:bg-[#171f18] text-black/75 dark:text-white/90" />
         </div>
       </div>
 
@@ -25,23 +25,23 @@
 
     <span class="inline-flex rounded-md isolate">
       <button @click="previous" type="button"
-        class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium bg-white border border-gray-100 hover:bg-gray-50 rounded-l-xl">
+        class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium bg-white border dark:border-none dark:bg-[#171f18] dark:text-white/90 border-gray-100 hover:bg-gray-50 rounded-l-xl hover:dark:bg-[#212d23]">
         Previous
       </button>
       <button @click="next" type="button"
-        class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium bg-white border border-gray-100 hover:bg-gray-50">
+        class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium bg-white border border-gray-100 hover:bg-gray-50 dark:border-none dark:bg-[#171f18] dark:text-white/90 hover:dark:bg-[#212d23]">
         Next
       </button>
       <button @click="replace" type="button"
-        class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium bg-white border border-gray-100 hover:bg-gray-50">
+        class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium bg-white border border-gray-100 hover:bg-gray-50 dark:border-none dark:bg-[#171f18] dark:text-white/90 hover:dark:bg-[#212d23]">
         Replace
       </button>
       <button @click="replaceAll" type="button"
-        class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium bg-white border border-gray-100 hover:bg-gray-50 rounded-r-xl">
+        class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium bg-white border border-gray-100 hover:bg-gray-50 rounded-r-xl dark:border-none dark:bg-[#171f18] hover:dark:bg-[#212d23] dark:text-white/90">
         Replace All
       </button>
 
-      <div class="block font-medium text-gray-700 py-2 px-4">
+      <div class="block font-medium text-gray-700 dark:text-white/90 py-2 px-4">
         Results: {{ editor?.storage?.searchAndReplace?.resultIndex + 1 }} / {{
           editor?.storage?.searchAndReplace?.results.length }}
       </div>
@@ -54,7 +54,7 @@
     <div class="flex space-x-5 fixed right-0 top-1 z-10 p-3 py-2"
       :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
 
-      <button class="text-black/50 dark:text-white/90" @click="toggleSearch"><svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21l-4.3-4.3"/></g></svg></button>
+      <button class="text-black/75 dark:text-white/90" @click="toggleSearch"><svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21l-4.3-4.3"/></g></svg></button>
       
       <Menu as="div" class="relative inline-block text-left">
         <MenuButton
@@ -131,8 +131,7 @@
       </Menu>
     </div>
 
-    <div class="flex justify-between w-full p-2 py-2">
-
+    <div class="flex justify-between w-full p-2 py-0">
 
       <div class="flex w-full justify-between items-center space-x-2">
         <input v-model="localTitle" @input="$emit('update:title', localTitle)" placeholder="Untitled"
@@ -262,7 +261,7 @@
         </div>
       </bubble-menu>
 
-      <EditorContent :editor="editor as any" class="h-full mb-10" />
+      <EditorContent :editor="editor as any" class="h-full mb-10 px-4" />
 
       <div
         class="bg-gray-50 dark:bg-[#2d3d33] dark:text-white/40 text-black/30 p-1.5 px-3 flex justify-between items-center fixed bottom-0 w-full select-none"
@@ -390,9 +389,6 @@
           <div>{{ wordCount }} words</div>
           <span class="text-sm opacity-20">|</span>
           <div>UTF8</div>
-
-          <button @click="toggleSearch">earch</button>
-
         </div>
       </div>
 
@@ -462,6 +458,7 @@ const showSearch = ref(false);
 function toggleSearch() {
   if (showSearch.value == true) {
     showSearch.value = false
+    clear()
   }
   else {
     showSearch.value = true
@@ -661,9 +658,9 @@ const handleExportPDF = () => {
 const characterCount = computed(() => editor.value?.storage.characterCount.characters() ?? 0);
 const wordCount = computed(() => editor.value?.storage.characterCount.words() ?? 0);
 
-const searchTerm = ref<string>("tiptap");
+const searchTerm = ref<string>("");
 
-const replaceTerm = ref<string>("ProseMirror");
+const replaceTerm = ref<string>("");
 
 const caseSensitive = ref<boolean>(false);
 
