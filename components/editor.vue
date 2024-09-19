@@ -264,7 +264,7 @@
       <EditorContent :editor="editor as any" class="h-full mb-10 px-4" />
 
       <div
-        class="bg-gray-50 dark:bg-[#2d3d33] dark:text-white/40 text-black/30 p-1.5 px-3 flex justify-between items-center fixed bottom-0 w-full select-none"
+        class="bg-gray-50 border-t dark:border-none dark:bg-[#2d3d33] dark:text-white/40 text-black/30 p-1.5 px-3 flex justify-between items-center fixed bottom-0 w-full select-none"
         v-if="editor"
         :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
         <div class="flex space-x-4">
