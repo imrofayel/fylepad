@@ -741,7 +741,50 @@ const clear = () => {
 
 const replaceAll = () => editor.value?.commands.replaceAll();
 
-onMounted(() => setTimeout(updateSearchReplace));
+// onMounted(() => setTimeout(updateSearchReplace));
+
+onMounted(() => {
+  setTimeout(updateSearchReplace);
+
+  // Add the event listener when the component is mounted
+  document.addEventListener('keydown', handleShortcut);
+});
+
+onBeforeUnmount(() => {
+  // Clean up the event listener to prevent memory leaks
+  document.removeEventListener('keydown', handleShortcut);
+});
+
+function handleShortcut(event: KeyboardEvent) {
+  // CTRL + F -> Open search
+  if (event.ctrlKey && event.key === 'f') {
+    event.preventDefault();
+    toggleSearch();
+  }
+
+  // CTRL + R -> Toggle focus mode
+  if (event.ctrlKey && event.key === 'r') {
+    event.preventDefault();
+    focus()
+  }
+
+  // CTRL + O -> Open import
+  if (event.ctrlKey && event.key === 'o') {
+    event.preventDefault();
+    importMarkdownOrText();
+  }
+
+  // CTRL + S -> Save (export markdown)
+  if (event.ctrlKey && event.key === 's') {
+    event.preventDefault();
+    exportMarkdown();
+  }
+
+  if(event.ctrlKey && event.key === 't'){
+    event.preventDefault();
+    editor.value?.commands.insertTable({rows: 3, cols: 3})
+  }
+}
 
 </script>
 
