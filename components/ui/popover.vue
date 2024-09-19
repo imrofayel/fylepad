@@ -33,7 +33,7 @@
                     leave-active-class="transition duration-75 ease-in"
                     leave-from-class="transform scale-100 opacity-100" leave-to-class="transform scale-95 opacity-0">
                     <MenuItems
-                      class="w-full dropdown-menu absolute right-0 mt-4 origin-top-right divide-y divide-gray-100 rounded-xl dark:text-white/90 dark:bg-[#1f2920] dark:border-none bg-gray-50 border border-gray-100 overflow-hidden max-h-60 overflow-y-auto">
+                      class="z-10 w-full dropdown-menu absolute right-0 mt-4 origin-top-right divide-y divide-gray-100 rounded-xl dark:text-white/90 dark:bg-[#1f2920] dark:border-none bg-gray-50 border border-gray-100 overflow-hidden max-h-60 overflow-y-auto">
                       <div v-if="permissionDenied" class="p-4 text-sm text-gray-500">
                         <p>Permission to access local fonts was denied. Please enable it in your system settings.</p>
                         <button @click="requestPermission"
