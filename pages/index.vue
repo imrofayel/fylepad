@@ -159,40 +159,58 @@ const updateTabContent = (content: any) => {
   tabs[activeTab.value].content = content;
 };
 
-const exportJson = () => {
-  const exportData = {
-    title: tabs[activeTab.value].title,
-    content: tabs[activeTab.value].content,
-  };
+// const exportJson = () => {
+//   const exportData = {
+//     title: tabs[activeTab.value].title,
+//     content: tabs[activeTab.value].content,
+//   };
 
-  const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = url;
-  link.download = `${exportData.title || 'untitled'}.json`;
-  link.click();
-  URL.revokeObjectURL(url);
-};
+//   const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
+//   const url = URL.createObjectURL(blob);
+//   const link = document.createElement('a');
+//   link.href = url;
+//   link.download = `${exportData.title || 'untitled'}.json`;
+//   link.click();
+//   URL.revokeObjectURL(url);
+// };
 
-const importJson = (event: Event) => {
-  const file = (event.target as HTMLInputElement).files?.[0];
-  if (!file) return;
+// const importJson = (event: Event) => {
+//   const file = (event.target as HTMLInputElement).files?.[0];
+//   if (!file) return;
 
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const result = e.target?.result;
-    if (result) {
-      const importedData = JSON.parse(result.toString());
-      tabs[activeTab.value].title = importedData.title || 'Untitled';
-      tabs[activeTab.value].content = importedData.content;
-    }
-  };
-  reader.readAsText(file);
-};
+//   const reader = new FileReader();
+//   reader.onload = (e) => {
+//     const result = e.target?.result;
+//     if (result) {
+//       const importedData = JSON.parse(result.toString());
+//       tabs[activeTab.value].title = importedData.title || 'Untitled';
+//       tabs[activeTab.value].content = importedData.content;
+//     }
+//   };
+//   reader.readAsText(file);
+// };
 
-const triggerFileInput = () => {
-  fileInput.value?.click();
-};
+// const triggerFileInput = () => {
+//   fileInput.value?.click();
+// };
+
+onMounted(() => {
+  // Add the event listener when the component is mounted
+  document.addEventListener('keydown', handleShortcut);
+});
+
+onBeforeUnmount(() => {
+  // Clean up the event listener to prevent memory leaks
+  document.removeEventListener('keydown', handleShortcut);
+});
+
+function handleShortcut(event: KeyboardEvent) {
+  // CTRL + F -> Open search
+  if (event.ctrlKey && event.key === 'n') {
+    event.preventDefault();
+    newTab()
+  }
+}
 
 </script>
 

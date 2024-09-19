@@ -765,21 +765,24 @@ function handleShortcut(event: KeyboardEvent) {
   // CTRL + R -> Toggle focus mode
   if (event.ctrlKey && event.key === 'r') {
     event.preventDefault();
-    console.log('CTRL + R was pressed');
+    focus()
   }
 
   // CTRL + O -> Open import
   if (event.ctrlKey && event.key === 'o') {
     event.preventDefault();
-    console.log('CTRL + O was pressed');
     importMarkdownOrText();
   }
 
   // CTRL + S -> Save (export markdown)
   if (event.ctrlKey && event.key === 's') {
     event.preventDefault();
-    console.log('CTRL + S was pressed');
     exportMarkdown();
+  }
+
+  if(event.ctrlKey && event.key === 't'){
+    event.preventDefault();
+    editor.value?.commands.insertTable({rows: 3, cols: 3})
   }
 }
 
