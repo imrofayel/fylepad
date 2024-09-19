@@ -741,10 +741,7 @@ const clear = () => {
 
 const replaceAll = () => editor.value?.commands.replaceAll();
 
-onMounted(() => setTimeout(updateSearchReplace));
-
-
-// Shortcuts
+// onMounted(() => setTimeout(updateSearchReplace));
 
 onMounted(() => {
   setTimeout(updateSearchReplace);
@@ -759,14 +756,30 @@ onBeforeUnmount(() => {
 });
 
 function handleShortcut(event: KeyboardEvent) {
-  if (event.ctrlKey && event.key === 'd') {
-    event.preventDefault(); // Prevent default browser behavior (bookmarking)
-    // Your custom action for CTRL + D
-    console.log('CTRL + D was pressed');
+  // CTRL + F -> Open search
+  if (event.ctrlKey && event.key === 'f') {
+    event.preventDefault();
+    toggleSearch();
+  }
 
-    // Example: Toggle focus mode
-    focusMode.value = !focusMode.value;
-    editor.value?.setEditable(!focusMode.value);
+  // CTRL + R -> Toggle focus mode
+  if (event.ctrlKey && event.key === 'r') {
+    event.preventDefault();
+    console.log('CTRL + R was pressed');
+  }
+
+  // CTRL + O -> Open import
+  if (event.ctrlKey && event.key === 'o') {
+    event.preventDefault();
+    console.log('CTRL + O was pressed');
+    importMarkdownOrText();
+  }
+
+  // CTRL + S -> Save (export markdown)
+  if (event.ctrlKey && event.key === 's') {
+    event.preventDefault();
+    console.log('CTRL + S was pressed');
+    exportMarkdown();
   }
 }
 
