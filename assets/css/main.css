@@ -1,6 +1,95 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
-
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
+@font-face {
+    font-family: 'Gulzar';
+    src: url('/assets/fonts/Gulzar-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Amiri';
+    src: url('/assets/fonts/Amiri-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Anton';
+    src: url('/assets/fonts/Anton-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Bangers';
+    src: url('/assets/fonts/Bangers-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Bebas Neue';
+    src: url('/assets/fonts/BebasNeue-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Cairo (Arabic)';
+    src: url('/assets/fonts/Cairo-VariableFont_slnt\,wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Dancing Script';
+    src: url('/assets/fonts/DancingScript-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('/assets/fonts/Inter-VariableFont_opsz\,wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Libre Baskerville';
+    src: url('/assets/fonts/LibreBaskerville-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Outfit';
+    src: url('/assets/fonts/Outfit-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Pacifico';
+    src: url('/assets/fonts/Pacifico-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Permanent Marker';
+    src: url('/assets/fonts/PermanentMarker-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Playfair Display';
+    src: url('/assets/fonts/PlayfairDisplay-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Playpen Sans';
+    src: url('/assets/fonts/PlaypenSans-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Prata';
+    src: url('/assets/fonts/Prata-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Roboto Mono';
+    src: url('/assets/fonts/RobotoMono-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'SpaceGrotesk';
+    src: url('/assets/fonts/SpaceGrotesk-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Helvetica Now';
+    src: url('/assets/fonts/HelveticaNowText-Regular.otf') format('opentype');
+}
+
 
 .roboto-mono{
     font-family: "Roboto Mono", monospace;
@@ -14,9 +103,4 @@
 
 * {
     font-family: 'Inter';
-}
-
-@font-face {
-    font-family: 'Gulzar';
-    src: url('/assets/fonts/Gulzar-Regular.ttf') format('truetype');
 }

@@ -89,19 +89,40 @@ const props = defineProps({
 });
 
 const fonts = [
-  'Helvetica',
-  'Times New Roman',
-  'Courier',
-  'Verdana',
-  'Georgia',
-  'Gulzar',
-  'Garamond',
-  'Bookman',
+  'Amiri',
+  'Anton',
+  'Arial',
+  'Bahnschrift',
+  'Bangers',
+  'Bebas Neue',
+  'Cairo (Arabic)',
+  'Cambria Math',
   'Comic Sans MS',
+  'Consolas',
+  'Courier New',
+  'Dancing Script',
+  'Franklin Gothic',
+  'Georgia',
+  'Gulzar (Urdu)',
+  'Helvetica Now',
+  'Impact',
+  'Ink Free',
+  'Inter',
+  'Libre Baskerville',
+  'Outfit',
+  'Pacifico',
+  'Permanent Marker',
+  'Playfair Display',
+  'Playpen Sans',
+  'Prata',
+  'Roboto Mono',
+  'SpaceGrotesk',
+  'Times New Roman',
   'Trebuchet MS',
-  'Arial Black',
-  'Impact'
+  'Verdana',
+  'Verdana'
 ];
+
 
 const selectedFont = ref('');
 const searchQuery = ref('');
