@@ -132,7 +132,7 @@
       </Menu>
     </div>
 
-    <div class="flex fixed justify-between w-full p-2 py-0 pt-4 bg-white/80 backdrop-blur-xl z-10">
+    <div class="flex fixed justify-between w-full p-2 py-0 pt-4 bg-white/80 backdrop-blur-xl dark:bg-[#263029] z-10">
 
       <div class="flex w-full justify-between items-center space-x-2">
         <input v-model="localTitle" @input="$emit('update:title', localTitle)" placeholder="Untitled"
