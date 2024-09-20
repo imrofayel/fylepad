@@ -7,7 +7,6 @@
     font-optical-sizing: auto;
     font-style: normal;
   }
-  
 
 .inter {
     font-family: "Inter", sans-serif;
@@ -15,4 +14,9 @@
 
 * {
     font-family: 'Inter';
+}
+
+@font-face {
+    font-family: 'Gulzar';
+    src: url('/assets/fonts/Gulzar-Regular.ttf') format('truetype');
 }
