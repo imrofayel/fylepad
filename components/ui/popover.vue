@@ -44,11 +44,11 @@
                         </div>
                         <div v-else>
                           <MenuItem v-for="font in filteredFonts" :key="font" v-slot="{ active }">
-                            <button :class="[
-                              'block w-full px-4 text-xl py-2 text-left'
-                            ]" :style="{ fontFamily: font }" @click="selectFont(font)">
-                              {{ font }}
-                            </button>
+                          <button :class="[
+                            'block w-full px-4 text-xl py-2 text-left'
+                          ]" :style="{ fontFamily: font }" @click="selectFont(font)">
+                            {{ font }}
+                          </button>
                           </MenuItem>
                         </div>
                       </div>
@@ -68,6 +68,46 @@
                   class="bg-white/80 dark:text-white/90 hover:dark:bg-[#1f2b24] dark:bg-[#1f2920] dark:border-transparent backdrop-blur-lg border border-gray-100 flex px-3 p-1 rounded-2xl justify-center items-center text-black/75 cursor-pointer"
                   @click="editor.chain().focus().unsetColor().run()">Reset</div>
               </div>
+
+              <div class="flex space-x-4">
+
+                <div class="flex space-x-4 dark:text-white/40 text-black/30">
+                  <div
+                    class="bg-white/80 dark:text-white/90 hover:dark:bg-[#1f2b24] dark:bg-[#1f2920] dark:border-transparent backdrop-blur-lg border border-gray-100 flex px-3 p-1 rounded-2xl justify-center items-center text-black/75">
+                    Text align
+                  </div>
+
+                  <button @click="editor.chain().focus().setTextAlign('left').run()"
+                    :class="{ 'text-black/75 dark:text-white/90': editor.isActive({ textAlign: 'left' }) }"><svg
+                      xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
+                      <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="2" d="M21 6H3m12 6H3m14 6H3" />
+                    </svg></button>
+
+                  <button @click="editor.chain().focus().setTextAlign('center').run()"
+                    :class="{ 'text-black/75 dark:text-white/90': editor.isActive({ textAlign: 'center' }) }"><svg
+                      xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
+                      <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="2" d="M21 6H3m14 6H7m12 6H5" />
+                    </svg></button>
+
+                  <button @click="editor.chain().focus().setTextAlign('right').run()"
+                    :class="{ 'text-black/75 dark:text-white/90': editor.isActive({ textAlign: 'right' }) }"><svg
+                      xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
+                      <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="2" d="M21 6H3m18 6H9m12 6H7" />
+                    </svg></button>
+
+                  <button @click="editor.chain().focus().setTextAlign('justify').run()"
+                    :class="{ 'text-black/75 dark:text-white/90': editor.isActive({ textAlign: 'justify' }) }"> <svg
+                      xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
+                      <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="2" d="M3 6h18M3 12h18M3 18h18" />
+                    </svg></button>
+                </div>
+
+              </div>
+
             </div>
           </div>
         </PopoverPanel>

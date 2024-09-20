@@ -264,47 +264,15 @@
       <EditorContent :editor="editor as any" class="h-full mb-10 px-4" />
 
       <div
-        class="bg-gray-50 border-t dark:border-none dark:bg-[#2d3d33] dark:text-white/40 text-black/30 p-1.5 px-3 flex justify-between items-center fixed bottom-0 w-full select-none"
+        class="bg-[#f9fafb] border-t dark:border-none dark:bg-[#2d3d33] dark:text-white/40 text-black/30 p-1.5 px-3 flex justify-between items-center fixed bottom-0 w-full select-none"
         v-if="editor"
         :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
         <div class="flex space-x-4">
 
           <div class="flex space-x-4" v-if="!editor.can().deleteTable()">
-            <div
-              class="text-base bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center text-white/90  cursor-pointer border-gray-100 border">
-              Text align
-            </div>
-
-            <button @click="editor.chain().focus().setTextAlign('left').run()"
-              :class="{ 'text-black/75 dark:text-white/90': editor.isActive({ textAlign: 'left' }) }"><svg
-                xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
-                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M21 6H3m12 6H3m14 6H3" />
-              </svg></button>
-
-            <button @click="editor.chain().focus().setTextAlign('center').run()"
-              :class="{ 'text-black/75 dark:text-white/90': editor.isActive({ textAlign: 'center' }) }"><svg
-                xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
-                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M21 6H3m14 6H7m12 6H5" />
-              </svg></button>
-
-            <button @click="editor.chain().focus().setTextAlign('right').run()"
-              :class="{ 'text-black/75 dark:text-white/90': editor.isActive({ textAlign: 'right' }) }"><svg
-                xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
-                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M21 6H3m18 6H9m12 6H7" />
-              </svg></button>
-
-            <button @click="editor.chain().focus().setTextAlign('justify').run()"
-              :class="{ 'text-black/75 dark:text-white/90': editor.isActive({ textAlign: 'justify' }) }"> <svg
-                xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
-                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M3 6h18M3 12h18M3 18h18" />
-              </svg></button>
 
             <div @click="editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()"
-              class="text-base bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center text-white/90  cursor-pointer border-gray-100 border">
+              class="bg-white/80 dark:text-white/90 hover:dark:bg-[#1f2b24] dark:bg-[#1f2920] dark:border-transparent backdrop-blur-lg border border-gray-100 flex px-3 p-1 rounded-2xl justify-center items-center text-black/85 cursor-pointer">
               Insert Table
             </div>
 
