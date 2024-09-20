@@ -6,7 +6,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "notepad",
+    "productName": "fyelpad",
     "version": "0.1.0"
   },
   "tauri": {
@@ -76,7 +76,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.notepad.dev",
+      "identifier": "com.fyelpad.dev",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
