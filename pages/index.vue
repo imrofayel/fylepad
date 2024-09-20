@@ -61,7 +61,7 @@
   max-height: 40px; /* Ensure tabs don't grow vertically */
 }
 
-.tab-title {
+.tab-title { 
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

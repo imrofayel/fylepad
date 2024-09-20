@@ -140,6 +140,15 @@ export const md2pdf = (htmlContent: string, title: string = 'Untitled') => {
             ul[data-type="taskList"] label > div {
               flex: 1 1 auto;
             }
+           
+            [data-type="emoji"] {
+              img {
+                height: 1.2em;
+                width: 1.2em;
+              }
+
+              @apply inline-block relative top-1
+            }
 
             @media print {
             mark {
