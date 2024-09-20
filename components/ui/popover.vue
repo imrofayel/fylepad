@@ -39,13 +39,13 @@
                           <input v-model="searchQuery" placeholder="Search fonts..."
                             class="placeholder:text-gray-200 dark:placeholder:text-gray-50 outline-none p-2 bg-white/80 border dark:border-none border-gray-100 backdrop-blur-xl rounded-xl dark:bg-[#171f18] text-black/75 dark:text-white/90" />
                         </div>
-                        <div v-if="filteredFonts.length === 0" class="p-4 text-sm text-gray-500">
+                        <div v-if="filteredFonts.length === 0" class="p-4 text-lg text-gray-500">
                           No fonts found
                         </div>
                         <div v-else>
                           <MenuItem v-for="font in filteredFonts" :key="font" v-slot="{ active }">
                             <button :class="[
-                              'block w-full px-4 text-lg py-2 text-left'
+                              'block w-full px-4 text-xl py-2 text-left'
                             ]" :style="{ fontFamily: font }" @click="selectFont(font)">
                               {{ font }}
                             </button>
@@ -89,13 +89,13 @@ const props = defineProps({
 });
 
 const fonts = [
-  'Amiri',
   'Anton',
   'Arial',
+  'Amiri Arabic',
   'Bahnschrift',
   'Bangers',
   'Bebas Neue',
-  'Cairo (Arabic)',
+  'Cairo Arabic',
   'Cambria Math',
   'Comic Sans MS',
   'Consolas',
@@ -103,7 +103,7 @@ const fonts = [
   'Dancing Script',
   'Franklin Gothic',
   'Georgia',
-  'Gulzar (Urdu)',
+  'Gulzar Urdu',
   'Helvetica Now',
   'Impact',
   'Ink Free',
@@ -119,7 +119,6 @@ const fonts = [
   'SpaceGrotesk',
   'Times New Roman',
   'Trebuchet MS',
-  'Verdana',
   'Verdana'
 ];
 

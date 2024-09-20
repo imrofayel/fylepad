@@ -1,12 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
 
 @font-face {
-    font-family: 'Gulzar';
+    font-family: 'Gulzar Urdu';
     src: url('/assets/fonts/Gulzar-Regular.ttf') format('truetype');
 }
 
 @font-face {
-    font-family: 'Amiri';
+    font-family: 'Amiri Arabic';
     src: url('/assets/fonts/Amiri-Regular.ttf') format('truetype');
 }
 
@@ -26,7 +26,7 @@
 }
 
 @font-face {
-    font-family: 'Cairo (Arabic)';
+    font-family: 'Cairo Arabic';
     src: url('/assets/fonts/Cairo-VariableFont_slnt\,wght.ttf') format('truetype');
 }
 
