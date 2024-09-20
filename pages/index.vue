@@ -35,7 +35,7 @@
       </div>
     </div>
 
-    <div class="mt-14 flex-grow">
+    <div class="mt-8 flex-grow">
       <Editor v-if="tabs.length > 0" :key="activeTab" :title="tabs[activeTab].title"
         :content="tabs[activeTab].content" @update:title="updateTabTitle" @update:content="updateTabContent" />
     </div>

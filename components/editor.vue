@@ -1,6 +1,7 @@
 <template>
 
-  <div class="w-full flex justify-center"><div class="m-8 fixed top-0 p-4 rounded-xl border border-gray-100 dark:border-none dark:bg-[#2d3d33] bg-gray-50/60 backdrop-blur-xl z-10 flex flex-col space-y-6" v-if="showSearch">
+<UseDraggable class="absolute flex w-full items-center justify-center" style="user-select: none"  >
+<div class="w-full flex justify-center cursor-move z-[40] items-center"><div class="m-8 top-0 p-4 rounded-xl border justify-center items-center fixed border-gray-100 dark:border-none dark:bg-[#2d3d33] bg-gray-50/90 backdrop-blur-xl z-[100] flex flex-col space-y-6" v-if="showSearch">
     <section class="flex gap-2">
       <div>
         <div class="mt-1 p-2 bg-white/80 border dark:border-none border-gray-100 backdrop-blur-xl rounded-xl dark:bg-[#171f18] text-black/75 dark:text-white/90 flex justify-center">
@@ -46,12 +47,12 @@
           editor?.storage?.searchAndReplace?.results.length }}
       </div>
     </span>
-  </div></div>
+  </div></div></UseDraggable>
 
 
   <div class="h-full flex flex-col tiptap">
 
-    <div class="flex space-x-5 fixed right-0 top-1 z-10 p-3 py-2"
+    <div class="flex space-x-5 fixed right-0 top-1 z-[12] p-3 py-2"
       :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
 
       <button class="text-black/75 dark:text-white/90" @click="toggleSearch"><svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21l-4.3-4.3"/></g></svg></button>
@@ -131,7 +132,7 @@
       </Menu>
     </div>
 
-    <div class="flex justify-between w-full p-2 py-0">
+    <div class="flex fixed justify-between w-full p-2 py-0 pt-4 bg-white/80 backdrop-blur-xl z-10">
 
       <div class="flex w-full justify-between items-center space-x-2">
         <input v-model="localTitle" @input="$emit('update:title', localTitle)" placeholder="Untitled"
@@ -153,7 +154,7 @@
       </div>
     </div>
 
-    <div class="flex-grow">
+    <div class="flex-grow mt-12">
 
       <floating-menu :editor="editor as any" :tippy-options="{ duration: 100 }" v-if="editor">
         <div
@@ -261,7 +262,7 @@
         </div>
       </bubble-menu>
 
-      <EditorContent :editor="editor as any" class="h-full mb-10 px-4" />
+      <EditorContent :editor="editor as any" class="h-full overflow-auto mb-4 px-4" />
 
       <div
         class="bg-[#f9fafb] border-t dark:border-none dark:bg-[#2d3d33] dark:text-white/40 text-black/30 p-1.5 px-3 flex justify-between items-center fixed bottom-0 w-full select-none"
@@ -414,6 +415,8 @@ import { md2pdf } from '../utils/exportPDF';
 
 // load all languages with "all" or common languages with "common"
 import { all, createLowlight } from 'lowlight'
+
+import { UseDraggable } from '@vueuse/components'
 
 const colorMode = useColorMode()
 
