@@ -2,20 +2,20 @@
   <div class="h-full w-full flex flex-col">
     <div class="flex justify-between items-center w-full p-3 py-2 fixed bg-[#fcfcfc] dark:bg-[#263029] backdrop-blur-lg z-10 pr-[7.5rem]">
       <div class="flex space-x-1 overflow-x-auto justify-center items-center">
-        <div class="flex space-x-2">
+        <div class="flex space-x-2 font-medium">
           <button @click="closeWindow()"
-        class="w-3 h-3 rounded-full transition-colors duration-200 flex items-center justify-center bg-red-400"
-      >
+        class="w-3 h-3 rounded-full transition-colors duration-200 flex items-center justify-center bg-red-400 text-transparent hover:text-red-700 text-lg"
+      >&times;
       </button>
 
       <button @click="minimizeWindow()"
-        class="w-3 h-3 rounded-full transition-colors duration-200 flex items-center justify-center bg-yellow-400 overflow-hidden"
-      >
+        class="w-3 h-3 rounded-full transition-colors duration-200 flex items-center justify-center bg-yellow-400 overflow-hidden text-transparent hover:text-yellow-700 text-lg"
+      >&#8722;
       </button>
 
       <button @click="maximizeWindow()"
-        class="w-3 h-3 rounded-full transition-colors duration-200 flex items-center justify-center bg-green-400"
-      >
+        class="w-3 h-3 rounded-full transition-colors duration-200 flex items-center justify-center bg-green-400 text-transparent hover:text-green-700 text-lg"
+      >&#43;
       </button>
         </div>
 
