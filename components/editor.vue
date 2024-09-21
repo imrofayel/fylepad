@@ -152,16 +152,14 @@
         <UiPopover :editor="editor as any"
           :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'" />
 
-        <button @click="handleExportPDF"
+        <button @click="printPDF"
           class="bg-gray-50 hover:bg-white hover:bg-white/80 dark:bg-[#2d3d33] dark:text-white/90 hover:dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/75 cursor-pointer"
           :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
 
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20">
-            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H19a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H6.5a1 1 0 0 1 0-5H20" />
-          </svg>
-          PDF
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect width="12" height="8" x="6" y="14" rx="1"/></g></svg>
+          Print
         </button>
+
       </div>
     </div>
 
@@ -429,6 +427,10 @@ import { all, createLowlight } from 'lowlight'
 
 import { UseDraggable } from '@vueuse/components'
 
+function printPDF() {
+  window.print()
+}
+
 const colorMode = useColorMode()
 
 function onClick(val: string) {
@@ -628,14 +630,14 @@ const importMarkdownOrText = () => {
   input.click();
 };
 
-const handleExportPDF = () => {
-  if (editor.value) {
-    const htmlContent = editor.value.getHTML();
-    md2pdf(htmlContent, localTitle.value);
-  } else {
-    console.error('Editor instance is not available.');
-  }
-};
+// const handleExportPDF = () => {
+//   if (editor.value) {
+//     const htmlContent = editor.value.getHTML();
+//     md2pdf(htmlContent, localTitle.value);
+//   } else {
+//     console.error('Editor instance is not available.');
+//   }
+// };
 
 const characterCount = computed(() => editor.value?.storage.characterCount.characters() ?? 0);
 const wordCount = computed(() => editor.value?.storage.characterCount.words() ?? 0);
