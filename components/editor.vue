@@ -1,7 +1,7 @@
 <template>
 
 <UseDraggable class="absolute flex w-full items-center justify-center" style="user-select: none">
-<div class="w-full flex justify-center cursor-move z-[40] items-center"><div class="m-8 top-0 p-4 rounded-xl border justify-center items-center fixed border-gray-100 dark:border-none dark:bg-[#2d3d33] bg-gray-50/90 backdrop-blur-xl z-[100] flex flex-col space-y-6" v-if="showSearch">
+<div class="w-full flex justify-center cursor-move z-[40] items-center"><div class="m-8 top-0 p-4 rounded-xl border justify-center items-center fixed border-gray-100 dark:border-none dark:bg-[#2d3d33] bg-gray-50 z-[100] flex flex-col space-y-6" v-if="showSearch">
 
     <section class="flex gap-2">
       <div class="absolute -right-[4px] -top-2 z-10 bg-red-700 w-6 h-6 flex items-center justify-center text-lg text-white rounded-full cursor-pointer" @click="toggleSearch">&times;</div>
@@ -126,6 +126,15 @@
                     stroke-width="2" d="M12 3a6 6 0 0 0 9 9a9 9 0 1 1-9-9" />
                 </svg>Dark
               </button>
+              </MenuItem>
+
+              <MenuItem v-slot="{ active }">
+              <NuxtLink to="about"><button :class="[
+                active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
+                'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
+              ]">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></g></svg>About
+              </button></NuxtLink>
               </MenuItem>
 
             </div>

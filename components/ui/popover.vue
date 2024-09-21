@@ -35,9 +35,12 @@
                     <MenuItems
                       class="z-10 w-full dropdown-menu absolute right-0 mt-4 origin-top-right divide-y divide-gray-100 rounded-xl dark:text-white/90 dark:bg-[#1f2920] dark:border-none bg-gray-50 border border-gray-100 overflow-hidden max-h-60 overflow-y-auto">
                       <div>
-                        <div class="p-2">
+                        <div class="p-2 flex space-x-4">
                           <input v-model="searchQuery" placeholder="Search fonts..."
                             class="placeholder:text-gray-200 dark:placeholder:text-gray-50 outline-none p-2 bg-white/80 border dark:border-none border-gray-100 backdrop-blur-xl rounded-xl dark:bg-[#171f18] text-black/75 dark:text-white/90" />
+
+                            <button title="Reset" @click="editor.chain().focus().unsetFontFamily().run()"><svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24" class="opacity-10 dark:opacity-100"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m7 21l-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21m9 0H7M5 11l9 9"/></svg></button>
+
                         </div>
                         <div v-if="filteredFonts.length === 0" class="p-4 text-lg text-gray-500">
                           No fonts found
