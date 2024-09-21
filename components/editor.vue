@@ -128,6 +128,15 @@
               </button>
               </MenuItem>
 
+              <MenuItem v-slot="{ active }">
+              <NuxtLink to="about"><button :class="[
+                active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
+                'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
+              ]">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></g></svg>About
+              </button></NuxtLink>
+              </MenuItem>
+
             </div>
           </MenuItems>
         </transition>
