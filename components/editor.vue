@@ -143,7 +143,7 @@
       </Menu>
     </div>
 
-    <div class="flex fixed justify-between w-full p-2 py-0 pt-4 bg-white/80 backdrop-blur-xl dark:bg-[#263029] z-10">
+    <div class="flex fixed justify-between w-full p-2 py-0 pt-4 bg-white/80 backdrop-blur-xl dark:bg-[#263029] z-10" v-show="!focusMode">
 
       <div class="flex w-full justify-between items-center space-x-2">
         <input v-model="localTitle" @input="$emit('update:title', localTitle)" placeholder="Untitled"
@@ -152,7 +152,7 @@
         <UiPopover :editor="editor as any"
           :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'" />
 
-        <button @click="printPDF"
+        <button @click="focus"
           class="bg-gray-50 hover:bg-white hover:bg-white/80 dark:bg-[#2d3d33] dark:text-white/90 hover:dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/75 cursor-pointer"
           :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
 
@@ -375,6 +375,9 @@
           <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zm20 0h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
         </svg></button>
+
+      <button class="fixed bottom-3.5 text-black/80 dark:text-white/90 right-14" title="Print" v-if="focusMode" @click="printPDF"><svg
+        xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect width="12" height="8" x="6" y="14" rx="1"/></g></svg></button>
 
     </div>
   </div>
@@ -745,6 +748,11 @@ function handleShortcut(event: KeyboardEvent) {
   if (event.ctrlKey && event.key === 'f') {
     event.preventDefault();
     toggleSearch();
+  }
+
+  if (event.ctrlKey && event.key === 'p') {
+    event.preventDefault();
+    window.print()
   }
 
   // CTRL + R -> Toggle focus mode
