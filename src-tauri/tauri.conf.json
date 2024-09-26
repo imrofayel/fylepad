@@ -6,7 +6,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "fyelpad",
+    "productName": "fylepad",
     "version": "0.1.0"
   },
   "tauri": {
@@ -76,7 +76,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.fyelpad.dev",
+      "identifier": "com.fylepad.dev",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -105,7 +105,7 @@
         "fullscreen": false,
         "height": 600,
         "resizable": true,
-        "title": "fyelpad",
+        "title": "fylepad",
         "width": 800,
         "minHeight": 600,
         "minWidth": 600
