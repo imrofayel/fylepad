@@ -1,4 +1,8 @@
-### fylepad — your perfect note-taking solution!
+## fylepad — your perfect note-taking solution!
+
+![GitHub Repo stars](https://img.shields.io/github/stars/imrofayel/fylepad) ![GitHub forks](https://img.shields.io/github/forks/imrofayel/fylepad) ![GitHub Release](https://img.shields.io/github/v/release/imrofayel/fylepad)
+
+
 
 <a href="https://www.producthunt.com/posts/fylepad?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-fylepad" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=491117&theme=light" alt="fylepad - your&#0032;perfect&#0032;note&#0045;taking&#0032;solution&#0033; | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
 
