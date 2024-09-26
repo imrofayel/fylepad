@@ -1,6 +1,6 @@
 ## fylepad — your perfect note-taking solution!
 
-![GitHub Repo stars](https://img.shields.io/github/stars/imrofayel/fylepad) ![GitHub forks](https://img.shields.io/github/forks/imrofayel/fylepad) ![GitHub Release](https://img.shields.io/github/v/release/imrofayel/fylepad) ![GitHub License](https://img.shields.io/github/license/imrofayel/fylepad)
+![GitHub Repo stars](https://img.shields.io/github/stars/imrofayel/fylepad) ![GitHub forks](https://img.shields.io/github/forks/imrofayel/fylepad) ![GitHub Release](https://img.shields.io/github/v/release/imrofayel/fylepad)
 
 ![GitHub Downloads (specific asset, specific tag)](https://img.shields.io/github/downloads/imrofayel/fylepad/Windows/fyelpad_0.1.0_x64-setup.exe)
 
