@@ -713,7 +713,6 @@ const replace = () => {
 
 const next = () => {
   editor.value?.commands.nextSearchResult();
-  editor.value?.commands.emptyReplace()
   goToSelection();
 };
 
