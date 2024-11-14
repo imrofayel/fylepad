@@ -7,7 +7,7 @@
       <div class="absolute -right-[4px] -top-2 z-10 bg-red-700 w-6 h-6 flex items-center justify-center text-lg text-white rounded-full cursor-pointer" @click="toggleSearch">&times;</div>
       <div>
         <div class="mt-1 p-2 bg-white/80 border dark:border-none border-gray-100 backdrop-blur-xl rounded-xl dark:bg-[#171f18] text-black/75 dark:text-white/90 flex justify-center">
-          <input v-model="searchTerm" @keydown.enter.prevent="updateSearchReplace" type="text" placeholder="Search"
+          <Input v-model="searchTerm" @keydown.enter.prevent="updateSearchReplace" type="text" placeholder="Search"
             autofocus="true"
             class="placeholder:text-gray-200 dark:placeholder:text-gray-200/80 bg-transparent outline-none" />
 
