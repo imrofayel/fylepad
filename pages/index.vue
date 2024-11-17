@@ -1,35 +1,18 @@
 <template>
   <div class="h-full w-full flex flex-col">
-    <div class="flex justify-between items-center w-full p-3 py-2 fixed bg-[#fcfcfc] dark:bg-[#263029] backdrop-blur-lg z-10 pr-[7.5rem]">
-      <div class="flex space-x-1 overflow-x-auto justify-center items-center">
-        <div class="flex space-x-2 font-medium">
-          <button @click="closeWindow()"
-        class="w-3 h-3 rounded-full transition-colors duration-200 flex items-center justify-center bg-red-400 text-transparent hover:text-red-700 text-lg"
-      >&times;
-      </button>
-
-      <button @click="minimizeWindow()"
-        class="w-3 h-3 rounded-full transition-colors duration-200 flex items-center justify-center bg-yellow-400 overflow-hidden text-transparent hover:text-yellow-700 text-lg"
-      >&#8722;
-      </button>
-
-      <button @click="maximizeWindow()"
-        class="w-3 h-3 rounded-full transition-colors duration-200 flex items-center justify-center bg-green-400 text-transparent hover:text-green-700 text-lg"
-      >&#43;
-      </button>
-        </div>
-
+    <div class="flex justify-between items-center w-full p-3 py-2 fixed bg-surface backdrop-blur-lg z-10 pr-[7.5rem]">
+      <div class="flex space-x-2 overflow-x-auto justify-center items-center">
         <button @click="newTab"
-          class="backdrop-blur-lg flex px-2 p-1 rounded-2xl justify-center items-center text-black/10 dark:text-white/70 dark:hover:text-white hover:text-black/60">
+          class="bg-primaryContainer/30 text-onPrimaryContainer hover:bg-primaryContainer/60 backdrop-blur-xl flex px-3 p-3 rounded-2xl justify-center items-center cursor-pointer tab-item">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7-7v14"/></svg>
         </button>
 
         <div class="dropdown-menu overflow-auto flex space-x-2">
           <div v-for="(tab, index) in tabs" :key="index" @click="activeTab = index"
-            class="bg-gray-50 dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center dark:text-white/90 text-black/80 cursor-pointer tab-item"
-            :class="{ 'bg-white/60 dark:bg-[#2d3d33]': activeTab === index }">
+            class="bg-primaryContainer/30 text-onPrimaryContainer  hover:bg-primaryContainer/60 backdrop-blur-xl flex px-3 p-2 rounded-2xl justify-center items-center cursor-pointer tab-item"
+            :class="{ 'bg-primaryContainer/60': activeTab === index }">
             <span class="tab-title">{{ tab.title || 'Untitled' }}</span>
-            <button @click.stop="closeTab(index)" class="ml-2 dark:text-white/30 dark:hover:text-white/80 text-black/30 hover:text-black/80">&times;</button>
+            <button @click.stop="closeTab(index)" class="ml-2 text-onPrimaryContainer/30 hover:text-onPrimaryContainer text-lg">&times;</button>
           </div>
         </div>
       </div>

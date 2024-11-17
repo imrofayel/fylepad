@@ -1,162 +1,151 @@
 <template>
 
-<UseDraggable class="absolute flex w-full items-center justify-center" style="user-select: none">
-<div class="w-full flex justify-center cursor-move z-[40] items-center"><div class="m-8 top-0 p-4 rounded-xl border justify-center items-center fixed border-gray-100 dark:border-none dark:bg-[#2d3d33] bg-gray-50 z-[100] flex flex-col space-y-6" v-if="showSearch">
+  <UseDraggable class="absolute flex w-full items-center justify-center" style="user-select: none">
+    <div class="w-full flex justify-center cursor-move z-[40] items-center">
+      <div
+        class="m-8 top-0 p-4 rounded-xl border justify-center items-center fixed border-gray-100 dark:border-none dark:bg-[#2d3d33] bg-gray-50 z-[100] flex flex-col space-y-6"
+        v-if="showSearch">
 
-    <section class="flex gap-2">
-      <div class="absolute -right-[4px] -top-2 z-10 bg-red-700 w-6 h-6 flex items-center justify-center text-lg text-white rounded-full cursor-pointer" @click="toggleSearch">&times;</div>
-      <div>
-        <div class="mt-1 p-2 bg-white/80 border dark:border-none border-gray-100 backdrop-blur-xl rounded-xl dark:bg-[#171f18] text-black/75 dark:text-white/90 flex justify-center">
-          <Input v-model="searchTerm" @keydown.enter.prevent="updateSearchReplace" type="text" placeholder="Search"
-            autofocus="true"
-            class="placeholder:text-gray-200 dark:placeholder:text-gray-200/80 bg-transparent outline-none" />
+        <section class="flex gap-2">
+          <div
+            class="absolute -right-[4px] -top-2 z-10 bg-red-700 w-6 h-6 flex items-center justify-center text-lg text-white rounded-full cursor-pointer"
+            @click="toggleSearch">&times;</div>
+          <div>
+            <div
+              class="mt-1 p-2 bg-white/80 border dark:border-none border-gray-100 backdrop-blur-xl rounded-xl dark:bg-[#171f18] text-black/75 dark:text-white/90 flex justify-center">
+              <Input v-model="searchTerm" @keydown.enter.prevent="updateSearchReplace" type="text" placeholder="Search"
+                autofocus="true"
+                class="placeholder:text-gray-200 dark:placeholder:text-gray-200/80 bg-transparent outline-none" />
 
-            <button title="Case Sensitive" @click="toggleCase" class="px-1.5" :class="caseSensitive ? 'opacity-90 dark:opacity-100' : 'opacity-20 dark:opacity-50'">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m3 15l4-8l4 8m-7-2h6"/><circle cx="18" cy="12" r="3"/><path d="M21 9v6"/></g></svg>
-            </button>
-        </div>
+              <button title="Case Sensitive" @click="toggleCase" class="px-1.5"
+                :class="caseSensitive ? 'opacity-90 dark:opacity-100' : 'opacity-20 dark:opacity-50'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24">
+                  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <path d="m3 15l4-8l4 8m-7-2h6" />
+                    <circle cx="18" cy="12" r="3" />
+                    <path d="M21 9v6" />
+                  </g>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <div class="mt-1">
+              <input v-model="replaceTerm" @keydown.enter.prevent="replace" type="text" placeholder="Replace"
+                class="placeholder:text-gray-200 dark:placeholder:text-gray-200/80 outline-none p-2 bg-white/80 border dark:border-none border-gray-100 backdrop-blur-xl rounded-xl dark:bg-[#171f18] text-black/75 dark:text-white/90" />
+            </div>
+          </div>
+
+        </section>
+
+        <span class="inline-flex rounded-md isolate">
+          <button @click="previous" type="button"
+            class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium bg-white border dark:border-none dark:bg-[#171f18] dark:text-white/90 border-gray-100 hover:bg-gray-50 rounded-l-xl hover:dark:bg-[#212d23]">
+            Previous
+          </button>
+          <button @click="next" type="button"
+            class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium bg-white border border-gray-100 hover:bg-gray-50 dark:border-none dark:bg-[#171f18] dark:text-white/90 hover:dark:bg-[#212d23]">
+            Next
+          </button>
+          <button @click="replace" type="button"
+            class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium bg-white border border-gray-100 hover:bg-gray-50 dark:border-none dark:bg-[#171f18] dark:text-white/90 hover:dark:bg-[#212d23]">
+            Replace
+          </button>
+          <button @click="replaceAll" type="button"
+            class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium bg-white border border-gray-100 hover:bg-gray-50 rounded-r-xl dark:border-none dark:bg-[#171f18] hover:dark:bg-[#212d23] dark:text-white/90">
+            Replace All
+          </button>
+
+          <div class="block font-medium text-gray-700 dark:text-white/90 py-2 px-4">
+            Results: {{ editor?.storage?.searchAndReplace?.resultIndex + 1 }} / {{
+              editor?.storage?.searchAndReplace?.results.length }}
+          </div>
+        </span>
       </div>
-
-      <div>
-        <div class="mt-1">
-          <input v-model="replaceTerm" @keydown.enter.prevent="replace" type="text" placeholder="Replace"
-            class="placeholder:text-gray-200 dark:placeholder:text-gray-200/80 outline-none p-2 bg-white/80 border dark:border-none border-gray-100 backdrop-blur-xl rounded-xl dark:bg-[#171f18] text-black/75 dark:text-white/90" />
-        </div>
-      </div>
-
-    </section>
-
-    <span class="inline-flex rounded-md isolate">
-      <button @click="previous" type="button"
-        class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium bg-white border dark:border-none dark:bg-[#171f18] dark:text-white/90 border-gray-100 hover:bg-gray-50 rounded-l-xl hover:dark:bg-[#212d23]">
-        Previous
-      </button>
-      <button @click="next" type="button"
-        class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium bg-white border border-gray-100 hover:bg-gray-50 dark:border-none dark:bg-[#171f18] dark:text-white/90 hover:dark:bg-[#212d23]">
-        Next
-      </button>
-      <button @click="replace" type="button"
-        class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium bg-white border border-gray-100 hover:bg-gray-50 dark:border-none dark:bg-[#171f18] dark:text-white/90 hover:dark:bg-[#212d23]">
-        Replace
-      </button>
-      <button @click="replaceAll" type="button"
-        class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium bg-white border border-gray-100 hover:bg-gray-50 rounded-r-xl dark:border-none dark:bg-[#171f18] hover:dark:bg-[#212d23] dark:text-white/90">
-        Replace All
-      </button>
-
-      <div class="block font-medium text-gray-700 dark:text-white/90 py-2 px-4">
-        Results: {{ editor?.storage?.searchAndReplace?.resultIndex + 1 }} / {{
-          editor?.storage?.searchAndReplace?.results.length }}
-      </div>
-    </span>
-  </div></div></UseDraggable>
-
+    </div>
+  </UseDraggable>
 
   <div class="h-full flex flex-col tiptap">
 
-    <div class="flex space-x-5 fixed right-0 top-1 z-[12] p-3 py-2"
+    <div class="flex space-x-2 fixed right-0 top-1 z-[12] p-3 py-2"
       :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
 
-      <button class="text-black/75 dark:text-white/90" @click="toggleSearch"><svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21l-4.3-4.3"/></g></svg></button>
+      <button
+        class="bg-primaryContainer/30 text-onPrimaryContainer  hover:bg-primaryContainer/60 backdrop-blur-xl flex px-3 p-3 rounded-2xl justify-center items-center cursor-pointer"
+        @click="toggleSearch"><svg xmlns="http://www.w3.org/2000/svg" width="19" viewBox="0 0 24 24">
+          <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+            <circle cx="11" cy="11" r="8" />
+            <path d="m21 21l-4.3-4.3" />
+          </g>
+        </svg></button>
+
+
+      <button @click="exportMarkdown" :class="[
+        'bg-primaryContainer/30 text-onPrimaryContainer  hover:bg-primaryContainer/60 backdrop-blur-xl flex px-3 p-3 rounded-2xl justify-center items-center cursor-pointer'
+      ]">
+        <svg xmlns="http://www.w3.org/2000/svg" width="19" viewBox="0 0 24 24">
+          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11zm7.318-19.539l-10.94 10.939" />
+        </svg>
+      </button>
+
+      <button @click="importMarkdownOrText" :class="[
+        'bg-primaryContainer/30 text-onPrimaryContainer  hover:bg-primaryContainer/60 backdrop-blur-xl flex px-3 p-3 rounded-2xl justify-center items-center cursor-pointer'
+      ]">
+        <svg xmlns="http://www.w3.org/2000/svg" width="19" viewBox="0 0 24 24">
+          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4m14-7l-5-5l-5 5m5-5v12" />
+        </svg>
+      </button>
+
+      <button @click="onClick('light')" v-if="colorMode.value == 'dark'" :class="[
+        'bg-primaryContainer/30 text-onPrimaryContainer  hover:bg-primaryContainer/60 backdrop-blur-xl flex px-3 p-3 rounded-2xl justify-center items-center cursor-pointer'
+      ]">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
+          <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+            <circle cx="12" cy="12" r="4" />
+            <path
+              d="M12 3v1m0 16v1m-9-9h1m16 0h1m-2.636-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m11.314 11.314l.707.707" />
+          </g>
+        </svg>
+      </button>
+
+      <button @click="onClick('dark')" v-if="colorMode.value == 'light'" :class="[
+        'bg-primaryContainer/30 text-onPrimaryContainer  hover:bg-primaryContainer/60 backdrop-blur-xl flex px-3 p-3 rounded-2xl justify-center items-center cursor-pointer'
+      ]">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
+          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 3a6 6 0 0 0 9 9a9 9 0 1 1-9-9" />
+        </svg>
+      </button>
+
+
+      <button @click="isBottomSheetOpen = true">Sheet</button>
+
+      <UiBottomSheet :isOpen="isBottomSheetOpen" @close="isBottomSheetOpen = false" :editor="editor as any" />
       
-      <Menu as="div" class="relative inline-block text-left">
-        <MenuButton
-          class="bg-gray-50 dark:text-white/90 dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent backdrop-blur-lg border border-gray-100 flex px-3 p-1 rounded-2xl justify-center items-center text-black/75">
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24">
-            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-              <circle cx="12" cy="12" r="1" />
-              <circle cx="19" cy="12" r="1" />
-              <circle cx="5" cy="12" r="1" />
-            </g>
-          </svg>
-        </MenuButton>
-
-        <transition enter-active-class="transition duration-100 ease-out"
-          enter-from-class="transform scale-95 opacity-0" enter-to-class="transform scale-100 opacity-100"
-          leave-active-class="transition duration-75 ease-in" leave-from-class="transform scale-100 opacity-100"
-          leave-to-class="transform scale-95 opacity-0">
-          <MenuItems
-            class="absolute right-0 mt-2 origin-top-right divide-y divide-gray-100 rounded-xl dark:text-white/90 dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-none bg-gray-50 border border-gray-100 overflow-hidden">
-            <div>
-              <MenuItem v-slot="{ active }">
-              <button @click="exportMarkdown" :class="[
-                active ? 'bg-white/80 dark:bg-[#1f2920] text-black' : 'text-black',
-                'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
-              ]">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20">
-                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                    stroke-width="2" d="M7 7h10v10M7 17L17 7" />
-                </svg>Save
-              </button>
-              </MenuItem>
-              <MenuItem v-slot="{ active }">
-              <button @click="importMarkdownOrText" :class="[
-                active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
-                'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
-              ]">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20">
-                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                    stroke-width="2" d="M17 7L7 17m10 0H7V7" />
-                </svg>Open
-              </button>
-              </MenuItem>
-
-              <MenuItem v-slot="{ active }" v-if="colorMode.value === 'dark'">
-              <button @click="onClick('light')" :class="[
-                active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
-                'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
-              ]">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20">
-                  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                    <circle cx="12" cy="12" r="4" />
-                    <path
-                      d="M12 3v1m0 16v1m-9-9h1m16 0h1m-2.636-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m11.314 11.314l.707.707" />
-                  </g>
-                </svg>Light
-              </button>
-              </MenuItem>
-
-              <MenuItem v-slot="{ active }" v-if="colorMode.value === 'light'">
-              <button @click="onClick('dark')" :class="[
-                active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
-                'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
-              ]">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20">
-                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                    stroke-width="2" d="M12 3a6 6 0 0 0 9 9a9 9 0 1 1-9-9" />
-                </svg>Dark
-              </button>
-              </MenuItem>
-
-              <MenuItem v-slot="{ active }">
-              <NuxtLink to="about"><button :class="[
-                active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
-                'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
-              ]">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></g></svg>About
-              </button></NuxtLink>
-              </MenuItem>
-
-            </div>
-          </MenuItems>
-        </transition>
-      </Menu>
     </div>
 
-    <div class="flex fixed justify-between w-full p-2 py-0 pt-4 bg-white/80 backdrop-blur-xl dark:bg-[#263029] z-10" v-show="!focusMode">
+    <div class="flex fixed justify-between w-full p-2 py-0 pt-4 bg-surface backdrop-blur-xl z-10"
+      v-show="!focusMode">
 
       <div class="flex w-full justify-between items-center space-x-2">
         <input v-model="localTitle" @input="$emit('update:title', localTitle)" placeholder="Untitled"
           class="w-full border border-none ring-0 focus:border-none px-3 dark:text-white text-black/90 outline-none bg-transparent rounded flex text-[24px]" />
 
-        <UiPopover :editor="editor as any"
-          :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'" />
 
         <button @click="focus"
           class="bg-gray-50 hover:bg-white hover:bg-white/80 dark:bg-[#2d3d33] dark:text-white/90 hover:dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/75 cursor-pointer"
           :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
 
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect width="12" height="8" x="6" y="14" rx="1"/></g></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20">
+            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+              <path
+                d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6" />
+              <rect width="12" height="8" x="6" y="14" rx="1" />
+            </g>
+          </svg>
           Print
         </button>
 
@@ -274,7 +263,7 @@
       <EditorContent :editor="editor as any" class="h-full overflow-auto mb-4 px-4" />
 
       <div
-        class="bg-[#f9fafb] border-t dark:border-none dark:bg-[#2d3d33] dark:text-white/40 text-black/30 p-1.5 px-3 flex justify-between items-center fixed bottom-0 w-full select-none"
+        class="bg-primaryContainer/30 text-onPrimaryContainer p-1.5 px-3 flex justify-between items-center fixed bottom-0 w-full select-none"
         v-if="editor"
         :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
         <div class="flex space-x-4">
@@ -282,8 +271,8 @@
           <div class="flex space-x-4" v-if="!editor.can().deleteTable()">
 
             <div @click="editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()"
-              class="bg-white/80 dark:text-white/90 hover:dark:bg-[#1f2b24] dark:bg-[#1f2920] dark:border-transparent backdrop-blur-lg border border-gray-100 flex px-3 p-1 rounded-2xl justify-center items-center text-black/85 cursor-pointer">
-              Insert Table
+              class="bg-primaryContainer/60 text-onPrimaryContainer  hover:bg-primaryContainer/90 flex px-3 p-2 rounded-2xl justify-center items-center cursor-pointer">
+              <svg xmlns="http://www.w3.org/2000/svg" width="19" viewBox="0 0 24 24" class="mr-1"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3H5a2 2 0 0 0-2 2v4m6-6h10a2 2 0 0 1 2 2v4M9 3v18m0 0h10a2 2 0 0 0 2-2V9M9 21H5a2 2 0 0 1-2-2V9m0 0h18"/></svg>Table
             </div>
 
           </div>
@@ -360,24 +349,27 @@
           </div>
 
         </div>
-        <div class="sm:hidden md:flex items-center space-x-3 hidden dark:text-white/80 text-black/80 relative right-8">
+        <div class="sm:hidden md:flex items-center space-x-2 hidden text-onPrimaryContainer relative right-11">
 
-          <div>{{ characterCount }} characters</div>
-          <span class="text-sm opacity-20">|</span>
-          <div>{{ wordCount }} words</div>
-          <span class="text-sm opacity-20">|</span>
-          <div>UTF8</div>
+          <div class="bg-primaryContainer/60 hover:bg-primaryContainer/90 flex px-3 p-2 rounded-2xl justify-center items-center cursor-pointer">{{ characterCount }} characters</div>
+          <div class="bg-primaryContainer/60 hover:bg-primaryContainer/90 backdrop-blur-xl flex px-3 p-2 rounded-2xl justify-center items-center cursor-pointer">{{ wordCount }} words</div>
         </div>
       </div>
 
-      <button class="fixed bottom-3.5 text-black/80 dark:text-white/90 right-3" title="Focus Mode" @click="focus"><svg
-          xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
+      <button class="fixed bottom-1.5 mx-2 right-0 bg-primaryContainer/60 text-onPrimaryContainer hover:bg-primaryContainer/90 flex px-3 p-3 rounded-2xl justify-center items-center cursor-pointer" title="Focus Mode" @click="focus"><svg
+          xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24">
           <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zm20 0h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
         </svg></button>
 
-      <button class="fixed bottom-3.5 text-black/80 dark:text-white/90 right-14" title="Print" v-if="focusMode" @click="printPDF"><svg
-        xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect width="12" height="8" x="6" y="14" rx="1"/></g></svg></button>
+      <button class="fixed bottom-3.5 text-black/80 dark:text-white/90 right-14" title="Print" v-if="focusMode"
+        @click="printPDF"><svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
+          <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+            <path
+              d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6" />
+            <rect width="12" height="8" x="6" y="14" rx="1" />
+          </g>
+        </svg></button>
 
     </div>
   </div>
@@ -429,6 +421,12 @@ import { md2pdf } from '../utils/exportPDF';
 import { all, createLowlight } from 'lowlight'
 
 import { UseDraggable } from '@vueuse/components'
+
+const isBottomSheetOpen = ref(false);
+
+function openSheet() {
+  isBottomSheetOpen.value = !isBottomSheetOpen.value
+}
 
 function printPDF() {
   window.print()
@@ -772,9 +770,9 @@ function handleShortcut(event: KeyboardEvent) {
     exportMarkdown();
   }
 
-  if(event.ctrlKey && event.key === 't'){
+  if (event.ctrlKey && event.key === 't') {
     event.preventDefault();
-    editor.value?.commands.insertTable({rows: 3, cols: 3})
+    editor.value?.commands.insertTable({ rows: 3, cols: 3 })
   }
 }
 
@@ -1114,5 +1112,4 @@ ul[data-type="taskList"] label>div {
 .tiptap .ProseMirror .search-result-current {
   background-color: rgba(13, 255, 0, 0.5);
 }
-
 </style>

@@ -11,6 +11,6 @@
 <style>
 
 body{
-  @apply bg-[#fcfcfc] dark:bg-[#263029];
+  @apply bg-surface;
 }
 </style>
