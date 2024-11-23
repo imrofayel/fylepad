@@ -1,59 +1,3 @@
-<template>
-  <div class="h-full w-full flex flex-col">
-    <div class="flex justify-between items-center w-full p-3 py-2 fixed bg-surface backdrop-blur-lg z-10 pr-[7.5rem]">
-      <div class="flex space-x-2 overflow-x-auto justify-center items-center">
-        <button @click="newTab"
-          class="bg-primaryContainer/30 text-onPrimaryContainer hover:bg-primaryContainer/60 backdrop-blur-xl flex px-3 p-3 rounded-2xl justify-center items-center cursor-pointer tab-item">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7-7v14"/></svg>
-        </button>
-
-        <div class="dropdown-menu overflow-auto flex space-x-2">
-          <div v-for="(tab, index) in tabs" :key="index" @click="activeTab = index"
-            class="bg-primaryContainer/30 text-onPrimaryContainer  hover:bg-primaryContainer/60 backdrop-blur-xl flex px-3 p-2 rounded-2xl justify-center items-center cursor-pointer tab-item"
-            :class="{ 'bg-primaryContainer/60': activeTab === index }">
-            <span class="tab-title">{{ tab.title || 'Untitled' }}</span>
-            <button @click.stop="closeTab(index)" class="ml-2 text-onPrimaryContainer/30 hover:text-onPrimaryContainer text-lg">&times;</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="mt-8 flex-grow">
-      <Editor v-if="tabs.length > 0" :key="activeTab" :title="tabs[activeTab].title"
-        :content="tabs[activeTab].content" @update:title="updateTabTitle" @update:content="updateTabContent" />
-    </div>
-  </div>
-</template>
-
-<style scoped>
-.dropdown-menu {
-  scrollbar-width: thin;
-  scrollbar-color: transparent transparent;
-}
-
-.dropdown-menu::-webkit-scrollbar {
-  width: 0px;
-}
-
-.dropdown-menu::-webkit-scrollbar-thumb,
-.dropdown-menu::-webkit-scrollbar-track {
-  background-color: rgba(0, 0, 0, 0);
-}
-
-.tab-item {
-  max-height: 40px; /* Ensure tabs don't grow vertically */
-}
-
-.tab-title { 
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 180px; /* Adjust width limit as necessary */
-  display: inline-block;
-  vertical-align: middle;
-}
-</style>
-
 
 <script lang="ts" setup>
 import { ref, reactive, onMounted, watch } from 'vue';
@@ -217,5 +161,58 @@ function handleShortcut(event: KeyboardEvent) {
     newTab()
   }
 }
-
 </script>
+
+<template>
+  <div class="h-full w-full flex flex-col">
+    <div class="flex justify-between items-center w-full p-3 py-2 fixed bg-surface backdrop-blur-lg z-10 pr-[7.5rem]">
+      <div class="flex space-x-2 overflow-x-auto justify-center items-center">
+        <button title="Add tab (Cntrl+N)" @click="newTab" class="text-onPrimaryContainer hover:bg-primaryContainer/30 backdrop-blur-xl flex p-[4px] rounded-[4px] justify-center items-center cursor-pointer tab-item">
+          <svg width="18" height="18" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M11.75 3a.75.75 0 0 1 .743.648l.007.102.001 7.25h7.253a.75.75 0 0 1 .102 1.493l-.102.007h-7.253l.002 7.25a.75.75 0 0 1-1.493.101l-.007-.102-.002-7.249H3.752a.75.75 0 0 1-.102-1.493L3.752 11h7.25L11 3.75a.75.75 0 0 1 .75-.75Z" fill="#000000"/></svg>
+        </button>
+
+        <div class="border-l border-onPrimaryContainer/30 h-5"></div>
+
+        <div class="dropdown-menu overflow-auto flex space-x-2">
+          <div v-for="(tab, index) in tabs" :key="index" @click="activeTab = index" class="bg-primaryContainer/30 text-onPrimaryContainer  hover:bg-primaryContainer/60 backdrop-blur-4xl flex px-3 py-0.5 text-[14px] rounded-[6px] justify-center items-center cursor-pointer tab-item" :class="{ 'bg-primaryContainer/60': activeTab === index }">
+            <span class="tab-title">{{ tab.title || 'Untitled' }}</span>
+            <button @click.stop="closeTab(index)" class="ml-2 text-onPrimaryContainer/30 hover:text-onPrimaryContainer text-lg">&times;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-8 flex-grow">
+      <Editor v-if="tabs.length > 0" :key="activeTab" :title="tabs[activeTab].title" :content="tabs[activeTab].content" @update:title="updateTabTitle" @update:content="updateTabContent" />
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.dropdown-menu {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+
+.dropdown-menu::-webkit-scrollbar {
+  width: 0px;
+}
+
+.dropdown-menu::-webkit-scrollbar-thumb,
+.dropdown-menu::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.tab-item {
+  max-height: 40px; /* Ensure tabs don't grow vertically */
+}
+
+.tab-title { 
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px; /* Adjust width limit as necessary */
+  display: inline-block;
+  vertical-align: middle;
+}
+</style>

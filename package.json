@@ -10,13 +10,13 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@fluentui/web-components": "^2.6.1",
     "@headlessui/vue": "^1.7.23",
     "@nuxt/icon": "^1.5.1",
     "@nuxtjs/color-mode": "^3.5.1",
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@tailwindcss/typography": "^0.5.15",
     "@tauri-apps/api": "^1.6.0",
-    "@tauri-apps/cli": "^1.6.2",
     "@tiptap-pro/extension-details": "^2.11.2",
     "@tiptap-pro/extension-details-content": "^2.11.2",
     "@tiptap-pro/extension-details-summary": "^2.11.2",
@@ -68,6 +68,7 @@
   "devDependencies": {
     "@iconify-json/lucide": "^1.2.4",
     "@iconify-json/material-symbols-light": "^1.2.1",
+    "@tauri-apps/cli": "^2.1.0",
     "@vueuse/core": "^11.1.0",
     "@vueuse/nuxt": "^11.1.0",
     "autoprefixer": "^10.4.20",

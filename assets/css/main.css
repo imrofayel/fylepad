@@ -4,11 +4,11 @@
 
 @layer base {
     :root {
-      --primary: 149 41% 29%;               /* rgb(44 106 70) */
+      --primary: 0, 0%, 96%;               /* rgb(44 106 70) */
       --surface-tint: 149 41% 29%;          /* rgb(44 106 70) */
       --on-primary: 0 0% 100%;              /* rgb(255 255 255) */
-      --primary-container: 134 77% 82%;      /* rgb(176 241 195) */
-      --opaque: 128, 63%, 93%;
+      --primary-container: 0 0% 90%;      /* rgb(176 241 195) */
+      --opaque:0, 0%, 94%;
       --on-primary-container: 149 100% 6%;   /* rgb(0 33 15) */
       --secondary: 135 11% 35%;              /* rgb(79 99 84) */
       --on-secondary: 0 0% 100%;             /* rgb(255 255 255) */
@@ -24,7 +24,7 @@
       --on-error-container: 357 100% 13%;     /* rgb(65 0 2) */
       --background: 100 40% 97%;              /* rgb(246 251 243) */
       --on-background: 140 9% 10%;            /* rgb(24 29 25) */
-      --surface: 98, 50%, 97%;                 /* rgb(246 251 243) */
+      --surface: 0, 0%, 100%;                 /* rgb(246 251 243) */
       --on-surface: 140 9% 10%;               /* rgb(24 29 25) */
       --surface-variant: 120 11% 88%;         /* rgb(220 229 219) */
       --on-surface-variant: 120 6% 27%;       /* rgb(65 73 66) */

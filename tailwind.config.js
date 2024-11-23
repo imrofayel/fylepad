@@ -13,6 +13,7 @@ module.exports = {
     extend: {
       colors: {
         primary: "hsl(var(--primary))",
+        primaryBg: "hsl(var(--primary-bg))",
         surfaceTint: "hsl(var(--surface-tint))",
         onPrimary: "hsl(var(--on-primary))",
         primaryContainer: "hsl(var(--primary-container))",
