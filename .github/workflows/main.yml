@@ -58,6 +58,8 @@ jobs:
       
       - name: install frontend dependencies
         run: echo -e "@tiptap-pro:registry=https://registry.tiptap.dev/\n//registry.tiptap.dev/:_authToken=gfhhfh" > .npmrc
+
+      - run: npm i
         
       - uses: tauri-apps/tauri-action@v0
         env:
