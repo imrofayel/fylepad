@@ -833,7 +833,7 @@ dependencies = [
 
 [[package]]
 name = "fylepad"
-version = "0.3.0"
+version = "0.3.2"
 dependencies = [
  "serde",
  "serde_json",
