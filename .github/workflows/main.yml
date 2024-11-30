@@ -4,7 +4,7 @@ on:
     branches:
       - main
     tags:
-      - 'v*'
+      - "v*"
   workflow_dispatch:
 
 # This is the example from the readme.
@@ -54,12 +54,12 @@ jobs:
           sudo apt-get install -y libwebkit2gtk-4.0-dev libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
         # webkitgtk 4.0 is for Tauri v1 - webkitgtk 4.1 is for Tauri v2.
         # You can remove the one that doesn't apply to your app to speed up the workflow a bit.
-      
+
       - name: install frontend dependencies
         run: printf "@tiptap-pro:registry=https://registry.tiptap.dev/\n//registry.tiptap.dev/:_authToken=${{secrets.NPM_TOKEN}}" > .npmrc
 
       - run: npm config set "//registry.tiptap.dev/:_authToken" ${{secrets.NPM_TOKEN}} &&  npm i
-        
+
       - uses: tauri-apps/tauri-action@dev
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
