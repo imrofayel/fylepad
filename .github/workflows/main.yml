@@ -61,7 +61,7 @@ jobs:
         run: npm config set "//registry.tiptap.dev/:_authToken" ${{secrets.NPM_TOKEN}}
       
       - name: install frontend dependencies
-        run: echo "//registry.tiptap.dev/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+        run: echo "node-linker=hoisted\n //registry.tiptap.dev/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
       - name: install
         run: pnpm i
         
