@@ -9,10 +9,10 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "tauri": "tauri",
-    "tauri:dev": "tauri dev",
-    "tauri:build": "tauri build",
-    "tauri:icon": "tauri icon ./src-tauri/app-icon.png",
-    "tauri:build:debug": "tauri build --debug"
+    "tauri:dev": "pnpm tauri dev",
+    "tauri:build": "pnpm tauri build",
+    "tauri:icon": "pnpm tauri icon ./src-tauri/app-icon.png",
+    "tauri:build:debug": "pnpm tauri build --debug"
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.23",
