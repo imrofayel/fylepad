@@ -17,6 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - platform: "self-hosted"
           - platform: "macos-latest" # for Arm based macs (M1 and above).
             args: "--target aarch64-apple-darwin"
           - platform: "macos-latest" # for Intel based macs.
