@@ -61,7 +61,7 @@ jobs:
 
       - run: npm config set "//registry.tiptap.dev/:_authToken" ${{secrets.NPM_TOKEN}} &&  npm i
         
-      - uses: tauri-apps/tauri-action@v0
+      - uses: tauri-apps/tauri-action@dev
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
