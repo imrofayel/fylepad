@@ -57,7 +57,7 @@ jobs:
         # You can remove the one that doesn't apply to your app to speed up the workflow a bit.
       
       - name: install frontend dependencies
-        run: echo -e "@tiptap-pro:registry=https://registry.tiptap.dev/\n//registry.tiptap.dev/:_authToken=${{secrets.NPM_TOKEN}}" > .npmrc
+        run: printf "@tiptap-pro:registry=https://registry.tiptap.dev/\n//registry.tiptap.dev/:_authToken=${{secrets.NPM_TOKEN}}" > .npmrc
 
       - run: npm config set "//registry.tiptap.dev/:_authToken" ${{secrets.NPM_TOKEN}} &&  npm i
         
