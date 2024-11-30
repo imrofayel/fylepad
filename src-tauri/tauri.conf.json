@@ -1,7 +1,7 @@
 {
   "build": {
-    "beforeBuildCommand": "tauri icon ./src-tauri/app-icon.png && pnpm generate",
-    "beforeDevCommand": "pnpm dev",
+    "beforeBuildCommand": "pnpm run generate",
+    "beforeDevCommand": "pnpm run dev",
     "devPath": "http://localhost:3000",
     "distDir": "../dist"
   },
