@@ -1,5 +1,5 @@
 {
-  "name": "nuxt-app",
+  "name": "fylepad",
   "private": true,
   "type": "module",
   "scripts": {
@@ -7,7 +7,12 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "tauri": "tauri",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build",
+    "tauri:icon": "tauri icon ./src-tauri/app-icon.png",
+    "tauri:build:debug": "tauri build --debug"
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.23",
@@ -66,6 +71,7 @@
     "vue-router": "latest"
   },
   "devDependencies": {
+    "@tauri-apps/cli": "^2.1.0",
     "@iconify-json/lucide": "^1.2.4",
     "@iconify-json/material-symbols-light": "^1.2.1",
     "@vueuse/core": "^11.1.0",
