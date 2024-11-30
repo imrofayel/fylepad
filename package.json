@@ -10,7 +10,7 @@
     "postinstall": "nuxt prepare",
     "tauri": "tauri",
     "tauri:dev": "pnpm tauri dev",
-    "tauri:build": "pnpm tauri build",
+    "tauri:build": "pnpm i && pnpm tauri build",
     "tauri:icon": "pnpm tauri icon ./src-tauri/app-icon.png",
     "tauri:build:debug": "pnpm tauri build --debug"
   },
