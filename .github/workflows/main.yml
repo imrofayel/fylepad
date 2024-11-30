@@ -55,7 +55,7 @@ jobs:
         # You can remove the one that doesn't apply to your app to speed up the workflow a bit.
       
       - name: install frontend dependencies
-        run: echo "@tiptap-pro:registry=https://registry.tiptap.dev/\n//registry.tiptap.dev/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc && TIPTAP_PRO_TOKEN=${{ secrets.NPM_TOKEN }} pnpm i
+        run: echo -e "@tiptap-pro:registry=https://registry.tiptap.dev/\n//registry.tiptap.dev/:_authToken=gfhhfh" > .npmrc
         
       - uses: tauri-apps/tauri-action@v0
         env:
