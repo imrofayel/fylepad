@@ -1,13 +1,13 @@
 {
   "build": {
-    "beforeBuildCommand": "pnpm generate",
-    "beforeDevCommand": "pnpm dev",
+    "beforeBuildCommand": "pnpm run generate",
+    "beforeDevCommand": "pnpm run dev",
     "devPath": "http://localhost:3000",
     "distDir": "../dist"
   },
   "package": {
     "productName": "fylepad",
-    "version": "0.1.0"
+    "version": "0.3.2"
   },
   "tauri": {
     "allowlist": {
@@ -87,7 +87,7 @@
       },
       "resources": [],
       "shortDescription": "",
-      "targets": "all",
+      "targets": ["dmg", "deb", "msi"],
       "windows": {
         "certificateThumbprint": null,
         "digestAlgorithm": "sha256",
