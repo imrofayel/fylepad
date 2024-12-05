@@ -6,7 +6,7 @@
 
 <a href="https://www.producthunt.com/posts/fylepad?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-fylepad" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=491117&theme=light" alt="fylepad - your&#0032;perfect&#0032;note&#0045;taking&#0032;solution&#0033; | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
 
-<a href="https://github.com/imrofayel/fylepad/releases/tag/Windows"><img src="https://github.com/user-attachments/assets/9c531f25-86ad-4400-95a0-cba58c69529f" height="40" weight="40"></a>
+<a href="https://github.com/imrofayel/fylepad/releases/"><img src="https://github.com/user-attachments/assets/9c531f25-86ad-4400-95a0-cba58c69529f" height="40" weight="40"></a>
 
 ![Slide1](https://github.com/user-attachments/assets/70d22729-5781-4396-a96c-e8216694629f)
 ![Slide4](https://github.com/user-attachments/assets/1f969e3a-26bc-4da4-979b-8963e51c8a4c)
