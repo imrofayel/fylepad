@@ -144,6 +144,12 @@ watch([tabs, activeTab, () => colorMode.preference], async () => {
 }, { deep: true });
 
 const newTab = () => {
+
+  // TODO: Ajudt the UI later. Add pricing thing into it just for fun.
+  if(tabs.length >= 5){
+    return
+  }
+
   tabs.push({ title: 'Untitled', content: '' });
   activeTab.value = tabs.length - 1;
 };

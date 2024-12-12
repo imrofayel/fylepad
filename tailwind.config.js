@@ -12,6 +12,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        background: "hsl(var(--background))",
         primary: "hsl(var(--primary))",
         surfaceTint: "hsl(var(--surface-tint))",
         onPrimary: "hsl(var(--on-primary))",

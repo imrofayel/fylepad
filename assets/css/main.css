@@ -4,6 +4,9 @@
 
 @layer base {
     :root {
+
+    --background: 0 0% 100%;
+    
       --primary: 149 41% 29%;               /* rgb(44 106 70) */
       --surface-tint: 149 41% 29%;          /* rgb(44 106 70) */
       --on-primary: 0 0% 100%;              /* rgb(255 255 255) */
