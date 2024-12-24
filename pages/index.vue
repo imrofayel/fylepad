@@ -1,43 +1,35 @@
 <template>
   <div class="h-full w-full flex flex-col">
-    <div class="flex justify-between items-center w-full p-3 py-2 fixed bg-[#fcfcfc] dark:bg-[#263029] backdrop-blur-lg z-10 pr-[7.5rem]">
-      <div class="flex space-x-1 overflow-x-auto justify-center items-center">
-        <div class="flex space-x-2 font-medium">
-          <button @click="closeWindow()"
-        class="w-3 h-3 rounded-full transition-colors duration-200 flex items-center justify-center bg-red-400 text-transparent hover:text-red-700 text-lg"
-      >&times;
-      </button>
-
-      <button @click="minimizeWindow()"
-        class="w-3 h-3 rounded-full transition-colors duration-200 flex items-center justify-center bg-yellow-400 overflow-hidden text-transparent hover:text-yellow-700 text-lg"
-      >&#8722;
-      </button>
-
-      <button @click="maximizeWindow()"
-        class="w-3 h-3 rounded-full transition-colors duration-200 flex items-center justify-center bg-green-400 text-transparent hover:text-green-700 text-lg"
-      >&#43;
-      </button>
-        </div>
-
+    <div class="flex justify-between items-center w-full p-3 py-2 fixed bg-white z-10 pr-[7.5rem]">
+      <div class="flex space-x-2 overflow-x-auto justify-center items-center">
         <button @click="newTab"
-          class="backdrop-blur-lg flex px-2 p-1 rounded-2xl justify-center items-center text-black/10 dark:text-white/70 dark:hover:text-white hover:text-black/60">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7-7v14"/></svg>
+          class="border border-gray-200 bg-white/80 text-gray-800/90 !px-[7px] py-[6px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool tab-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24">
+            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              color="currentColor">
+              <path
+                d="M5.076 17C4.089 4.545 12.912 1.012 19.973 2.224c.286 4.128-1.734 5.673-5.58 6.387c.742.776 2.055 1.753 1.913 2.974c-.1.868-.69 1.295-1.87 2.147C11.85 15.6 8.854 16.78 5.076 17" />
+              <path d="M4 22c0-6.5 3.848-9.818 6.5-12" />
+            </g>
+          </svg>
         </button>
 
         <div class="dropdown-menu overflow-auto flex space-x-2">
           <div v-for="(tab, index) in tabs" :key="index" @click="activeTab = index"
-            class="bg-gray-50 dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center dark:text-white/90 text-black/80 cursor-pointer tab-item"
-            :class="{ 'bg-white/60 dark:bg-[#2d3d33]': activeTab === index }">
+            class="border border-gray-200 bg-white/80 text-gray-800/90 !px-[9px] py-[3px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool tab-item tab-item"
+            :class="{ '!bg-[#24d86c] !border-[#28c76d] !text-white font-medium': activeTab === index }">
             <span class="tab-title">{{ tab.title || 'Untitled' }}</span>
-            <button @click.stop="closeTab(index)" class="ml-2 dark:text-white/30 dark:hover:text-white/80 text-black/30 hover:text-black/80">&times;</button>
+            <button @click.stop="closeTab(index)"
+              class="ml-2 text-onPrimaryContainer/30 hover:text-onPrimaryContainer text-lg"
+              :class="{ 'text-white font-normal': activeTab === index }">&times;</button>
           </div>
         </div>
       </div>
     </div>
 
     <div class="mt-8 flex-grow">
-      <Editor v-if="tabs.length > 0" :key="activeTab" :title="tabs[activeTab].title"
-        :content="tabs[activeTab].content" @update:title="updateTabTitle" @update:content="updateTabContent" />
+      <Editor v-if="tabs.length > 0" :key="activeTab" :title="tabs[activeTab].title" :content="tabs[activeTab].content"
+        @update:title="updateTabTitle" @update:content="updateTabContent" />
     </div>
   </div>
 </template>
@@ -58,19 +50,20 @@
 }
 
 .tab-item {
-  max-height: 40px; /* Ensure tabs don't grow vertically */
+  max-height: 40px;
+  /* Ensure tabs don't grow vertically */
 }
 
-.tab-title { 
+.tab-title {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 180px; /* Adjust width limit as necessary */
+  max-width: 180px;
+  /* Adjust width limit as necessary */
   display: inline-block;
   vertical-align: middle;
 }
 </style>
-
 
 <script lang="ts" setup>
 import { ref, reactive, onMounted, watch } from 'vue';
@@ -112,7 +105,7 @@ async function saveAppState() {
     activeTab: activeTab.value,
     colorMode: colorMode.preference
   };
-  
+
   // Try to save using Tauri's fs API
   try {
     const appDir = await path.appDataDir();
@@ -161,6 +154,12 @@ watch([tabs, activeTab, () => colorMode.preference], async () => {
 }, { deep: true });
 
 const newTab = () => {
+
+  // TODO: Ajudt the UI later. Add pricing thing into it just for fun.
+  if (tabs.length >= 5) {
+    return
+  }
+
   tabs.push({ title: 'Untitled', content: '' });
   activeTab.value = tabs.length - 1;
 };

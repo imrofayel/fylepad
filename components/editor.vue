@@ -1,164 +1,206 @@
 <template>
 
-<UseDraggable class="absolute flex w-full items-center justify-center" style="user-select: none">
-<div class="w-full flex justify-center cursor-move z-[40] items-center"><div class="m-8 top-0 p-4 rounded-xl border justify-center items-center fixed border-gray-100 dark:border-none dark:bg-[#2d3d33] bg-gray-50 z-[100] flex flex-col space-y-6" v-if="showSearch">
+  <UseDraggable class="absolute flex w-full items-center justify-center" style="user-select: none">
+    <div class="w-full flex justify-center cursor-move z-[40] items-center">
+      <div
+        class="m-8 top-0 p-4 rounded-2xl border justify-center items-center fixed border-gray-200 dark:border-none drop-shadow-cool dark:bg-[#2d3d33] bg-white z-[100] flex flex-col space-y-6"
+        v-if="showSearch">
 
-    <section class="flex gap-2">
-      <div class="absolute -right-[4px] -top-2 z-10 bg-red-700 w-6 h-6 flex items-center justify-center text-lg text-white rounded-full cursor-pointer" @click="toggleSearch">&times;</div>
-      <div>
-        <div class="mt-1 p-2 bg-white/80 border dark:border-none border-gray-100 backdrop-blur-xl rounded-xl dark:bg-[#171f18] text-black/75 dark:text-white/90 flex justify-center">
-          <input v-model="searchTerm" @keydown.enter.prevent="updateSearchReplace" type="text" placeholder="Search"
-            autofocus="true"
-            class="placeholder:text-gray-200 dark:placeholder:text-gray-200/80 bg-transparent outline-none" />
+        <section class="flex gap-2">
+          <div
+            class="absolute -right-[4px] -top-2 z-10 bg-[#e01212] hover:bg-[#cc1212] border-[#bb1212] border w-6 h-6 flex items-center justify-center text-lg text-white rounded-lg cursor-pointer"
+            @click="toggleSearch">&times;</div>
+          <div>
+            <div
+              class="mt-1 p-2 bg-white border dark:border-none border-gray-200 rounded-xl dark:bg-[#171f18] drop-shadow-cool text-black dark:text-white/90 flex justify-center">
+              <Input v-model="searchTerm" @keydown.enter.prevent="updateSearchReplace" type="text" placeholder="Search"
+                autofocus="true"
+                class="placeholder:text-gray-400 dark:placeholder:text-gray-200/80 bg-transparent outline-none" />
 
-            <button title="Case Sensitive" @click="toggleCase" class="px-1.5" :class="caseSensitive ? 'opacity-90 dark:opacity-100' : 'opacity-20 dark:opacity-50'">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m3 15l4-8l4 8m-7-2h6"/><circle cx="18" cy="12" r="3"/><path d="M21 9v6"/></g></svg>
+              <button title="Case Sensitive" @click="toggleCase" class="px-1.5"
+                :class="caseSensitive ? 'text-gray-700' : 'opacity-40 dark:opacity-50'">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" class="drop-shadow-sm">
+                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="1.5"
+                    d="m14 19l-2.893-8.252C9.763 6.916 9.092 5 8 5s-1.763 1.916-3.107 5.748L2 19m2.5-7h7m10.47 1.94v4.5m0-4.5c.046-.824.048-1.45-.05-1.963c-.234-1.206-1.494-1.933-2.714-2.081c-1.168-.142-2.104.159-3.052 1.54m5.815 2.503h-2.843c-.437 0-.878.021-1.299.138c-2.573.716-2.384 4.323.196 4.768c.287.05.58.07.87.058c.677-.03 1.302-.358 1.84-.773c.627-.486 1.236-1.165 1.236-2.19z"
+                    color="currentColor" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <div class="mt-1">
+              <input v-model="replaceTerm" @keydown.enter.prevent="replace" type="text" placeholder="Replace"
+                class="mt-1 p-2 bg-white border dark:border-none border-gray-200 rounded-xl dark:bg-[#171f18] drop-shadow-cool text-black dark:text-white/90 flex justify-center outline-none focus:outline-none" />
+            </div>
+          </div>
+
+        </section>
+
+        <div class="flex justify-between w-full items-center"><span
+            class="inline-flex rounded-md isolate bg-white !text-[15px] drop-shadow-cool">
+            <button @click="previous" type="button"
+              class="mt-1 p-2 px-3 border dark:border-none border-gray-200 rounded-xl rounded-r-none bg-gray-50/30 dark:bg-[#171f18]  text-gray-800 dark:text-white/90 flex justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                class="drop-shadow-sm">
+                <path d="m12 19-7-7 7-7" />
+                <path d="M19 12H5" />
+              </svg>
             </button>
+            <button @click="next" type="button"
+              class="mt-1 p-2 px-3 border-x-0 bg-gray-50/30 border dark:border-none border-gray-200  dark:bg-[#171f18] text-gray-800 dark:text-white/90 flex justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                class="drop-shadow-sm">
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
+            </button>
+            <button @click="replace" type="button"
+              class="mt-1 p-2 px-3 bg-gray-50/30 border dark:border-none border-gray-200 dark:bg-[#171f18] text-gray-800 dark:text-white/90 flex justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                class="drop-shadow-sm" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 4a2 2 0 0 1 2-2" />
+                <path d="M16 10a2 2 0 0 1-2-2" />
+                <path d="M20 2a2 2 0 0 1 2 2" />
+                <path d="M22 8a2 2 0 0 1-2 2" />
+                <path d="m3 7 3 3 3-3" />
+                <path d="M6 10V5a3 3 0 0 1 3-3h1" />
+                <rect x="2" y="14" width="8" height="8" rx="2" />
+              </svg>
+            </button>
+            <button @click="replaceAll" type="button"
+              class="mt-1 p-2 px-3 border-x-0 bg-gray-50/30 border dark:border-none border-gray-200 border-r rounded-r-xl dark:bg-[#171f18] text-gray-800 dark:text-white/90 flex justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                class="drop-shadow-sm">
+                <path d="M14 14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2" />
+                <path d="M14 4a2 2 0 0 1 2-2" />
+                <path d="M16 10a2 2 0 0 1-2-2" />
+                <path d="M20 14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2" />
+                <path d="M20 2a2 2 0 0 1 2 2" />
+                <path d="M22 8a2 2 0 0 1-2 2" />
+                <path d="m3 7 3 3 3-3" />
+                <path d="M6 10V5a 3 3 0 0 1 3-3h1" />
+                <rect x="2" y="14" width="8" height="8" rx="2" />
+              </svg>
+            </button>
+
+          </span>
+
+          <div class="block text-[18px] drop-shadow-sm text-black dark:text-white/90 py-2 px-4">
+            Results: {{ editor?.storage?.searchAndReplace?.resultIndex + 1 }} / {{
+              editor?.storage?.searchAndReplace?.results.length }}
+          </div>
         </div>
       </div>
-
-      <div>
-        <div class="mt-1">
-          <input v-model="replaceTerm" @keydown.enter.prevent="replace" type="text" placeholder="Replace"
-            class="placeholder:text-gray-200 dark:placeholder:text-gray-200/80 outline-none p-2 bg-white/80 border dark:border-none border-gray-100 backdrop-blur-xl rounded-xl dark:bg-[#171f18] text-black/75 dark:text-white/90" />
-        </div>
-      </div>
-
-    </section>
-
-    <span class="inline-flex rounded-md isolate">
-      <button @click="previous" type="button"
-        class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium bg-white border dark:border-none dark:bg-[#171f18] dark:text-white/90 border-gray-100 hover:bg-gray-50 rounded-l-xl hover:dark:bg-[#212d23]">
-        Previous
-      </button>
-      <button @click="next" type="button"
-        class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium bg-white border border-gray-100 hover:bg-gray-50 dark:border-none dark:bg-[#171f18] dark:text-white/90 hover:dark:bg-[#212d23]">
-        Next
-      </button>
-      <button @click="replace" type="button"
-        class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium bg-white border border-gray-100 hover:bg-gray-50 dark:border-none dark:bg-[#171f18] dark:text-white/90 hover:dark:bg-[#212d23]">
-        Replace
-      </button>
-      <button @click="replaceAll" type="button"
-        class="relative inline-flex items-center px-4 py-2 -ml-px text-sm font-medium bg-white border border-gray-100 hover:bg-gray-50 rounded-r-xl dark:border-none dark:bg-[#171f18] hover:dark:bg-[#212d23] dark:text-white/90">
-        Replace All
-      </button>
-
-      <div class="block font-medium text-gray-700 dark:text-white/90 py-2 px-4">
-        Results: {{ editor?.storage?.searchAndReplace?.resultIndex + 1 }} / {{
-          editor?.storage?.searchAndReplace?.results.length }}
-      </div>
-    </span>
-  </div></div></UseDraggable>
-
+    </div>
+  </UseDraggable>
 
   <div class="h-full flex flex-col tiptap">
 
-    <div class="flex space-x-5 fixed right-0 top-1 z-[12] p-3 py-2"
+    <div class="flex space-x-2 fixed right-0 top-1 z-[12] py-2"
       :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
 
-      <button class="text-black/75 dark:text-white/90" @click="toggleSearch"><svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21l-4.3-4.3"/></g></svg></button>
-      
-      <Menu as="div" class="relative inline-block text-left">
-        <MenuButton
-          class="bg-gray-50 dark:text-white/90 dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent backdrop-blur-lg border border-gray-100 flex px-3 p-1 rounded-2xl justify-center items-center text-black/75">
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24">
-            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-              <circle cx="12" cy="12" r="1" />
-              <circle cx="19" cy="12" r="1" />
-              <circle cx="5" cy="12" r="1" />
-            </g>
-          </svg>
-        </MenuButton>
+      <button
+        class="border border-gray-200 bg-white/80 text-gray-800/90 !px-[7px] rounded-2xl justify-center items-center cursor-pointer !py-[6px] inline-block drop-shadow-cool"
+        @click="toggleSearch"><svg width="23" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+          class="drop-shadow-sm">
+          <path d="M17 17L21 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+            vector-effect="non-scaling-stroke"></path>
+          <path
+            d="M19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19C15.4183 19 19 15.4183 19 11Z"
+            stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" vector-effect="non-scaling-stroke"></path>
+        </svg></button>
 
-        <transition enter-active-class="transition duration-100 ease-out"
-          enter-from-class="transform scale-95 opacity-0" enter-to-class="transform scale-100 opacity-100"
-          leave-active-class="transition duration-75 ease-in" leave-from-class="transform scale-100 opacity-100"
-          leave-to-class="transform scale-95 opacity-0">
-          <MenuItems
-            class="absolute right-0 mt-2 origin-top-right divide-y divide-gray-100 rounded-xl dark:text-white/90 dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-none bg-gray-50 border border-gray-100 overflow-hidden">
-            <div>
-              <MenuItem v-slot="{ active }">
-              <button @click="exportMarkdown" :class="[
-                active ? 'bg-white/80 dark:bg-[#1f2920] text-black' : 'text-black',
-                'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
-              ]">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20">
-                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                    stroke-width="2" d="M7 7h10v10M7 17L17 7" />
-                </svg>Save
-              </button>
-              </MenuItem>
-              <MenuItem v-slot="{ active }">
-              <button @click="importMarkdownOrText" :class="[
-                active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
-                'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
-              ]">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20">
-                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                    stroke-width="2" d="M17 7L7 17m10 0H7V7" />
-                </svg>Open
-              </button>
-              </MenuItem>
 
-              <MenuItem v-slot="{ active }" v-if="colorMode.value === 'dark'">
-              <button @click="onClick('light')" :class="[
-                active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
-                'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
-              ]">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20">
-                  <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                    <circle cx="12" cy="12" r="4" />
-                    <path
-                      d="M12 3v1m0 16v1m-9-9h1m16 0h1m-2.636-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m11.314 11.314l.707.707" />
-                  </g>
-                </svg>Light
-              </button>
-              </MenuItem>
+      <button @click="exportMarkdown" :class="[
+        'border border-gray-200 bg-white/80 text-gray-800/90 !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+      ]">
+        <svg xmlns="http://www.w3.org/2000/svg" width="23" viewBox="0 0 24 24" class="drop-shadow-sm">
+          <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+            color="currentColor">
+            <path d="M3.095 10Q3 10.687 3 11.4c0 5.302 4.03 9.6 9 9.6s9-4.298 9-9.6q0-.714-.095-1.4" />
+            <path d="M12 13V3m0 10c-.7 0-2.008-1.994-2.5-2.5M12 13c.7 0 2.008-1.994 2.5-2.5" />
+          </g>
+        </svg>
+      </button>
 
-              <MenuItem v-slot="{ active }" v-if="colorMode.value === 'light'">
-              <button @click="onClick('dark')" :class="[
-                active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
-                'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
-              ]">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20">
-                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                    stroke-width="2" d="M12 3a6 6 0 0 0 9 9a9 9 0 1 1-9-9" />
-                </svg>Dark
-              </button>
-              </MenuItem>
+      <button @click="importMarkdownOrText" :class="[
+        'border border-gray-200 bg-white/80 text-gray-800/90 !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+      ]">
+        <svg width="23" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="drop-shadow-sm">
+          <path d="M9.5 14.5L14.5 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+            vector-effect="non-scaling-stroke"></path>
+          <path
+            d="M16.8463 14.6095L19.4558 12C21.5147 9.94112 21.5147 6.60302 19.4558 4.54415C17.397 2.48528 14.0589 2.48528 12 4.54415L9.39045 7.1537M14.6095 16.8463L12 19.4558C9.94113 21.5147 6.60303 21.5147 4.54416 19.4558C2.48528 17.3969 2.48528 14.0588 4.54416 12L7.1537 9.39045"
+            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+        </svg>
+      </button>
 
-              <MenuItem v-slot="{ active }">
-              <NuxtLink to="about"><button :class="[
-                active ? 'bg-white dark:bg-[#1f2920] text-black' : 'text-black',
-                'group flex opacity-70 dark:text-white dark:bg-[#2d3d33] hover:dark:bg-[#1f2920] dark:border-transparent w-full items-center px-4 py-2 bg-white/80 hover:bg-gray-50'
-              ]">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></g></svg>About
-              </button></NuxtLink>
-              </MenuItem>
+      <button @click="onClick('light')" v-if="colorMode.value == 'dark'" :class="[
+        'border border-gray-200 bg-white/80 text-gray-800/90 !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+      ]">
+        <svg xmlns="http://www.w3.org/2000/svg" width="23" viewBox="0 0 24 24" class="drop-shadow-sm">
+          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+            d="M21.5 14.078A8.557 8.557 0 0 1 9.922 2.5C5.668 3.497 2.5 7.315 2.5 11.873a9.627 9.627 0 0 0 9.627 9.627c4.558 0 8.376-3.168 9.373-7.422"
+            color="currentColor" />
+        </svg>
 
-            </div>
-          </MenuItems>
-        </transition>
-      </Menu>
+      </button>
+
+      <button @click="onClick('light')" v-if="colorMode.value == 'light'" :class="[
+        'border border-gray-200 bg-white/80 text-gray-800/90 !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+      ]">
+        <svg width="23" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="drop-shadow-sm">
+          <path d="M17 12a5 5 0 11-10 0 5 5 0 0110 0z" stroke="currentColor" stroke-width="1.5"
+            vector-effect="non-scaling-stroke"></path>
+          <path
+            d="M12 2c-.377.333-.905 1.2 0 2m0 16c.377.333.905 1.2 0 2m7.5-17.497c-.532-.033-1.575.22-1.496 1.495M5.496 17.5c.033.532-.22 1.575-1.496 1.496M5.003 4.5c-.033.532.22 1.576 1.497 1.497M18 17.503c.532-.032 1.575.208 1.496 1.414M22 12c-.333-.377-1.2-.905-2 0m-16-.5c-.333.377-1.2.905-2 0"
+            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+        </svg>
+      </button>
+
+      <button @click="isBottomSheetOpen = true" :class="[
+        'border border-gray-200 bg-white/80 text-gray-800/90 !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+      ]">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" class="drop-shadow-sm">
+          <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+            color="currentColor">
+            <path
+              d="M6 22v-8.306c0-1.565 0-2.348.215-3.086c.214-.739.63-1.39 1.465-2.693l2.656-4.15C11.088 2.587 11.465 2 12 2s.912.588 1.664 1.764l2.656 4.151c.834 1.303 1.25 1.954 1.465 2.693c.215.738.215 1.52.215 3.086V22" />
+            <path
+              d="M7 11c.632.323 1.489.973 2.28 1c1.019.032 1.707-.863 2.72-.863s1.701.895 2.72.862c.791-.026 1.649-.676 2.28-.999m-5 1v10M10 5h4" />
+          </g>
+        </svg>
+      </button>
+
+      <UiBottomSheet :isOpen="isBottomSheetOpen" @close="isBottomSheetOpen = false" :editor="editor as any" />
+
     </div>
 
-    <div class="flex fixed justify-between w-full p-2 py-0 pt-4 bg-white/80 backdrop-blur-xl dark:bg-[#263029] z-10" v-show="!focusMode">
+    <div class="flex fixed justify-between w-full p-2 py-0 pt-4 bg-white z-10" v-show="!focusMode">
 
       <div class="flex w-full justify-between items-center space-x-2">
         <input v-model="localTitle" @input="$emit('update:title', localTitle)" placeholder="Untitled"
           class="w-full border border-none ring-0 focus:border-none px-3 dark:text-white text-black/90 outline-none bg-transparent rounded flex text-[24px]" />
 
-        <UiPopover :editor="editor as any"
-          :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'" />
 
-        <button @click="focus"
-          class="bg-gray-50 hover:bg-white hover:bg-white/80 dark:bg-[#2d3d33] dark:text-white/90 hover:dark:bg-[#1f2920] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-2xl justify-center items-center text-black/75 cursor-pointer"
-          :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
+        <button
+          class="border border-gray-200 bg-white text-gray-800 !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool"
+          title="Print" @click="focus"><svg xmlns="http://www.w3.org/2000/svg" width="22.5" viewBox="0 0 24 24"
+            class="drop-shadow-sm">
+            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+              color="currentColor">
+              <path
+                d="M7.354 18c-2.123 0-3.185 0-3.94-.453a3.04 3.04 0 0 1-1.15-1.223c-.392-.77-.287-1.787-.075-3.822c.176-1.698.264-2.547.698-3.171c.285-.41.67-.745 1.121-.977C4.695 8 5.582 8 7.354 8h9.292c1.772 0 2.659 0 3.346.354c.451.232.836.567 1.121.977c.434.624.522 1.473.698 3.172c.212 2.034.317 3.052-.076 3.821a3.04 3.04 0 0 1-1.148 1.223C19.83 18 18.769 18 16.646 18M17 8V6c0-1.886 0-2.828-.586-3.414S14.886 2 13 2h-2c-1.886 0-2.828 0-3.414.586S7 4.114 7 6v2" />
+              <path
+                d="M13.989 16H10.01c-.685 0-1.028 0-1.32.109a1.87 1.87 0 0 0-.945.8c-.168.281-.251.642-.417 1.363c-.26 1.128-.39 1.691-.301 2.143c.117.602.484 1.112.995 1.382c.382.203.918.203 1.988.203h3.978c1.07 0 1.606 0 1.988-.203c.51-.27.878-.78.995-1.382c.089-.452-.041-1.015-.3-2.143c-.167-.72-.25-1.082-.418-1.362a1.87 1.87 0 0 0-.946-.801C15.017 16 14.674 16 13.988 16M18 12h.009" />
+            </g>
+          </svg></button>
 
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="mr-1.5 opacity-20"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect width="12" height="8" x="6" y="14" rx="1"/></g></svg>
-          Print
-        </button>
 
       </div>
     </div>
@@ -167,7 +209,7 @@
 
       <floating-menu :editor="editor as any" :tippy-options="{ duration: 100 }" v-if="editor">
         <div
-          class="flex overflow-hidden bg-white/60 dark:bg-[#2d3d33] dark:border-none backdrop-blur-xl rounded-xl border text-black/70 dark:text-white/85 relative left-[5rem]">
+          class="flex overflow-hidden bg-white dark:bg-[#2d3d33] dark:border-none border-gray-200 rounded-xl border text-gray-800 dark:text-white/85 relative left-[5rem]">
           <button @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
             :class="{ 'bg-gray-100 dark:bg-[#1f2920]': editor.isActive('heading', { level: 1 }) }"
             class="rounded-l-lg hover:bg-gray-100 hover:dark:bg-[#1f2920] p-2 px-2">
@@ -230,7 +272,7 @@
 
       <bubble-menu :editor="editor as any" :tippy-options="{ duration: 100 }" v-if="editor">
         <div
-          class="flex overflow-hidden dark:bg-[#2d3d33] dark:border-none bg-white/60 border backdrop-blur-xl rounded-xl text-black/70 dark:text-white/85">
+          class="flex overflow-hidden dark:bg-[#2d3d33] dark:border-none bg-white border border-gray-200 rounded-xl text-gray-800 drop-shadow-cool dark:text-white/85">
           <button @click="editor.chain().focus().toggleBold().run()"
             :class="{ 'bg-gray-100 dark:bg-[#1f2920]': editor.isActive('bold') }"
             class="rounded-l-lg hover:dark:bg-[#1f2920] hover:bg-gray-100 p-2 px-2">
@@ -273,17 +315,23 @@
 
       <EditorContent :editor="editor as any" class="h-full overflow-auto mb-4 px-4" />
 
-      <div
-        class="bg-[#f9fafb] border-t dark:border-none dark:bg-[#2d3d33] dark:text-white/40 text-black/30 p-1.5 px-3 flex justify-between items-center fixed bottom-0 w-full select-none"
-        v-if="editor"
+      <div class="p-3 flex justify-between items-center fixed bottom-0 w-full select-none" v-if="editor"
         :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
         <div class="flex space-x-4">
 
           <div class="flex space-x-4" v-if="!editor.can().deleteTable()">
 
             <div @click="editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()"
-              class="bg-white/80 dark:text-white/90 hover:dark:bg-[#1f2b24] dark:bg-[#1f2920] dark:border-transparent backdrop-blur-lg border border-gray-100 flex px-3 p-1 rounded-2xl justify-center items-center text-black/85 cursor-pointer">
-              Insert Table
+              class="border border-gray-200 bg-gray-50 backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24" class="drop-shadow-sm">
+                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                  color="currentColor">
+                  <path
+                    d="M12 21c.28 0 .539-.127 1.058-.382l4.172-2.044C19.077 17.669 20 17.216 20 16.5v-9M12 21c-.28 0-.539-.127-1.058-.382L6.77 18.574C4.923 17.669 4 17.216 4 16.5v-9M12 21v-9" />
+                  <path
+                    d="M10.942 3.382C11.462 3.127 11.721 3 12 3c.28 0 .539.127 1.058.382l4.172 2.044C19.077 6.331 20 6.784 20 7.5s-.923 1.169-2.77 2.074l-4.172 2.044c-.52.255-.779.382-1.058.382c-.28 0-.539-.127-1.058-.382L6.77 9.574C4.923 8.669 4 8.216 4 7.5s.923-1.169 2.77-2.074z" />
+                </g>
+              </svg><span class="drop-shadow-sm">Table</span>
             </div>
 
           </div>
@@ -293,11 +341,11 @@
           <div class="flex space-x-2" v-if="editor.can().deleteTable()">
 
             <div
-              class="bg-[#ffffff] text-base dark:bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center dark:text-white/90 border-gray-100 border text-black/80 cursor-pointer space-x-2">
+              class="border border-gray-200 bg-gray-50 backdrop-blur-xl text-black !px-[7px] py-[6px] rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool space-x-1">
 
               <button @click="editor.chain().focus().deleteRow().run()" :disabled="!editor.can().deleteRow()">
 
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="text-red-600">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24" class="text-red-600">
                   <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                     stroke-width="2" d="M5 12h14" />
                 </svg>
@@ -306,9 +354,10 @@
 
               <span class="inline">Row</span>
 
-              <button @click="editor.chain().focus().addRowAfter().run()" :disabled="!editor.can().addRowAfter()">
+              <button @click="editor.chain().focus().addRowAfter().run()" :disabled="!editor.can().addRowAfter()"
+                class="text-gray-800">
 
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24">
                   <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                     stroke-width="2" d="M5 12h14m-7-7v14" />
                 </svg>
@@ -322,11 +371,11 @@
             <div class="flex space-x-2" v-if="editor.can().deleteTable()">
 
               <div
-                class="bg-[#ffffff] text-base dark:bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center border-gray-100 border dark:text-white/90 text-black/80 cursor-pointer space-x-2">
+                class="border border-gray-200 bg-gray-50 backdrop-blur-xl text-black !px-[7px] py-[6px] rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool space-x-1">
 
                 <button @click="editor.chain().focus().deleteColumn().run()" :disabled="!editor.can().deleteColumn()">
 
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="text-red-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24" class="text-red-600">
                     <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                       stroke-width="2" d="M5 12h14" />
                   </svg>
@@ -337,9 +386,9 @@
 
 
                 <button @click="editor.chain().focus().addColumnAfter().run()"
-                  :disabled="!editor.can().addColumnAfter()">
+                  :disabled="!editor.can().addColumnAfter()" class="text-gray-800">
 
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24">
                     <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                       stroke-width="2" d="M5 12h14m-7-7v14" />
                   </svg>
@@ -350,34 +399,69 @@
             </div>
 
             <div @click="editor.chain().focus().toggleHeaderCell().run()" :disabled="!editor.can().toggleHeaderCell()"
-              class="bg-[#ffffff] text-base dark:bg-[#1f2920] dark:border-transparent backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center dark:text-white/90 border-gray-100 border text-black/80 cursor-pointer space-x-2">
-              Header Cell</div>
+              class="border border-gray-200 bg-gray-50 backdrop-blur-xl text-black !px-[10px] py-[6px] rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool space-x-1">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"
+                class="drop-shadow-sm text-gray-800">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                  stroke-width="1.5"
+                  d="M3.891 3.891C5.282 2.5 7.521 2.5 12 2.5c4.478 0 6.718 0 8.109 1.391S21.5 7.521 21.5 12c0 4.478 0 6.718-1.391 8.109S16.479 21.5 12 21.5c-4.478 0-6.718 0-8.109-1.391S2.5 16.479 2.5 12c0-4.478 0-6.718 1.391-8.109"
+                  color="currentColor" />
+              </svg>
+              <span>Header Cell</span>
+            </div>
 
             <div @click="editor.chain().focus().deleteTable().run()"
-              class="text-base hover:bg-[#a61111] bg-[#b91010] dark:hover:bg-[#c10c0cd0] dark:bg-[#860d0dcd] dark:border-transparent border-gray-100 border backdrop-blur-xl flex px-3 p-1 rounded-xl justify-center items-center text-white cursor-pointer">
-              Delete</div>
+              class="text-base bg-[#e01212] hover:bg-[#cc1212] border-[#bb1212] border backdrop-blur-xl text-white !px-[10px] py-[6px] rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool space-x-1.5">
+
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                  stroke-width="1.5"
+                  d="m19.5 5.5l-.62 10.025c-.158 2.561-.237 3.842-.88 4.763a4 4 0 0 1-1.2 1.128c-.957.584-2.24.584-4.806.584c-2.57 0-3.855 0-4.814-.585a4 4 0 0 1-1.2-1.13c-.642-.922-.72-2.205-.874-4.77L4.5 5.5M3 5.5h18m-4.944 0l-.683-1.408c-.453-.936-.68-1.403-1.071-1.695a2 2 0 0 0-.275-.172C13.594 2 13.074 2 12.035 2c-1.066 0-1.599 0-2.04.234a2 2 0 0 0-.278.18c-.395.303-.616.788-1.058 1.757L8.053 5.5"
+                  color="currentColor" />
+              </svg>
+
+              <span>Delete</span>
+            </div>
 
           </div>
 
         </div>
-        <div class="sm:hidden md:flex items-center space-x-3 hidden dark:text-white/80 text-black/80 relative right-8">
+        <div class="sm:hidden md:flex items-center space-x-2 hidden text-onPrimaryContainer relative right-11">
 
-          <div>{{ characterCount }} characters</div>
-          <span class="text-sm opacity-20">|</span>
-          <div>{{ wordCount }} words</div>
-          <span class="text-sm opacity-20">|</span>
-          <div>UTF8</div>
+          <div
+            class="border border-gray-200 bg-gray-50 backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
+            {{ characterCount }} characters</div>
+          <div
+            class="border border-gray-200 bg-gray-50 backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
+            {{ wordCount }} words</div>
         </div>
       </div>
 
-      <button class="fixed bottom-3.5 text-black/80 dark:text-white/90 right-3" title="Focus Mode" @click="focus"><svg
-          xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
-          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zm20 0h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+      <button
+        class="fixed bottom-3 mx-2 right-0 border border-gray-200 bg-gray-50 backdrop-blur-xl text-gray-800 !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool"
+        title="Focus Mode" @click="focus"><svg xmlns="http://www.w3.org/2000/svg" width="23" viewBox="0 0 24 24"
+          class="drop-shadow-sm">
+          <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+            color="currentColor">
+            <path
+              d="M16.613 16.085C13.98 17.568 12.477 20.64 12 21.5V8c.415-.746 1.602-2.884 3.632-4.336c.855-.612 1.282-.918 1.825-.64c.543.28.543.896.543 2.127v8.84c0 .666 0 .999-.137 1.232c-.136.234-.508.443-1.25.862" />
+            <path
+              d="M12 7.806c-.687-.722-2.678-2.436-6.02-3.036c-1.692-.305-2.538-.457-3.26.126C2 5.48 2 6.426 2 8.321v6.809c0 1.732 0 2.598.463 3.139c.462.54 1.48.724 3.518 1.09c1.815.326 3.232.847 4.258 1.37c1.01.514 1.514.771 1.761.771s.752-.257 1.76-.771c1.027-.523 2.444-1.044 4.26-1.37c2.036-.366 3.055-.55 3.517-1.09c.463-.541.463-1.407.463-3.14V8.322c0-1.894 0-2.841-.72-3.425C20.557 4.313 19 4.77 18 5.5" />
+          </g>
         </svg></button>
 
-      <button class="fixed bottom-3.5 text-black/80 dark:text-white/90 right-14" title="Print" v-if="focusMode" @click="printPDF"><svg
-        xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6"/><rect width="12" height="8" x="6" y="14" rx="1"/></g></svg></button>
+      <button
+        class="fixed bottom-3 border border-gray-200 bg-gray-50 backdrop-blur-xl text-gray-800 !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool right-[60px]"
+        title="Print" v-if="focusMode" @click="printPDF"><svg xmlns="http://www.w3.org/2000/svg" width="23"
+          viewBox="0 0 24 24">
+          <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+            color="currentColor">
+            <path
+              d="M7.354 18c-2.123 0-3.185 0-3.94-.453a3.04 3.04 0 0 1-1.15-1.223c-.392-.77-.287-1.787-.075-3.822c.176-1.698.264-2.547.698-3.171c.285-.41.67-.745 1.121-.977C4.695 8 5.582 8 7.354 8h9.292c1.772 0 2.659 0 3.346.354c.451.232.836.567 1.121.977c.434.624.522 1.473.698 3.172c.212 2.034.317 3.052-.076 3.821a3.04 3.04 0 0 1-1.148 1.223C19.83 18 18.769 18 16.646 18M17 8V6c0-1.886 0-2.828-.586-3.414S14.886 2 13 2h-2c-1.886 0-2.828 0-3.414.586S7 4.114 7 6v2" />
+            <path
+              d="M13.989 16H10.01c-.685 0-1.028 0-1.32.109a1.87 1.87 0 0 0-.945.8c-.168.281-.251.642-.417 1.363c-.26 1.128-.39 1.691-.301 2.143c.117.602.484 1.112.995 1.382c.382.203.918.203 1.988.203h3.978c1.07 0 1.606 0 1.988-.203c.51-.27.878-.78.995-1.382c.089-.452-.041-1.015-.3-2.143c-.167-.72-.25-1.082-.418-1.362a1.87 1.87 0 0 0-.946-.801C15.017 16 14.674 16 13.988 16M18 12h.009" />
+          </g>
+        </svg></button>
 
     </div>
   </div>
@@ -406,7 +490,6 @@ import Placeholder from '@tiptap/extension-placeholder'
 import CharacterCount from '@tiptap/extension-character-count'
 import TextAlign from '@tiptap/extension-text-align'
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
-import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import FontFamily from '@tiptap/extension-font-family'
 
 import { Mathematics } from '@tiptap-pro/extension-mathematics'
@@ -429,6 +512,8 @@ import { md2pdf } from '../utils/exportPDF';
 import { all, createLowlight } from 'lowlight'
 
 import { UseDraggable } from '@vueuse/components'
+
+const isBottomSheetOpen = ref(false);
 
 function printPDF() {
   window.print()
@@ -492,7 +577,7 @@ onMounted(() => {
 
     editorProps: {
       attributes: {
-        class: 'dark:text-white/90 p-6 leading-loose py-2 text-black/80 text-[19px] min-h-[150px] w-full h-full overflow-auto border-none bg-transparent placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50',
+        class: 'dark:text-white/90 p-6 leading-loose py-2 !text-[#393939] text-[19px] min-h-[150px] w-full h-full overflow-auto border-none bg-transparent placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 !opacity-100 geist',
       },
     },
     extensions: [
@@ -633,15 +718,6 @@ const importMarkdownOrText = () => {
   input.click();
 };
 
-// const handleExportPDF = () => {
-//   if (editor.value) {
-//     const htmlContent = editor.value.getHTML();
-//     md2pdf(htmlContent, localTitle.value);
-//   } else {
-//     console.error('Editor instance is not available.');
-//   }
-// };
-
 const characterCount = computed(() => editor.value?.storage.characterCount.characters() ?? 0);
 const wordCount = computed(() => editor.value?.storage.characterCount.words() ?? 0);
 
@@ -713,7 +789,6 @@ const replace = () => {
 
 const next = () => {
   editor.value?.commands.nextSearchResult();
-  editor.value?.commands.emptyReplace()
   goToSelection();
 };
 
@@ -728,8 +803,6 @@ const clear = () => {
 };
 
 const replaceAll = () => editor.value?.commands.replaceAll();
-
-// onMounted(() => setTimeout(updateSearchReplace));
 
 onMounted(() => {
   setTimeout(updateSearchReplace);
@@ -773,9 +846,9 @@ function handleShortcut(event: KeyboardEvent) {
     exportMarkdown();
   }
 
-  if(event.ctrlKey && event.key === 't'){
+  if (event.ctrlKey && event.key === 't') {
     event.preventDefault();
-    editor.value?.commands.insertTable({rows: 3, cols: 3})
+    editor.value?.commands.insertTable({ rows: 3, cols: 3 })
   }
 }
 
@@ -792,8 +865,11 @@ function handleShortcut(event: KeyboardEvent) {
     border-radius: 0.8rem;
     font-family: 'Roboto Mono', monospace;
     margin: 1.5rem 0;
-    padding: 0.75rem 1rem;
-    @apply bg-gray-50 dark:bg-[#2d3d33] inline-block px-8 pl-5;
+    padding: 0.6rem 1rem;
+    @apply bg-[#fafcfb] border border-gray-200 dark:bg-[#2d3d33] inline-block px-8 pl-5;
+
+    filter: drop-shadow(0px 2px 5px rgba(0, 0, 0, 0.04));
+
 
     ::spelling-error {
       text-decoration: none;
@@ -802,8 +878,6 @@ function handleShortcut(event: KeyboardEvent) {
     ::grammar-error {
       text-decoration: none;
     }
-
-
 
     code {
       background: none;
@@ -892,13 +966,21 @@ function handleShortcut(event: KeyboardEvent) {
 
   /* Table-specific styling */
   table {
-    @apply border-collapse w-full table-fixed overflow-hidden m-0;
+    @apply rounded-2xl w-full overflow-hidden m-0 drop-shadow-sm;
+
+    /* Adding rounded border with smooth corners */
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    /* Light mode */
+    @apply dark:border-white/20;
+    /* Dark mode */
+    border-radius: 1rem;
+    /* Smooth rounded corners for the entire table */
 
     td,
     th {
-      @apply border box-border min-w-[1em] p-2 align-top relative;
+      @apply border p-2 align-top relative;
 
-      /* Adding transparent borders */
+      /* Adding transparent borders to cells */
       @apply border-black/10 dark:border-white/20;
 
       /* Ensure child elements have no bottom margin */
@@ -927,7 +1009,15 @@ function handleShortcut(event: KeyboardEvent) {
 
   /* Table wrapper for horizontal scroll */
   .tableWrapper {
-    @apply my-6 overflow-x-auto border-opacity-60;
+    @apply my-6 overflow-x-auto border-opacity-60 border;
+
+    /* Applying rounded corners to the wrapper */
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    /* Light mode */
+    @apply dark:border-white/20;
+    /* Dark mode */
+    border-radius: 1rem;
+    /* Smooth rounded corners for the wrapper */
   }
 
   /* Resize cursor */
@@ -935,6 +1025,7 @@ function handleShortcut(event: KeyboardEvent) {
     @apply cursor-ew-resize;
   }
 }
+
 
 h1 {
   font-size: 2rem;
@@ -991,8 +1082,8 @@ blockquote {
 }
 
 mark {
-  @apply bg-[#fcfada] text-amber-400 dark:bg-[#757142] dark:text-amber-100;
-  border-radius: 0.4rem;
+  @apply bg-[#c0fcd3] text-gray-700;
+  border-radius: 0.6rem;
   padding: 0.1rem 0.3rem;
 }
 
@@ -1013,7 +1104,7 @@ code {
 .tiptap .color::before {
   background-color: var(--color);
   /* border: 1px solid rgba(128, 128, 128, 0.3); */
-  border-radius: 8px;
+  border-radius: 10px;
   content: " ";
   display: inline-block;
   height: 1em;
@@ -1060,7 +1151,7 @@ ul[data-type="taskList"] label>input[type="checkbox"] {
   /* Remove default appearance */
   width: 20px;
   height: 20px;
-  border: 2px solid #eaeaea;
+  border: 1px solid #eaeaea;
   /* Border to match background */
   border-radius: 8px;
   /* Rounded corners */
@@ -1070,8 +1161,7 @@ ul[data-type="taskList"] label>input[type="checkbox"] {
 }
 
 ul[data-type="taskList"] label>input[type="checkbox"]:checked {
-  background-color: #00bcf0;
-  border-color: #00bcf0;
+  @apply bg-[#24d86c] border-[#28c76d]
 }
 
 ul[data-type="taskList"] label>input[type="checkbox"]:checked::after {
@@ -1115,5 +1205,4 @@ ul[data-type="taskList"] label>div {
 .tiptap .ProseMirror .search-result-current {
   background-color: rgba(13, 255, 0, 0.5);
 }
-
 </style>

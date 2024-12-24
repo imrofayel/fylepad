@@ -1,13 +1,23 @@
 export default defineNuxtConfig({
   // (optional) Enable the Nuxt devtools
-  devtools: { enabled: false },
+  devtools: { enabled: true },
+
   // Enable SSG
   ssr: false,
+
   // Enables the development server to be discoverable by other devices for mobile development
 
   telemetry: false,
 
+  postcss: {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {},
+    },
+  },
+
   devServer: { host: '0.0.0.0' },
+
   vite: {
     // Better support for Tauri CLI output
     clearScreen: false,
@@ -28,7 +38,8 @@ export default defineNuxtConfig({
       },
     },
   },
-  modules: ['@nuxt/icon', '@nuxtjs/tailwindcss', '@nuxtjs/color-mode'  ],
 
-  css: ['assets/css/main.css']
+  modules: ['@nuxt/icon', '@nuxtjs/tailwindcss', '@nuxtjs/color-mode'  ],
+  css: ['assets/css/main.css'],
+  compatibilityDate: '2024-12-23'
 });

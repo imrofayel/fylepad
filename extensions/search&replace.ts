@@ -77,11 +77,11 @@ interface TextNodesWithPosition {
 const getRegex = (
   s: string,
   disableRegex: boolean,
-  caseSensitive: boolean,
+  caseSensitive: boolean
 ): RegExp => {
   return RegExp(
     disableRegex ? s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") : s,
-    caseSensitive ? "gu" : "gui",
+    caseSensitive ? "gu" : "gui"
   );
 };
 
@@ -94,7 +94,7 @@ function processSearches(
   doc: PMNode,
   searchTerm: RegExp,
   searchResultClass: string,
-  resultIndex: number,
+  resultIndex: number
 ): ProcessedSearches {
   const decorations: Decoration[] = [];
   const results: Range[] = [];
@@ -132,7 +132,7 @@ function processSearches(
   for (const element of textNodesWithPosition) {
     const { text, pos } = element;
     const matches = Array.from(text.matchAll(searchTerm)).filter(
-      ([matchText]) => matchText.trim(),
+      ([matchText]) => matchText.trim()
     );
 
     for (const m of matches) {
@@ -169,7 +169,7 @@ function processSearches(
 const replace = (
   replaceTerm: string,
   results: Range[],
-  { state, dispatch }: { state: EditorState; dispatch: Dispatch },
+  { state, dispatch }: { state: EditorState; dispatch: Dispatch }
 ) => {
   const firstResult = results[0];
 
@@ -184,7 +184,7 @@ const rebaseNextResult = (
   replaceTerm: string,
   index: number,
   lastOffset: number,
-  results: Range[],
+  results: Range[]
 ): [number, Range[]] | null => {
   const nextIndex = index + 1;
 
@@ -207,7 +207,7 @@ const rebaseNextResult = (
 const replaceAll = (
   replaceTerm: string,
   results: Range[],
-  { tr, dispatch }: { tr: Transaction; dispatch: Dispatch },
+  { tr, dispatch }: { tr: Transaction; dispatch: Dispatch }
 ) => {
   let offset = 0;
 
@@ -224,7 +224,7 @@ const replaceAll = (
       replaceTerm,
       i,
       offset,
-      resultsCopy,
+      resultsCopy
     );
 
     if (!rebaseNextResultResponse) continue;
@@ -233,13 +233,13 @@ const replaceAll = (
     resultsCopy = rebaseNextResultResponse[1];
   }
 
-  if(dispatch){
-    dispatch(tr)
-  };
+  if (dispatch) {
+    dispatch(tr);
+  }
 };
 
 export const searchAndReplacePluginKey = new PluginKey(
-  "searchAndReplacePlugin",
+  "searchAndReplacePlugin"
 );
 
 export interface SearchAndReplaceOptions {
@@ -412,7 +412,7 @@ export const SearchAndReplace = Extension.create<
               doc,
               getRegex(searchTerm, disableRegex, caseSensitive),
               searchResultClass,
-              resultIndex,
+              resultIndex
             );
 
             editor.storage.searchAndReplace.results = results;

@@ -77,6 +77,9 @@
     "@iconify-json/material-symbols-light": "^1.2.1",
     "@vueuse/core": "^11.1.0",
     "@vueuse/nuxt": "^11.1.0",
-    "sass-embedded": "^1.79.1"
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "sass-embedded": "^1.79.1",
+    "tailwindcss": "^3.4.15"
   }
 }

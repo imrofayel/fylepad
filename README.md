@@ -1,3 +1,4 @@
+
 ## fylepad — your perfect note-taking solution!
 
 <a href="https://github.com/imrofayel/fylepad/stargazers"><img src="https://img.shields.io/github/stars/imrofayel/fylepad" alt="GitHub Repo stars"/></a>
@@ -20,6 +21,3 @@ Some of the features include extended Markdown based rich editing support, auto-
 And the best part? The app is just `5 MB`! Surprised? with its Rust core, it's blazing fast, secure, and memory-efficient — because we are not giving you a Chromium browser under the hood. 💥
 
 This is just version `1.0` — there's a lot more to look forward to! Stay tuned! Feel free to reach out or follow me on GitHub. You can even join Rofayel Labs and become part of our team! 🕹️
-
-
-
