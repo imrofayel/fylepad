@@ -41,25 +41,56 @@
         <div class="flex justify-between w-full items-center"><span
             class="inline-flex rounded-md isolate bg-white !text-[15px] drop-shadow-cool">
             <button @click="previous" type="button"
-              class="mt-1 p-2 px-3 border dark:border-none border-gray-200 rounded-xl rounded-r-none bg-gray-50/30 dark:bg-[#171f18]  text-black dark:text-white/90 flex justify-center">
-              Previous
+              class="mt-1 p-2 px-3 border dark:border-none border-gray-200 rounded-xl rounded-r-none bg-gray-50/30 dark:bg-[#171f18]  text-gray-800 dark:text-white/90 flex justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                class="drop-shadow-sm">
+                <path d="m12 19-7-7 7-7" />
+                <path d="M19 12H5" />
+              </svg>
             </button>
             <button @click="next" type="button"
-              class="mt-1 p-2 px-3 border-x-0 bg-gray-50/30 border dark:border-none border-gray-200  dark:bg-[#171f18] text-black dark:text-white/90 flex justify-center">
-              Next
+              class="mt-1 p-2 px-3 border-x-0 bg-gray-50/30 border dark:border-none border-gray-200  dark:bg-[#171f18] text-gray-800 dark:text-white/90 flex justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                class="drop-shadow-sm">
+                <path d="M5 12h14" />
+                <path d="m12 5 7 7-7 7" />
+              </svg>
             </button>
             <button @click="replace" type="button"
-              class="mt-1 p-2 px-3 bg-gray-50/30 border dark:border-none border-gray-200 dark:bg-[#171f18] text-black dark:text-white/90 flex justify-center">
-              Replace
+              class="mt-1 p-2 px-3 bg-gray-50/30 border dark:border-none border-gray-200 dark:bg-[#171f18] text-gray-800 dark:text-white/90 flex justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                class="drop-shadow-sm" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 4a2 2 0 0 1 2-2" />
+                <path d="M16 10a2 2 0 0 1-2-2" />
+                <path d="M20 2a2 2 0 0 1 2 2" />
+                <path d="M22 8a2 2 0 0 1-2 2" />
+                <path d="m3 7 3 3 3-3" />
+                <path d="M6 10V5a3 3 0 0 1 3-3h1" />
+                <rect x="2" y="14" width="8" height="8" rx="2" />
+              </svg>
             </button>
             <button @click="replaceAll" type="button"
-              class="mt-1 p-2 px-3 border-x-0 bg-gray-50/30 border dark:border-none border-gray-200 border-r rounded-r-xl dark:bg-[#171f18] text-black dark:text-white/90 flex justify-center">
-              Replace All
+              class="mt-1 p-2 px-3 border-x-0 bg-gray-50/30 border dark:border-none border-gray-200 border-r rounded-r-xl dark:bg-[#171f18] text-gray-800 dark:text-white/90 flex justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                class="drop-shadow-sm">
+                <path d="M14 14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2" />
+                <path d="M14 4a2 2 0 0 1 2-2" />
+                <path d="M16 10a2 2 0 0 1-2-2" />
+                <path d="M20 14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2" />
+                <path d="M20 2a2 2 0 0 1 2 2" />
+                <path d="M22 8a2 2 0 0 1-2 2" />
+                <path d="m3 7 3 3 3-3" />
+                <path d="M6 10V5a 3 3 0 0 1 3-3h1" />
+                <rect x="2" y="14" width="8" height="8" rx="2" />
+              </svg>
             </button>
 
           </span>
 
-          <div class="block text-base drop-shadow-sm text-black dark:text-white/90 py-2 px-4">
+          <div class="block text-[18px] drop-shadow-sm text-black dark:text-white/90 py-2 px-4">
             Results: {{ editor?.storage?.searchAndReplace?.resultIndex + 1 }} / {{
               editor?.storage?.searchAndReplace?.results.length }}
           </div>
@@ -772,8 +803,6 @@ const clear = () => {
 };
 
 const replaceAll = () => editor.value?.commands.replaceAll();
-
-// onMounted(() => setTimeout(updateSearchReplace));
 
 onMounted(() => {
   setTimeout(updateSearchReplace);
