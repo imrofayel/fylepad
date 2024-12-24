@@ -484,10 +484,6 @@ import { UseDraggable } from '@vueuse/components'
 
 const isBottomSheetOpen = ref(false);
 
-function openSheet() {
-  isBottomSheetOpen.value = !isBottomSheetOpen.value
-}
-
 function printPDF() {
   window.print()
 }

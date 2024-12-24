@@ -65,8 +65,13 @@
           <div class="flex my-3 space-x-4 items-center">
             <div
               class="bg-white border border-gray-200 text-onPrimaryContainer backdrop-blur-xl flex px-3 p-2 rounded-2xl justify-center items-center cursor-pointer drop-shadow-cool space-x-2 text-xl">
-              <span>Color</span> <input ref="colorPicker" type="color" :value="editor.getAttributes('textStyle').color"
-                @input="updateColor" class="color-picker" />
+              <span>Color</span>
+              <input ref="colorPicker" type="color" :value="editor.getAttributes('textStyle').color"
+                @input="updateColor" class="color-picker hidden" />
+              <button @click="$refs.colorPicker.click()" class="ml-2 p-1 rounded-full hover:bg-gray-100">
+                <div class="h-6 w-6 rounded-full border"
+                  :style="{ backgroundColor: editor.getAttributes('textStyle').color }" />
+              </button>
             </div>
 
             <button
