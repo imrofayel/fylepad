@@ -160,7 +160,7 @@ const emit = defineEmits(['close'])
 const selectedFont = ref('')
 const searchQuery = ref('')
 const colorPicker = ref(null)
-const currentColor = computed(() => useColorMode().value === 'dark' ? '#FFFFFF' : '#000000')
+const currentColor = ref('')
 
 const fonts = [
   'Geist',
