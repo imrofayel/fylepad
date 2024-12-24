@@ -18,7 +18,7 @@
             <div>
               <MenuButton
                 class="bg-white border border-gray-200 text-onPrimaryContainer backdrop-blur-xl flex px-3 p-2 rounded-2xl justify-center items-center cursor-pointer drop-shadow-cool">
-                <span class="mr-2 text-xl" :style="{ fontFamily: selectedFont }">{{ selectedFont || 'Select Font'
+                <span class="mr-2 text-[18px]" :style="{ fontFamily: selectedFont }">{{ selectedFont || 'Select Font'
                   }}</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 24 24" class="opacity-20">
                   <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -64,65 +64,73 @@
 
           <div class="flex my-3 space-x-4 items-center">
             <div
-              class="bg-white border border-gray-200 text-onPrimaryContainer backdrop-blur-xl flex px-3 p-2 rounded-2xl justify-center items-center cursor-pointer drop-shadow-cool space-x-2 text-xl">
+              class="bg-white border border-gray-200 text-onPrimaryContainer backdrop-blur-xl flex px-3 p-2 rounded-2xl justify-center items-center cursor-pointer drop-shadow-cool space-x-2 text-[18px]">
               <span>Color</span>
-              <input ref="colorPicker" type="color" :value="editor.getAttributes('textStyle').color"
-                @input="updateColor" class="color-picker hidden" />
+              <input ref="colorPicker" type="color" :value="currentColor" @input="updateColor"
+                class="color-picker hidden" />
               <button @click="$refs.colorPicker.click()" class="ml-2 p-1 rounded-full hover:bg-gray-100">
-                <div class="h-6 w-6 rounded-full border"
-                  :style="{ backgroundColor: editor.getAttributes('textStyle').color }" />
+                <div class="h-5 w-5 rounded-full border" :style="{ backgroundColor: currentColor }" />
               </button>
-            </div>
 
-            <button
-              class="bg-white/80 dark:text-white/90 hover:dark:bg-[#1f2b24] dark:bg-[#1f2920] dark:border-transparent backdrop-blur-lg border border-gray-100 flex px-3 p-1 rounded-2xl justify-center items-center text-black/75"
-              @click="resetColor">
-              Reset
-            </button>
+              <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24" class="drop-shadow-sm"
+                @click="resetColor">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                  stroke-width="1.5"
+                  d="m19.5 5.5l-.62 10.025c-.158 2.561-.237 3.842-.88 4.763a4 4 0 0 1-1.2 1.128c-.957.584-2.24.584-4.806.584c-2.57 0-3.855 0-4.814-.585a4 4 0 0 1-1.2-1.13c-.642-.922-.72-2.205-.874-4.77L4.5 5.5M3 5.5h18m-4.944 0l-.683-1.408c-.453-.936-.68-1.403-1.071-1.695a2 2 0 0 0-.275-.172C13.594 2 13.074 2 12.035 2c-1.066 0-1.599 0-2.04.234a2 2 0 0 0-.278.18c-.395.303-.616.788-1.058 1.757L8.053 5.5"
+                  color="currentColor" />
+              </svg>
+            </div>
           </div>
 
           <div class="flex space-x-4">
             <div class="flex space-x-4 dark:text-white/40 text-black/30">
               <div
-                class="bg-white/80 dark:text-white/90 hover:dark:bg-[#1f2b24] dark:bg-[#1f2920] dark:border-transparent backdrop-blur-lg border border-gray-100 flex px-3 p-1 rounded-2xl justify-center items-center text-black/75">
-                Text align
+                class="bg-white border border-gray-200 text-onPrimaryContainer backdrop-blur-xl flex px-3 p-2 rounded-2xl justify-center items-center cursor-pointer drop-shadow-cool space-x-1 text-[18px]">
+                <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24" class="drop-shadow-sm">
+                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="1.5"
+                    d="M10.855 8.891C11.383 8.297 11.648 8 12 8s.617.297 1.145.891l1.3 1.461c.704.79 1.055 1.185 1.055 1.648s-.351.858-1.055 1.648l-1.3 1.46c-.528.595-.793.892-1.145.892s-.617-.297-1.145-.891l-1.3-1.461C8.852 12.858 8.5 12.463 8.5 12s.351-.858 1.055-1.648zM5 12H2m20 0h-3m-7 7v3m0-20v3"
+                    color="currentColor" />
+                </svg><span>Text align</span>
+
+                <div class="pl-2 flex space-x-1 text-gray-300"><button @click="setTextAlign('left')"
+                    :class="{ 'text-gray-900 hover:text-gray-900 dark:text-white/90': isActiveAlign('left') }"
+                    class="p-1 hover:text-gray-400  rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="drop-shadow-sm">
+                      <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="1.5" d="M3 3h18M3 9h8m-8 6h18M3 21h8" color="currentColor" />
+                    </svg>
+                  </button>
+
+                  <button @click="setTextAlign('center')"
+                    :class="{ 'text-gray-900 hover:text-gray-900 dark:text-white/90': isActiveAlign('center') }"
+                    class="p-1 hover:text-gray-400  rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="drop-shadow-sm">
+                      <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="1.5" d="M3 3h18M8 9h8M3 15h18M8 21h8" color="currentColor" />
+                    </svg>
+                  </button>
+
+                  <button @click="setTextAlign('right')"
+                    :class="{ 'text-gray-900 hover:text-gray-900 dark:text-white/90': isActiveAlign('right') }"
+                    class="p-1 hover:text-gray-400  rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="drop-shadow-sm">
+                      <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="1.5" d="M3 3h18m-8 6h8M3 15h18m-8 6h8" color="currentColor" />
+                    </svg>
+                  </button>
+
+                  <button @click="setTextAlign('justify')"
+                    :class="{ 'text-gray-900 hover:text-gray-900 dark:text-white/90': isActiveAlign('justify') }"
+                    class="p-1 hover:text-gray-400 rounded-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="drop-shadow-sm">
+                      <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="1.5" d="M3 3h18M3 9h18M3 15h18M3 21h18" color="currentColor" />
+                    </svg>
+                  </button>
+                </div>
               </div>
 
-              <button @click="setTextAlign('left')"
-                :class="{ 'text-black/75 dark:text-white/90': isActiveAlign('left') }"
-                class="p-1 hover:bg-gray-100 dark:hover:bg-[#2a3828] rounded-lg transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
-                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                    stroke-width="2" d="M21 6H3m12 6H3m14 6H3" />
-                </svg>
-              </button>
-
-              <button @click="setTextAlign('center')"
-                :class="{ 'text-black/75 dark:text-white/90': isActiveAlign('center') }"
-                class="p-1 hover:bg-gray-100 dark:hover:bg-[#2a3828] rounded-lg transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
-                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                    stroke-width="2" d="M21 6H3m14 6H7m12 6H5" />
-                </svg>
-              </button>
-
-              <button @click="setTextAlign('right')"
-                :class="{ 'text-black/75 dark:text-white/90': isActiveAlign('right') }"
-                class="p-1 hover:bg-gray-100 dark:hover:bg-[#2a3828] rounded-lg transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
-                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                    stroke-width="2" d="M21 6H3m18 6H9m12 6H7" />
-                </svg>
-              </button>
-
-              <button @click="setTextAlign('justify')"
-                :class="{ 'text-black/75 dark:text-white/90': isActiveAlign('justify') }"
-                class="p-1 hover:bg-gray-100 dark:hover:bg-[#2a3828] rounded-lg transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
-                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                    stroke-width="2" d="M3 6h18M3 12h18M3 18h18" />
-                </svg>
-              </button>
             </div>
           </div>
         </div>
@@ -151,6 +159,7 @@ const emit = defineEmits(['close'])
 const selectedFont = ref('')
 const searchQuery = ref('')
 const colorPicker = ref(null)
+const currentColor = ref('#000000')
 
 const fonts = [
   'Geist',
@@ -208,10 +217,12 @@ const resetFont = () => {
 }
 
 const updateColor = (event) => {
-  props.editor.chain().focus().setColor(event.target.value).run()
+  currentColor.value = event.target.value
+  props.editor.chain().focus().setColor(currentColor.value).run()
 }
 
 const resetColor = () => {
+  currentColor.value = '#000000'
   props.editor.chain().focus().unsetColor().run()
 }
 

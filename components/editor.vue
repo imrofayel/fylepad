@@ -39,21 +39,21 @@
         </section>
 
         <div class="flex justify-between w-full items-center"><span
-            class="inline-flex rounded-md isolate !text-[15px] drop-shadow-cool">
+            class="inline-flex rounded-md isolate bg-white !text-[15px] drop-shadow-cool">
             <button @click="previous" type="button"
-              class="mt-1 p-2 px-3 border dark:border-none border-gray-200 rounded-xl rounded-r-none bg-gray-50 dark:bg-[#171f18]  text-black dark:text-white/90 flex justify-center">
-              <span class="drop-shadow-sm">Previous</span>
+              class="mt-1 p-2 px-3 border dark:border-none border-gray-200 rounded-xl rounded-r-none bg-gray-50/30 dark:bg-[#171f18]  text-black dark:text-white/90 flex justify-center">
+              Previous
             </button>
             <button @click="next" type="button"
-              class="mt-1 p-2 px-3 border-x-0 bg-gray-50 border dark:border-none border-gray-200  dark:bg-[#171f18] text-black dark:text-white/90 flex justify-center">
+              class="mt-1 p-2 px-3 border-x-0 bg-gray-50/30 border dark:border-none border-gray-200  dark:bg-[#171f18] text-black dark:text-white/90 flex justify-center">
               Next
             </button>
             <button @click="replace" type="button"
-              class="mt-1 p-2 px-3 bg-gray-50 border dark:border-none border-gray-200 dark:bg-[#171f18] text-black dark:text-white/90 flex justify-center">
+              class="mt-1 p-2 px-3 bg-gray-50/30 border dark:border-none border-gray-200 dark:bg-[#171f18] text-black dark:text-white/90 flex justify-center">
               Replace
             </button>
             <button @click="replaceAll" type="button"
-              class="mt-1 p-2 px-3 border-x-0 bg-gray-50 border dark:border-none border-gray-200 border-r rounded-r-xl dark:bg-[#171f18] text-black dark:text-white/90 flex justify-center">
+              class="mt-1 p-2 px-3 border-x-0 bg-gray-50/30 border dark:border-none border-gray-200 border-r rounded-r-xl dark:bg-[#171f18] text-black dark:text-white/90 flex justify-center">
               Replace All
             </button>
 
@@ -837,7 +837,7 @@ function handleShortcut(event: KeyboardEvent) {
     font-family: 'Roboto Mono', monospace;
     margin: 1.5rem 0;
     padding: 0.6rem 1rem;
-    @apply bg-gray-50 border border-gray-200 dark:bg-[#2d3d33] inline-block px-8 pl-5;
+    @apply bg-[#fafcfb] border border-gray-200 dark:bg-[#2d3d33] inline-block px-8 pl-5;
 
     filter: drop-shadow(0px 2px 5px rgba(0, 0, 0, 0.04));
 
