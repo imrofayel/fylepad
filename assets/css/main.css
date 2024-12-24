@@ -240,11 +240,11 @@
 
 ::-webkit-scrollbar-track {
   background: transparent; /* Background of the scrollbar track */
-  @apply dark:bg-[#1f2920] rounded-full;
+  @apply dark:bg-[#404040] rounded-full;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply dark:bg-[#3c4a3e] bg-gray-200;
+  @apply dark:bg-[#171717] bg-gray-200;
   border-radius: 1rem; /* Rounded corners for the thumb */
   border: 3px solid transparent; /* Adds padding around the thumb */
   background-clip: content-box; /* Ensures the thumb stays within bounds */
@@ -252,7 +252,7 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 0, 0, 0.7); /* Darker color on hover */
-  @apply dark:bg-[#2f3a32];
+  @apply dark:bg-[#404040];
 }
 
 ::-webkit-scrollbar-corner {
