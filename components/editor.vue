@@ -1104,7 +1104,7 @@ code {
 .tiptap .color::before {
   background-color: var(--color);
   /* border: 1px solid rgba(128, 128, 128, 0.3); */
-  border-radius: 8px;
+  border-radius: 10px;
   content: " ";
   display: inline-block;
   height: 1em;
