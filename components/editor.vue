@@ -3,7 +3,7 @@
   <UseDraggable class="absolute flex w-full items-center justify-center" style="user-select: none">
     <div class="w-full flex justify-center cursor-move z-[40] items-center">
       <div
-        class="m-8 top-0 p-4 rounded-2xl border justify-center items-center fixed border-gray-200 dark:border-none drop-shadow-cool dark:bg-[#2d3d33] bg-white z-[100] flex flex-col space-y-6"
+        class="m-8 top-0 p-4 rounded-2xl border justify-center items-center fixed dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 dark:border-none drop-shadow-cool bg-white z-[100] flex flex-col space-y-6"
         v-if="showSearch">
 
         <section class="flex gap-2">
@@ -12,13 +12,13 @@
             @click="toggleSearch">&times;</div>
           <div>
             <div
-              class="mt-1 p-2 bg-white border dark:border-none border-gray-200 rounded-xl dark:bg-[#171f18] drop-shadow-cool text-black dark:text-white/90 flex justify-center">
+              class="mt-1 p-2 px-3 bg-white border dark:border-none border-gray-200 rounded-xl dark:bg-[#171717] dark:border-[#484747] drop-shadow-cool text-black dark:text-white/90 flex justify-center">
               <Input v-model="searchTerm" @keydown.enter.prevent="updateSearchReplace" type="text" placeholder="Search"
                 autofocus="true"
                 class="placeholder:text-gray-400 dark:placeholder:text-gray-200/80 bg-transparent outline-none" />
 
               <button title="Case Sensitive" @click="toggleCase" class="px-1.5"
-                :class="caseSensitive ? 'text-gray-700' : 'opacity-40 dark:opacity-50'">
+                :class="caseSensitive ? 'text-gray-700 dark:text-white' : 'opacity-40 dark:opacity-50'">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" class="drop-shadow-sm">
                   <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                     stroke-width="1.5"
@@ -32,16 +32,16 @@
           <div>
             <div class="mt-1">
               <input v-model="replaceTerm" @keydown.enter.prevent="replace" type="text" placeholder="Replace"
-                class="mt-1 p-2 bg-white border dark:border-none border-gray-200 rounded-xl dark:bg-[#171f18] drop-shadow-cool text-black dark:text-white/90 flex justify-center outline-none focus:outline-none" />
+                class="mt-1 p-2 px-3 dark:bg-[#171717] dark:border-[#484747] bg-white border dark:border-none border-gray-200 rounded-xl drop-shadow-cool text-black dark:text-white/90 flex justify-center outline-none focus:outline-none" />
             </div>
           </div>
 
         </section>
 
         <div class="flex justify-between w-full items-center"><span
-            class="inline-flex rounded-md isolate bg-white !text-[15px] drop-shadow-cool">
+            class="inline-flex rounded-md isolate !text-[15px] drop-shadow-cool">
             <button @click="previous" type="button"
-              class="mt-1 p-2 px-3 border dark:border-none border-gray-200 rounded-xl rounded-r-none bg-gray-50/30 dark:bg-[#171f18]  text-gray-800 dark:text-white/90 flex justify-center">
+              class="mt-1 p-2 px-3 border dark:border-none border-gray-200 rounded-xl rounded-r-none bg-gray-50/30 dark:bg-[#171717] dark:border-[#484747] text-gray-800 dark:text-white/90 flex justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
                 class="drop-shadow-sm">
@@ -50,7 +50,7 @@
               </svg>
             </button>
             <button @click="next" type="button"
-              class="mt-1 p-2 px-3 border-x-0 bg-gray-50/30 border dark:border-none border-gray-200  dark:bg-[#171f18] text-gray-800 dark:text-white/90 flex justify-center">
+              class="mt-1 p-2 px-3 border-x-0 bg-gray-50/30 border dark:border-none dark:bg-[#171717] dark:border-[#484747] border-gray-200  text-gray-800 dark:text-white/90 flex justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
                 class="drop-shadow-sm">
@@ -59,7 +59,7 @@
               </svg>
             </button>
             <button @click="replace" type="button"
-              class="mt-1 p-2 px-3 bg-gray-50/30 border dark:border-none border-gray-200 dark:bg-[#171f18] text-gray-800 dark:text-white/90 flex justify-center">
+              class="mt-1 p-2 px-3 bg-gray-50/30 border dark:border-none border-gray-200 dark:bg-[#171717] dark:border-[#484747] text-gray-800 dark:text-white/90 flex justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 class="drop-shadow-sm" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M14 4a2 2 0 0 1 2-2" />
@@ -72,7 +72,7 @@
               </svg>
             </button>
             <button @click="replaceAll" type="button"
-              class="mt-1 p-2 px-3 border-x-0 bg-gray-50/30 border dark:border-none border-gray-200 border-r rounded-r-xl dark:bg-[#171f18] text-gray-800 dark:text-white/90 flex justify-center">
+              class="mt-1 p-2 px-3 border-x-0 bg-gray-50/30 border dark:border-none border-gray-200 border-r rounded-r-xl dark:bg-[#171717] dark:border-[#484747] text-gray-800 dark:text-white/90 flex justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
                 class="drop-shadow-sm">
@@ -99,13 +99,13 @@
     </div>
   </UseDraggable>
 
-  <div class="h-full flex flex-col tiptap">
+  <div class="h-full flex flex-col tiptap dark:bg-[#171717]">
 
     <div class="flex space-x-2 fixed right-0 top-1 z-[12] py-2"
       :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
 
       <button
-        class="border border-gray-200 bg-white/80 text-gray-800/90 !px-[7px] rounded-2xl justify-center items-center cursor-pointer !py-[6px] inline-block drop-shadow-cool"
+        class="border border-gray-200 bg-white/80 text-gray-800/90 !px-[7px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer !py-[6px] inline-block drop-shadow-cool"
         @click="toggleSearch"><svg width="23" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
           class="drop-shadow-sm">
           <path d="M17 17L21 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
@@ -117,7 +117,7 @@
 
 
       <button @click="exportMarkdown" :class="[
-        'border border-gray-200 bg-white/80 text-gray-800/90 !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white/80 text-gray-800/90 !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
       ]">
         <svg xmlns="http://www.w3.org/2000/svg" width="23" viewBox="0 0 24 24" class="drop-shadow-sm">
           <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -129,7 +129,7 @@
       </button>
 
       <button @click="importMarkdownOrText" :class="[
-        'border border-gray-200 bg-white/80 text-gray-800/90 !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white/80 text-gray-800/90 !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
       ]">
         <svg width="23" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="drop-shadow-sm">
           <path d="M9.5 14.5L14.5 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
@@ -141,7 +141,7 @@
       </button>
 
       <button @click="onClick('light')" v-if="colorMode.value == 'dark'" :class="[
-        'border border-gray-200 bg-white/80 text-gray-800/90 !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white/80 text-gray-800/90 !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
       ]">
         <svg xmlns="http://www.w3.org/2000/svg" width="23" viewBox="0 0 24 24" class="drop-shadow-sm">
           <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -151,8 +151,8 @@
 
       </button>
 
-      <button @click="onClick('light')" v-if="colorMode.value == 'light'" :class="[
-        'border border-gray-200 bg-white/80 text-gray-800/90 !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+      <button @click="onClick('dark')" v-if="colorMode.value == 'light'" :class="[
+        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white/80 text-gray-800/90 !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
       ]">
         <svg width="23" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="drop-shadow-sm">
           <path d="M17 12a5 5 0 11-10 0 5 5 0 0110 0z" stroke="currentColor" stroke-width="1.5"
@@ -164,7 +164,7 @@
       </button>
 
       <button @click="isBottomSheetOpen = true" :class="[
-        'border border-gray-200 bg-white/80 text-gray-800/90 !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white/80 text-gray-800/90 !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
       ]">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" class="drop-shadow-sm">
           <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -181,15 +181,14 @@
 
     </div>
 
-    <div class="flex fixed justify-between w-full p-2 py-0 pt-4 bg-white z-10" v-show="!focusMode">
+    <div class="flex fixed justify-between w-full p-2 py-0 pt-4 bg-white dark:bg-[#171717] z-10" v-show="!focusMode">
 
       <div class="flex w-full justify-between items-center space-x-2">
         <input v-model="localTitle" @input="$emit('update:title', localTitle)" placeholder="Untitled"
           class="w-full border border-none ring-0 focus:border-none px-3 dark:text-white text-black/90 outline-none bg-transparent rounded flex text-[24px]" />
 
-
         <button
-          class="border border-gray-200 bg-white text-gray-800 !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool"
+          class="border border-gray-200 bg-white text-gray-800 !px-[8px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool"
           title="Print" @click="focus"><svg xmlns="http://www.w3.org/2000/svg" width="22.5" viewBox="0 0 24 24"
             class="drop-shadow-sm">
             <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -209,10 +208,10 @@
 
       <floating-menu :editor="editor as any" :tippy-options="{ duration: 100 }" v-if="editor">
         <div
-          class="flex overflow-hidden bg-white dark:bg-[#2d3d33] dark:border-none border-gray-200 rounded-xl border text-gray-800 dark:text-white/85 relative left-[5rem]">
+          class="flex overflow-hidden bg-white dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 rounded-xl border text-gray-800 dark:text-white/85 relative left-[5rem]">
           <button @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
-            :class="{ 'bg-gray-100 dark:bg-[#1f2920]': editor.isActive('heading', { level: 1 }) }"
-            class="rounded-l-lg hover:bg-gray-100 hover:dark:bg-[#1f2920] p-2 px-2">
+            :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('heading', { level: 1 }) }"
+            class="rounded-l-lg hover:bg-gray-100 hover:dark:bg-[#171717] p-2 px-2">
 
             <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24">
               <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -222,8 +221,8 @@
           </button>
 
           <button @click="editor.chain().focus().toggleBulletList().run()"
-            :class="{ 'bg-gray-100 dark:bg-[#1f2920]': editor.isActive('bulletList') }"
-            class="hover:bg-gray-100 p-2 px-2 hover:dark:bg-[#1f2920]">
+            :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('bulletList') }"
+            class="hover:bg-gray-100 p-2 px-2 hover:dark:bg-[#171717]">
 
             <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24">
               <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -233,8 +232,8 @@
           </button>
 
           <button @click="editor.chain().focus().toggleOrderedList().run()"
-            :class="{ 'bg-gray-100 dark:bg-[#1f2920]': editor.isActive('orderedList') }"
-            class="hover:dark:bg-[#1f2920] hover:bg-gray-100 p-2 px-2">
+            :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('orderedList') }"
+            class="hover:dark:bg-[#171717] hover:bg-gray-100 p-2 px-2">
 
             <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24">
               <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -244,8 +243,8 @@
           </button>
 
           <button @click="editor.chain().focus().toggleTaskList().run()"
-            :class="{ 'bg-gray-100 dark:bg-[#1f2920]': editor.isActive('taskList', { level: 1 }) }"
-            class="hover:bg-gray-100 hover:dark:bg-[#1f2920] p-2 px-2">
+            :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('taskList', { level: 1 }) }"
+            class="hover:bg-gray-100 hover:dark:bg-[#171717] p-2 px-2">
 
             <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
               <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
@@ -258,8 +257,8 @@
           </button>
 
           <button @click="editor.chain().focus().toggleCode().run()"
-            :class="{ 'dark:bg-[#1f2920] bg-gray-100': editor.isActive('code') }"
-            class="hover:bg-gray-100 p-2 px-2 hover:dark:bg-[#1f2920]">
+            :class="{ 'dark:bg-[#171717] bg-gray-100': editor.isActive('code') }"
+            class="hover:bg-gray-100 p-2 px-2 hover:dark:bg-[#171717]">
 
             <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24">
               <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -272,10 +271,10 @@
 
       <bubble-menu :editor="editor as any" :tippy-options="{ duration: 100 }" v-if="editor">
         <div
-          class="flex overflow-hidden dark:bg-[#2d3d33] dark:border-none bg-white border border-gray-200 rounded-xl text-gray-800 drop-shadow-cool dark:text-white/85">
+          class="flex overflow-hidden dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50  bg-white border border-gray-200 rounded-xl text-gray-800 drop-shadow-cool dark:text-white/85">
           <button @click="editor.chain().focus().toggleBold().run()"
-            :class="{ 'bg-gray-100 dark:bg-[#1f2920]': editor.isActive('bold') }"
-            class="rounded-l-lg hover:dark:bg-[#1f2920] hover:bg-gray-100 p-2 px-2">
+            :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('bold') }"
+            class="rounded-l-lg hover:dark:bg-[#171717] hover:bg-gray-100 p-2 px-2">
 
             <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24">
               <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -284,8 +283,8 @@
 
           </button>
           <button @click="editor.chain().focus().toggleItalic().run()"
-            :class="{ 'bg-gray-200/50 dark:bg-[#1f2920]': editor.isActive('italic') }"
-            class="hover:dark:bg-[#1f2920] hover:bg-gray-100 p-2 px-2">
+            :class="{ 'bg-gray-200/50 dark:bg-[#171717]': editor.isActive('italic') }"
+            class="hover:dark:bg-[#171717] hover:bg-gray-100 p-2 px-2">
 
             <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24">
               <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -294,8 +293,8 @@
 
           </button>
           <button @click="editor.chain().focus().toggleStrike().run()"
-            :class="{ 'bg-gray-100 dark:bg-[#1f2920]': editor.isActive('strike') }"
-            class="hover:dark:bg-[#1f2920] hover:bg-gray-100 p-2 px-2">
+            :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('strike') }"
+            class="hover:dark:bg-[#171717] hover:bg-gray-100 p-2 px-2">
 
 
             <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24">
@@ -305,8 +304,8 @@
 
           </button>
           <button @click="editor.chain().focus().toggleHighlight().run()"
-            :class="{ 'bg-gray-100 dark:bg-[#1f2920]': editor.isActive('highlight') }"
-            class="hover:dark:bg-[#1f2920] hover:bg-gray-100 p-2 px-2 rounded-r-lg">
+            :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('highlight') }"
+            class="hover:dark:bg-[#171717] hover:bg-gray-100 p-2 px-2 rounded-r-lg">
             <div class="w-5 h-5 bg-yellow-400 dark:bg-yellow-500 rounded-full border dark:border-none border-black/50">
             </div>
           </button>
@@ -322,7 +321,7 @@
           <div class="flex space-x-4" v-if="!editor.can().deleteTable()">
 
             <div @click="editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()"
-              class="border border-gray-200 bg-gray-50 backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
+              class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-gray-50 backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
               <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24" class="drop-shadow-sm">
                 <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                   color="currentColor">
@@ -341,11 +340,12 @@
           <div class="flex space-x-2" v-if="editor.can().deleteTable()">
 
             <div
-              class="border border-gray-200 bg-gray-50 backdrop-blur-xl text-black !px-[7px] py-[6px] rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool space-x-1">
+              class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-gray-50 backdrop-blur-xl text-black !px-[7px] py-[6px] rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool space-x-1">
 
               <button @click="editor.chain().focus().deleteRow().run()" :disabled="!editor.can().deleteRow()">
 
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24" class="text-red-600">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24"
+                  class="text-red-600 dark:text-red-500">
                   <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                     stroke-width="2" d="M5 12h14" />
                 </svg>
@@ -355,7 +355,7 @@
               <span class="inline">Row</span>
 
               <button @click="editor.chain().focus().addRowAfter().run()" :disabled="!editor.can().addRowAfter()"
-                class="text-gray-800">
+                class="text-gray-800 dark:text-gray-50">
 
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24">
                   <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -371,11 +371,12 @@
             <div class="flex space-x-2" v-if="editor.can().deleteTable()">
 
               <div
-                class="border border-gray-200 bg-gray-50 backdrop-blur-xl text-black !px-[7px] py-[6px] rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool space-x-1">
+                class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-gray-50 backdrop-blur-xl text-black !px-[7px] py-[6px] rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool space-x-1">
 
                 <button @click="editor.chain().focus().deleteColumn().run()" :disabled="!editor.can().deleteColumn()">
 
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24" class="text-red-600">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24"
+                    class="text-red-600 dark:text-red-500">
                     <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                       stroke-width="2" d="M5 12h14" />
                   </svg>
@@ -386,7 +387,7 @@
 
 
                 <button @click="editor.chain().focus().addColumnAfter().run()"
-                  :disabled="!editor.can().addColumnAfter()" class="text-gray-800">
+                  :disabled="!editor.can().addColumnAfter()" class="text-gray-800 dark:text-gray-50">
 
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24">
                     <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -399,9 +400,9 @@
             </div>
 
             <div @click="editor.chain().focus().toggleHeaderCell().run()" :disabled="!editor.can().toggleHeaderCell()"
-              class="border border-gray-200 bg-gray-50 backdrop-blur-xl text-black !px-[10px] py-[6px] rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool space-x-1">
+              class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-gray-50 backdrop-blur-xl text-black !px-[10px] py-[6px] rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool space-x-1">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"
-                class="drop-shadow-sm text-gray-800">
+                class="drop-shadow-sm text-gray-800 dark:text-gray-50">
                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                   stroke-width="1.5"
                   d="M3.891 3.891C5.282 2.5 7.521 2.5 12 2.5c4.478 0 6.718 0 8.109 1.391S21.5 7.521 21.5 12c0 4.478 0 6.718-1.391 8.109S16.479 21.5 12 21.5c-4.478 0-6.718 0-8.109-1.391S2.5 16.479 2.5 12c0-4.478 0-6.718 1.391-8.109"
@@ -411,7 +412,7 @@
             </div>
 
             <div @click="editor.chain().focus().deleteTable().run()"
-              class="text-base bg-[#e01212] hover:bg-[#cc1212] border-[#bb1212] border backdrop-blur-xl text-white !px-[10px] py-[6px] rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool space-x-1.5">
+              class="text-base dark:bg-[#cc1212] dark:hover:bg-[#b81010] bg-[#e01212] hover:bg-[#cc1212] border-[#bb1212] dark:border-[#b91616] border backdrop-blur-xl text-white !px-[10px] py-[6px] rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool space-x-1.5">
 
               <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -429,16 +430,16 @@
         <div class="sm:hidden md:flex items-center space-x-2 hidden text-onPrimaryContainer relative right-11">
 
           <div
-            class="border border-gray-200 bg-gray-50 backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
+            class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-gray-50 backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
             {{ characterCount }} characters</div>
           <div
-            class="border border-gray-200 bg-gray-50 backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
+            class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-gray-50 backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
             {{ wordCount }} words</div>
         </div>
       </div>
 
       <button
-        class="fixed bottom-3 mx-2 right-0 border border-gray-200 bg-gray-50 backdrop-blur-xl text-gray-800 !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool"
+        class="fixed bottom-3 mx-2 right-0 border border-gray-200 bg-gray-50 dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 backdrop-blur-xl text-gray-800 !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool"
         title="Focus Mode" @click="focus"><svg xmlns="http://www.w3.org/2000/svg" width="23" viewBox="0 0 24 24"
           class="drop-shadow-sm">
           <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -451,7 +452,7 @@
         </svg></button>
 
       <button
-        class="fixed bottom-3 border border-gray-200 bg-gray-50 backdrop-blur-xl text-gray-800 !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool right-[60px]"
+        class="fixed bottom-3 border border-gray-200 bg-gray-50 backdrop-blur-xl dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 text-gray-800 !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool right-[60px]"
         title="Print" v-if="focusMode" @click="printPDF"><svg xmlns="http://www.w3.org/2000/svg" width="23"
           viewBox="0 0 24 24">
           <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -505,8 +506,6 @@ import { Markdown } from 'tiptap-markdown';
 import { ColorHighlighter } from '../extensions/ColorHighlighter.ts'
 
 import { SmilieReplacer } from '../extensions/SmilieReplacer.ts'
-
-import { md2pdf } from '../utils/exportPDF';
 
 // load all languages with "all" or common languages with "common"
 import { all, createLowlight } from 'lowlight'
@@ -862,11 +861,11 @@ function handleShortcut(event: KeyboardEvent) {
   }
 
   pre {
-    border-radius: 0.8rem;
+    border-radius: 1.1rem;
     font-family: 'Roboto Mono', monospace;
     margin: 1.5rem 0;
     padding: 0.6rem 1rem;
-    @apply bg-[#fafcfb] border border-gray-200 dark:bg-[#2d3d33] inline-block px-8 pl-5;
+    @apply bg-[#fafcfb] dark:text-white/50 border dark:border-white/10 border-gray-200 dark:bg-[#1e1e1e] inline-block px-8 pl-5;
 
     filter: drop-shadow(0px 2px 5px rgba(0, 0, 0, 0.04));
 
@@ -890,7 +889,7 @@ function handleShortcut(event: KeyboardEvent) {
     /* Code styling */
     .hljs-comment,
     .hljs-quote {
-      @apply text-[#616161] dark:text-[#616161];
+      @apply text-[#b5b5b5] dark:text-white/40;
       /* Same color for both themes */
       font-family: 'Roboto Mono', monospace;
     }
@@ -993,7 +992,7 @@ function handleShortcut(event: KeyboardEvent) {
       @apply font-normal text-left;
 
       /* Light and dark mode for table header */
-      @apply bg-gray-50 dark:bg-[#1f2920];
+      @apply bg-gray-50 dark:bg-[#303030];
     }
 
     /* Selected cell styling */
@@ -1002,7 +1001,7 @@ function handleShortcut(event: KeyboardEvent) {
       @apply absolute top-0 left-0 right-0 bottom-0 z-10 pointer-events-none;
 
       /* Light and dark mode for selected cell */
-      @apply bg-gray-100 dark:bg-[#182021];
+      @apply bg-gray-100/30 dark:bg-[#292828];
     }
 
   }
@@ -1082,7 +1081,7 @@ blockquote {
 }
 
 mark {
-  @apply bg-[#c0fcd3] text-gray-700;
+  @apply bg-[#c0fcd3] text-gray-700 dark:bg-gray-800 dark:text-[#c0fcd3];
   border-radius: 0.6rem;
   padding: 0.1rem 0.3rem;
 }
