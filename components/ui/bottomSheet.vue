@@ -1,24 +1,25 @@
 <template>
   <div>
     <transition name="slide-up">
-      <div
-        v-if="isOpen"
-        class="fixed bottom-0 left-0 right-0 z-50 bg-opaque rounded-t-3xl"
-        :style="{ maxHeight: '70%', overflowY: 'auto' }"
-      >
+      <div v-if="isOpen"
+        class="fixed bottom-0 left-0 right-0 z-50 bg-white border border-b-0 drop-shadow-cooltop border-gray-200 rounded-t-3xl"
+        :style="{ maxHeight: '70%', overflowY: 'auto' }">
         <div class="flex justify-end items-center px-4 py-3 dark:border-[#2a3828]">
           <button @click="closeSheet"
-          class="bg-primaryContainer/50 text-onPrimaryContainer hover:bg-primaryContainer/80 backdrop-blur-xl flex px-3 p-3 rounded-2xl justify-center items-center cursor-pointer tab-item">
-          <svg xmlns="http://www.w3.org/2000/svg" width="19" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 6L6 18M6 6l12 12"/></svg>
-        </button>
+            class="bg-white border border-gray-200 text-onPrimaryContainer backdrop-blur-xl flex px-2 p-2 rounded-2xl justify-center items-center cursor-pointer drop-shadow-cool tab-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24" class="drop-shadow-sm">
+              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                d="M19 5L5 19M5 5l14 14" color="currentColor" />
+            </svg>
+          </button>
         </div>
         <div class="px-4 pb-4">
           <Menu as="div" class="relative text-left">
             <div>
               <MenuButton
-                class=" bg-primaryContainer/50 text-onPrimaryContainer hover:bg-primaryContainer/80 flex px-3 p-3 rounded-2xl justify-center items-center cursor-pointer tab-item"
-              >
-                <span class="mr-2" :style="{ fontFamily: selectedFont }" >{{ selectedFont || 'Select Font' }}</span>
+                class="bg-white border border-gray-200 text-onPrimaryContainer backdrop-blur-xl flex px-3 p-2 rounded-2xl justify-center items-center cursor-pointer drop-shadow-cool">
+                <span class="mr-2 text-xl" :style="{ fontFamily: selectedFont }">{{ selectedFont || 'Select Font'
+                  }}</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 24 24" class="opacity-20">
                   <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                     stroke-width="2" d="m6 9l6 6l6-6" />
@@ -26,45 +27,35 @@
               </MenuButton>
             </div>
 
-            <transition
-              enter-active-class="transition duration-100 ease-out"
-              enter-from-class="transform scale-95 opacity-0"
-              enter-to-class="transform scale-100 opacity-100"
-              leave-active-class="transition duration-75 ease-in"
-              leave-from-class="transform scale-100 opacity-100"
-              leave-to-class="transform scale-95 opacity-0"
-            >
+            <transition enter-active-class="transition duration-100 ease-out"
+              enter-from-class="transform scale-95 opacity-0" enter-to-class="transform scale-100 opacity-100"
+              leave-active-class="transition duration-75 ease-in" leave-from-class="transform scale-100 opacity-100"
+              leave-to-class="transform scale-95 opacity-0">
               <MenuItems
-                class="z-10 dropdown-menu right-0  mt-4 origin-top-right divide-y rounded-2xl bg-primaryContainer/50 text-onPrimaryContainer overflow-hidden max-h-60 overflow-y-auto inline-block"
-              >
-                <div class="p-2 flex space-x-2">
-                  <input
-                    v-model="searchQuery"
-                    placeholder="Search"
-                    class="flex-1 placeholder:text-onPrimaryContainer outline-none p-2 px-4 bg-white/40 focus:ring-2 ring-primaryContainer backdrop-blur-xl rounded-xl"
-                  />
-                  <button
-                    title="Reset Font"
-                    @click="resetFont"
-                    class="bg-white/30 text-onPrimaryContainer hover:bg-white/60 backdrop-blur-xl flex px-3 p-3 rounded-2xl justify-center items-center cursor-pointer"
-                  >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6h18m-2 0v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6m3 0V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                class="z-10 right-0 mt-4 origin-top-right divide-y rounded-2xl text-onPrimaryContainer overflow-hidden max-h-60 overflow-y-auto inline-block bg-white border !border-gray-200 backdrop-blur-xl justify-center items-center cursor-pointer drop-shadow-cool">
+                <div class="p-2 inline-flex space-x-2">
+                  <input v-model="searchQuery" placeholder="Search"
+                    class="placeholder:text-gray-400 dark:placeholder:text-gray-200/80 bg-transparent outline-none mt-1 p-2 px-3 bg-white border dark:border-none border-gray-200 rounded-xl dark:bg-[#171f18] drop-shadow-cool text-black dark:text-white/90 flex justify-center" />
+                  <button title="Reset Font" @click="resetFont"
+                    class="border border-gray-200 bg-white/80 text-gray-800/90 !px-[8px]  rounded-xl justify-center items-center cursor-pointer  inline-block drop-shadow-cool">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="23" viewBox="0 0 24 24" class="drop-shadow-sm">
+                      <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="1.5"
+                        d="m19.5 5.5l-.62 10.025c-.158 2.561-.237 3.842-.88 4.763a4 4 0 0 1-1.2 1.128c-.957.584-2.24.584-4.806.584c-2.57 0-3.855 0-4.814-.585a4 4 0 0 1-1.2-1.13c-.642-.922-.72-2.205-.874-4.77L4.5 5.5M3 5.5h18m-4.944 0l-.683-1.408c-.453-.936-.68-1.403-1.071-1.695a2 2 0 0 0-.275-.172C13.594 2 13.074 2 12.035 2c-1.066 0-1.599 0-2.04.234a2 2 0 0 0-.278.18c-.395.303-.616.788-1.058 1.757L8.053 5.5"
+                        color="currentColor" />
+                    </svg>
                   </button>
                 </div>
-                <div v-if="filteredFonts.length === 0" class="p-4 text-onPrimaryContainer">
-                  No fonts found
+                <div v-if="filteredFonts.length === 0" class="p-4 text-onPrimaryContainer drop-shadow-sm">
+                  No fonts found.
                 </div>
                 <div v-else class="p-2 flex flex-col space-y-2 text-onPrimaryContainer">
                   <MenuItem v-for="font in filteredFonts" :key="font" v-slot="{ active }">
-                    <button
-                      :class="[
-                        'block w-full px-4 bg-white/30 rounded-xl text-xl py-2 text-left transition-colors hover:bg-white/60',
-                      ]"
-                      :style="{ fontFamily: font }"
-                      @click="selectFont(font)"
-                    >
-                      {{ font }}
-                    </button>
+                  <button :class="[
+                    'block w-full px-4 hover:border rounded-xl !text-xl py-2 text-left hover:bg-gray-50', active ? 'bg-gray-50' : ''
+                  ]" :style="{ fontFamily: font }" @click="selectFont(font)">
+                    {{ font }}
+                  </button>
                   </MenuItem>
                 </div>
               </MenuItems>
@@ -73,19 +64,14 @@
 
           <div class="flex my-3 space-x-4 items-center">
             <div
-              class="bg-white/80 dark:text-white/90 hover:dark:bg-[#1f2b24] dark:bg-[#1f2920] dark:border-transparent backdrop-blur-lg border border-gray-100 flex px-3 p-1 rounded-2xl justify-center items-center text-black/75">
-              Color</div>
-            <input 
-              ref="colorPicker" 
-              type="color" 
-              :value="editor.getAttributes('textStyle').color"
-              @input="updateColor"
-              class="color-picker" 
-            />
+              class="bg-white border border-gray-200 text-onPrimaryContainer backdrop-blur-xl flex px-3 p-2 rounded-2xl justify-center items-center cursor-pointer drop-shadow-cool space-x-2 text-xl">
+              <span>Color</span> <input ref="colorPicker" type="color" :value="editor.getAttributes('textStyle').color"
+                @input="updateColor" class="color-picker" />
+            </div>
+
             <button
               class="bg-white/80 dark:text-white/90 hover:dark:bg-[#1f2b24] dark:bg-[#1f2920] dark:border-transparent backdrop-blur-lg border border-gray-100 flex px-3 p-1 rounded-2xl justify-center items-center text-black/75"
-              @click="resetColor"
-            >
+              @click="resetColor">
               Reset
             </button>
           </div>
@@ -97,44 +83,36 @@
                 Text align
               </div>
 
-              <button 
-                @click="setTextAlign('left')"
+              <button @click="setTextAlign('left')"
                 :class="{ 'text-black/75 dark:text-white/90': isActiveAlign('left') }"
-                class="p-1 hover:bg-gray-100 dark:hover:bg-[#2a3828] rounded-lg transition-colors"
-              >
+                class="p-1 hover:bg-gray-100 dark:hover:bg-[#2a3828] rounded-lg transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
                   <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                     stroke-width="2" d="M21 6H3m12 6H3m14 6H3" />
                 </svg>
               </button>
 
-              <button 
-                @click="setTextAlign('center')"
+              <button @click="setTextAlign('center')"
                 :class="{ 'text-black/75 dark:text-white/90': isActiveAlign('center') }"
-                class="p-1 hover:bg-gray-100 dark:hover:bg-[#2a3828] rounded-lg transition-colors"
-              >
+                class="p-1 hover:bg-gray-100 dark:hover:bg-[#2a3828] rounded-lg transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
                   <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                     stroke-width="2" d="M21 6H3m14 6H7m12 6H5" />
                 </svg>
               </button>
 
-              <button 
-                @click="setTextAlign('right')"
+              <button @click="setTextAlign('right')"
                 :class="{ 'text-black/75 dark:text-white/90': isActiveAlign('right') }"
-                class="p-1 hover:bg-gray-100 dark:hover:bg-[#2a3828] rounded-lg transition-colors"
-              >
+                class="p-1 hover:bg-gray-100 dark:hover:bg-[#2a3828] rounded-lg transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
                   <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                     stroke-width="2" d="M21 6H3m18 6H9m12 6H7" />
                 </svg>
               </button>
 
-              <button 
-                @click="setTextAlign('justify')"
+              <button @click="setTextAlign('justify')"
                 :class="{ 'text-black/75 dark:text-white/90': isActiveAlign('justify') }"
-                class="p-1 hover:bg-gray-100 dark:hover:bg-[#2a3828] rounded-lg transition-colors"
-              >
+                class="p-1 hover:bg-gray-100 dark:hover:bg-[#2a3828] rounded-lg transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
                   <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                     stroke-width="2" d="M3 6h18M3 12h18M3 18h18" />
@@ -170,6 +148,7 @@ const searchQuery = ref('')
 const colorPicker = ref(null)
 
 const fonts = [
+  'Geist',
   'Anton',
   'Arial',
   'Amiri Arabic',
@@ -257,62 +236,5 @@ const closeSheet = () => {
 .slide-up-leave-to {
   transform: translateY(100%);
   opacity: 0;
-}
-
-.dropdown-menu {
-  scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
-}
-
-.dropdown-menu::-webkit-scrollbar {
-  width: 4px;
-}
-
-.dropdown-menu::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
-}
-
-.dropdown-menu::-webkit-scrollbar-track {
-  background-color: transparent;
-}
-
-.color-picker {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  width: 40px;
-  height: 40px;
-  padding: 0;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  background-color: transparent;
-}
-
-.color-picker::-webkit-color-swatch {
-  border: 2px solid rgb(229 231 235);
-  border-radius: 8px;
-  padding: 0;
-}
-
-.color-picker::-moz-color-swatch {
-  border: 2px solid rgb(229 231 235);
-  border-radius: 8px;
-  padding: 0;
-}
-
-/* Dark mode styles for color picker */
-:global(.dark) .color-picker::-webkit-color-swatch {
-  border-color: #2a3828;
-}
-
-:global(.dark) .color-picker::-moz-color-swatch {
-  border-color: #2a3828;
-}
-
-.color-picker:hover {
-  transform: scale(1.05);
-  transition: transform 0.2s ease;
 }
 </style>
