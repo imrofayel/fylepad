@@ -11,17 +11,17 @@
 
 ### Features
 
-1. **Markdown-Based Rich Editing**: Create and edit notes with full Markdown support. From simple lists to advanced formatting.
+1. **Markdown-Based Rich Editing**: Create and edit notes with full Markdown support. From simple lists to advanced formatting. Change the `colors` & `fonts` as well.
 
-2. **Auto-Save State**: Close the app anytime without worrying about losing progress. It remembers your work and restores it the next time you open the app.
+3. **Auto-Save State**: Close the app anytime without worrying about losing progress. It remembers your work and restores it the next time you open the app.
 
-3. **Export and Import**: Seamlessly export your notes to `PDF` or `Markdown` and import `.md` files back.
+4. **Export and Import**: Seamlessly export your notes to `PDF` or `Markdown` and import `.md` files back.
 
-4. **Multi-Tab Support**: Open and work on multiple notes simultaneously with our tab-based interface.
+5. **Multi-Tab Support**: Open and work on multiple notes simultaneously with our tab-based interface.
 
-5. **Rust Core**: Powered by a Rust core, it is fast, secure, and memory-efficient. No bulky Chromium browser under the hood here!
+6. **Rust Core**: Powered by a Rust core, it is fast, secure, and memory-efficient. No bulky Chromium browser under the hood here!
 
-6. **Lightweight**: At just `5MB`, it is a compact powerhouse that won’t bloat your system.
+7. **Lightweight**: At just `5MB`, it is a compact powerhouse that won’t bloat your system.
 
 With `light` and `dark` themes, you get a minimal looking note-taking app with bunch of features.
 
