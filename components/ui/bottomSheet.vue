@@ -160,7 +160,7 @@ const emit = defineEmits(['close'])
 const selectedFont = ref('')
 const searchQuery = ref('')
 const colorPicker = ref(null)
-const currentColor = ref('#000000')
+const currentColor = computed(() => useColorMode().value === 'dark' ? '#FFFFFF' : '#000000')
 
 const fonts = [
   'Geist',
@@ -223,7 +223,6 @@ const updateColor = (event) => {
 }
 
 const resetColor = () => {
-  currentColor.value = '#000000'
   props.editor.chain().focus().unsetColor().run()
 }
 
