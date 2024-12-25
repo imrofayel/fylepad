@@ -25,6 +25,9 @@
 
 With `light` and `dark` themes, you get a minimal looking note-taking app with bunch of features.
 
+<img src="https://github.com/user-attachments/assets/c9f2915c-8f59-40d0-982f-7128641bd8ee" width="900px">
+
+
 ### Installation
 
 Download the latest version for your platform (Windows, macOS, or Linux) from the [Release](https://github.com/imrofayel/fylepad/releases) page and follow the setup instructions.
