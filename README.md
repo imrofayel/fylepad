@@ -32,6 +32,9 @@ With `light` and `dark` themes, you get a minimal looking note-taking app with b
 
 Download the latest version for your platform (Windows, macOS, or Linux) from the [Release](https://github.com/imrofayel/fylepad/releases) page and follow the setup instructions.
 
+(MacOS aarch_64 "arm")
+As the app is currently unsigned (due to lack of a paid developer account) you can run `xattr -c fylepad_aarch64.app` to install or use the intel dmg fylepad_2.0.0_x64.dmg
+
 
 ### Built With
 
