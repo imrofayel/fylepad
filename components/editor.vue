@@ -488,6 +488,7 @@ import TextStyle from "@tiptap/extension-text-style";
 import Typography from "@tiptap/extension-typography";
 import ListKeymap from '@tiptap/extension-list-keymap'
 import Placeholder from '@tiptap/extension-placeholder'
+import Image from "@tiptap/extension-image";
 import CharacterCount from '@tiptap/extension-character-count'
 import TextAlign from '@tiptap/extension-text-align'
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
@@ -587,6 +588,7 @@ onMounted(() => {
       Superscript,
       SubScript,
       Link,
+      Image,
       Typography,
       TableRow,
       TableHeader,
