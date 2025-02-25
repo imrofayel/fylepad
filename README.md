@@ -3,7 +3,7 @@
 
 <a href="https://github.com/imrofayel/fylepad/stargazers"><img src="https://img.shields.io/github/stars/imrofayel/fylepad" alt="GitHub Repo stars"/></a> <a href="https://github.com/imrofayel/fylepad/releases/"><img src="https://custom-icon-badges.demolab.com/badge/Windows-0078D6?logo=windows11&logoColor=white" alt="Windows Release"/></a> <a href="https://github.com/imrofayel/fylepad/releases/"><img src="https://img.shields.io/badge/macOS-000000?logo=apple&logoColor=F0F0F0" alt="MacOS Release"/></a>  <a href="https://github.com/imrofayel/fylepad/releases/"><img src="https://img.shields.io/badge/Ubuntu-E95420?logo=ubuntu&logoColor=white" alt="Ubunto Release"/></a>
 
-<a href="https://www.producthunt.com/posts/fylepad?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-fylepad" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=491117&theme=neutral" alt="fylepad - your&#0032;perfect&#0032;note&#0045;taking&#0032;solution&#0033; | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+<a href="https://www.producthunt.com/posts/fylepad?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-fylepad" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=491117&theme=neutral" alt="fylepad - your&#0032;perfect&#0032;note&#0045;taking&#0032;solution&#0033; | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a> <a href="https://twelve.tools" target="_blank"><img src="https://twelve.tools/badge0-white.svg" alt="Featured on Twelve Tools" width="200" height="54"></a>
 
 **Sometimes, you want more than what you already have, and sometimes a little less.**
 
