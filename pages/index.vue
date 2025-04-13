@@ -3,8 +3,8 @@
     <div class="flex justify-between items-center w-full p-3 py-2 fixed bg-white z-10 pr-[7.5rem] dark:bg-[#171717]">
       <div class="flex space-x-2 overflow-x-auto justify-center items-center">
         <button @click="newTab"
-          class="border border-gray-200 bg-white/80 dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 text-gray-800/90 !px-[7px] py-[6px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool tab-item">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24">
+          class="border border-gray-200 bg-white/80 dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 text-black !px-[7px] py-[6px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool tab-item">
+          <svg xmlns="http://www.w3.org/2000/svg" width="22.5" viewBox="0 0 24 24">
             <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
               color="currentColor">
               <path
@@ -16,7 +16,7 @@
 
         <div class="dropdown-menu overflow-auto flex space-x-2">
           <div v-for="(tab, index) in tabs" :key="index" @click="activeTab = index"
-            class="border border-gray-200 bg-white/80 text-gray-800/90 !px-[9px] py-[3px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool tab-item tab-item"
+            class="border border-gray-200 bg-white/80 text-black !px-[9px] py-[3px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool tab-item tab-item"
             :class="{ '!bg-[#24d86c] dark:!bg-[#0c843c] dark:!border-[#196838] !border-[#28c76d] !text-white font-medium': activeTab === index }">
             <span class="tab-title">{{ tab.title || 'Untitled' }}</span>
             <button @click.stop="closeTab(index)"

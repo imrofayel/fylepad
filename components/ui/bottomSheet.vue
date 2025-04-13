@@ -6,8 +6,8 @@
         :style="{ maxHeight: '70%', overflowY: 'auto' }">
         <div class="flex justify-end items-center px-4 py-3 dark:border-[#2a3828]">
           <button @click="closeSheet"
-            class="bg-white dark:bg-[#171717] dark:border-[#484747] dark:text-gray-50 border border-gray-200 text-onPrimaryContainer backdrop-blur-xl flex px-2 p-2 rounded-2xl justify-center items-center cursor-pointer drop-shadow-cool tab-item">
-            <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24" class="drop-shadow-sm">
+            class="bg-white dark:bg-[#171717] dark:border-[#484747] dark:text-gray-50 border border-gray-200 text-black backdrop-blur-xl flex px-2 p-2 rounded-2xl justify-center items-center cursor-pointer drop-shadow-cool tab-item">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="drop-shadow-sm">
               <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                 d="M19 5L5 19M5 5l14 14" color="currentColor" />
             </svg>
@@ -17,11 +17,10 @@
           <Menu as="div" class="relative text-left">
             <div>
               <MenuButton
-                class="bg-white dark:bg-[#171717] dark:border-[#484747] dark:text-gray-50 border border-gray-200 text-onPrimaryContainer backdrop-blur-xl flex px-3 p-2 rounded-2xl justify-center items-center cursor-pointer drop-shadow-cool">
+                class="bg-white dark:bg-[#171717] dark:border-[#484747] dark:text-gray-50 border border-gray-200 text-black backdrop-blur-xl flex px-3 p-2 rounded-2xl justify-center items-center cursor-pointer drop-shadow-cool">
                 <span class="mr-2 text-[18px]" :style="{ fontFamily: selectedFont }">{{ selectedFont || 'Select Font'
                   }}</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 24 24"
-                  class="opacity-20 dark:opacity-80">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24">
                   <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                     stroke-width="2" d="m6 9l6 6l6-6" />
                 </svg>
@@ -33,7 +32,7 @@
               leave-active-class="transition duration-75 ease-in" leave-from-class="transform scale-100 opacity-100"
               leave-to-class="transform scale-95 opacity-0">
               <MenuItems
-                class="z-10 right-0 mt-4 origin-top-right divide-y rounded-2xl text-onPrimaryContainer overflow-hidden max-h-60 overflow-y-auto inline-block dark:bg-[#171717] dark:!border-[#484747] bg-white border !border-gray-200 backdrop-blur-xl justify-center items-center cursor-pointer drop-shadow-cool">
+                class="z-10 right-0 mt-4 origin-top-right divide-y rounded-2xl text-black overflow-hidden max-h-60 overflow-y-auto inline-block dark:bg-[#171717] dark:!border-[#484747] bg-white border !border-gray-200 backdrop-blur-xl justify-center items-center cursor-pointer drop-shadow-cool">
                 <div class="p-2 inline-flex space-x-2">
                   <input v-model="searchQuery" placeholder="Search"
                     class="placeholder:text-gray-400 dark:placeholder:text-gray-200/80 bg-transparent outline-none mt-1 p-2 px-3 bg-white border dark:border-none border-gray-200 rounded-xl  drop-shadow-cool text-black dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 flex justify-center" />
@@ -47,10 +46,10 @@
                     </svg>
                   </button>
                 </div>
-                <div v-if="filteredFonts.length === 0" class="p-4 text-onPrimaryContainer drop-shadow-sm">
+                <div v-if="filteredFonts.length === 0" class="p-4 text-black drop-shadow-sm">
                   No fonts found.
                 </div>
-                <div v-else class="p-2 flex flex-col space-y-2 text-onPrimaryContainer">
+                <div v-else class="p-2 flex flex-col space-y-2 text-black">
                   <MenuItem v-for="font in filteredFonts" :key="font" v-slot="{ active }">
                   <button :class="[
                     'block w-full px-4 hover:border rounded-xl !text-xl py-2 text-left 1 dark:text-white hover:bg-gray-50 dark:hover:bg-[#404040] dark:hover:border-[#414040]', active ? 'bg-gray-50' : ''
@@ -65,7 +64,7 @@
 
           <div class="flex my-3 space-x-4 items-center">
             <div
-              class="bg-white dark:bg-[#171717] dark:border-[#484747] dark:text-gray-50 border border-gray-200 text-onPrimaryContainer backdrop-blur-xl flex px-3 p-2 rounded-2xl justify-center items-center cursor-pointer drop-shadow-cool space-x-2 text-[18px]">
+              class="bg-white dark:bg-[#171717] dark:border-[#484747] dark:text-gray-50 border border-gray-200 text-black backdrop-blur-xl flex px-3 p-2 rounded-2xl justify-center items-center cursor-pointer drop-shadow-cool space-x-2 text-[18px]">
               <span>Color</span>
               <input ref="colorPicker" type="color" :value="currentColor" @input="updateColor"
                 class="color-picker hidden" />
@@ -86,7 +85,7 @@
           <div class="flex space-x-4">
             <div class="flex space-x-4 dark:text-white/40 text-black/30">
               <div
-                class="bg-white dark:bg-[#171717] dark:border-[#484747] dark:text-gray-50 border border-gray-200 text-onPrimaryContainer backdrop-blur-xl flex px-3 p-2 rounded-2xl justify-center items-center cursor-pointer drop-shadow-cool space-x-1 text-[18px]">
+                class="bg-white dark:bg-[#171717] dark:border-[#484747] dark:text-gray-50 border border-gray-200 text-black backdrop-blur-xl flex px-3 p-2 rounded-2xl justify-center items-center cursor-pointer drop-shadow-cool space-x-1 text-[18px]">
                 <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24" class="drop-shadow-sm">
                   <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                     stroke-width="1.5"
@@ -94,8 +93,8 @@
                     color="currentColor" />
                 </svg><span>Text align</span>
 
-                <div class="pl-2 flex space-x-1 text-gray-400 dark:text-white/40"><button @click="setTextAlign('left')"
-                    :class="{ 'text-gray-900 hover:text-gray-900 dark:text-white/90 dark:hover:text-white/90': isActiveAlign('left') }"
+                <div class="pl-2 flex space-x-1 text-black/40 dark:text-white/40"><button @click="setTextAlign('left')"
+                    :class="{ 'text-black hover:text-black dark:text-white/90 dark:hover:text-white/90': isActiveAlign('left') }"
                     class="p-1 hover:text-gray-500 dark:hover:text-gray-200 rounded-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="drop-shadow-sm">
                       <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -104,7 +103,7 @@
                   </button>
 
                   <button @click="setTextAlign('center')"
-                    :class="{ 'text-gray-900 hover:text-gray-900 dark:text-white/90 dark:hover:text-white/90': isActiveAlign('center') }"
+                    :class="{ 'text-black hover:text-black dark:text-white/90 dark:hover:text-white/90': isActiveAlign('center') }"
                     class="p-1 hover:text-gray-500 dark:hover:text-gray-200 rounded-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="drop-shadow-sm">
                       <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -113,7 +112,7 @@
                   </button>
 
                   <button @click="setTextAlign('right')"
-                    :class="{ 'text-gray-900 hover:text-gray-900 dark:text-white/90 dark:hover:text-white/90': isActiveAlign('right') }"
+                    :class="{ 'text-black hover:text-black dark:text-white/90 dark:hover:text-white/90': isActiveAlign('right') }"
                     class="p-1 hover:text-gray-500 dark:hover:text-gray-200 rounded-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="drop-shadow-sm">
                       <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -122,7 +121,7 @@
                   </button>
 
                   <button @click="setTextAlign('justify')"
-                    :class="{ 'text-gray-900 hover:text-gray-900 dark:text-white/90 dark:hover:text-white/90': isActiveAlign('justify') }"
+                    :class="{ 'text-black hover:text-black dark:text-white/90 dark:hover:text-white/90': isActiveAlign('justify') }"
                     class="p-1 hover:text-gray-500 dark:hover:text-gray-200 rounded-lg">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="drop-shadow-sm">
                       <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"

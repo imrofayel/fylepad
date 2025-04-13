@@ -41,7 +41,7 @@
         <div class="flex justify-between w-full items-center"><span
             class="inline-flex rounded-md isolate !text-[15px] drop-shadow-cool">
             <button @click="previous" type="button"
-              class="mt-1 p-2 px-3 border dark:border-none border-gray-200 rounded-xl rounded-r-none bg-gray-50/30 dark:bg-[#171717] dark:border-[#484747] text-gray-800 dark:text-white/90 flex justify-center">
+              class="mt-1 p-2 px-3 border dark:border-none border-gray-200 rounded-xl rounded-r-none bg-gray-50/30 dark:bg-[#171717] dark:border-[#484747] text-black dark:text-white/90 flex justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
                 class="drop-shadow-sm">
@@ -50,7 +50,7 @@
               </svg>
             </button>
             <button @click="next" type="button"
-              class="mt-1 p-2 px-3 border-x-0 bg-gray-50/30 border dark:border-none dark:bg-[#171717] dark:border-[#484747] border-gray-200  text-gray-800 dark:text-white/90 flex justify-center">
+              class="mt-1 p-2 px-3 border-x-0 bg-gray-50/30 border dark:border-none dark:bg-[#171717] dark:border-[#484747] border-gray-200  text-black dark:text-white/90 flex justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
                 class="drop-shadow-sm">
@@ -59,7 +59,7 @@
               </svg>
             </button>
             <button @click="replace" type="button"
-              class="mt-1 p-2 px-3 bg-gray-50/30 border dark:border-none border-gray-200 dark:bg-[#171717] dark:border-[#484747] text-gray-800 dark:text-white/90 flex justify-center">
+              class="mt-1 p-2 px-3 bg-gray-50/30 border dark:border-none border-gray-200 dark:bg-[#171717] dark:border-[#484747] text-black dark:text-white/90 flex justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 class="drop-shadow-sm" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M14 4a2 2 0 0 1 2-2" />
@@ -72,7 +72,7 @@
               </svg>
             </button>
             <button @click="replaceAll" type="button"
-              class="mt-1 p-2 px-3 border-x-0 bg-gray-50/30 border dark:border-none border-gray-200 border-r rounded-r-xl dark:bg-[#171717] dark:border-[#484747] text-gray-800 dark:text-white/90 flex justify-center">
+              class="mt-1 p-2 px-3 border-x-0 bg-gray-50/30 border dark:border-none border-gray-200 border-r rounded-r-xl dark:bg-[#171717] dark:border-[#484747] text-black dark:text-white/90 flex justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
                 class="drop-shadow-sm">
@@ -105,8 +105,8 @@
       :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
 
       <button
-        class="border border-gray-200 bg-white/80 text-gray-800/90 !px-[7px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer !py-[6px] inline-block drop-shadow-cool"
-        @click="toggleSearch"><svg width="23" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+        class="border border-gray-200 bg-white text-black !px-[7px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer !py-[6px] inline-block drop-shadow-cool"
+        @click="toggleSearch"><svg width="21" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
           class="drop-shadow-sm">
           <path d="M17 17L21 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
             vector-effect="non-scaling-stroke"></path>
@@ -117,9 +117,9 @@
 
 
       <button @click="exportMarkdown" :class="[
-        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white/80 text-gray-800/90 !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
       ]">
-        <svg xmlns="http://www.w3.org/2000/svg" width="23" viewBox="0 0 24 24" class="drop-shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24" class="drop-shadow-sm">
           <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
             color="currentColor">
             <path d="M3.095 10Q3 10.687 3 11.4c0 5.302 4.03 9.6 9 9.6s9-4.298 9-9.6q0-.714-.095-1.4" />
@@ -129,9 +129,9 @@
       </button>
 
       <button @click="importMarkdownOrText" :class="[
-        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white/80 text-gray-800/90 !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
       ]">
-        <svg width="23" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="drop-shadow-sm">
+        <svg width="21" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="drop-shadow-sm">
           <path d="M9.5 14.5L14.5 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
             vector-effect="non-scaling-stroke"></path>
           <path
@@ -141,9 +141,9 @@
       </button>
 
       <button @click="onClick('light')" v-if="colorMode.value == 'dark'" :class="[
-        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white/80 text-gray-800/90 !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
       ]">
-        <svg xmlns="http://www.w3.org/2000/svg" width="23" viewBox="0 0 24 24" class="drop-shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24" class="drop-shadow-sm">
           <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
             d="M21.5 14.078A8.557 8.557 0 0 1 9.922 2.5C5.668 3.497 2.5 7.315 2.5 11.873a9.627 9.627 0 0 0 9.627 9.627c4.558 0 8.376-3.168 9.373-7.422"
             color="currentColor" />
@@ -152,9 +152,9 @@
       </button>
 
       <button @click="onClick('dark')" v-if="colorMode.value == 'light'" :class="[
-        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white/80 text-gray-800/90 !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
       ]">
-        <svg width="23" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="drop-shadow-sm">
+        <svg width="21" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="drop-shadow-sm">
           <path d="M17 12a5 5 0 11-10 0 5 5 0 0110 0z" stroke="currentColor" stroke-width="1.5"
             vector-effect="non-scaling-stroke"></path>
           <path
@@ -164,9 +164,9 @@
       </button>
 
       <button @click="isBottomSheetOpen = true" :class="[
-        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white/80 text-gray-800/90 !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
       ]">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" class="drop-shadow-sm">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24" class="drop-shadow-sm">
           <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
             color="currentColor">
             <path
@@ -188,8 +188,8 @@
           class="w-full border border-none ring-0 focus:border-none px-3 dark:text-white text-black/90 outline-none bg-transparent rounded flex text-[24px]" />
 
         <button
-          class="border border-gray-200 bg-white text-gray-800 !px-[8px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool"
-          title="Print" @click="focus"><svg xmlns="http://www.w3.org/2000/svg" width="22.5" viewBox="0 0 24 24"
+          class="border border-gray-200 bg-white text-black !px-[8px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool"
+          title="Print" @click="focus"><svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24"
             class="drop-shadow-sm">
             <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
               color="currentColor">
@@ -206,111 +206,9 @@
 
     <div class="flex-grow mt-12">
 
-      <floating-menu :editor="editor as any" :tippy-options="{ duration: 100 }" v-if="editor">
-        <div
-          class="flex overflow-hidden bg-white dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 rounded-xl border text-gray-800 dark:text-white/85 relative left-[5rem]">
-          <button @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
-            :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('heading', { level: 1 }) }"
-            class="rounded-l-lg hover:bg-gray-100 hover:dark:bg-[#171717] p-2 px-2">
+      <UiFloatingMenu :editor="editor as any"/>
 
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24">
-              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M4 12h8m-8 6V6m8 12V6m5 6l3-2v8" />
-            </svg>
-
-          </button>
-
-          <button @click="editor.chain().focus().toggleBulletList().run()"
-            :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('bulletList') }"
-            class="hover:bg-gray-100 p-2 px-2 hover:dark:bg-[#171717]">
-
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24">
-              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
-            </svg>
-
-          </button>
-
-          <button @click="editor.chain().focus().toggleOrderedList().run()"
-            :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('orderedList') }"
-            class="hover:dark:bg-[#171717] hover:bg-gray-100 p-2 px-2">
-
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24">
-              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1" />
-            </svg>
-
-          </button>
-
-          <button @click="editor.chain().focus().toggleTaskList().run()"
-            :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('taskList', { level: 1 }) }"
-            class="hover:bg-gray-100 hover:dark:bg-[#171717] p-2 px-2">
-
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
-              <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                <rect width="7" height="7" x="3" y="3" rx="1" />
-                <rect width="7" height="7" x="3" y="14" rx="1" />
-                <path d="M14 4h7m-7 5h7m-7 6h7m-7 5h7" />
-              </g>
-            </svg>
-
-          </button>
-
-          <button @click="editor.chain().focus().toggleCode().run()"
-            :class="{ 'dark:bg-[#171717] bg-gray-100': editor.isActive('code') }"
-            class="hover:bg-gray-100 p-2 px-2 hover:dark:bg-[#171717]">
-
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24">
-              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="m16 18l6-6l-6-6M8 6l-6 6l6 6" />
-            </svg>
-
-          </button>
-        </div>
-      </floating-menu>
-
-      <bubble-menu :editor="editor as any" :tippy-options="{ duration: 100 }" v-if="editor">
-        <div
-          class="flex overflow-hidden dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50  bg-white border border-gray-200 rounded-xl text-gray-800 drop-shadow-cool dark:text-white/85">
-          <button @click="editor.chain().focus().toggleBold().run()"
-            :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('bold') }"
-            class="rounded-l-lg hover:dark:bg-[#171717] hover:bg-gray-100 p-2 px-2">
-
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24">
-              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8" class="relative top-0.5" />
-            </svg>
-
-          </button>
-          <button @click="editor.chain().focus().toggleItalic().run()"
-            :class="{ 'bg-gray-200/50 dark:bg-[#171717]': editor.isActive('italic') }"
-            class="hover:dark:bg-[#171717] hover:bg-gray-100 p-2 px-2">
-
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24">
-              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M19 4h-9m4 16H5M15 4L9 20" class="relative top-0.5" />
-            </svg>
-
-          </button>
-          <button @click="editor.chain().focus().toggleStrike().run()"
-            :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('strike') }"
-            class="hover:dark:bg-[#171717] hover:bg-gray-100 p-2 px-2">
-
-
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24">
-              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M16 4H9a3 3 0 0 0-2.83 4M14 12a4 4 0 0 1 0 8H6m-2-8h16" class="relative top-0.5" />
-            </svg>
-
-          </button>
-          <button @click="editor.chain().focus().toggleHighlight().run()"
-            :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('highlight') }"
-            class="hover:dark:bg-[#171717] hover:bg-gray-100 p-2 px-2 rounded-r-lg">
-            <div class="w-5 h-5 bg-yellow-400 dark:bg-yellow-500 rounded-full border dark:border-none border-black/50">
-            </div>
-          </button>
-        </div>
-      </bubble-menu>
+      <UiBubbleMenu :editor="editor as any"/>
 
       <EditorContent :editor="editor as any" class="h-full overflow-auto mb-4 px-4" />
 
@@ -355,7 +253,7 @@
               <span class="inline">Row</span>
 
               <button @click="editor.chain().focus().addRowAfter().run()" :disabled="!editor.can().addRowAfter()"
-                class="text-gray-800 dark:text-gray-50">
+                class="text-black dark:text-gray-50">
 
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24">
                   <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -387,7 +285,7 @@
 
 
                 <button @click="editor.chain().focus().addColumnAfter().run()"
-                  :disabled="!editor.can().addColumnAfter()" class="text-gray-800 dark:text-gray-50">
+                  :disabled="!editor.can().addColumnAfter()" class="text-black dark:text-gray-50">
 
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24">
                     <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -402,7 +300,7 @@
             <div @click="editor.chain().focus().toggleHeaderCell().run()" :disabled="!editor.can().toggleHeaderCell()"
               class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-gray-50 backdrop-blur-xl text-black !px-[10px] py-[6px] rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool space-x-1">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"
-                class="drop-shadow-sm text-gray-800 dark:text-gray-50">
+                class="drop-shadow-sm text-black dark:text-gray-50">
                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                   stroke-width="1.5"
                   d="M3.891 3.891C5.282 2.5 7.521 2.5 12 2.5c4.478 0 6.718 0 8.109 1.391S21.5 7.521 21.5 12c0 4.478 0 6.718-1.391 8.109S16.479 21.5 12 21.5c-4.478 0-6.718 0-8.109-1.391S2.5 16.479 2.5 12c0-4.478 0-6.718 1.391-8.109"
@@ -439,8 +337,8 @@
       </div>
 
       <button
-        class="fixed bottom-3 mx-2 right-0 border border-gray-200 bg-gray-50 dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 backdrop-blur-xl text-gray-800 !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool"
-        title="Focus Mode" @click="focus"><svg xmlns="http://www.w3.org/2000/svg" width="23" viewBox="0 0 24 24"
+        class="fixed bottom-3 mx-2 right-0 border border-gray-200 bg-gray-50 dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 backdrop-blur-xl text-black !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool"
+        title="Focus Mode" @click="focus"><svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24"
           class="drop-shadow-sm">
           <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
             color="currentColor">
@@ -452,8 +350,8 @@
         </svg></button>
 
       <button
-        class="fixed bottom-3 border border-gray-200 bg-gray-50 backdrop-blur-xl dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 text-gray-800 !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool right-[60px]"
-        title="Print" v-if="focusMode" @click="printPDF"><svg xmlns="http://www.w3.org/2000/svg" width="23"
+        class="fixed bottom-3 border border-gray-200 bg-gray-50 backdrop-blur-xl dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 text-black !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool right-[60px]"
+        title="Print" v-if="focusMode" @click="printPDF"><svg xmlns="http://www.w3.org/2000/svg" width="21"
           viewBox="0 0 24 24">
           <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
             color="currentColor">
@@ -624,18 +522,19 @@ onMounted(() => {
       CharacterCount.configure({
         limit: Infinity,
       }),
-      Placeholder.configure({
-        includeChildren: true,
-        placeholder: ({ node }) => {
-          if (node.type.name === 'heading') {
-            return 'heading'
-          }
-          if (node.type.name === 'paragraph') {
-            return 'Begin!'
-          }
-          return ''
-        },
-      }),
+      // [FEATURE]
+      // Placeholder.configure({
+      //   includeChildren: true,
+      //   placeholder: ({ node }) => {
+      //     if (node.type.name === 'heading') {
+      //       return 'heading'
+      //     }
+      //     if (node.type.name === 'paragraph') {
+      //       return 'Begin!'
+      //     }
+      //     return ''
+      //   },
+      // }),
     ],
     onUpdate: ({ editor }) => {
       emit('update:content', editor.getJSON());
