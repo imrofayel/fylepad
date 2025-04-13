@@ -69,25 +69,7 @@
 import { ref, reactive, onMounted, watch } from 'vue';
 import { fs, path } from '@tauri-apps/api';
 
-import { appWindow } from '@tauri-apps/api/window';
-
-async function closeWindow() {
-  await appWindow.close();
-}
-
-async function minimizeWindow() {
-  await appWindow.minimize();
-}
-
-async function maximizeWindow() {
-  await appWindow.maximize();
-}
-
 const colorMode = useColorMode()
-
-function onClick(val: string) {
-  colorMode.preference = val
-}
 
 interface Tab {
   title: string;
@@ -96,7 +78,7 @@ interface Tab {
 
 const tabs = reactive<Tab[]>([{ title: 'Untitled', content: '' }]);
 const activeTab = ref(0);
-const fileInput = ref<HTMLInputElement | null>(null);
+// const fileInput = ref<HTMLInputElement | null>(null);
 
 // Function to save the app state
 async function saveAppState() {
@@ -170,6 +152,9 @@ const closeTab = (index: number) => {
     if (activeTab.value >= index && activeTab.value > 0) {
       activeTab.value--;
     }
+  } else {
+    tabs.splice(index, 1);
+    newTab()
   }
 };
 
@@ -180,41 +165,6 @@ const updateTabTitle = (newTitle: string) => {
 const updateTabContent = (content: any) => {
   tabs[activeTab.value].content = content;
 };
-
-// const exportJson = () => {
-//   const exportData = {
-//     title: tabs[activeTab.value].title,
-//     content: tabs[activeTab.value].content,
-//   };
-
-//   const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
-//   const url = URL.createObjectURL(blob);
-//   const link = document.createElement('a');
-//   link.href = url;
-//   link.download = `${exportData.title || 'untitled'}.json`;
-//   link.click();
-//   URL.revokeObjectURL(url);
-// };
-
-// const importJson = (event: Event) => {
-//   const file = (event.target as HTMLInputElement).files?.[0];
-//   if (!file) return;
-
-//   const reader = new FileReader();
-//   reader.onload = (e) => {
-//     const result = e.target?.result;
-//     if (result) {
-//       const importedData = JSON.parse(result.toString());
-//       tabs[activeTab.value].title = importedData.title || 'Untitled';
-//       tabs[activeTab.value].content = importedData.content;
-//     }
-//   };
-//   reader.readAsText(file);
-// };
-
-// const triggerFileInput = () => {
-//   fileInput.value?.click();
-// };
 
 onMounted(() => {
   // Add the event listener when the component is mounted
