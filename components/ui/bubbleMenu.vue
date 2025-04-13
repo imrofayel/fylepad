@@ -33,6 +33,22 @@
             </svg>
 
           </button>
+
+          <button @click="setLink"
+            :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('link') }"
+            class="hover:dark:bg-[#171717] hover:bg-gray-100 p-2 px-2">
+
+
+            <svg width="21" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9.5 14.5L14.5 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+            vector-effect="non-scaling-stroke"></path>
+          <path
+            d="M16.8463 14.6095L19.4558 12C21.5147 9.94112 21.5147 6.60302 19.4558 4.54415C17.397 2.48528 14.0589 2.48528 12 4.54415L9.39045 7.1537M14.6095 16.8463L12 19.4558C9.94113 21.5147 6.60303 21.5147 4.54416 19.4558C2.48528 17.3969 2.48528 14.0588 4.54416 12L7.1537 9.39045"
+            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
+        </svg>
+
+          </button>
+
           <button @click="editor.chain().focus().toggleHighlight().run()"
             :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('highlight') }"
             class="hover:dark:bg-[#171717] hover:bg-gray-100 p-2 px-2 rounded-r-lg">
@@ -53,6 +69,31 @@ const props = defineProps({
     required: true
   }
 })
+
+  const setLink = () => {
+    if (!props.editor) return;
+
+    const previousUrl = props.editor.getAttributes('link').href;
+    const url = window.prompt('URL', previousUrl);
+
+    // cancelled
+    if (url === null) {
+      return;
+    }
+
+    // empty
+    if (url === '') {
+      props.editor.chain().focus().extendMarkRange('link').unsetLink().run();
+      return;
+    }
+
+    // update link
+    try {
+      props.editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
+    } catch (e: any) {
+      alert(e.message);
+    }
+  };
 
 </script>
 

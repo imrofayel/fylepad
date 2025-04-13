@@ -410,6 +410,18 @@ import { all, createLowlight } from 'lowlight'
 
 import { UseDraggable } from '@vueuse/components'
 
+import {
+  Hyperlink,
+} from "../extensions/hyperlink";
+
+import {
+  previewHyperlinkModal,
+} from "../extensions/modals/previewHyperlink";
+
+import {
+  setHyperlinkModal,
+} from "../extensions/modals/setHyperlink";
+
 const isBottomSheetOpen = ref(false);
 
 function printPDF() {
@@ -484,7 +496,6 @@ onMounted(() => {
       Table.configure({ resizable: true }),
       Superscript,
       SubScript,
-      Link,
       Typography,
       TableRow,
       TableHeader,
@@ -497,7 +508,8 @@ onMounted(() => {
       Mathematics,
       SearchAndReplace.configure(),
       Link.configure({
-        autolink: true,
+        autolink: false,
+        openOnClick: false
       }),
 
       Emoji.configure({
@@ -522,19 +534,14 @@ onMounted(() => {
       CharacterCount.configure({
         limit: Infinity,
       }),
-      // [FEATURE]
-      // Placeholder.configure({
-      //   includeChildren: true,
-      //   placeholder: ({ node }) => {
-      //     if (node.type.name === 'heading') {
-      //       return 'heading'
-      //     }
-      //     if (node.type.name === 'paragraph') {
-      //       return 'Begin!'
-      //     }
-      //     return ''
-      //   },
-      // }),
+      Hyperlink.configure({
+      hyperlinkOnPaste: true,
+      openOnClick: true,
+      modals: {
+        previewHyperlink: previewHyperlinkModal,
+        setHyperlink: setHyperlinkModal,
+      },
+    }),
     ],
     onUpdate: ({ editor }) => {
       emit('update:content', editor.getJSON());
@@ -753,6 +760,154 @@ function handleShortcut(event: KeyboardEvent) {
 </script>
 
 <style>
+
+
+  .tippy-box {
+    .hyperlink-preview-modal,
+    .hyperlink-set-modal,
+    .hyperlink-edit-modal {
+      background-color: #fff;
+      border-radius: 10px;
+      border: 1px solid #dadce0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 6px;
+      box-shadow: 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+      margin-top: -6px;
+    }
+
+    .hyperlink-preview-modal__metadata,
+    .hyperlink-set-modal__metadata,
+    .hyperlink-edit-modal__metadata {
+      width: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-direction: row-reverse;
+    }
+
+    .hyperlink-preview-modal__metadata a,
+    .hyperlink-set-modal__metadata a,
+    .hyperlink-edit-modal__metadata a {
+      font-size: 0.9rem;
+      margin-right: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .hyperlink-preview-modal__metadata img,
+    .hyperlink-set-modal__metadata img,
+    .hyperlink-edit-modal__metadata img {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    .hyperlink-preview-modal__remove-button,
+    .hyperlink-set-modal__remove-button,
+    .hyperlink-edit-modal__remove-button,
+    .hyperlink-preview-modal__edit-button,
+    .hyperlink-set-modal__edit-button,
+    .hyperlink-edit-modal__edit-button,
+    .hyperlink-preview-modal__copy-button,
+    .hyperlink-set-modal__copy-button,
+    .hyperlink-edit-modal__copy-button,
+    .hyperlink-preview-modal__apply-button,
+    .hyperlink-set-modal__apply-button,
+    .hyperlink-edit-modal__apply-button {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      margin: 0 0.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.1s ease-in-out;
+    }
+
+    .hyperlink-preview-modal__remove-button:hover,
+    .hyperlink-set-modal__remove-button:hover,
+    .hyperlink-edit-modal__remove-button:hover,
+    .hyperlink-preview-modal__edit-button:hover,
+    .hyperlink-set-modal__edit-button:hover,
+    .hyperlink-edit-modal__edit-button:hover,
+    .hyperlink-preview-modal__copy-button:hover,
+    .hyperlink-set-modal__copy-button:hover,
+    .hyperlink-edit-modal__copy-button:hover,
+    .hyperlink-preview-modal__apply-button:hover,
+    .hyperlink-set-modal__apply-button:hover,
+    .hyperlink-edit-modal__apply-button:hover {
+      background-color: #eee;
+    }
+
+    .hyperlink-preview-modal__remove-button > svg,
+    .hyperlink-set-modal__remove-button > svg,
+    .hyperlink-edit-modal__remove-button > svg,
+    .hyperlink-preview-modal__edit-button > svg,
+    .hyperlink-set-modal__edit-button > svg,
+    .hyperlink-edit-modal__edit-button > svg,
+    .hyperlink-preview-modal__copy-button > svg,
+    .hyperlink-set-modal__copy-button > svg,
+    .hyperlink-edit-modal__copy-button > svg,
+    .hyperlink-preview-modal__apply-button > svg,
+    .hyperlink-set-modal__apply-button > svg,
+    .hyperlink-edit-modal__apply-button > svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .hyperlink-preview-modal form,
+    .hyperlink-set-modal form,
+    .hyperlink-edit-modal form {
+      display: flex;
+      align-items: flex-end;
+      width: 100%;
+    }
+
+    .hyperlink-preview-modal form input,
+    .hyperlink-set-modal form input,
+    .hyperlink-edit-modal form input {
+      border: 1px solid #dadce0;
+      border-radius: 6px;
+      padding: 0.4rem 0.8rem;
+      margin-bottom: 0.2rem;
+      width: 100%;
+    }
+
+    .hyperlink-preview-modal form input:last-of-type,
+    .hyperlink-set-modal form input:last-of-type,
+    .hyperlink-edit-modal form input:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .hyperlink-set-modal__buttons-wrapper,
+    .hyperlink-edit-modal__buttons-wrapper {
+      margin-left: 8px;
+    }
+
+    .hyperlink-set-modal__buttons-wrapper button,
+    .hyperlink-edit-modal__buttons-wrapper button {
+      border-radius: 6px;
+      padding: 4px 14px;
+      width: 70px;
+      margin-bottom: 0.2rem;
+      color: #1a73e8;
+    }
+
+    .hyperlink-set-modal__buttons-wrapper button:hover,
+    .hyperlink-edit-modal__buttons-wrapper button:hover {
+      background: rgba(26, 115, 232, 0.04);
+      color: #174ea6;
+    }
+
+    .tippy-svg-arrow {
+      top: -6px !important;
+    }
+  }
+
 /* Basic editor styles */
 .tiptap {
   :first-child {

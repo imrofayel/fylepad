@@ -65,6 +65,7 @@
     "@tiptap/vue-3": "^2.7.1",
     "@vueuse/components": "^11.1.0",
     "katex": "^0.16.11",
+    "linkifyjs": "^4.2.0",
     "lowlight": "^3.1.0",
     "nuxt": "^3.13.2",
     "tippy.js": "^6.3.7",
