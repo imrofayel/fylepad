@@ -92,7 +92,7 @@ export const editHyperlinkHandler = (options: EditHyperlinkModalOptions) => {
 
   // Show tooltip
   options.tippy.update(options.editor.view, {
-    arrow: roundArrow,
+    // arrow: roundArrow,
   });
 
   setTimeout(() => linkTextInput.focus());

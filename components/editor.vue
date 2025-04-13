@@ -761,26 +761,18 @@ function handleShortcut(event: KeyboardEvent) {
 
 <style>
 
-
   .tippy-box {
     .hyperlink-preview-modal,
     .hyperlink-set-modal,
     .hyperlink-edit-modal {
-      background-color: #fff;
-      border-radius: 10px;
-      border: 1px solid #dadce0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 6px 6px;
-      box-shadow: 0 1px 3px 1px rgba(60, 64, 67, 0.15);
-      margin-top: -6px;
+      filter: drop-shadow(0px 2px 5px rgba(0, 0, 0, 0.04));
+      @apply flex overflow-hidden dark:!bg-[#404040] dark:border-[#525252] dark:text-gray-50  bg-white border border-gray-200 rounded-[16px] text-black dark:!text-white/85 p-1 px-1.5
     }
 
     .hyperlink-preview-modal__metadata,
     .hyperlink-set-modal__metadata,
     .hyperlink-edit-modal__metadata {
-      width: 200px;
+      width: 140px;
       display: flex;
       align-items: center;
       justify-content: flex-end;
@@ -820,7 +812,7 @@ function handleShortcut(event: KeyboardEvent) {
     .hyperlink-edit-modal__apply-button {
       width: 30px;
       height: 30px;
-      border-radius: 50%;
+      border-radius: 40%;
       margin: 0 0.25rem;
       display: flex;
       align-items: center;
@@ -840,7 +832,7 @@ function handleShortcut(event: KeyboardEvent) {
     .hyperlink-preview-modal__apply-button:hover,
     .hyperlink-set-modal__apply-button:hover,
     .hyperlink-edit-modal__apply-button:hover {
-      background-color: #eee;
+      @apply bg-gray-100 dark:bg-[#171717]
     }
 
     .hyperlink-preview-modal__remove-button > svg,
@@ -883,6 +875,10 @@ function handleShortcut(event: KeyboardEvent) {
       margin-bottom: 0;
     }
 
+    .hyperlink-edit-modal__inputs-wrapper > input {
+      @apply bg-gray-50 dark:bg-[#171717] !rounded-xl !inline
+    }
+
     .hyperlink-set-modal__buttons-wrapper,
     .hyperlink-edit-modal__buttons-wrapper {
       margin-left: 8px;
@@ -894,13 +890,6 @@ function handleShortcut(event: KeyboardEvent) {
       padding: 4px 14px;
       width: 70px;
       margin-bottom: 0.2rem;
-      color: #1a73e8;
-    }
-
-    .hyperlink-set-modal__buttons-wrapper button:hover,
-    .hyperlink-edit-modal__buttons-wrapper button:hover {
-      background: rgba(26, 115, 232, 0.04);
-      color: #174ea6;
     }
 
     .tippy-svg-arrow {
