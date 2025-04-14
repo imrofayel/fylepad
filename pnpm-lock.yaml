@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      '@docs.plus/extension-hyperlink':
-        specifier: ^1.5.2
-        version: 1.5.2(@tiptap/core@2.7.1(@tiptap/pm@2.7.1))(@tiptap/pm@2.7.1)
       '@headlessui/vue':
         specifier: ^1.7.23
         version: 1.7.23(vue@3.5.4)
@@ -173,6 +170,9 @@ importers:
       vue:
         specifier: latest
         version: 3.5.4
+      vue-draggable-next:
+        specifier: ^2.2.1
+        version: 2.2.1(sortablejs@1.15.6)(vue@3.5.4)
       vue-router:
         specifier: latest
         version: 4.4.4(vue@3.5.4)
@@ -384,12 +384,6 @@ packages:
     engines: {node: ^14 || ^16 || >=18}
     peerDependencies:
       postcss-selector-parser: ^6.0.13
-
-  '@docs.plus/extension-hyperlink@1.5.2':
-    resolution: {integrity: sha512-FNpZzHqTqwBPzot4vA85rJM/vooWWgTRvas/XQcee/YfP0VEmdHdIOVBzKdAzdphxGDhKa/r72+LTc1sQ/y3ww==}
-    peerDependencies:
-      '@tiptap/core': ^2.0.3
-      '@tiptap/pm': ^2.0.3
 
   '@esbuild/aix-ppc64@0.20.2':
     resolution: {integrity: sha512-D+EBOJHXdNZcLJRBkhENNG8Wji2kgc9AZ9KiPr1JuZjsNtyHzrsfLRrY0tk2H2aoFu6RANO1y1iPPUCDYWkb5g==}
@@ -3990,6 +3984,9 @@ packages:
   smob@1.5.0:
     resolution: {integrity: sha512-g6T+p7QO8npa+/hNx9ohv1E5pVCmWrVCUzUXJyLdMmftX6ER0oiWY/w9knEonLpnOp6b6FenKnMfR8gqwWdwig==}
 
+  sortablejs@1.15.6:
+    resolution: {integrity: sha512-aNfiuwMEpfBM/CN6LY0ibyhxPfPbyFeBTYJKCvzkJ2GkUpazIt3H+QIPAMHwqQ7tMKaHz1Qj+rJJCqljnf4p3A==}
+
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
     engines: {node: '>=0.10.0'}
@@ -4478,6 +4475,12 @@ packages:
   vue-devtools-stub@0.1.0:
     resolution: {integrity: sha512-RutnB7X8c5hjq39NceArgXg28WZtZpGc3+J16ljMiYnFhKvd8hITxSWQSQ5bvldxMDU6gG5mkxl1MTQLXckVSQ==}
 
+  vue-draggable-next@2.2.1:
+    resolution: {integrity: sha512-EAMS1IRHF0kZO0o5PMOinsQsXIqsrKT1hKmbICxG3UEtn7zLFkLxlAtajcCcUTisNvQ6TtCB5COjD9a1raNADw==}
+    peerDependencies:
+      sortablejs: ^1.14.0
+      vue: ^3.2.2
+
   vue-router@4.4.4:
     resolution: {integrity: sha512-3MlnDqwRwZwCQVbtVfpsU+nrNymNjnXSsQtXName5925NVC1+326VVfYH9vSrA0N13teGEo8z5x7gbRnGjCDiQ==}
     peerDependencies:
@@ -4840,13 +4843,6 @@ snapshots:
   '@csstools/selector-specificity@3.1.1(postcss-selector-parser@6.1.2)':
     dependencies:
       postcss-selector-parser: 6.1.2
-
-  '@docs.plus/extension-hyperlink@1.5.2(@tiptap/core@2.7.1(@tiptap/pm@2.7.1))(@tiptap/pm@2.7.1)':
-    dependencies:
-      '@tiptap/core': 2.7.1(@tiptap/pm@2.7.1)
-      '@tiptap/pm': 2.7.1
-      linkifyjs: 4.2.0
-      tippy.js: 6.3.7
 
   '@esbuild/aix-ppc64@0.20.2':
     optional: true
@@ -8782,6 +8778,8 @@ snapshots:
 
   smob@1.5.0: {}
 
+  sortablejs@1.15.6: {}
+
   source-map-js@1.2.1: {}
 
   source-map-support@0.5.21:
@@ -9311,6 +9309,11 @@ snapshots:
       vue: 3.5.4
 
   vue-devtools-stub@0.1.0: {}
+
+  vue-draggable-next@2.2.1(sortablejs@1.15.6)(vue@3.5.4):
+    dependencies:
+      sortablejs: 1.15.6
+      vue: 3.5.4
 
   vue-router@4.4.4(vue@3.5.4):
     dependencies:

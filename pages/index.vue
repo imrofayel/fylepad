@@ -1,7 +1,7 @@
 <template>
   <div class="h-full w-full flex flex-col">
     <div class="flex justify-between items-center w-full p-3 py-2 fixed bg-white z-10 pr-[7.5rem] dark:bg-[#171717]">
-      <div class="flex space-x-2 overflow-x-auto justify-center items-center">
+      <div class="flex space-x-2 overflow-auto justify-center items-center">
         <button @click="newTab"
           class="border border-gray-200 bg-white/80 dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 text-black !px-[7px] py-[6px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool tab-item">
 
@@ -9,16 +9,23 @@
 
         </button>
 
-        <div class="dropdown-menu overflow-auto flex space-x-2">
-          <div v-for="(tab, index) in tabs" :key="index" @click="activeTab = index"
-            class="border border-gray-200 bg-white/80 text-black !px-[9px] py-[3px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool tab-item tab-item"
-            :class="{ '!bg-[#24d86c] dark:!bg-[#0c843c] dark:!border-[#196838] !border-[#28c76d] !text-white font-medium': activeTab === index }">
-            <span class="tab-title">{{ tab.title || 'Untitled' }}</span>
-            <button @click.stop="closeTab(index)"
-              class="ml-2 text-onPrimaryContainer/30 hover:text-onPrimaryContainer dark:text-gray-50/50 dark:hover:text-gray-100 text-lg"
-              :class="{ 'text-white font-normal': activeTab === index }">&times;</button>
-          </div>
-        </div>
+        <VueDraggableNext 
+          v-model="tabs" 
+          class="dropdown-menu overflow-auto flex space-x-2"
+          :animation="150"
+          @change="handleDragChange"
+        >
+          <transition-group name="list" tag="div" class="flex space-x-2">
+            <div v-for="(tab, index) in tabs" :key="index" @click="activeTab = index"
+              class="border border-gray-200 bg-white/80 text-black !px-[9px] py-[3px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool tab-item tab-item"
+              :class="{ '!bg-[#24d86c] dark:!bg-[#0c843c] dark:!border-[#196838] !border-[#28c76d] !text-white font-medium': activeTab === index }">
+              <span class="tab-title">{{ tab.title || 'Untitled' }}</span>
+              <button @click.stop="closeTab(index)"
+                class="ml-2 text-onPrimaryContainer/30 hover:text-onPrimaryContainer dark:text-gray-50/50 dark:hover:text-gray-100 text-lg"
+                :class="{ 'text-white font-normal': activeTab === index }">&times;</button>
+            </div>
+          </transition-group>
+        </VueDraggableNext>
       </div>
     </div>
 
@@ -58,11 +65,28 @@
   display: inline-block;
   vertical-align: middle;
 }
+
+/* Transition styles */
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.3s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.list-move {
+  transition: transform 0.3s ease;
+}
 </style>
 
 <script lang="ts" setup>
-import { ref, reactive, onMounted, watch } from 'vue';
+import { ref, reactive, onMounted, watch, onBeforeUnmount } from 'vue';
 import { fs, path } from '@tauri-apps/api';
+import { VueDraggableNext } from 'vue-draggable-next';
 
 const colorMode = useColorMode()
 
@@ -161,6 +185,37 @@ const updateTabContent = (content: any) => {
   tabs[activeTab.value].content = content;
 };
 
+const handleDragChange = () => {
+  // Update activeTab if the active tab was moved
+  const newIndex = tabs.findIndex((tab, index) => index === activeTab.value);
+  if (newIndex !== -1) {
+    activeTab.value = newIndex;
+  }
+};
+
+function handleShortcut(event: KeyboardEvent) {
+  // CTRL + N -> New tab
+  if (event.ctrlKey && event.key === 'n') {
+    event.preventDefault();
+    newTab();
+  }
+  
+  // CTRL + G + [number] -> Switch to tab
+  if (event.ctrlKey && event.key === 'g') {
+    event.preventDefault();
+    const numberListener = (e: KeyboardEvent) => {
+      if (e.key >= '1' && e.key <= '9') {
+        const tabNumber = parseInt(e.key) - 1; // Convert to 0-based index
+        if (tabNumber < tabs.length) {
+          activeTab.value = tabNumber;
+        }
+        document.removeEventListener('keydown', numberListener);
+      }
+    };
+    document.addEventListener('keydown', numberListener);
+  }
+}
+
 onMounted(() => {
   // Add the event listener when the component is mounted
   document.addEventListener('keydown', handleShortcut);
@@ -170,13 +225,5 @@ onBeforeUnmount(() => {
   // Clean up the event listener to prevent memory leaks
   document.removeEventListener('keydown', handleShortcut);
 });
-
-function handleShortcut(event: KeyboardEvent) {
-  // CTRL + F -> Open search
-  if (event.ctrlKey && event.key === 'n') {
-    event.preventDefault();
-    newTab()
-  }
-}
 
 </script>
