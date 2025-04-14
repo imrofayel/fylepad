@@ -71,7 +71,6 @@
     "tippy.js": "^6.3.7",
     "tiptap-markdown": "^0.8.10",
     "vue": "latest",
-    "vue-draggable-next": "^2.2.1",
     "vue-router": "latest"
   },
   "devDependencies": {

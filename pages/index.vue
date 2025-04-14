@@ -9,13 +9,8 @@
 
         </button>
 
-        <VueDraggableNext 
-          v-model="tabs" 
-          class="dropdown-menu overflow-auto flex space-x-2"
-          :animation="150"
-          @change="handleDragChange"
-        >
-          <transition-group name="list" tag="div" class="flex space-x-2">
+          <div class="dropdown-menu overflow-auto flex space-x-2">
+            <transition-group name="list" tag="div" class="flex space-x-2 ">
             <div v-for="(tab, index) in tabs" :key="index" @click="activeTab = index"
               class="border border-gray-200 bg-white/80 text-black !px-[9px] py-[3px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool tab-item tab-item"
               :class="{ '!bg-[#24d86c] dark:!bg-[#0c843c] dark:!border-[#196838] !border-[#28c76d] !text-white font-medium': activeTab === index }">
@@ -25,7 +20,7 @@
                 :class="{ 'text-white font-normal': activeTab === index }">&times;</button>
             </div>
           </transition-group>
-        </VueDraggableNext>
+          </div>
       </div>
     </div>
 
@@ -67,31 +62,24 @@
 }
 
 /* Transition styles */
-.list-enter-active,
-.list-leave-active {
+.list-enter-active {
   transition: all 0.3s ease;
 }
 
 .list-enter-from,
 .list-leave-to {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(20px);
 }
 
-/* .list-move {
-  transition: transform 0.3s ease;
-} */
 </style>
 
 <script lang="ts" setup>
 import { ref, reactive, onMounted, watch, onBeforeUnmount } from 'vue';
 import { fs, path } from '@tauri-apps/api';
-import { VueDraggableNext } from 'vue-draggable-next';
 import { isNumber } from '@tiptap/core';
 
 const colorMode = useColorMode()
-
-
 
 interface Tab {
   title: string;
