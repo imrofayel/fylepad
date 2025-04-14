@@ -62,18 +62,10 @@
             :aria-pressed="isReading"
             role="button">
             
-            <svg v-if="!isReading" xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
               <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
               <line x1="12" y1="19" x2="12" y2="22"/>
-            </svg>
-            
-            <svg v-else xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
-              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-              <line x1="12" y1="19" x2="12" y2="22"/>
-              <path class="wave-path" d="M3 10a9 9 0 0 1 18 0"/>
-              <path class="wave-path" d="M6 10a6 6 0 0 1 12 0"/>
             </svg>
 
             <div v-if="isReading" class="speech-wave">
