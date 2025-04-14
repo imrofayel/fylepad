@@ -51,9 +51,18 @@
 
           <button @click="editor.chain().focus().toggleHighlight().run()"
             :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('highlight') }"
-            class="hover:dark:bg-[#171717] hover:bg-gray-100 p-2 px-2 rounded-r-lg">
+            class="hover:dark:bg-[#171717] hover:bg-gray-100 p-2 px-2">
             <div class="w-5 h-5 bg-yellow-400 dark:bg-yellow-500 rounded-full border dark:border-none border-black/50">
             </div>
+          </button>
+
+          <button @click="readSelectedText"
+            class="hover:dark:bg-[#171717] hover:bg-gray-100 p-2 px-2 border-l border-gray-200 dark:border-[#525252]">
+            <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+              <line x1="12" y1="19" x2="12" y2="22"/>
+            </svg>
           </button>
         </div>
       </bubble-menu>
@@ -62,6 +71,7 @@
 <script lang="ts" setup>
 
 import { BubbleMenu } from '@tiptap/vue-3';
+import { ref } from 'vue';
 
 const props = defineProps({
   editor: {
@@ -70,33 +80,74 @@ const props = defineProps({
   }
 })
 
-  const setLink = () => {
-    if (!props.editor) return;
+const isReading = ref(false);
 
-    const previousUrl = props.editor.getAttributes('link').href;
-    const url = window.prompt('URL', previousUrl);
+const setLink = () => {
+  if (!props.editor) return;
 
-    // cancelled
-    if (url === null) {
-      return;
-    }
+  const previousUrl = props.editor.getAttributes('link').href;
+  const url = window.prompt('URL', previousUrl);
 
-    // empty
-    if (url === '') {
-      props.editor.chain().focus().extendMarkRange('link').unsetLink().run();
-      return;
-    }
+  // cancelled
+  if (url === null) {
+    return;
+  }
 
-    // update link
-    try {
-      props.editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
-    } catch (e: any) {
-      alert(e.message);
-    }
+  // empty
+  if (url === '') {
+    props.editor.chain().focus().extendMarkRange('link').unsetLink().run();
+    return;
+  }
+
+  // update link
+  try {
+    props.editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
+  } catch (e: any) {
+    alert(e.message);
+  }
+};
+
+const readSelectedText = () => {
+  if (!props.editor) return;
+  
+  const selectedText = props.editor.state.selection.content().content.firstChild?.textContent;
+  if (!selectedText) return;
+
+  if (isReading.value) {
+    window.speechSynthesis.cancel();
+    isReading.value = false;
+    return;
+  }
+
+  isReading.value = true;
+  const utterance = new SpeechSynthesisUtterance(selectedText);
+  
+  utterance.onend = () => {
+    isReading.value = false;
   };
+
+  window.speechSynthesis.speak(utterance);
+};
 
 </script>
 
 <style>
+/* Add animation for the speaker button when reading */
+button:has(svg) {
+  transition: all 0.3s ease;
+}
 
+button:has(svg):hover {
+  transform: scale(1.1);
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+button:has(svg).reading {
+  animation: pulse 1s infinite;
+}
 </style>
