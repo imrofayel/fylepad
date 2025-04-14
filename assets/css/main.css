@@ -111,6 +111,10 @@
   }
 }
 
+* {
+  overscroll-behavior: none;
+}
+
 @font-face {
   font-family: "Geist";
   src: url("/assets/fonts/Geist-VariableFont_wght.ttf") format("truetype");
