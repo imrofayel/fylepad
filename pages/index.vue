@@ -78,9 +78,9 @@
   transform: translateY(30px);
 }
 
-.list-move {
+/* .list-move {
   transition: transform 0.3s ease;
-}
+} */
 </style>
 
 <script lang="ts" setup>
