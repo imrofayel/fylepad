@@ -100,12 +100,12 @@
 
       <!-- Voice Settings Panel -->
       <div v-if="showVoiceSettings" 
-           class="voice-settings-panel dark:bg-[#232323] dark:border-[#444444] dark:text-gray-100" 
+           class="voice-settings-panel dark:bg-[#232323] dark:border-[#444444] dark:text-gray-100 !z-[1100000]" 
            role="dialog" 
            aria-label="Voice settings">
         <div class="voice-panel-header">
           <h3 class="text-sm font-medium">Voice Settings</h3>
-          <button @click="toggleVoiceSettings" class="close-btn" aria-label="Close voice settings">
+          <button @click="(e) => toggleVoiceSettings(e)" class="close-btn" aria-label="Close voice settings">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -232,7 +232,10 @@ const loadPreferences = () => {
 };
 
 // Voice settings
-const toggleVoiceSettings = () => {
+const toggleVoiceSettings = (event?: Event) => {
+  if (event) {
+    event.stopPropagation();
+  }
   showVoiceSettings.value = !showVoiceSettings.value;
 };
 
