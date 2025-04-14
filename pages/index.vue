@@ -87,8 +87,11 @@
 import { ref, reactive, onMounted, watch, onBeforeUnmount } from 'vue';
 import { fs, path } from '@tauri-apps/api';
 import { VueDraggableNext } from 'vue-draggable-next';
+import { isNumber } from '@tiptap/core';
 
 const colorMode = useColorMode()
+
+
 
 interface Tab {
   title: string;
@@ -204,7 +207,7 @@ function handleShortcut(event: KeyboardEvent) {
   if (event.ctrlKey && event.key === 'g') {
     event.preventDefault();
     const numberListener = (e: KeyboardEvent) => {
-      if (e.key >= '1' && e.key <= '9') {
+      if (isNumber(parseInt(e.key)) && parseInt(e.key) <= tabs.length) {
         const tabNumber = parseInt(e.key) - 1; // Convert to 0-based index
         if (tabNumber < tabs.length) {
           activeTab.value = tabNumber;
