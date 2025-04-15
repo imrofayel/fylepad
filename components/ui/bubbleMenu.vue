@@ -326,9 +326,9 @@ const readSelectedText = () => {
         const to = from + wordLength;
         
         // Highlight the current word
-        removeHighlights();
+        // removeHighlights();
         props.editor.commands.setTextSelection({ from, to });
-        props.editor.commands.setHighlight();
+        // props.editor.commands.setHighlight();
         
         // Auto-scroll
         const view = props.editor.view;
@@ -350,7 +350,7 @@ const readSelectedText = () => {
     isReading.value = false;
     isPaused.value = false;
     readingProgress.value = 0;
-    removeHighlights();
+    // removeHighlights();
     
     // Restore original selection
     if (currentTextRange.value) {
