@@ -84,84 +84,29 @@
       </bubble-menu>
 
       <!-- Mini Controls -->
-      <div v-if="isReading" class="mini-controls rainbow-border-effect dark:bg-black bg-black text-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out">
-        <div class="p-3 pb-0">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-2">
-              <span class="font-medium text-base">Reading Text</span>
-              <button @click="stopReading" class="text-xs opacity-70 hover:opacity-100 transition-opacity" aria-label="Close reader">
-                ×
-              </button>
-            </div>
-            <div class="flex gap-2 items-center">
-              <button @click="toggleMiniControls" class="control-btn" aria-label="Minimize player">
-                <svg v-if="isMinimized" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="5" y="12" width="14" height="1"></rect>
-                </svg>
-                <svg v-else width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="8" y="8" width="8" height="8"></rect>
-                </svg>
-              </button>
-            </div>
-          </div>
-        </div>
-        
-        <div v-if="!isMinimized">
-          <div class="flex items-center justify-between px-3 py-2">
-            <div class="audio-visualizer">
-              <div v-for="i in 15" :key="i" class="visualizer-bar" 
-                  :style="{ height: `${audioVisualizerHeight[i % audioVisualizerHeight.length]}px` }"></div>
-            </div>
-            <div class="text-sm truncate max-w-[180px]">
-              {{ currentWordDisplay }}
-            </div>
-          </div>
-          
-          <div class="px-3 pb-3">
+      <div v-if="isReading" class="mini-controls rainbow-border-effect dark:bg-black bg-white/80 backdrop-blur-xl text-black !rounded-2xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out">
+                  
+          <div class="p-4">
             <div class="flex items-center justify-between">
-              <div class="flex items-center gap-1">
+              <div class="flex items-center w-full justify-between gap-1">
                 <button @click="pauseReading" class="play-pause-btn" aria-label="Pause/Resume reading">
-                  <svg v-if="isPaused" xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24" fill="currentColor">
+                  <svg v-if="isPaused" xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24" fill="black">
                     <polygon points="5 3 19 12 5 21 5 3"></polygon>
                   </svg>
-                  <svg v-else xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24" fill="currentColor">
+                  <svg v-else xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24" fill="black">
                     <rect x="6" y="4" width="4" height="16"></rect>
                     <rect x="14" y="4" width="4" height="16"></rect>
                   </svg>
                 </button>
-                <span class="text-xs opacity-70">Speed: {{ voiceRate }}x</span>
-              </div>
-              <div class="speed-options flex items-center">
-                <button 
-                  v-for="rate in [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]" 
-                  :key="rate" 
-                  @click="setVoiceRate(rate)"
-                  :class="{'active-speed': Math.abs(voiceRate - rate) < 0.01}"
-                  class="speed-option-btn">
-                  {{ rate }}x
-                </button>
+
+                <div class="audio-visualizer">
+              <div v-for="i in 30" :key="i" class="visualizer-bar" 
+                  :style="{ height: `${audioVisualizerHeight[i % audioVisualizerHeight.length] + 4}px` }"></div>
+            </div>
+
+            <div class="font-medium">{{ voiceRate }}x</div>
               </div>
             </div>
-          </div>
-        </div>
-        
-        <div v-else class="mini-player-collapsed px-3 py-2">
-          <div class="flex items-center gap-2">
-            <button @click="pauseReading" class="play-pause-btn" aria-label="Pause/Resume reading">
-              <svg v-if="isPaused" xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24" fill="currentColor">
-                <polygon points="5 3 19 12 5 21 5 3"></polygon>
-              </svg>
-              <svg v-else xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24" fill="currentColor">
-                <rect x="6" y="4" width="4" height="16"></rect>
-                <rect x="14" y="4" width="4" height="16"></rect>
-              </svg>
-            </button>
-            <div class="audio-visualizer-mini">
-              <div v-for="i in 8" :key="i" class="visualizer-bar" 
-                  :style="{ height: `${audioVisualizerHeight[i % audioVisualizerHeight.length]}px` }"></div>
-            </div>
-            <span class="text-sm truncate">{{ readingDurationFormatted }}</span>
-            <span class="text-xs">{{ voiceRate }}x</span>
           </div>
         </div>
         
@@ -169,7 +114,6 @@
         <div class="mini-progress-track">
           <div class="mini-progress-bar" :style="{ width: `${readingProgress}%` }"></div>
         </div>
-      </div>
 
       <!-- Voice Settings Panel -->
       <div v-if="showVoiceSettings" 
@@ -616,11 +560,6 @@ const setVoiceRate = (rate: number) => {
   // Save to localStorage
   localStorage.setItem('voiceRate', voiceRate.value.toString());
 };
-
-// Add the toggle function for mini controls
-const toggleMiniControls = () => {
-  isMinimized.value = !isMinimized.value;
-};
 </script>
 
 <style>
@@ -742,30 +681,25 @@ button.is-active {
   background-color: rgba(255, 255, 255, 0.2);
 }
 
-.mini-progress-bar {
-  height: 100%;
-  background: #24d86c;
-  transition: width 0.3s linear;
-}
-
 .audio-visualizer {
   display: flex;
-  align-items: flex-end;
-  gap: 1px;
-  height: 25px;
+  align-items: center;
+  justify-items: center;
+  gap: 2.8px;
+  /* height: 40px; */
 }
 
 .audio-visualizer-mini {
   display: flex;
   align-items: flex-end;
   gap: 1px;
-  height: 16px;
+  height: 40px;
 }
 
 .visualizer-bar {
-  width: 2px;
-  border-radius: 1px;
-  background-color: #24d86c;
+  width: 4px;
+  border-radius: 100px;
+  background-color: #323232;
   transition: height 0.1s ease-in-out;
 }
 
@@ -774,7 +708,7 @@ button.is-active {
   align-items: center;
   justify-content: center;
   color: white;
-  transition: opacity 0.2s;
+  transition: opacity 0.3s;
 }
 
 .play-pause-btn:hover {
