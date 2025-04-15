@@ -62,11 +62,7 @@
             :aria-pressed="isReading"
             role="button">
             
-            <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/>
-              <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-              <line x1="12" y1="19" x2="12" y2="22"/>
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24"><!-- Icon from Lucide by Lucide Contributors - https://github.com/lucide-icons/lucide/blob/main/LICENSE --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2m7 9v3"/></g></svg>
 
             <div v-if="isReading" class="speech-wave">
               <div class="bar"></div>
@@ -78,36 +74,118 @@
           </button>
 
           <button @click="toggleVoiceSettings" 
-            :class="{ 'is-active': showVoiceSettings, 'hover:dark:bg-[#171717] hover:bg-gray-100': true, 'p-2 px-2 border-l border-gray-200 dark:border-[#525252]': true }"
+            :class="{ 'is-active': showVoiceSettings, 'hover:dark:bg-[#171717] hover:bg-gray-100': true, 'p-2 px-2 border-gray-200 dark:border-[#525252]': true }"
             aria-label="Voice settings"
             :aria-expanded="showVoiceSettings"
             role="button">
-            <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="12" cy="12" r="3"/>
-              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
-            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24"><!-- Icon from Lucide by Lucide Contributors - https://github.com/lucide-icons/lucide/blob/main/LICENSE --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2"/><circle cx="12" cy="12" r="3"/></g></svg>
           </button>
         </div>
       </bubble-menu>
 
+      <!-- Mini Controls -->
+      <div v-if="isReading" class="mini-controls dark:bg-black bg-black text-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out">
+        <div class="p-3 pb-0">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="font-medium text-base">Reading Text</span>
+              <button @click="stopReading" class="text-xs opacity-70 hover:opacity-100 transition-opacity" aria-label="Close reader">
+                ×
+              </button>
+            </div>
+            <div class="flex gap-2 items-center">
+              <button @click="toggleMiniControls" class="control-btn" aria-label="Minimize player">
+                <svg v-if="isMinimized" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="5" y="12" width="14" height="1"></rect>
+                </svg>
+                <svg v-else width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="8" y="8" width="8" height="8"></rect>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div v-if="!isMinimized">
+          <div class="flex items-center justify-between px-3 py-2">
+            <div class="audio-visualizer">
+              <div v-for="i in 15" :key="i" class="visualizer-bar" 
+                  :style="{ height: `${audioVisualizerHeight[i % audioVisualizerHeight.length]}px` }"></div>
+            </div>
+            <div class="text-sm truncate max-w-[180px]">
+              {{ currentWordDisplay }}
+            </div>
+          </div>
+          
+          <div class="px-3 pb-3">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-1">
+                <button @click="pauseReading" class="play-pause-btn" aria-label="Pause/Resume reading">
+                  <svg v-if="isPaused" xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                  </svg>
+                  <svg v-else xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24" fill="currentColor">
+                    <rect x="6" y="4" width="4" height="16"></rect>
+                    <rect x="14" y="4" width="4" height="16"></rect>
+                  </svg>
+                </button>
+                <span class="text-xs opacity-70">Speed: {{ voiceRate }}x</span>
+              </div>
+              <div class="speed-options flex items-center">
+                <button 
+                  v-for="rate in [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2]" 
+                  :key="rate" 
+                  @click="setVoiceRate(rate)"
+                  :class="{'active-speed': Math.abs(voiceRate - rate) < 0.01}"
+                  class="speed-option-btn">
+                  {{ rate }}x
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div v-else class="mini-player-collapsed px-3 py-2">
+          <div class="flex items-center gap-2">
+            <button @click="pauseReading" class="play-pause-btn" aria-label="Pause/Resume reading">
+              <svg v-if="isPaused" xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              <svg v-else xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24" fill="currentColor">
+                <rect x="6" y="4" width="4" height="16"></rect>
+                <rect x="14" y="4" width="4" height="16"></rect>
+              </svg>
+            </button>
+            <div class="audio-visualizer-mini">
+              <div v-for="i in 8" :key="i" class="visualizer-bar" 
+                  :style="{ height: `${audioVisualizerHeight[i % audioVisualizerHeight.length]}px` }"></div>
+            </div>
+            <span class="text-sm truncate">{{ readingDurationFormatted }}</span>
+            <span class="text-xs">{{ voiceRate }}x</span>
+          </div>
+        </div>
+        
+        <!-- Progress Bar -->
+        <div class="mini-progress-track">
+          <div class="mini-progress-bar" :style="{ width: `${readingProgress}%` }"></div>
+        </div>
+      </div>
+
       <!-- Voice Settings Panel -->
       <div v-if="showVoiceSettings" 
-           class="voice-settings-panel dark:bg-[#232323] dark:border-[#444444] dark:text-gray-100 !z-[1100000]" 
+           class="voice-settings-panel dark:bg-white bg-white dark:text-black text-black !z-[1100000]" 
            role="dialog" 
            aria-label="Voice settings">
         <div class="voice-panel-header">
-          <h3 class="text-sm font-medium">Voice Settings</h3>
+          <h3 class="text-lg font-medium">Voice Settings</h3>
           <button @click="(e) => toggleVoiceSettings(e)" class="close-btn" aria-label="Close voice settings">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
+            ×
           </button>
         </div>
         <div class="voice-controls">
           <div class="form-group">
-            <label for="voice-select" class="text-xs">Voice:</label>
-            <select id="voice-select" v-model="selectedVoice" class="voice-select dark:bg-[#333333] dark:border-[#555555]">
+            <label for="voice-select" class="text-sm">Voice:</label>
+            <select id="voice-select" v-model="selectedVoice" class="voice-select dark:bg-white bg-white dark:border-gray-300 border-gray-300">
               <option v-for="voice in availableVoices" :key="voice.name" :value="voice">
                 {{ voice.name }} ({{ voice.lang }})
               </option>
@@ -115,44 +193,25 @@
           </div>
           
           <div class="form-group">
-            <label for="rate-slider" class="text-xs">Speed: {{ voiceRate.toFixed(1) }}x</label>
-            <input type="range" id="rate-slider" min="0.5" max="2" step="0.1" v-model="voiceRate"
-              class="rate-slider dark:bg-[#333333]"
-              aria-valuemin="0.5" aria-valuemax="2" :aria-valuenow="voiceRate">
+            <label class="text-sm">Speed: {{ voiceRate }}x</label>
+            <div class="speed-controls flex flex-wrap gap-2 mt-2">
+              <button 
+                v-for="rate in [0.5, 0.75, 0.9, 1, 1.25, 1.5, 1.75, 2]" 
+                :key="rate" 
+                @click="setVoiceRate(rate)"
+                :class="{'active-speed-option': Math.abs(voiceRate - rate) < 0.01}"
+                class="speed-option">
+                {{ rate }}x
+              </button>
+            </div>
           </div>
           
           <div class="keyboard-shortcuts">
-            <div class="text-xs font-medium mb-1">Keyboard Shortcuts:</div>
-            <div class="text-xs">Alt + S: Start/Stop reading</div>
-            <div class="text-xs">Alt + P: Pause/Resume</div>
+            <div class="text-sm font-medium mb-1">Keyboard Shortcuts:</div>
+            <div class="text-sm">Alt + S: Start/Stop reading</div>
+            <div class="text-sm">Alt + P: Pause/Resume</div>
           </div>
         </div>
-      </div>
-
-      <!-- Mini Controls -->
-      <div v-if="isReading" class="mini-controls dark:bg-[#232323] dark:text-gray-100">
-        <div class="reading-status text-xs">Reading: {{ readingProgressPercent }}%</div>
-        <div class="control-buttons">
-          <button @click="pauseReading" class="control-btn" aria-label="Pause/Resume reading">
-            <svg v-if="isPaused" xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polygon points="5 3 19 12 5 21 5 3"></polygon>
-            </svg>
-            <svg v-else xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="6" y="4" width="4" height="16"></rect>
-              <rect x="14" y="4" width="4" height="16"></rect>
-            </svg>
-          </button>
-          <button @click="stopReading" class="control-btn" aria-label="Stop reading">
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="4" y="4" width="16" height="16"></rect>
-            </svg>
-          </button>
-        </div>
-      </div>
-
-      <!-- Progress Bar -->
-      <div v-if="isReading" class="progress-container">
-        <div class="progress-bar" :style="{ width: `${readingProgress}%` }"></div>
       </div>
 </template>
 
@@ -189,10 +248,21 @@ const readingStartTime = ref(0);
 const currentWord = ref(0);
 const words = ref<string[]>([]);
 const currentTextRange = ref<{from: number, to: number} | null>(null);
+const audioVisualizerHeight = ref<number[]>([4, 8, 12, 16, 20, 16, 12, 8, 4]);
+const currentWordDisplay = ref('');
+const isMinimized = ref(false);
 
 // Computed properties
 const readingProgressPercent = computed(() => {
   return Math.round(readingProgress.value);
+});
+
+const readingDurationFormatted = computed(() => {
+  const elapsed = Date.now() - readingStartTime.value;
+  const totalSeconds = Math.floor(elapsed / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  return `${minutes}:${seconds.toString().padStart(2, '0')}`;
 });
 
 // Load voices
@@ -258,107 +328,133 @@ const stopReading = () => {
   isReading.value = false;
   isPaused.value = false;
   readingProgress.value = 0;
+  isMinimized.value = false;
   removeHighlights();
+  
+  // Reset current selection
+  if (currentTextRange.value && props.editor) {
+    try {
+      props.editor.commands.setTextSelection(currentTextRange.value);
+    } catch (e) {
+      console.error('Error restoring selection:', e);
+    }
+  }
 };
 
 // Text reading
 const readSelectedText = () => {
   if (!props.editor) return;
   
-  // Save the current selection range
-  const { from, to } = props.editor.state.selection;
-  currentTextRange.value = { from, to };
-  
-  const selectedText = props.editor.state.selection.content().content.firstChild?.textContent;
-  if (!selectedText) return;
-
-  if (isReading.value) {
-    stopReading();
-    return;
-  }
-
-  // Split text into words
-  words.value = selectedText.split(/\s+/);
-  currentWord.value = 0;
-  isReading.value = true;
-  readingStartTime.value = Date.now();
-  
-  // Estimate reading duration
-  const wordCount = words.value.length;
-  readingDuration.value = (wordCount / 150) * 60 * 1000; // in milliseconds
-  
-  const utterance = new SpeechSynthesisUtterance(selectedText);
-  
-  // Apply voice settings
-  if (selectedVoice.value) {
-    utterance.voice = selectedVoice.value;
-  }
-  utterance.rate = voiceRate.value;
-  
-  // Try to detect language
   try {
-    const langCode = selectedVoice.value?.lang || navigator.language || 'en-US';
-    utterance.lang = langCode;
-  } catch (e) {
-    console.log('Language detection failed:', e);
-  }
-  
-  // Word boundary tracking for highlighting
-  utterance.onboundary = (event: SpeechSynthesisEvent) => {
-    if (event.name === 'word' && currentTextRange.value) {
-      // Update current word index
-      currentWord.value = Math.min(
-        words.value.length - 1, 
-        Math.floor(event.charIndex / 5) // Rough approximation
-      );
-      
-      // Update progress
-      const elapsed = Date.now() - readingStartTime.value;
-      readingProgress.value = Math.min(100, (elapsed / readingDuration.value) * 100);
-      
-      // Highlighting the current word (approximate)
-      try {
-        const wordLength = words.value[currentWord.value].length;
-        const charOffset = event.charIndex;
-        
-        // Use the editor's selection to highlight the current word
-        const from = currentTextRange.value.from + charOffset;
-        const to = from + wordLength;
-        
-        // Highlight the current word
-        // removeHighlights();
-        props.editor.commands.setTextSelection({ from, to });
-        // props.editor.commands.setHighlight();
-        
-        // Auto-scroll
-        const view = props.editor.view;
-        const domPos = view.coordsAtPos(from);
-        
-        if (domPos) {
-          window.scrollTo({
-            top: domPos.top - 100,
-            behavior: 'smooth'
-          });
-        }
-      } catch (e) {
-        console.error('Error highlighting text:', e);
-      }
+    // Save the current selection range
+    const { from, to } = props.editor.state.selection;
+    currentTextRange.value = { from, to };
+    
+    const selectedText = props.editor.state.selection.content().content.firstChild?.textContent;
+    if (!selectedText) return;
+
+    if (isReading.value) {
+      stopReading();
+      return;
     }
-  };
-  
-  utterance.onend = () => {
+
+    // Split text into words
+    words.value = selectedText.split(/\s+/);
+    currentWord.value = 0;
+    isReading.value = true;
+    isPaused.value = false;
+    isMinimized.value = false;
+    readingStartTime.value = Date.now();
+    
+    // Estimate reading duration
+    const wordCount = words.value.length;
+    readingDuration.value = (wordCount / 150) * 60 * 1000; // in milliseconds
+    
+    // Start visualizer animation
+    startVisualizerAnimation();
+    
+    const utterance = new SpeechSynthesisUtterance(selectedText);
+    
+    // Apply voice settings
+    if (selectedVoice.value) {
+      utterance.voice = selectedVoice.value;
+    }
+    utterance.rate = voiceRate.value;
+    
+    // Try to detect language
+    try {
+      const langCode = selectedVoice.value?.lang || navigator.language || 'en-US';
+      utterance.lang = langCode;
+    } catch (e) {
+      console.log('Language detection failed:', e);
+    }
+    
+    // Word boundary tracking for highlighting
+    utterance.onboundary = (event: SpeechSynthesisEvent) => {
+      if (event.name === 'word' && currentTextRange.value) {
+        // Update current word index
+        currentWord.value = Math.min(
+          words.value.length - 1, 
+          Math.floor(event.charIndex / 5) // Rough approximation
+        );
+        
+        // Update progress
+        const elapsed = Date.now() - readingStartTime.value;
+        readingProgress.value = Math.min(100, (elapsed / readingDuration.value) * 100);
+        
+        // Highlighting the current word (approximate)
+        try {
+          const wordLength = words.value[currentWord.value].length;
+          const charOffset = event.charIndex;
+          
+          // Use the editor's selection to highlight the current word
+          if (props.editor && !isMinimized.value) { // Only highlight when not minimized
+            const from = currentTextRange.value.from + charOffset;
+            const to = from + wordLength;
+            
+            props.editor.commands.setTextSelection({ from, to });
+            
+            // Auto-scroll only if not minimized
+            const view = props.editor.view;
+            const domPos = view.coordsAtPos(from);
+            
+            if (domPos) {
+              window.scrollTo({
+                top: domPos.top - 100,
+                behavior: 'smooth'
+              });
+            }
+          }
+        } catch (e) {
+          console.error('Error highlighting text:', e);
+        }
+      }
+    };
+    
+    utterance.onend = () => {
+      isReading.value = false;
+      isPaused.value = false;
+      isMinimized.value = false;
+      readingProgress.value = 0;
+      
+      // Restore original selection
+      if (currentTextRange.value && props.editor) {
+        try {
+          props.editor.commands.setTextSelection(currentTextRange.value);
+        } catch (e) {
+          console.error('Error restoring selection:', e);
+        }
+      }
+    };
+
+    window.speechSynthesis.speak(utterance);
+  } catch (e) {
+    console.error('Error in readSelectedText:', e);
+    // Reset state in case of error
     isReading.value = false;
     isPaused.value = false;
-    readingProgress.value = 0;
-    // removeHighlights();
-    
-    // Restore original selection
-    if (currentTextRange.value) {
-      props.editor.commands.setTextSelection(currentTextRange.value);
-    }
-  };
-
-  window.speechSynthesis.speak(utterance);
+    isMinimized.value = false;
+  }
 };
 
 // Keyboard shortcuts
@@ -425,6 +521,105 @@ const setLink = () => {
   } catch (e: any) {
     alert(e.message);
   }
+};
+
+// Visual equalizer animation
+const startVisualizerAnimation = () => {
+  let animationFrameId: number;
+  const updateVisualizer = () => {
+    if (!isReading.value) return;
+    
+    // Create a random equalizer effect
+    audioVisualizerHeight.value = audioVisualizerHeight.value.map(() => {
+      return isPaused.value 
+        ? 5 // Lower static height when paused
+        : Math.floor(Math.random() * 20) + 5; // Random height between 5-25px when playing
+    });
+    
+    // Update current word for display
+    if (words.value.length > 0 && currentWord.value < words.value.length) {
+      // Show current word and a few surrounding words for context
+      const startIdx = Math.max(0, currentWord.value - 1);
+      const endIdx = Math.min(words.value.length, currentWord.value + 4);
+      const snippet = words.value.slice(startIdx, endIdx).join(' ');
+      currentWordDisplay.value = snippet.length > 40 
+        ? snippet.substring(0, 37) + '...' 
+        : snippet;
+    }
+    
+    // Continue animation
+    if (isReading.value) {
+      animationFrameId = requestAnimationFrame(updateVisualizer);
+    }
+  };
+  
+  animationFrameId = requestAnimationFrame(updateVisualizer);
+  
+  // Cleanup function to cancel animation when stopped
+  const cleanupAnimation = () => {
+    if (animationFrameId) {
+      cancelAnimationFrame(animationFrameId);
+    }
+  };
+  
+  // Properly clean up the animation when component is unmounted
+  onBeforeUnmount(cleanupAnimation);
+};
+
+// Speed controls
+const setVoiceRate = (rate: number) => {
+  voiceRate.value = rate;
+  
+  if (window.speechSynthesis.speaking) {
+    // Cancel and restart with new rate
+    const wasPaused = isPaused.value;
+    
+    // Store current position and restart
+    const currentPos = window.speechSynthesis.speaking 
+      ? Math.floor((Date.now() - readingStartTime.value) / readingDuration.value * words.value.length)
+      : currentWord.value;
+    
+    window.speechSynthesis.cancel();
+    
+    // Only restart if we were actually speaking
+    if (currentTextRange.value && words.value.length > 0) {
+      // Get text from current position to end
+      const remainingText = words.value.slice(currentPos).join(' ');
+      if (remainingText) {
+        const newUtterance = new SpeechSynthesisUtterance(remainingText);
+        if (selectedVoice.value) {
+          newUtterance.voice = selectedVoice.value;
+        }
+        newUtterance.rate = voiceRate.value;
+        
+        // Set the language
+        try {
+          const langCode = selectedVoice.value?.lang || navigator.language || 'en-US';
+          newUtterance.lang = langCode;
+        } catch (e) {
+          console.log('Language detection failed:', e);
+        }
+        
+        // Update current position
+        currentWord.value = currentPos;
+        
+        // Speak and pause if needed
+        window.speechSynthesis.speak(newUtterance);
+        if (wasPaused) {
+          window.speechSynthesis.pause();
+          isPaused.value = true;
+        }
+      }
+    }
+  }
+  
+  // Save to localStorage
+  localStorage.setItem('voiceRate', voiceRate.value.toString());
+};
+
+// Add the toggle function for mini controls
+const toggleMiniControls = () => {
+  isMinimized.value = !isMinimized.value;
 };
 </script>
 
@@ -518,172 +713,181 @@ button.is-active {
   }
 }
 
+/* Mini controls */
+.mini-controls {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  width: 320px;
+  max-width: calc(100vw - 40px);
+  transform-origin: bottom right;
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.mini-progress-track {
+  width: 100%;
+  height: 3px;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.mini-progress-bar {
+  height: 100%;
+  background: #24d86c;
+  transition: width 0.3s linear;
+}
+
+.audio-visualizer {
+  display: flex;
+  align-items: flex-end;
+  gap: 1px;
+  height: 25px;
+}
+
+.audio-visualizer-mini {
+  display: flex;
+  align-items: flex-end;
+  gap: 1px;
+  height: 16px;
+}
+
+.visualizer-bar {
+  width: 2px;
+  border-radius: 1px;
+  background-color: #24d86c;
+  transition: height 0.1s ease-in-out;
+}
+
+.play-pause-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  transition: opacity 0.2s;
+}
+
+.play-pause-btn:hover {
+  opacity: 0.8;
+}
+
+.speed-options {
+  display: flex;
+  gap: 4px;
+}
+
+.speed-option-btn {
+  font-size: 11px;
+  padding: 2px 4px;
+  border-radius: 3px;
+  opacity: 0.6;
+  transition: all 0.2s;
+}
+
+.speed-option-btn:hover {
+  opacity: 0.8;
+}
+
+.active-speed {
+  opacity: 1;
+  background-color: rgba(255, 255, 255, 0.15);
+  font-weight: 500;
+}
+
+.mini-player-collapsed {
+  display: flex;
+  align-items: center;
+}
+
 /* Voice settings panel */
 .voice-settings-panel {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   background: white;
-  border: 1px solid #ddd;
   border-radius: 8px;
-  padding: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   z-index: 1000;
-  width: 250px;
+  width: 400px;
+  max-width: 90vw;
 }
 
 .voice-panel-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
-  padding-bottom: 6px;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
   border-bottom: 1px solid #eee;
 }
 
-.dark .voice-panel-header {
-  border-bottom-color: #444;
-}
-
 .close-btn {
-  padding: 2px;
-  border-radius: 4px;
-  line-height: 0;
+  font-size: 24px;
+  line-height: 1;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
 }
 
 .close-btn:hover {
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
-.dark .close-btn:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  opacity: 1;
 }
 
 .voice-controls {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 .voice-select {
   width: 100%;
-  padding: 6px;
+  padding: 8px;
   border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 12px;
+  border-radius: 6px;
+  font-size: 14px;
 }
 
-.rate-slider {
-  width: 100%;
-  height: 8px;
-  border-radius: 4px;
-  appearance: none;
-  background: #eee;
-  outline: none;
+.speed-option {
+  padding: 6px 10px;
+  border-radius: 20px;
+  background-color: #f5f5f5;
+  font-size: 14px;
+  transition: all 0.2s;
 }
 
-.rate-slider::-webkit-slider-thumb {
-  appearance: none;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: #4caf50;
-  cursor: pointer;
+.speed-option:hover {
+  background-color: #e5e5e5;
+}
+
+.active-speed-option {
+  background-color: #24d86c;
+  color: white;
 }
 
 .keyboard-shortcuts {
-  padding-top: 4px;
-  margin-top: 4px;
+  padding-top: 12px;
+  margin-top: 8px;
   border-top: 1px solid #eee;
-}
-
-.dark .keyboard-shortcuts {
-  border-top-color: #444;
-}
-
-/* Mini controls */
-.mini-controls {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  padding: 8px 12px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  z-index: 1000;
-  border: 1px solid #eee;
-  min-width: 120px;
-}
-
-.dark .mini-controls {
-  border-color: #444;
-}
-
-.reading-status {
-  margin-bottom: 4px;
-}
-
-.control-buttons {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-}
-
-.control-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 6px;
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.control-btn:hover {
-  background-color: rgba(0, 0, 0, 0.05);
-}
-
-.dark .control-btn:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* Progress bar */
-.progress-container {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background-color: rgba(200, 200, 200, 0.3);
-  z-index: 1000;
-}
-
-.progress-bar {
-  height: 100%;
-  background-color: #24d86c;
-  transition: width 0.3s linear;
-}
-
-/* Accessibility */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
 }
 </style>
