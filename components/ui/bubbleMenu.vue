@@ -84,7 +84,7 @@
       </bubble-menu>
 
       <!-- Mini Controls -->
-      <div v-if="isReading" class="mini-controls dark:bg-black bg-black text-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out">
+      <div v-if="isReading" class="mini-controls rainbow-border-effect dark:bg-black bg-black text-white rounded-xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out">
         <div class="p-3 pb-0">
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-2">
@@ -889,5 +889,40 @@ button.is-active {
   padding-top: 12px;
   margin-top: 8px;
   border-top: 1px solid #eee;
+}
+
+/* Rainbow border animation */
+@keyframes rainbowBorder {
+  0%, 100% { 
+    border-color: hsl(0, 80%, 70%); 
+    box-shadow: 0 0 10px 2px hsla(0, 80%, 70%, 0.7); 
+  }
+  16% { 
+    border-color: hsl(60, 80%, 70%); 
+    box-shadow: 0 0 10px 2px hsla(60, 80%, 70%, 0.7); 
+  }
+  33% { 
+    border-color: hsl(120, 80%, 70%); 
+    box-shadow: 0 0 10px 2px hsla(120, 80%, 70%, 0.7); 
+  }
+  50% { 
+    border-color: hsl(180, 80%, 70%); 
+    box-shadow: 0 0 10px 2px hsla(180, 80%, 70%, 0.7); 
+  }
+  66% { 
+    border-color: hsl(240, 80%, 70%); 
+    box-shadow: 0 0 10px 2px hsla(240, 80%, 70%, 0.7); 
+  }
+  83% { 
+    border-color: hsl(300, 80%, 70%); 
+    box-shadow: 0 0 10px 2px hsla(300, 80%, 70%, 0.7); 
+  }
+}
+
+.rainbow-border-effect {
+  animation: rainbowBorder 4s linear infinite;
+  border-width: 3px;
+  border-style: solid; /* Ensure border is visible */
+  border-radius: 10px; /* Optional: Soften edges for a smoother glow */
 }
 </style>
