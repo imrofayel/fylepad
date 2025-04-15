@@ -63,14 +63,6 @@
             role="button">
             
             <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24"><!-- Icon from Lucide by Lucide Contributors - https://github.com/lucide-icons/lucide/blob/main/LICENSE --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2m7 9v3"/></g></svg>
-
-            <div v-if="isReading" class="speech-wave">
-              <div class="bar"></div>
-              <div class="bar"></div>
-              <div class="bar"></div>
-              <div class="bar"></div>
-              <div class="bar"></div>
-            </div>
           </button>
 
           <button @click="toggleVoiceSettings" 
@@ -84,16 +76,16 @@
       </bubble-menu>
 
       <!-- Mini Controls -->
-      <div v-if="isReading" class="mini-controls rainbow-border-effect dark:bg-black bg-white/80 backdrop-blur-xl text-black !rounded-2xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out">
+      <div v-if="isReading" class="mini-controls rainbow-border-effect dark:bg-[#404040] bg-white/80 backdrop-blur-xl text-black !rounded-2xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out">
                   
           <div class="p-4">
             <div class="flex items-center justify-between">
               <div class="flex items-center w-full justify-between gap-1">
                 <button @click="pauseReading" class="play-pause-btn" aria-label="Pause/Resume reading">
-                  <svg v-if="isPaused" xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24" fill="black">
+                  <svg v-if="isPaused" xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24" fill="black" class="dark:!fill-white">
                     <polygon points="5 3 19 12 5 21 5 3"></polygon>
                   </svg>
-                  <svg v-else xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24" fill="black">
+                  <svg v-else xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24" fill="black" class="dark:!fill-white">
                     <rect x="6" y="4" width="4" height="16"></rect>
                     <rect x="14" y="4" width="4" height="16"></rect>
                   </svg>
@@ -104,7 +96,7 @@
                   :style="{ height: `${audioVisualizerHeight[i % audioVisualizerHeight.length] + 4}px` }"></div>
             </div>
 
-            <div class="font-medium">{{ voiceRate }}x</div>
+            <div class="font-medium dark:text-white/95">{{ voiceRate }}x</div>
               </div>
             </div>
           </div>
@@ -117,19 +109,18 @@
 
       <!-- Voice Settings Panel -->
       <div v-if="showVoiceSettings" 
-           class="voice-settings-panel dark:bg-white bg-white dark:text-black text-black !z-[1100000]" 
+           class="voice-settings-panel dark:!bg-[#404040] rounded-3xl border bg-white dark:text-white dark:border-[#525252] text-black !z-[1100000]" 
            role="dialog" 
            aria-label="Voice settings">
-        <div class="voice-panel-header">
-          <h3 class="text-lg font-medium">Voice Settings</h3>
-          <button @click="(e) => toggleVoiceSettings(e)" class="close-btn" aria-label="Close voice settings">
+        <div class="flex items-center justify-between">
+          <h3 class="text-lg opacity-95 font-medium">Voice Settings</h3>
+          <button @click="(e) => toggleVoiceSettings(e)" class="close-btn relative -top-2" aria-label="Close voice settings">
             ×
           </button>
         </div>
         <div class="voice-controls">
-          <div class="form-group">
-            <label for="voice-select" class="text-sm">Voice:</label>
-            <select id="voice-select" v-model="selectedVoice" class="voice-select dark:bg-white bg-white dark:border-gray-300 border-gray-300">
+          <div class="form-group pt-3">
+            <select id="voice-select" v-model="selectedVoice" class="border p-2 rounded-xl dark:!bg-white/5 bg-white dark:border-[#525252] border-gray-300">
               <option v-for="voice in availableVoices" :key="voice.name" :value="voice">
                 {{ voice.name }} ({{ voice.lang }})
               </option>
@@ -137,23 +128,22 @@
           </div>
           
           <div class="form-group">
-            <label class="text-sm">Speed: {{ voiceRate }}x</label>
+            <label class="text-md opacity-95">Speed:</label>
             <div class="speed-controls flex flex-wrap gap-2 mt-2">
               <button 
-                v-for="rate in [0.5, 0.75, 0.9, 1, 1.25, 1.5, 1.75, 2]" 
+                v-for="rate in [0.5, 0.9, 1.0, 1.25, 1.5, 2]" 
                 :key="rate" 
                 @click="setVoiceRate(rate)"
-                :class="{'active-speed-option': Math.abs(voiceRate - rate) < 0.01}"
-                class="speed-option">
+                :class="{'border bg-[#24d86c] text-white !text-opacity-100 !drop-shadow-sm dark:border-none dark:!bg-black/20': Math.abs(voiceRate - rate) < 0.01}"
+                class="border dark:border-none dark:bg-white/5 !px-2 rounded-2xl py-1 text-opacity-90">
                 {{ rate }}x
               </button>
             </div>
           </div>
           
-          <div class="keyboard-shortcuts">
-            <div class="text-sm font-medium mb-1">Keyboard Shortcuts:</div>
-            <div class="text-sm">Alt + S: Start/Stop reading</div>
-            <div class="text-sm">Alt + P: Pause/Resume</div>
+          <div class="flex flex-col border-t mt-2 pt-4 !gap-2">
+            <div class="text-sm roboto-mono">Alt + S: Start / Stop reading</div>
+            <div class="text-sm roboto-mono">Alt + P: Pause / Resume</div>
           </div>
         </div>
       </div>
@@ -564,14 +554,14 @@ const setVoiceRate = (rate: number) => {
 
 <style>
 /* Button effects */
-button:has(svg) {
+/* button:has(svg) {
   transition: all 0.2s ease;
   position: relative;
 }
 
 button:has(svg):hover {
   transform: scale(1.05);
-}
+} */
 
 /* Reading button animation */
 @keyframes pulse {
@@ -699,7 +689,7 @@ button.is-active {
 .visualizer-bar {
   width: 4px;
   border-radius: 100px;
-  background-color: #323232;
+  background-color: #cfcece;
   transition: height 0.1s ease-in-out;
 }
 
@@ -749,10 +739,7 @@ button.is-active {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: white;
-  border-radius: 8px;
   padding: 20px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   z-index: 1000;
   width: 400px;
   max-width: 90vw;
