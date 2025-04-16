@@ -1,6 +1,6 @@
-import { Paragraph, RootContent } from "mdast";
-import { SKIP, visit, Visitor } from "unist-util-visit";
-import { MarkdownNode } from "../types";
+import type { Paragraph, RootContent } from "mdast";
+import { SKIP, visit, type Visitor } from "unist-util-visit";
+import type { MarkdownNode } from "../types";
 
 export function wrap(root: MarkdownNode, match: (node: MarkdownNode) => boolean) {
   const visitor: Visitor<MarkdownNode> = (node, index, parent) => {

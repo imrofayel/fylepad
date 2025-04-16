@@ -1,6 +1,6 @@
 import { Editor } from "@tiptap/core";
 import { Mark, MarkType, Node, NodeType } from "@tiptap/pm/model";
-import { Attrs } from "../types";
+import type { Attrs } from "../types";
 
 export class ParserStack {
   private editor: Editor;
