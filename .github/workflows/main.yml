@@ -59,7 +59,7 @@ jobs:
       - name: install frontend dependencies
         run: printf "@tiptap-pro:registry=https://registry.tiptap.dev/\n//registry.tiptap.dev/:_authToken=${{secrets.NPM_TOKEN}}" > .npmrc
 
-      - run: pnpm i
+      - run: pnpm i --force
 
       - uses: tauri-apps/tauri-action@dev
         env:
