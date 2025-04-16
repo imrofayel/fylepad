@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -113,8 +111,17 @@
   }
 }
 
+* {
+  overscroll-behavior: none;
+}
+
+@font-face {
+  font-family: "Geist";
+  src: url("/assets/fonts/Geist-VariableFont_wght.ttf") format("truetype");
+}
+
 .geist {
-  font-family: "Geist", serif;
+  font-family: "Geist", serif !important;
   font-optical-sizing: auto;
 }
 
@@ -217,12 +224,16 @@
   font-style: normal;
 }
 
+iframe {
+  width: 100vh !important;
+}
+
 .inter {
   font-family: "Inter", sans-serif;
 }
 
 * {
-  font-family: "Inter";
+  font-family: "Geist";
 }
 
 .drop-shadow-cool {
@@ -234,27 +245,27 @@
 }
 
 ::-webkit-scrollbar {
-  width: 12px; /* Width of the scrollbar */
-  height: 12px; /* Height of the scrollbar for horizontal scrolling */
+  width: 12px !important; /* Width of the scrollbar */
+  height: 12px !important; /* Height of the scrollbar for horizontal scrolling */
 }
 
 ::-webkit-scrollbar-track {
   background: transparent; /* Background of the scrollbar track */
-  @apply dark:bg-[#404040] rounded-full;
+  @apply dark:!bg-[#404040] !rounded-full;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply dark:bg-[#171717] bg-gray-200;
-  border-radius: 1rem; /* Rounded corners for the thumb */
-  border: 3px solid transparent; /* Adds padding around the thumb */
-  background-clip: content-box; /* Ensures the thumb stays within bounds */
+  @apply dark:!bg-[#171717] !bg-gray-200;
+  border-radius: 1rem !important;
+  border: 3px solid transparent !important;
+  background-clip: content-box !important; 
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.7); /* Darker color on hover */
-  @apply dark:bg-[#404040];
+  background: rgba(0, 0, 0, 0.7) !important;
+  @apply dark:!bg-[#404040];
 }
 
 ::-webkit-scrollbar-corner {
-  background: transparent; /* Makes the corner between vertical and horizontal scrollbars transparent */
+  background: transparent !important;
 }
