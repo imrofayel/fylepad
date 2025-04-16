@@ -7,7 +7,7 @@
   },
   "package": {
     "productName": "fylepad",
-    "version": "0.3.2"
+    "version": "2.2.0"
   },
   "tauri": {
     "allowlist": {
@@ -105,7 +105,7 @@
         "fullscreen": false,
         "height": 600,
         "resizable": true,
-        "title": "fylepad",
+        "title": "fylepad - a notepad of your dreams.",
         "width": 800,
         "minHeight": 600,
         "minWidth": 600
