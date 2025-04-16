@@ -102,10 +102,10 @@
           </div>
         </div>
         
-        <!-- Progress Bar -->
+        <!-- Progress Bar
         <div class="mini-progress-track">
           <div class="mini-progress-bar" :style="{ width: `${readingProgress}%` }"></div>
-        </div>
+        </div> -->
 
       <!-- Voice Settings Panel -->
       <div v-if="showVoiceSettings" 

@@ -118,7 +118,7 @@
 
       <button @click="exportMarkdown" :class="[
         'border dark:bg-[#404040] !py-[6px] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
-      ]">
+      ]" title="Export Markdown">
         <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24" class="drop-shadow-sm">
           <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
             color="currentColor">
@@ -130,13 +130,13 @@
 
       <button @click="importMarkdownOrText" :class="[
         'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
-      ]">
+      ]" title="Import Markdown">
         <svg xmlns="http://www.w3.org/2000/svg" width="21.5" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.5 12v1.5a7.5 7.5 0 0 1-15 0V8a5 5 0 0 1 10 0v5.5a2.5 2.5 0 0 1-5 0v-4" color="currentColor"/></svg>
       </button>
 
       <button @click="onClick('light')" v-if="colorMode.value == 'dark'" :class="[
         'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
-      ]">
+      ]" title="Light Mode">
         <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24" class="drop-shadow-sm">
           <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
             d="M21.5 14.078A8.557 8.557 0 0 1 9.922 2.5C5.668 3.497 2.5 7.315 2.5 11.873a9.627 9.627 0 0 0 9.627 9.627c4.558 0 8.376-3.168 9.373-7.422"
@@ -147,7 +147,7 @@
 
       <button @click="onClick('dark')" v-if="colorMode.value == 'light'" :class="[
         'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
-      ]">
+      ]" title="Dark Mode">
         <svg width="21" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="drop-shadow-sm">
           <path d="M17 12a5 5 0 11-10 0 5 5 0 0110 0z" stroke="currentColor" stroke-width="1.5"
             vector-effect="non-scaling-stroke"></path>
@@ -159,7 +159,7 @@
 
       <button @click="isBottomSheetOpen = true" :class="[
         'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
-      ]">
+      ]" title="Styling">
         <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24" class="drop-shadow-sm">
           <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
             color="currentColor">
@@ -171,11 +171,17 @@
         </svg>
       </button>
 
+      <button @click="open = true" :class="[
+        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+      ]" title="About">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22.5" viewBox="0 0 24 24" class="drop-shadow-sm"><!-- Icon from Huge Icons by Hugeicons - undefined --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M10.456 2.64a2.18 2.18 0 0 1 3.088 0l1.009 1.011c.41.41.966.64 1.545.64h1.429a2.18 2.18 0 0 1 2.183 2.182l-.001 1.429c0 .58.23 1.135.64 1.545l1.01 1.01a2.18 2.18 0 0 1 0 3.087l-1.01 1.009c-.41.41-.64.966-.64 1.545v1.429a2.18 2.18 0 0 1-2.182 2.183l-1.429-.001c-.58 0-1.135.23-1.545.64l-1.01 1.01a2.18 2.18 0 0 1-3.087 0l-1.009-1.01a2.18 2.18 0 0 0-1.545-.64H6.473a2.18 2.18 0 0 1-2.183-2.182l.001-1.429c0-.58-.23-1.135-.64-1.545l-1.01-1.01a2.18 2.18 0 0 1 0-3.087l1.01-1.009c.41-.41.64-.966.64-1.545V6.473A2.18 2.18 0 0 1 6.472 4.29l1.429.001c.58 0 1.135-.23 1.545-.64z"/><path d="M10 9a2 2 0 1 1 3.683 1.08C13.085 11.01 12 11.896 12 13v.5m-.008 3.5h.009"/></g></svg>
+      </button>
+
       <UiBottomSheet :isOpen="isBottomSheetOpen" @close="isBottomSheetOpen = false" :editor="editor as any" />
 
     </div>
 
-    <div class="flex fixed justify-between w-full p-2 py-0 pt-4 bg-white dark:bg-[#171717] z-10" v-show="!focusMode">
+    <div class="flex fixed justify-between w-full p-2 py-0 pt-4 bg-white dark:bg-[#171717] z-10">
 
       <div class="flex w-full justify-between items-center space-x-2">
         <input v-model="localTitle" @input="$emit('update:title', localTitle)" placeholder="Untitled"
@@ -183,7 +189,7 @@
 
         <button
           class="border border-gray-200 bg-white text-black !px-[8px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool"
-          title="Print" @click="focus"><svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M3.5 10c0-3.771 0-5.657 1.245-6.828S7.993 2 12 2h.773c3.26 0 4.892 0 6.024.798c.324.228.612.5.855.805c.848 1.066.848 2.6.848 5.67v2.545c0 2.963 0 4.445-.469 5.628c-.754 1.903-2.348 3.403-4.37 4.113c-1.257.441-2.83.441-5.98.441c-1.798 0-2.698 0-3.416-.252c-1.155-.406-2.066-1.263-2.497-2.35c-.268-.676-.268-1.523-.268-3.216z"/><path d="M20.5 12a3.333 3.333 0 0 1-3.333 3.333c-.666 0-1.451-.116-2.098.057a1.67 1.67 0 0 0-1.179 1.179c-.173.647-.057 1.432-.057 2.098A3.333 3.333 0 0 1 10.5 22M8 7h7m-7 4h3"/></g></svg></button>
+          title="Print" @click="focus" v-if="!focusMode"><svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M3.5 10c0-3.771 0-5.657 1.245-6.828S7.993 2 12 2h.773c3.26 0 4.892 0 6.024.798c.324.228.612.5.855.805c.848 1.066.848 2.6.848 5.67v2.545c0 2.963 0 4.445-.469 5.628c-.754 1.903-2.348 3.403-4.37 4.113c-1.257.441-2.83.441-5.98.441c-1.798 0-2.698 0-3.416-.252c-1.155-.406-2.066-1.263-2.497-2.35c-.268-.676-.268-1.523-.268-3.216z"/><path d="M20.5 12a3.333 3.333 0 0 1-3.333 3.333c-.666 0-1.451-.116-2.098.057a1.67 1.67 0 0 0-1.179 1.179c-.173.647-.057 1.432-.057 2.098A3.333 3.333 0 0 1 10.5 22M8 7h7m-7 4h3"/></g></svg></button>
 
 
       </div>
@@ -330,6 +336,9 @@
         title="Print" v-if="focusMode" @click="printPDF"><svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M3.5 10c0-3.771 0-5.657 1.245-6.828S7.993 2 12 2h.773c3.26 0 4.892 0 6.024.798c.324.228.612.5.855.805c.848 1.066.848 2.6.848 5.67v2.545c0 2.963 0 4.445-.469 5.628c-.754 1.903-2.348 3.403-4.37 4.113c-1.257.441-2.83.441-5.98.441c-1.798 0-2.698 0-3.416-.252c-1.155-.406-2.066-1.263-2.497-2.35c-.268-.676-.268-1.523-.268-3.216z"/><path d="M20.5 12a3.333 3.333 0 0 1-3.333 3.333c-.666 0-1.451-.116-2.098.057a1.67 1.67 0 0 0-1.179 1.179c-.173.647-.057 1.432-.057 2.098A3.333 3.333 0 0 1 10.5 22M8 7h7m-7 4h3"/></g></svg></button>
 
     </div>
+
+    <UiInfo :open="open" :close="close"/>
+
   </div>
 </template>
 
@@ -388,6 +397,12 @@ import {
 import {
   setHyperlinkModal,
 } from "../extensions/modals/setHyperlink";
+
+var open = ref(false);
+
+function close() {
+  open.value = false
+}
 
 const isBottomSheetOpen = ref(false);
 
@@ -733,7 +748,7 @@ function handleShortcut(event: KeyboardEvent) {
     .hyperlink-set-modal,
     .hyperlink-edit-modal {
       filter: drop-shadow(0px 2px 5px rgba(0, 0, 0, 0.04));
-      @apply flex overflow-hidden dark:!bg-[#404040] dark:border-[#525252] dark:text-gray-50  bg-white border border-gray-200 rounded-[16px] text-black dark:!text-white/85 p-1 px-1.5
+      @apply flex overflow-hidden dark:!bg-[#404040] dark:border-[#525252] dark:text-gray-50  bg-white/85 backdrop-blur-xl border border-gray-200 rounded-[20px] text-black dark:!text-white/85 px-1.5 pl-2.5
     }
 
     .hyperlink-preview-modal__metadata,
@@ -775,8 +790,7 @@ function handleShortcut(event: KeyboardEvent) {
     .hyperlink-set-modal__copy-button,
     .hyperlink-edit-modal__copy-button,
     .hyperlink-preview-modal__apply-button,
-    .hyperlink-set-modal__apply-button,
-    .hyperlink-edit-modal__apply-button {
+    .hyperlink-set-modal__apply-button {
       width: 30px;
       height: 30px;
       border-radius: 40%;
@@ -785,6 +799,10 @@ function handleShortcut(event: KeyboardEvent) {
       align-items: center;
       justify-content: center;
       transition: background-color 0.1s ease-in-out;
+    }
+
+    .hyperlink-edit-modal__apply-button{
+      @apply  border !rounded-xl hover:!bg-gray-50
     }
 
     .hyperlink-preview-modal__remove-button:hover,
@@ -814,8 +832,8 @@ function handleShortcut(event: KeyboardEvent) {
     .hyperlink-preview-modal__apply-button > svg,
     .hyperlink-set-modal__apply-button > svg,
     .hyperlink-edit-modal__apply-button > svg {
-      width: 22px;
-      height: 22px;
+      width: 19px;
+      height: 19px;
     }
 
     .hyperlink-preview-modal form,
@@ -830,10 +848,15 @@ function handleShortcut(event: KeyboardEvent) {
     .hyperlink-set-modal form input,
     .hyperlink-edit-modal form input {
       border: 1px solid #dadce0;
-      border-radius: 6px;
-      padding: 0.4rem 0.8rem;
+      border-radius: 10px;
+      padding: 0.8rem 0.8rem;
       margin-bottom: 0.2rem;
       width: 100%;
+      @apply drop-shadow-sm
+    }
+
+    .hyperlink-preview-modal {
+      padding: 8px;
     }
 
     .hyperlink-preview-modal form input:last-of-type,
@@ -843,8 +866,10 @@ function handleShortcut(event: KeyboardEvent) {
     }
 
     .hyperlink-edit-modal__inputs-wrapper > input {
-      @apply bg-gray-50 dark:bg-[#171717] !rounded-xl !inline
+      @apply bg-white !py-2 dark:bg-[#171717] !rounded-2xl !inline
     }
+
+
 
     .hyperlink-set-modal__buttons-wrapper,
     .hyperlink-edit-modal__buttons-wrapper {
@@ -1091,7 +1116,7 @@ blockquote {
 }
 
 mark {
-  @apply bg-[#c0fcd3] text-gray-700 dark:bg-gray-800 dark:text-[#c0fcd3];
+  @apply bg-[#fff476] dark:bg-[#eeea7f55] dark:text-white;
   border-radius: 0.6rem;
   padding: 0.1rem 0.3rem;
 }
@@ -1102,7 +1127,7 @@ code {
   border-radius: 0.6rem;
   padding: 0.1rem 0.3rem;
 
-  @apply bg-gray-200/70 dark:bg-[#516b53] dark:text-white/80 text-black/80
+  @apply bg-gray-100/40 border dark:border-[#525252] !border-opacity-20 dark:bg-white/10 text-purple-600 dark:text-red-300
 }
 
 /* Color swatches */
