@@ -34,6 +34,15 @@
 
           </button>
 
+          <button @click="editor.chain().focus().toggleUnderline().run()"
+            :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('underline') }"
+            class="hover:dark:bg-[#171717] hover:bg-gray-100 p-2 px-2">
+
+
+            <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24"><!-- Icon from Lucide by Lucide Contributors - https://github.com/lucide-icons/lucide/blob/main/LICENSE --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 4v6a6 6 0 0 0 12 0V4M4 20h16"/></svg>
+
+          </button>
+
           <button @click="setLink"
             :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('link') }"
             class="hover:dark:bg-[#171717] hover:bg-gray-100 p-2 px-2">
@@ -101,11 +110,6 @@
             </div>
           </div>
         </div>
-        
-        <!-- Progress Bar
-        <div class="mini-progress-track">
-          <div class="mini-progress-bar" :style="{ width: `${readingProgress}%` }"></div>
-        </div> -->
 
       <!-- Voice Settings Panel -->
       <div v-if="showVoiceSettings" 

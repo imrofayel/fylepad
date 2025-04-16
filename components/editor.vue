@@ -379,6 +379,8 @@ import { Markdown } from 'tiptap-markdown';
 
 import { ColorHighlighter } from '../extensions/ColorHighlighter.ts'
 
+import Underline from '@tiptap/extension-underline'
+
 import { SmilieReplacer } from '../extensions/SmilieReplacer.ts'
 
 // load all languages with "all" or common languages with "common"
@@ -475,6 +477,7 @@ onMounted(() => {
     extensions: [
       Mermaid,
       CustomTaskItem,
+      Underline,
       Color.configure({ types: [TextStyle.name, ListItem.name] }),
       TextStyle,
       Table.configure({ resizable: true }),
