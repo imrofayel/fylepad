@@ -1142,7 +1142,7 @@ code {
   border-radius: 0.6rem;
   padding: 0.1rem 0.3rem;
 
-  @apply bg-gray-100/40 border dark:border-[#525252] !border-opacity-20 dark:bg-white/10 text-purple-600 dark:text-red-300
+  @apply bg-gray-100/40 dark:bg-white/10 text-purple-600 dark:text-red-300
 }
 
 /* Color swatches */
