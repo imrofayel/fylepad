@@ -1,23 +1,61 @@
 
 ## fylepad — your perfect note-taking solution!
 
-<a href="https://github.com/imrofayel/fylepad/stargazers"><img src="https://img.shields.io/github/stars/imrofayel/fylepad" alt="GitHub Repo stars"/></a>
-<a href="https://github.com/imrofayel/fylepad/network/members"><img src="https://img.shields.io/github/forks/imrofayel/fylepad" alt="GitHub forks"/></a>
-<a href="https://github.com/imrofayel/fylepad/releases"><img src="https://img.shields.io/github/v/release/imrofayel/fylepad" alt="GitHub Release"/></a>
+<a href="https://github.com/imrofayel/fylepad/stargazers"><img src="https://img.shields.io/github/stars/imrofayel/fylepad" alt="GitHub Repo stars"/></a> <a href="https://github.com/imrofayel/fylepad/releases/"><img src="https://custom-icon-badges.demolab.com/badge/Windows-0078D6?logo=windows11&logoColor=white" alt="Windows Release"/></a> <a href="https://github.com/imrofayel/fylepad/releases/"><img src="https://img.shields.io/badge/macOS-000000?logo=apple&logoColor=F0F0F0" alt="MacOS Release"/></a>  <a href="https://github.com/imrofayel/fylepad/releases/"><img src="https://img.shields.io/badge/Ubuntu-E95420?logo=ubuntu&logoColor=white" alt="Ubunto Release"/></a>
 
-<a href="https://www.producthunt.com/posts/fylepad?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-fylepad" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=491117&theme=light" alt="fylepad - your&#0032;perfect&#0032;note&#0045;taking&#0032;solution&#0033; | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a>
+<a href="https://www.producthunt.com/posts/fylepad?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-fylepad" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=491117&theme=neutral" alt="fylepad - your&#0032;perfect&#0032;note&#0045;taking&#0032;solution&#0033; | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a> <a href="https://twelve.tools" target="_blank"><img src="https://twelve.tools/badge0-white.svg" alt="Featured on Twelve Tools" width="200" height="54"></a>
 
-<a href="https://github.com/imrofayel/fylepad/releases/"><img src="https://github.com/user-attachments/assets/9c531f25-86ad-4400-95a0-cba58c69529f" height="40" weight="40"></a>
+**Sometimes, you want more than what you already have, and sometimes a little less.**
 
-![Slide1](https://github.com/user-attachments/assets/70d22729-5781-4396-a96c-e8216694629f)
-![Slide4](https://github.com/user-attachments/assets/1f969e3a-26bc-4da4-979b-8963e51c8a4c)
-![Slide3](https://github.com/user-attachments/assets/c9ac5772-b53a-4649-8010-538f390961ca)
-![Slide2](https://github.com/user-attachments/assets/206042b6-090b-400d-878c-2d67e1050bd0)
+`fylepad` is your savior when other apps are too complex for simple tasks or too simple to even manage a basic to-do list. Designed for note-taking and Markdown-based editing, it strikes the perfect balance between simplicity and power.
 
-Sometimes, you want more than what you already have and sometimes little less. There are apps that are too complex for simple tasks, and some are too simple to even make a to-do list. So, 'Your savior is here!'.
+### Features
 
-Some of the features include extended Markdown based rich editing support, auto-save state so you can close the app anytime, and next time everything will still be there. You can export and import your notes in PDF, Markdown as well, tabs to support opening many notes at the same time and a spell checker.
+1. **Markdown-Based Rich Editing**: Create and edit notes with full Markdown support. From simple lists to advanced formatting. Change the `colors` & `fonts` as well.
 
-And the best part? The app is just `5 MB`! Surprised? with its Rust core, it's blazing fast, secure, and memory-efficient — because we are not giving you a Chromium browser under the hood. 💥
+3. **Auto-Save State**: Close the app anytime without worrying about losing progress. It remembers your work and restores it the next time you open the app.
 
-This is just version `1.0` — there's a lot more to look forward to! Stay tuned! Feel free to reach out or follow me on GitHub. You can even join Rofayel Labs and become part of our team! 🕹️
+4. **Export and Import**: Seamlessly export your notes to `PDF` or `Markdown` and import `.md` files back.
+
+5. **Multi-Tab Support**: Open and work on multiple notes simultaneously with our tab-based interface.
+
+6. **Rust Core**: Powered by a Rust core, it is fast, secure, and memory-efficient. No bulky Chromium browser under the hood here!
+
+7. **Lightweight**: At just `5MB`, it is a compact powerhouse that won’t bloat your system.
+
+With `light` and `dark` themes, you get a minimal looking note-taking app with bunch of features.
+
+<img src="https://github.com/user-attachments/assets/c9f2915c-8f59-40d0-982f-7128641bd8ee" width="900px">
+
+
+### Installation
+
+Download the latest version for your platform (Windows, macOS, or Linux) from the [Release](https://github.com/imrofayel/fylepad/releases) page and follow the setup instructions.
+
+(MacOS aarch_64 "arm")
+As the app is currently unsigned (due to lack of a paid developer account) you can run `xattr -c fylepad_aarch64.app` to install or use the intel dmg fylepad_2.0.0_x64.dmg
+
+
+### Built With
+
+1. **Nuxt.js**: For a fast and modern web framework.
+
+2. **Tauri**: For building secure and lightweight desktop applications.
+
+3. **Tailwind CSS**: For beautiful and responsive designs.
+
+4. **TipTap**: For advanced rich text editing.
+
+
+### 🐛 Issues and Contributions
+Found a **bug** or have a **feature request**? Open an issue in the [Issues](https://github.com/imrofayel/fylepad/issues) section.
+
+Want to **contribute**? Fork the repository, make your changes, and submit a pull request!
+
+### License
+`fylepad` is open source and available under the [MIT License](LICENSE).
+
+### 🌟 Star Us
+If you find `fylepad` useful, please consider giving us a ⭐ on GitHub!
+
+
