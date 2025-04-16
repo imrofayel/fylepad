@@ -1,8 +1,8 @@
-import { Data, Parent, PhrasingContent, Text } from "mdast";
-import { Handle } from "mdast-util-to-markdown";
-import { Processor } from "unified";
+import type { Data, Parent, PhrasingContent, Text } from "mdast";
+import type { Handle } from "mdast-util-to-markdown";
+import type { Processor } from "unified";
 import { u } from "unist-builder";
-import { visit, Visitor, VisitorResult } from "unist-util-visit";
+import { visit, type Visitor, type VisitorResult } from "unist-util-visit";
 
 export interface DecorationData extends Data {
   flags: string;

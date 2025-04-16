@@ -1,10 +1,9 @@
 import { Editor } from "@tiptap/core";
 import { Mark } from "@tiptap/pm/model";
-import { Root } from "mdast";
-import { MarkdownNode } from "../types";
+import type { Root } from "mdast";
+import type { MarkdownNode } from "../types";
 
 export class SerializerStack {
-  // @ts-expect-error
   private editor: Editor;
   private marks: ReadonlyArray<Mark>;
   private nodes: Array<MarkdownNode>;

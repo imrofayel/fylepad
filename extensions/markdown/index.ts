@@ -4,10 +4,10 @@ import remarkDirective from "remark-directive";
 import remarkGfm from "remark-gfm";
 import remarkParse from "remark-parse";
 import remarkStringify from "remark-stringify";
-import { Processor, unified } from "unified";
+import { type Processor, unified } from "unified";
 import { ParserState } from "./parser/state";
 import { SerializerState } from "./serializer/state";
-import { MarkMarkdownStorage, NodeMarkdownStorage } from "./types";
+import type { MarkMarkdownStorage, NodeMarkdownStorage } from "./types";
 
 export * from "./types";
 

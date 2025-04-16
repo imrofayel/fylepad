@@ -1,7 +1,7 @@
 import { Editor } from "@tiptap/core";
 import { MarkType, Node, NodeType } from "@tiptap/pm/model";
-import { Processor } from "unified";
-import { Attrs, MarkdownNode, MarkMarkdownStorage, NodeMarkdownStorage } from "../types";
+import type { Processor } from "unified";
+import type { Attrs, MarkdownNode, MarkMarkdownStorage, NodeMarkdownStorage } from "../types";
 import { ParserStack } from "./stack";
 
 export class ParserState {
