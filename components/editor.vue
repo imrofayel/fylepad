@@ -397,6 +397,7 @@ import {
 import {
   setHyperlinkModal,
 } from "../extensions/modals/setHyperlink";
+import { Mermaid } from '~/extensions/nodes/mermaid.ts';
 
 var open = ref(false);
 
@@ -472,6 +473,7 @@ onMounted(() => {
       },
     },
     extensions: [
+      Mermaid,
       CustomTaskItem,
       Color.configure({ types: [TextStyle.name, ListItem.name] }),
       TextStyle,
@@ -1059,7 +1061,6 @@ function handleShortcut(event: KeyboardEvent) {
     @apply cursor-ew-resize;
   }
 }
-
 
 h1 {
   font-size: 2rem;
