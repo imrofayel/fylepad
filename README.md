@@ -1,15 +1,13 @@
 
-## fylepad — your perfect note-taking solution!
+## fylepad — notepad of your dreams!
 
 <a href="https://github.com/imrofayel/fylepad/stargazers"><img src="https://img.shields.io/github/stars/imrofayel/fylepad" alt="GitHub Repo stars"/></a> <a href="https://github.com/imrofayel/fylepad/releases/"><img src="https://custom-icon-badges.demolab.com/badge/Windows-0078D6?logo=windows11&logoColor=white" alt="Windows Release"/></a> <a href="https://github.com/imrofayel/fylepad/releases/"><img src="https://img.shields.io/badge/macOS-000000?logo=apple&logoColor=F0F0F0" alt="MacOS Release"/></a>  <a href="https://github.com/imrofayel/fylepad/releases/"><img src="https://img.shields.io/badge/Ubuntu-E95420?logo=ubuntu&logoColor=white" alt="Ubunto Release"/></a>
 
-<a href="https://www.producthunt.com/posts/fylepad?embed=true&utm_source=badge-featured&utm_medium=badge&utm_souce=badge-fylepad" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=491117&theme=neutral" alt="fylepad - your&#0032;perfect&#0032;note&#0045;taking&#0032;solution&#0033; | Product Hunt" style="width: 250px; height: 54px;" width="250" height="54" /></a> <a href="https://twelve.tools" target="_blank"><img src="https://twelve.tools/badge0-white.svg" alt="Featured on Twelve Tools" width="200" height="54"></a>
-
-**Sometimes, you want more than what you already have, and sometimes a little less.**
+You can try [web version here](https://fylepadapp.vercel.app/). I'd recommend using Desktop app for daily offline use. 
 
 `fylepad` is your savior when other apps are too complex for simple tasks or too simple to even manage a basic to-do list. Designed for note-taking and Markdown-based editing, it strikes the perfect balance between simplicity and power.
 
-### Features
+### 🔮 Features:
 
 1. **Markdown-Based Rich Editing**: Create and edit notes with full Markdown support. From simple lists to advanced formatting. Change the `colors` & `fonts` as well.
 
@@ -19,13 +17,23 @@
 
 5. **Multi-Tab Support**: Open and work on multiple notes simultaneously with our tab-based interface.
 
-6. **Rust Core**: Powered by a Rust core, it is fast, secure, and memory-efficient. No bulky Chromium browser under the hood here!
+6. Create tables, Mermaid diagrams, PlantUML charts, Code Blocks and much more.
 
-7. **Lightweight**: At just `5MB`, it is a compact powerhouse that won’t bloat your system.
+7. **Rust Core**: Powered by a Rust core, it is fast, secure, and memory-efficient. No bulky Chromium browser under the hood here!
+
+8. **Lightweight**: At just less than `10MB`, it is a compact powerhouse that won’t bloat your system.
 
 With `light` and `dark` themes, you get a minimal looking note-taking app with bunch of features.
 
-<img src="https://github.com/user-attachments/assets/c9f2915c-8f59-40d0-982f-7128641bd8ee" width="900px">
+For more details and Docs, visit [site](https://fylepad.vercel.app/).
+
+![Screenshot 2025-04-16 161728](https://github.com/user-attachments/assets/c7523115-6196-48e9-bbc4-0a19bd431351)
+![Screenshot 2025-04-16 165142](https://github.com/user-attachments/assets/481cb845-9530-437f-a42c-3dec3cac10f6)
+
+![Screenshot 2025-04-16 163441](https://github.com/user-attachments/assets/38359b31-893a-4372-ae6f-28e496b8df4d)
+![Screenshot 2025-04-16 163204](https://github.com/user-attachments/assets/ddfcef67-933f-4456-866c-bf11f12a782b)
+![Screenshot 2025-04-16 165336](https://github.com/user-attachments/assets/5c66a6d9-661e-4719-97c8-09eace72c589)
+
 
 
 ### Installation
@@ -35,6 +43,7 @@ Download the latest version for your platform (Windows, macOS, or Linux) from th
 (MacOS aarch_64 "arm")
 As the app is currently unsigned (due to lack of a paid developer account) you can run `xattr -c fylepad_aarch64.app` to install or use the intel dmg fylepad_2.0.0_x64.dmg
 
+You can try [web version here](https://fylepadapp.vercel.app/).
 
 ### Built With
 
