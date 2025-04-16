@@ -401,6 +401,7 @@ import {
 } from "../extensions/modals/setHyperlink";
 import { Mermaid } from '~/extensions/nodes/mermaid.ts';
 import { MathBlock } from '~/extensions/nodes/math.ts';
+import { Plantuml } from '~/extensions/nodes/plantuml.ts';
 
 
 var open = ref(false);
@@ -479,6 +480,7 @@ onMounted(() => {
     extensions: [
       Mermaid,
       MathBlock,
+      Plantuml,
       CustomTaskItem,
       Underline,
       Color.configure({ types: [TextStyle.name, ListItem.name] }),
