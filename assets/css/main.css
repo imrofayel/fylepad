@@ -224,6 +224,10 @@
   font-style: normal;
 }
 
+iframe {
+  width: 100vh !important;
+}
+
 .inter {
   font-family: "Inter", sans-serif;
 }
@@ -241,27 +245,27 @@
 }
 
 ::-webkit-scrollbar {
-  width: 12px; /* Width of the scrollbar */
-  height: 12px; /* Height of the scrollbar for horizontal scrolling */
+  width: 12px !important; /* Width of the scrollbar */
+  height: 12px !important; /* Height of the scrollbar for horizontal scrolling */
 }
 
 ::-webkit-scrollbar-track {
   background: transparent; /* Background of the scrollbar track */
-  @apply dark:bg-[#404040] rounded-full;
+  @apply dark:!bg-[#404040] !rounded-full;
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply dark:bg-[#171717] bg-gray-200;
-  border-radius: 1rem;
-  border: 3px solid transparent;
-  background-clip: content-box; 
+  @apply dark:!bg-[#171717] !bg-gray-200;
+  border-radius: 1rem !important;
+  border: 3px solid transparent !important;
+  background-clip: content-box !important; 
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.7);
-  @apply dark:bg-[#404040];
+  background: rgba(0, 0, 0, 0.7) !important;
+  @apply dark:!bg-[#404040];
 }
 
 ::-webkit-scrollbar-corner {
-  background: transparent;
+  background: transparent !important;
 }

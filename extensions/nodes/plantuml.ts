@@ -1,7 +1,7 @@
 import { mergeAttributes, Node, textblockTypeInputRule } from "@tiptap/core";
 import { encode } from "plantuml-encoder";
 import type { BlockMenuItemStorage } from "@/extensions/block-menu/menu";
-import { MarkdownNode, NodeMarkdownStorage } from "../extensions/markdown";
+import { type MarkdownNode, type NodeMarkdownStorage } from "@/extensions/markdown";
 import { InnerEditorView } from "@/extensions/node-view/inner-editor";
 import { debounce } from "@/utils/functions";
 

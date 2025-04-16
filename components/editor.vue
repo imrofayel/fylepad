@@ -348,7 +348,7 @@
 
 <script lang="ts" setup>
 import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
-import { Editor, EditorContent, BubbleMenu, FloatingMenu } from '@tiptap/vue-3';
+import { Editor, EditorContent } from '@tiptap/vue-3';
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
 import TaskList from '@tiptap/extension-task-list';
@@ -406,6 +406,7 @@ import {
 import { Mermaid } from '~/extensions/nodes/mermaid.ts';
 import { MathBlock } from '~/extensions/nodes/math.ts';
 import { Plantuml } from '~/extensions/nodes/plantuml.ts';
+import { Embed } from '~/extensions/nodes/embed.ts';
 
 
 var open = ref(false);
@@ -485,6 +486,7 @@ onMounted(() => {
       Mermaid,
       MathBlock,
       Plantuml,
+      Embed,
       CustomTaskItem,
       Underline,
       Color.configure({ types: [TextStyle.name, ListItem.name] }),

@@ -195,6 +195,12 @@ importers:
       '@iconify-json/material-symbols-light':
         specifier: ^1.2.1
         version: 1.2.1
+      '@types/katex':
+        specifier: ^0.16.7
+        version: 0.16.7
+      '@types/plantuml-encoder':
+        specifier: ^1.4.2
+        version: 1.4.2
       '@vueuse/core':
         specifier: ^11.1.0
         version: 11.1.0(vue@3.5.4)
@@ -1771,6 +1777,9 @@ packages:
 
   '@types/node@22.5.4':
     resolution: {integrity: sha512-FDuKUJQm/ju9fT/SeX/6+gBzoPzlVCzfzmGkwKvRHQVxi4BntVbyIwf6a4Xn62mrvndLiml6z/UBXIdEVjQLXg==}
+
+  '@types/plantuml-encoder@1.4.2':
+    resolution: {integrity: sha512-R60SYlcXyTXQebyVwcarGSJUucuwYY5wetBWAOnRt3k52flBXgt4R1KrxaZ4xpk5MpVo9titpVBBhgl/A9JWRQ==}
 
   '@types/resolve@1.20.2':
     resolution: {integrity: sha512-60BCwRFOZCQhDncwQdxxeOEEkbc5dIMccYLwbxsS4TUNeVECQ/pBJ0j09mrHOl/JJvpRPGwO9SvE4nR2Nb/a4Q==}
@@ -6847,6 +6856,10 @@ snapshots:
   '@types/node@22.5.4':
     dependencies:
       undici-types: 6.19.8
+
+  '@types/plantuml-encoder@1.4.2':
+    dependencies:
+      '@types/node': 22.5.4
 
   '@types/resolve@1.20.2': {}
 
