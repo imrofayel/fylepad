@@ -5,7 +5,7 @@ import type { MarkdownNode, NodeMarkdownStorage } from "@/extensions/markdown";
 import { InnerEditorView } from "@/extensions/node-view/inner-editor";
 import { debounce } from "@/utils/functions";
 
-import { icon } from "@/utils/color";
+import { icon } from "~/utils/icon";
 
 mermaid.initialize({
   startOnLoad: false,

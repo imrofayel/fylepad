@@ -400,6 +400,8 @@ import {
   setHyperlinkModal,
 } from "../extensions/modals/setHyperlink";
 import { Mermaid } from '~/extensions/nodes/mermaid.ts';
+import { MathBlock } from '~/extensions/nodes/math.ts';
+
 
 var open = ref(false);
 
@@ -476,6 +478,7 @@ onMounted(() => {
     },
     extensions: [
       Mermaid,
+      MathBlock,
       CustomTaskItem,
       Underline,
       Color.configure({ types: [TextStyle.name, ListItem.name] }),
