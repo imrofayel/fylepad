@@ -2,7 +2,7 @@ import { setResponseHeaders } from 'h3';
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
-  const { text, prompt } = body || {};
+  const { text, prompt, model } = body || {};
   if (!text || !prompt) {
     return { error: 'Missing text or prompt' };
   }
@@ -47,10 +47,10 @@ export default defineEventHandler(async (event) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'nvidia/llama-3.1-nemotron-ultra-253b-v1:free',
+        model: model || 'mistral-7b-instruct:free',
         messages: [
           { role: 'system', content: 'You are a world-class copy editor and expert prompt engineer.' },
-          { role: 'user', content: `Rewrite the following text according to the user's instructions. Be clear, concise, and professional.\nText: "${text}"\nInstructions: "${prompt}"` },
+          { role: 'user', content: `Rewrite the following text according to the user's instructions. Be clear, concise, and professional. dont mention "here is the results etc ..." and only giv the exact results, its a notepad app with AI powered editor so give the exact results without quotation marks (important) or wrap anything around it, be precise and short always, until user asked u to be long \nText: "${text}"\nInstructions: "${prompt}"` },
         ],
         max_tokens: 600,
         temperature: 0.7,

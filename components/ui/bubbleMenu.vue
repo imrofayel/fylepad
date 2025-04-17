@@ -96,6 +96,9 @@
       <transition name="fade-slide">
         <div v-if="showAIBar" class="ai-bar-wrapper" style="border: 2px solid #f59e42; z-index: 99999; background: #fffbe8; position: absolute; top: 60px; left: 1500px; width: 100%; box-shadow: 0 4px 16px #f59e4299;">
           <div class="ai-bar-inner">
+            <select v-model="selectedModel" class="border p-2 rounded-xl dark:!bg-white/5 bg-white dark:border-[#525252] border-gray-300 mr-2">
+              <option v-for="m in freeModels" :key="m.slug" :value="m.slug">{{ m.name || m.slug }}</option>
+            </select>
             <input
               ref="aiInput"
               v-model="aiPrompt"
@@ -194,7 +197,8 @@ const showAIBar = ref(false);
 const aiPrompt = ref('');
 const aiLoading = ref(false);
 const aiInput = ref<HTMLInputElement | null>(null);
-
+const freeModels = ref<any[]>([]);
+const selectedModel = ref<string>('');
 
 // --- Bubble Menu selection watcher ---
 const updateAIBtn = () => {
@@ -213,6 +217,22 @@ onMounted(() => {
 onBeforeUnmount(() => {
   if (props.editor) props.editor.off('selectionUpdate', updateAIBtn);
 });
+
+async function loadFreeModels() {
+  try {
+    const res = await fetch('/api/free-models');
+    if (res.ok) {
+      const json = await res.json();
+      freeModels.value = json.models;
+      selectedModel.value = freeModels.value[0]?.slug || '';
+    } else {
+      console.error('Failed to fetch models', res.statusText);
+    }
+  } catch (e) {
+    console.error('Error loading models', e);
+  }
+}
+onMounted(loadFreeModels);
 
 function openAIBar() {
   showAIBar.value = true;
@@ -235,7 +255,7 @@ async function submitAIPrompt() {
     const response = await fetch('/api/ai-edit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: selectedText, prompt: aiPrompt.value.trim() })
+      body: JSON.stringify({ text: selectedText, prompt: aiPrompt.value.trim(), model: selectedModel.value })
     });
     if (!response.ok) {
       const err = await response.text();
