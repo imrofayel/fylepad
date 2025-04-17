@@ -237,19 +237,41 @@ async function submitAIPrompt() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ text: selectedText, prompt: aiPrompt.value.trim() })
     });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || 'AI error');
-    const aiResult = data.result;
-    if (aiResult) {
-      props.editor.chain().focus().insertContentAt({ from, to }, aiResult).run();
-      closeAIBar();
+    if (!response.ok) {
+      const err = await response.text();
+      throw new Error(err || 'AI error');
     }
+    // Remove original selection for streaming replacement
+    props.editor.chain().focus().insertContentAt({ from, to }, '').run();
+    const bodyStream = response.body;
+    if (!bodyStream) throw new Error('No response body');
+    const reader = bodyStream.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+    let currPos = from;
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const events = buffer.split('\n\n');
+      buffer = events.pop()!;
+      for (const evt of events) {
+        if (!evt.startsWith('data:')) continue;
+        const dataStr = evt.replace(/^data:\s*/, '').trim();
+        if (dataStr === '[DONE]') return;
+        let parsed;
+        try { parsed = JSON.parse(dataStr); } catch { continue; }
+        const seg = parsed.choices?.[0]?.delta?.content;
+        if (seg) {
+          props.editor.chain().focus().insertContentAt({ from: currPos, to: currPos }, seg).run();
+          currPos += seg.length;
+        }
+      }
+    }
+    closeAIBar();
   } catch (e) {
-    if (typeof e === 'object' && e && 'message' in e) {
-      alert('AI error: ' + (e as any).message);
-    } else {
-      alert('AI error: ' + String(e));
-    }
+    const msg = (e as any)?.message || String(e);
+    alert('AI error: ' + msg);
   } finally {
     aiLoading.value = false;
   }

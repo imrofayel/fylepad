@@ -1,3 +1,5 @@
+import { setResponseHeaders } from 'h3';
+
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
   const { text, prompt } = body || {};
@@ -10,6 +12,32 @@ export default defineEventHandler(async (event) => {
   if (!apiKey) {
     return { error: 'OpenRouter API key not set in env' };
   }
+
+  // Stream response from OpenRouter with SSE
+  function sendStream(event: any, stream: ReadableStream<Uint8Array>) {
+    event._handled = true;
+    // @ts-ignore
+    event.node.res._data = stream;
+    if (event.node.res.socket) {
+      stream.pipeTo(
+        new WritableStream({
+          write(chunk) {
+            event.node.res.write(chunk);
+          },
+          close() {
+            event.node.res.end();
+          }
+        })
+      );
+    }
+  }
+
+  // Set SSE headers
+  setResponseHeaders(event, {
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache, no-transform',
+    'Connection': 'keep-alive',
+  });
 
   try {
     const resp = await fetch('https://openrouter.ai/api/v1/chat/completions', {
@@ -26,15 +54,19 @@ export default defineEventHandler(async (event) => {
         ],
         max_tokens: 600,
         temperature: 0.7,
+        stream: true,
       })
     });
-    const data = await resp.json();
-    const aiResult = data.choices?.[0]?.message?.content?.trim();
-    if (!aiResult) {
-      return { error: 'No AI result' };
+    if (!resp.ok) {
+      const err = await resp.text();
+      event.node.res.write(`data: ${JSON.stringify({ error: err })}\n\n`);
+      event.node.res.end();
+      return;
     }
-    return { result: aiResult };
+    // Send raw stream
+    sendStream(event, resp.body as any);
   } catch (e) {
-    return { error: (e as any)?.message || String(e) };
+    event.node.res.write(`data: ${JSON.stringify({ error: (e as any)?.message || String(e) })}\n\n`);
+    event.node.res.end();
   }
 });
