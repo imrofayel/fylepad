@@ -2,6 +2,14 @@
       <bubble-menu :editor="editor as any" :tippy-options="{ duration: 100 }" v-if="editor">
         <div
           class="flex overflow-hidden dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50  bg-white border border-gray-200 rounded-xl text-black drop-shadow-cool dark:text-white/85">
+          <!-- AI Button -->
+          <button @click="openAIBar" style="background: #e0f2fe; border: 2px solid #2563eb; color: #2563eb; z-index: 9999;" class="hover:bg-blue-100 dark:hover:bg-blue-900 p-2 px-2 flex items-center" aria-label="AI Edit">
+  <!-- Always visible for debug -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="10" stroke="#3b82f6" stroke-width="2" fill="none"/>
+              <path d="M8 12h8M12 8v8" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
           <button @click="editor.chain().focus().toggleBold().run()"
             :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('bold') }"
             class="rounded-l-lg hover:dark:bg-[#171717] hover:bg-gray-100 p-2 px-2">
@@ -84,6 +92,29 @@
         </div>
       </bubble-menu>
 
+      <!-- AI Prompt Bar -->
+      <transition name="fade-slide">
+        <div v-if="showAIBar" class="ai-bar-wrapper" style="border: 2px solid #f59e42; z-index: 99999; background: #fffbe8; position: absolute; top: 60px; left: 1500px; width: 100%; box-shadow: 0 4px 16px #f59e4299;">
+          <div class="ai-bar-inner">
+            <input
+              ref="aiInput"
+              v-model="aiPrompt"
+              @keydown.enter="submitAIPrompt"
+              :disabled="aiLoading"
+              class="ai-bar-input"
+              placeholder="Describe how you want to edit the selected text..."
+              autofocus
+            />
+            <button @click="submitAIPrompt" :disabled="aiLoading || !aiPrompt.trim()" class="ai-bar-go">
+              <span v-if="!aiLoading">Go</span>
+              <span v-else class="ai-bar-spinner"></span>
+            </button>
+            <button @click="closeAIBar" class="ai-bar-close" :disabled="aiLoading">×</button>
+          </div>
+        </div>
+      </transition>
+
+
       <!-- Mini Controls -->
       <div v-if="isReading" class="mini-controls rainbow-border-effect dark:bg-[#404040] bg-white/80 backdrop-blur-xl text-black !rounded-2xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out">
                   
@@ -155,7 +186,81 @@
 
 <script lang="ts" setup>
 import { BubbleMenu } from '@tiptap/vue-3';
-import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
+
+// --- AI Bubble Menu State ---
+const showAIBtn = ref(false);
+const showAIBar = ref(false);
+const aiPrompt = ref('');
+const aiLoading = ref(false);
+const aiInput = ref<HTMLInputElement | null>(null);
+
+
+// --- Bubble Menu selection watcher ---
+const updateAIBtn = () => {
+  if (!props.editor) return;
+  const { from, to } = props.editor.state.selection;
+  showAIBtn.value = from !== to;
+  console.log('[AI Button Debug] Selection from:', from, 'to:', to, 'showAIBtn:', showAIBtn.value);
+};
+
+onMounted(() => {
+  if (props.editor) {
+    props.editor.on('selectionUpdate', updateAIBtn);
+    updateAIBtn();
+  }
+});
+onBeforeUnmount(() => {
+  if (props.editor) props.editor.off('selectionUpdate', updateAIBtn);
+});
+
+function openAIBar() {
+  showAIBar.value = true;
+  aiPrompt.value = '';
+  console.log('[AI Debug] openAIBar called, showAIBar:', showAIBar.value);
+  nextTick(() => aiInput.value?.focus());
+}
+function closeAIBar() {
+  showAIBar.value = false;
+  aiPrompt.value = '';
+}
+
+async function submitAIPrompt() {
+  if (!props.editor || aiLoading.value || !aiPrompt.value.trim()) return;
+  const { from, to } = props.editor.state.selection;
+  const selectedText = props.editor.state.doc.textBetween(from, to, ' ');
+  if (!selectedText) return;
+  aiLoading.value = true;
+  try {
+    const response = await fetch('/api/ai-edit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text: selectedText, prompt: aiPrompt.value.trim() })
+    });
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || 'AI error');
+    const aiResult = data.result;
+    if (aiResult) {
+      props.editor.chain().focus().insertContentAt({ from, to }, aiResult).run();
+      closeAIBar();
+    }
+  } catch (e) {
+    if (typeof e === 'object' && e && 'message' in e) {
+      alert('AI error: ' + (e as any).message);
+    } else {
+      alert('AI error: ' + String(e));
+    }
+  } finally {
+    aiLoading.value = false;
+  }
+}
+
+// --- Keyboard shortcut: Escape to close AI bar ---
+function onGlobalKey(e: KeyboardEvent) {
+  if (showAIBar.value && e.key === 'Escape') closeAIBar();
+}
+onMounted(() => window.addEventListener('keydown', onGlobalKey));
+onBeforeUnmount(() => window.removeEventListener('keydown', onGlobalKey));
 
 // Define types
 interface SpeechSynthesisVoice {
@@ -850,4 +955,98 @@ button.is-active {
   border-style: solid; /* Ensure border is visible */
   border-radius: 10px; /* Optional: Soften edges for a smoother glow */
 }
+.ai-bar-wrapper {
+  position: absolute;
+  left: 50%;
+  top: -60px;
+  transform: translateX(-50%);
+  z-index: 2000;
+  width: 420px;
+  max-width: 94vw;
+  pointer-events: all;
+}
+.ai-bar-inner {
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 2px 18px 0 rgba(0,0,0,0.13);
+  border: 1.5px solid #3b82f6;
+  padding: 6px 10px;
+  gap: 8px;
+  animation: fadeInScale 0.25s cubic-bezier(.4,2,.6,1) both;
+}
+.ai-bar-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 1.08rem;
+  padding: 7px 10px;
+  background: transparent;
+  color: #222;
+}
+.ai-bar-go {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 16px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.18s;
+  min-width: 48px;
+  min-height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ai-bar-go:disabled {
+  background: #b3d2fa;
+  cursor: not-allowed;
+}
+.ai-bar-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #888;
+  cursor: pointer;
+  padding: 0 8px;
+  line-height: 1;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+.ai-bar-close:hover {
+  background: #f3f3f3;
+}
+.ai-bar-spinner {
+  border: 3px solid #e0e7ef;
+  border-top: 3px solid #3b82f6;
+  border-radius: 50%;
+  width: 21px;
+  height: 21px;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes fadeInScale {
+  from { opacity: 0; transform: scale(0.95) translateX(-50%); }
+  to { opacity: 1; transform: scale(1) translateX(-50%); }
+}
+.fade-slide-enter-active, .fade-slide-leave-active {
+  transition: opacity 0.22s, transform 0.22s cubic-bezier(.4,2,.6,1);
+}
+.fade-slide-enter-from, .fade-slide-leave-to {
+  opacity: 0;
+  transform: translateY(25px);
+}
+.fade-slide-enter-to, .fade-slide-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Existing styles below */
 </style>
