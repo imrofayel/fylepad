@@ -103,7 +103,7 @@
               v-model="aiPrompt"
               @keydown.enter="submitAIPrompt"
               :disabled="aiLoading"
-              class="ai-bar-input placeholder:drop-shadow-sm placeholder:!text-black/80 text-black/80 dark:text-white dark:placeholder:!text-white"
+              class="ai-bar-input placeholder:drop-shadow-sm placeholder:!text-black/80 text-black/80 dark:!text-white dark:placeholder:!text-white"
               placeholder="AI"
               autofocus
             />
@@ -1073,7 +1073,6 @@ button.is-active {
   font-size: 1.08rem;
   padding: 7px 10px;
   background: transparent;
-  color: #222;
 }
 .ai-bar-go {
   background: #3b82f6;
