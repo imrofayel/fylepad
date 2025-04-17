@@ -49,8 +49,8 @@ export default defineEventHandler(async (event) => {
       body: JSON.stringify({
         model: model || 'mistral-7b-instruct:free',
         messages: [
-          { role: 'system', content: 'You are a world-class copy editor and expert prompt engineer.' },
-          { role: 'user', content: `Rewrite the following text according to the user's instructions. Be clear, concise, and professional. dont mention "here is the results etc ..." and only giv the exact results, its a notepad app with AI powered editor so give the exact results without quotation marks (important) or wrap anything around it, be precise and short always, until user asked u to be long \nText: "${text}"\nInstructions: "${prompt}"` },
+          { role: 'system', content: 'You are a helpful editor that only do what you being asked, always be generous and helpful and happy.' },
+          { role: 'user', content: `Rewrite the following text based on the user's instructions. Be clear, concise, and professional. Do not mention results or provide any introduction. It is a notepad app with an AI-powered editor, so provide only the exact results without quotation marks or wrapping. Always be precise and brief unless the user requests a longer response. Always generate plain text without any markdown, codeblocks, tables, headers, or any kind of formatting." \nText: "${text}"\nInstructions: "${prompt}"` },
         ],
         max_tokens: 600,
         temperature: 0.7,
