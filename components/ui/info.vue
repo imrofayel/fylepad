@@ -1,6 +1,6 @@
 <template>
 <div v-if="open" 
-           class="voice-settings-panel dark:!bg-[#404040] rounded-3xl border bg-white dark:text-white dark:border-[#525252] text-black !z-[1100000]" 
+           class="voice-settings-panel dark:!bg-[#404040] rounded-3xl border bg-white/80 backdrop-blur-2xl dark:text-white dark:border-[#525252] text-black !z-[1100000]" 
            role="dialog" 
            aria-label="About Fylepad">
 

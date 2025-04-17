@@ -93,7 +93,7 @@
 
       <!-- AI Prompt Bar -->
       <transition name="fade">
-        <div v-if="showAIBar" class=" rounded-2xl drop-shadow-sm w-[80%] left-1/2 -translate-x-1/2 top-8  fixed rainbow-border-effect-2 bg-white backdrop-blur-2xl z-[1000000000]">
+        <div v-if="showAIBar" class=" rounded-2xl drop-shadow-sm w-[80%] sm:w-[60%] md:w-[40%] left-1/2 -translate-x-1/2 top-8  fixed rainbow-border-effect-2 bg-white dark:bg-[#232323] dark:text-white backdrop-blur-2xl z-[1000000000]">
           <div class="flex px-2">
 
             <svg xmlns="http://www.w3.org/2000/svg" width="24" class="opacity-90 text-[#24d86c]" viewBox="0 0 24 24"><path fill="currentColor" d="M9.376 22.08c-.32 0-.64-.07-.95-.21c-.73-.33-1.21-1-1.3-1.79l-.28-2.64l-2.62-.68c-.81-.21-1.41-.81-1.61-1.6s.04-1.6.64-2.16l1.93-1.8l-1.06-2.33c-.33-.73-.25-1.56.22-2.21c.49-.67 1.27-1.01 2.1-.91l2.79.33l1.32-2.36c.39-.7 1.1-1.13 1.9-1.15c.79-.04 1.54.36 1.97 1.03l1.48 2.32l2.74-.49c.81-.15 1.61.14 2.14.77c.52.62.66 1.44.37 2.19l-.93 2.43l2.01 1.66c.63.52.92 1.31.77 2.11s-.73 1.45-1.51 1.71l-2.6.83l-.11 2.6c-.04.8-.48 1.49-1.19 1.87c-.72.38-1.56.35-2.26-.07l-2.4-1.48l-2.28 1.6c-.39.27-.84.41-1.3.41zm-.97-4.23l.22 2.08c.04.37.31.53.43.58c.25.11.54.09.77-.07l1.75-1.23l-.59-.37c-.63-.38-1.3-.67-2.01-.86l-.55-.14zm5.88 1.28l1.85 1.14c.24.14.52.15.77.02c.11-.06.37-.24.39-.61l.08-2.05l-.73.23c-.7.23-1.36.55-1.96.97l-.41.28zm-6.05-2.88l1.1.28c.86.22 1.67.57 2.43 1.03l1.14.71l.94-.66c.72-.5 1.51-.9 2.36-1.17l1.25-.4l.04-.97c.04-.91.23-1.81.55-2.66l.42-1.1l-.8-.67c-.7-.58-1.3-1.26-1.78-2.01l-.68-1.06l-1.15.2c-.86.16-1.74.18-2.62.08l-1.36-.16l-.5.91c-.44.78-.99 1.5-1.65 2.11l-.91.85l.92 2.03c.03.07.05.15.06.23l.26 2.42zm-2.39-3.6l-1.55 1.45c-.28.26-.24.57-.21.7c.03.12.15.42.53.52l2.07.54l-.18-1.74l-.66-1.46zm13.83-.33l-.24.62c-.26.71-.42 1.45-.45 2.2l-.02.42l2.08-.67a.717.717 0 0 0 .25-1.24l-1.62-1.34zM6.186 7.24a.74.74 0 0 0-.61.31c-.07.1-.22.37-.07.7l.85 1.87l.54-.5c.54-.51 1-1.1 1.37-1.75l.21-.37l-2.18-.26zm10.61.06l.34.53c.4.62.89 1.18 1.47 1.66l.41.34l.75-1.95a.7.7 0 0 0-.12-.7a.74.74 0 0 0-.72-.26l-2.12.38zm-5.94-1.01l.75.09c.73.09 1.46.07 2.18-.06l.54-.1l-1.15-1.79c-.21-.32-.51-.34-.67-.34c-.13 0-.45.05-.64.38l-1.02 1.82z" color="currentColor"/></svg>
@@ -103,7 +103,7 @@
               v-model="aiPrompt"
               @keydown.enter="submitAIPrompt"
               :disabled="aiLoading"
-              class="ai-bar-input placeholder:drop-shadow-sm placeholder:!text-black/80 text-black/80"
+              class="ai-bar-input placeholder:drop-shadow-sm placeholder:!text-black/80 text-black/80 dark:text-white dark:placeholder:!text-white"
               placeholder="AI"
               autofocus
             />
@@ -115,18 +115,25 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"><!-- Icon from SVG Spinners by Utkarsh Verma - https://github.com/n3r4zzurr0/svg-spinners/blob/main/LICENSE --><path fill="currentColor" d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></svg>
               </span>
             </button>
-            <!-- <button @click="closeAIBar" class="bg-red-600 rounded-full absolute -right-2 -top-2 max-h-fit p-2 py-0 text-white" :disabled="aiLoading">×</button> -->
           </div>
 
-          <!-- <select v-model="selectedModel" class="border w-[200px] p-2 rounded-xl dark:!bg-white/5 bg-white dark:border-[#525252] border-gray-300 mr-2">
+          <div class="flex w-full items-center absolute top-12 justify-between">
+            <select v-model="selectedModel" class="border w-[200px] p-1.5 py-1 rounded-xl dark:!bg-[#232323] bg-white drop-shadow-sm backdrop-blur-xl dark:border-[#525252]  text-[15.5px] border-gray-100 mr-2">
               <option v-for="m in freeModels" :key="m.slug" :value="m.slug">{{ m.name || m.slug }}</option>
-            </select> -->
+            </select>
+
+            <span @click="closeAIBar" :disabled="aiLoading" class="cursor-pointer border p-[3px] rounded-xl dark:!bg-[#232323] bg-white drop-shadow-sm dark:border-[#525252]  text-[15px] border-gray-100">
+              <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24"><path fill="currentColor" d="m12 13.4l-2.9 2.9q-.275.275-.7.275t-.7-.275t-.275-.7t.275-.7l2.9-2.9l-2.9-2.875q-.275-.275-.275-.7t.275-.7t.7-.275t.7.275l2.9 2.9l2.875-2.9q.275-.275.7-.275t.7.275q.3.3.3.713t-.3.687L13.375 12l2.9 2.9q.275.275.275.7t-.275.7q-.3.3-.712.3t-.688-.3z"/></svg>
+            </span>
+          </div>
+
+          
         </div>
       </transition>
 
 
       <!-- Mini Controls -->
-      <div v-if="isReading" class="mini-controls rainbow-border-effect dark:bg-[#404040] bg-white/80 backdrop-blur-xl text-black !rounded-2xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out">
+      <div v-if="isReading" class="mini-controls rainbow-border-effect-2 dark:bg-[#404040] bg-white/80 backdrop-blur-xl text-black !rounded-2xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out">
                   
           <div class="p-4">
             <div class="flex items-center justify-between">
@@ -165,7 +172,7 @@
         </div>
         <div class="voice-controls">
           <div class="form-group pt-3">
-            <select id="voice-select" v-model="selectedVoice" class="border p-2 rounded-xl dark:!bg-white/5 bg-white dark:border-[#525252] border-gray-300">
+            <select v-model="selectedVoice" class="border p-2 rounded-xl dark:!bg-white/5 bg-white dark:border-[#525252] border-gray-300">
               <option v-for="voice in availableVoices" :key="voice.name" :value="voice">
                 {{ voice.name }} ({{ voice.lang }})
               </option>
@@ -285,7 +292,10 @@ async function submitAIPrompt() {
       for (const evt of events) {
         if (!evt.startsWith('data:')) continue;
         const dataStr = evt.replace(/^data:\s*/, '').trim();
-        if (dataStr === '[DONE]') return;
+        if (dataStr === '[DONE]') {
+          closeAIBar();
+          return;
+        }
         let parsed;
         try { parsed = JSON.parse(dataStr); } catch { continue; }
         const seg = parsed.choices?.[0]?.delta?.content;
@@ -1004,35 +1014,35 @@ button.is-active {
   border-radius: 10px; /* Optional: Soften edges for a smoother glow */
 }
 
-@keyframes rainbowBorder {
+@keyframes rainbowBorder2 {
   0%, 100% { 
-    border-color: hsl(0, 80%, 70%); 
-    box-shadow: 0 0 10px 2px hsla(0, 80%, 70%, 0.7); 
+    border-color: hsl(140, 80%, 70%); 
+    box-shadow: 0 0 5px 1px hsla(140, 80%, 70%, 0.7); 
   }
   16% { 
-    border-color: hsl(60, 80%, 70%); 
-    box-shadow: 0 0 10px 2px hsla(60, 80%, 70%, 0.7); 
+    border-color: hsl(120, 80%, 70%); 
+    box-shadow: 0 0 5px 0px hsla(120, 80%, 70%, 0.7); 
   }
   33% { 
-    border-color: hsl(120, 80%, 70%); 
-    box-shadow: 0 0 10px 2px hsla(120, 80%, 70%, 0.7); 
+    border-color: hsl(100, 80%, 70%); 
+    box-shadow: 0 0 5px 0px hsla(100, 80%, 70%, 0.7); 
   }
   50% { 
-    border-color: hsl(180, 80%, 70%); 
-    box-shadow: 0 0 10px 2px hsla(180, 80%, 70%, 0.7); 
+    border-color: hsl(120, 80%, 70%); 
+    box-shadow: 0 0 5px 0px hsla(120, 80%, 70%, 0.7); 
   }
   66% { 
-    border-color: hsl(240, 80%, 70%); 
-    box-shadow: 0 0 10px 2px hsla(240, 80%, 70%, 0.7); 
+    border-color: hsl(100, 80%, 70%); 
+    box-shadow: 0 0 5px 0px hsla(100, 80%, 70%, 0.7); 
   }
   83% { 
-    border-color: hsl(300, 80%, 70%); 
-    box-shadow: 0 0 10px 2px hsla(300, 80%, 70%, 0.7); 
+    border-color: hsl(100, 80%, 70%); 
+    box-shadow: 0 0 5px 0px hsla(100, 80%, 70%, 0.7); 
   }
 }
 
 .rainbow-border-effect-2 {
-  animation: rainbowBorder 4s linear infinite;
+  animation: rainbowBorder2 2s linear infinite;
 }
 
 .ai-bar-wrapper {
