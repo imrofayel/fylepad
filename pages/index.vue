@@ -65,22 +65,22 @@
         Designed for note-taking with perfect balance of simplicity and power.
       </span>
 
-      <ul class="pt-6 gap-2 sm:gap-4 flex flex-col dark:text-white text-lg sm:text-xl">
-        <span data-name="pencil" data-type="emoji" class="inline-flex gap-2"><img src="https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/270f-fe0f.png" draggable="false" loading="lazy" align="absmiddle" class="w-[22px] max-h-fit"><span>Markdown based formatting with Mermaid and PlantUML support.</span></span>
+      <div class="pt-6 gap-2 sm:gap-4 flex flex-col dark:text-white text-lg sm:text-xl">
+        <span data-name="pencil" data-type="emoji" class="!inline-flex gap-2"><img src="https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/270f-fe0f.png" draggable="false" loading="lazy" align="absmiddle" class="w-[22px] max-h-fit"><span>Markdown based formatting with Mermaid and PlantUML support.</span></span>
 
-        <span data-name="book" data-type="emoji" class="inline-flex gap-2"><img src="https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f4d6.png" draggable="false" loading="lazy" align="absmiddle" class="w-[22px] max-h-fit"><span>Your progress is saved always locally even you close the app.</span></span>
+        <span data-name="book" data-type="emoji" class="!inline-flex gap-2"><img src="https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f4d6.png" draggable="false" loading="lazy" align="absmiddle" class="w-[22px] max-h-fit"><span>Your progress is saved always locally even you close the app.</span></span>
 
-        <span data-name="crystal_ball" data-type="emoji" class="inline-flex gap-2"><img src="https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f52e.png" draggable="false" loading="lazy" align="absmiddle" class="w-[22px] max-h-fit"><span>Export your notes to PDF or Markdown and import files back.</span></span>
+        <span data-name="crystal_ball" data-type="emoji" class="!inline-flex gap-2"><img src="https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f52e.png" draggable="false" loading="lazy" align="absmiddle" class="w-[22px] max-h-fit"><span>Export your notes to PDF or Markdown and import files back.</span></span>
 
-        <span data-name="fire" data-type="emoji" class="inline-flex gap-2"><img src="https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f525.png" draggable="false" loading="lazy" align="absmiddle" class="w-[22px] max-h-fit"><span>Open and work on multiple tabs simultaneously.</span></span>
+        <span data-name="fire" data-type="emoji" class="!inline-flex gap-2"><img src="https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f525.png" draggable="false" loading="lazy" align="absmiddle" class="w-[22px] max-h-fit"><span>Open and work on multiple tabs simultaneously.</span></span>
 
 
-        <span data-name="green_heart" data-type="emoji" class="inline-flex gap-2"><img src="https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f49a.png" draggable="false" loading="lazy" align="absmiddle" class="w-[22px] max-h-fit"><span>Create tables, diagrams, code-blocks and more.</span></span>
+        <span data-name="green_heart" data-type="emoji" class="!inline-flex gap-2"><img src="https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f49a.png" draggable="false" loading="lazy" align="absmiddle" class="w-[22px] max-h-fit"><span>Create tables, diagrams, code-blocks and more.</span></span>
 
-        <span data-name="high_voltage" data-type="emoji" class="inline-flex gap-2"><img src="https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/26a1.png" draggable="false" loading="lazy" align="absmiddle" class="w-[22px] max-h-fit"><span>Powered by a Rust core, it is fast, secure, and memory-efficient.</span></span>
+        <span data-name="high_voltage" data-type="emoji" class="!inline-flex gap-2"><img src="https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/26a1.png" draggable="false" loading="lazy" align="absmiddle" class="w-[22px] max-h-fit"><span>Powered by a Rust core, it is fast, secure, and memory-efficient.</span></span>
 
         <span>Its still beta, so expect multiple new features along the way.</span>
-      </ul>
+      </div>
     </UiBlurReveal>
   </ClientOnly>
   
@@ -97,7 +97,7 @@
       For local first offline note-taking.
     </span>
 
-    <ul class="pt-6 gap-2 gap-y-3 flex flex-wrap dark:text-white text-lg sm:text-xl">
+    <div class="pt-6 gap-2 gap-y-3 flex flex-wrap justify-start items-start dark:text-white text-lg sm:text-xl">
       <NuxtLink href="https://github.com/imrofayel/fylepad/releases"><span class="max-w-fit dark:bg-white/5 bg-black/5 p-1.5 rounded-xl px-2.5 flex items-center"><svg xmlns="http://www.w3.org/2000/svg" width="26" class="inline mr-1" viewBox="0 0 24 24"><!-- Icon from Material Design Icons by Pictogrammers - https://github.com/Templarian/MaterialDesign/blob/master/LICENSE --><path fill="currentColor" d="M2.67 5.3v.61l-.71.3V5.6zm0 5.94v.62l-.71.29v-.59zm0 6.03v.62l-.71.29v-.59zM2.6 7.29v.55l-.57.26v-.54zm0 1.99v.54l-.57.26v-.54zm0 4.03v.53l-.57.26v-.54zm0 2.02v.54l-.57.26v-.53zm1.9-9.69v.72l-1 .37V6zm0 6.02v.71l-1 .37v-.71zm0 6.04v.71l-1 .4v-.71zm-.07-9.98v.66l-.79.3V8zm0 2.01v.64l-.78.3V10zm0 4.01v.64l-.78.31v-.66zm0 2.02v.65l-.78.31v-.66zm1.88-9.67v.85l-1.26.49v-.84zm0 6.02v.85l-1.26.49v-.84zm0 5.97v.85l-1.26.5v-.85zm-.06-9.9v.76l-1.06.4v-.73zm0 2v.75l-1.06.42v-.75zm0 4.01v.75l-1.06.43v-.75zm0 1.95v.76l-1.06.42v-.75zm2.04-10.1v1.12l-1.57.62V6.67zm0 6.02v1.13l-1.57.61v-1.12zm0 5.97v1.12l-1.57.62v-1.11zm-.09-9.9v1.03l-1.31.53V8.66zm0 2v1.02l-1.31.53v-1.03zm0 4.02v1.03l-1.31.52v-1.03zm0 1.95v1.02l-1.31.52v-1.01zm2.14-10.25v1.47L8.61 8V6.56zm0 6.02v1.46l-1.73.7v-1.47zm0 5.97v1.46l-1.73.7v-1.46zm-.08-9.79v1.23l-1.48.59V8.64zm0 1.92v1.23l-1.48.58v-1.22zm0 4.09v1.25l-1.48.57v-1.23zm0 1.94v1.25l-1.48.59V16.6zm2.19-10.88v2l-1.86.77V6c.64-.35 1.26-.65 1.86-.88m0 2.21v1.73l-1.86.78V8.1zm0 1.95v1.76l-1.86.78v-1.76zm0 1.97V13l-1.86.77V12zm0 1.96V15l-1.86.78V14zm0 2v1.75l-1.86.8V16zm0 1.96v1.87c-.73.28-1.35.55-1.86.8v-1.88zm9.59-11.99v14.05c-1.19-.79-2.67-1.18-4.45-1.18c-1.47 0-3.12.3-4.94.91v-1.9c.97-.37 2.03-.64 3.19-.8v-4.57c-.98.12-2.04.46-3.19 1.02V11.4c.99-.46 2.06-.77 3.19-.94V6c-1.02.18-2.08.53-3.19 1V5.03C14.27 4.34 15.86 4 17.41 4c1.68 0 3.22.39 4.63 1.18m-1.89 1.23c-.76-.41-1.65-.59-2.73-.59c-.13 0-.25.01-.37.02v4.54l.41-.01c.91 0 1.81.13 2.69.43zm0 5.69c-.81-.36-1.72-.54-2.71-.54c-.13 0-.26.01-.39.02v4.58h.41c.99 0 1.89.12 2.69.37z"/></svg><span>Windows</span></span></NuxtLink>
 
       <NuxtLink href="https://github.com/imrofayel/fylepad/releases"><span class="max-w-fit dark:bg-white/5 bg-black/5 p-1.5 rounded-xl px-2.5 flex items-center "><svg xmlns="http://www.w3.org/2000/svg" width="26" class="inline mr-1" viewBox="0 0 24 24"><!-- Icon from Material Design Icons by Pictogrammers - https://github.com/Templarian/MaterialDesign/blob/master/LICENSE --><path fill="currentColor" d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47c-1.34.03-1.77-.79-3.29-.79c-1.53 0-2 .77-3.27.82c-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51c1.28-.02 2.5.87 3.29.87c.78 0 2.26-1.07 3.81-.91c.65.03 2.47.26 3.64 1.98c-.09.06-2.17 1.28-2.15 3.81c.03 3.02 2.65 4.03 2.68 4.04c-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5c.13 1.17-.34 2.35-1.04 3.19c-.69.85-1.83 1.51-2.95 1.42c-.15-1.15.41-2.35 1.05-3.11"/></svg><span>Mac</span></span></NuxtLink>
@@ -109,7 +109,7 @@
       <NuxtLink href="https://web.dev/learn/pwa/progressive-web-apps"><span class="max-w-fit dark:bg-white/5 bg-black/5 p-1.5 rounded-xl px-2.5 flex items-center "><svg xmlns="http://www.w3.org/2000/svg" width="26" class="mr-1 inline" viewBox="0 0 24 24"><!-- Icon from Lineicons by Lineicons - https://github.com/LineiconsHQ/Lineicons/blob/main/LICENSE.md --><path fill="currentColor" d="M20.64 5.396c-.169-.444-.574-1.069-1.148-1.513c-.337-.253-.72-.5-1.26-.658C17.649 3.056 16.928 3 16.05 3h-8.1c-.883 0-1.598.056-2.177.23c-.54.164-.94.406-1.265.659a3.8 3.8 0 0 0-1.154 1.513C3.006 6.296 3 7.309 3 7.95v8.1c0 .641.006 1.654.354 2.554a3.83 3.83 0 0 0 2.42 2.171c.579.169 1.293.225 2.176.225h8.1c.883 0 1.598-.056 2.177-.23c.54-.164.94-.406 1.265-.659a3.8 3.8 0 0 0 1.154-1.513c.354-.894.354-1.912.354-2.554v-8.1c0-.64-.006-1.653-.354-2.553zM6.566 15.375h-.67v-4h.67zm-.332-4.674a.415.415 0 1 1 0-.832a.42.42 0 0 1 .422.415a.424.424 0 0 1-.422.417m4.022 4.775c-1.766 0-2.88-1.26-2.88-3.268s1.114-3.274 2.88-3.274c1.767 0 2.88 1.266 2.88 3.274s-1.113 3.268-2.88 3.268m5.828 0c-1.328 0-2.261-.731-2.323-1.822h.602c.067.76.781 1.277 1.777 1.277c.95 0 1.631-.518 1.631-1.232c0-.59-.41-.945-1.35-1.181l-.787-.203c-1.176-.298-1.699-.793-1.699-1.631c0-1.024.922-1.755 2.171-1.755c1.238 0 2.138.731 2.177 1.738h-.602c-.056-.714-.692-1.193-1.592-1.193c-.877 0-1.53.49-1.53 1.187c0 .546.394.867 1.328 1.103l.686.174c1.277.32 1.811.81 1.811 1.693c0 1.114-.894 1.845-2.3 1.845m-3.56-3.268c0 1.66-.878 2.711-2.268 2.711s-2.261-1.052-2.261-2.71c0-1.666.872-2.718 2.261-2.718s2.267 1.052 2.267 2.717"/></svg><span>iOS</span></span></NuxtLink>
 
 
-    </ul>
+    </div>
   </UiBlurReveal>
 </ClientOnly></div>
 
@@ -117,7 +117,7 @@
   <ClientOnly><UiBlurReveal
     :delay="0.1"
     :duration="0.75"
-  ><div class="flex w-full p-3 text-xl opacity-95"><span data-name="heart" data-type="emoji" class="inline-flex gap-2">Made with<img src="https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/2764-fe0f.png" draggable="false" loading="lazy" align="absmiddle" class="w-[22px] max-h-fit"><span>by <NuxtLink href="https://github.com/imrofayel/">Adam Rofayel</NuxtLink>.</span></span></div></UiBlurReveal></ClientOnly>
+  ><div class="flex w-full p-3 text-xl opacity-95"><span data-name="heart" data-type="emoji" class="!inline-flex gap-2">Made with<img src="https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/2764-fe0f.png" draggable="false" loading="lazy" align="absmiddle" class="w-[22px] max-h-fit"><span>by <NuxtLink href="https://github.com/imrofayel/">Adam Rofayel</NuxtLink>.</span></span></div></UiBlurReveal></ClientOnly>
 </div>
 
 </template>
@@ -146,6 +146,10 @@ function onClick(val: string) {
 
 </script>
 
-<style>
+<style scoped>
+
+a {
+  @apply no-underline dark:text-white text-black
+}
 
 </style>
