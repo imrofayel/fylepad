@@ -418,7 +418,7 @@
             </div>
 
             <div @click="editor.chain().focus().deleteTable().run()"
-              class="text-base dark:bg-[#cc1212] dark:hover:bg-[#b81010] bg-[#e01212] hover:bg-[#cc1212] border-[#bb1212] dark:border-[#b91616] border backdrop-blur-xl text-white !px-[10px] py-[4px] rounded-2xl justify-center max-h-fit items-center cursor-pointer flex drop-shadow-cool space-x-1.5">
+              class="text-base dark:bg-[#cc1212] dark:hover:bg-[#b81010] bg-[#e01212] hover:bg-[#cc1212] border-[#bb1212] dark:border-[#b91616] border backdrop-blur-xl text-white sm:!px-[10px] sm:py-[4px] p-1.5 rounded-2xl justify-center max-h-fit items-center cursor-pointer flex drop-shadow-cool space-x-1.5">
 
               <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
