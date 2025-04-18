@@ -1,5 +1,5 @@
 <template>
-      <bubble-menu :editor="editor as any" :tippy-options="{ duration: 100 }" v-if="editor">
+      <bubble-menu :editor="editor as any" :tippy-options="{ duration: 100, offset: [10, -70] }" v-if="editor">
         <div
           class="flex overflow-hidden dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50  bg-white border border-gray-200 rounded-xl text-black drop-shadow-cool dark:text-white/85">
           <button @click="editor.chain().focus().toggleBold().run()"
