@@ -283,7 +283,8 @@
 
       <div class="p-3 flex justify-between items-center fixed bottom-0 w-full select-none" v-if="editor"
         :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
-        <div class="flex space-x-4">
+
+        <div>
 
           <UiDropdownMenu v-if="!editor.can().deleteTable()">
             <UiDropdownMenuTrigger>
@@ -345,7 +346,7 @@
           <div class="flex space-x-2" v-if="editor.can().deleteTable()">
 
             <div
-              class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[7px] py-[4px] rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool space-x-1">
+              class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[7px] py-[4px] max-h-fit rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool space-x-1">
 
               <button @click="editor.chain().focus().deleteRow().run()" :disabled="!editor.can().deleteRow()">
 
@@ -376,7 +377,7 @@
             <div class="flex space-x-2" v-if="editor.can().deleteTable()">
 
               <div
-                class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[7px] py-[4px] rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool space-x-1">
+                class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[7px] py-[4px] rounded-2xl justify-center items-center cursor-pointer flex  max-h-fit drop-shadow-cool space-x-1">
 
                 <button @click="editor.chain().focus().deleteColumn().run()" :disabled="!editor.can().deleteColumn()">
 
@@ -405,7 +406,7 @@
             </div>
 
             <div @click="editor.chain().focus().toggleHeaderCell().run()" :disabled="!editor.can().toggleHeaderCell()"
-              class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] !py-[4px] rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool space-x-1">
+              class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] !py-[4px] rounded-2xl justify-center items-center cursor-pointer drop-shadow-cool space-x-1 sm:flex hidden max-h-fit">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"
                 class="drop-shadow-sm text-black dark:text-gray-50">
                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -417,7 +418,7 @@
             </div>
 
             <div @click="editor.chain().focus().deleteTable().run()"
-              class="text-base dark:bg-[#cc1212] dark:hover:bg-[#b81010] bg-[#e01212] hover:bg-[#cc1212] border-[#bb1212] dark:border-[#b91616] border backdrop-blur-xl text-white !px-[10px] py-[6px] rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool space-x-1.5">
+              class="text-base dark:bg-[#cc1212] dark:hover:bg-[#b81010] bg-[#e01212] hover:bg-[#cc1212] border-[#bb1212] dark:border-[#b91616] border backdrop-blur-xl text-white !px-[10px] py-[4px] rounded-2xl justify-center max-h-fit items-center cursor-pointer flex drop-shadow-cool space-x-1.5">
 
               <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -426,7 +427,7 @@
                   color="currentColor" />
               </svg>
 
-              <span>Delete</span>
+              <span class="sm:block hidden">Delete</span>
             </div>
 
           </div>
