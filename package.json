@@ -22,6 +22,7 @@
     "@nuxtjs/color-mode": "^3.5.1",
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@tailwindcss/typography": "^0.5.15",
+    "@tanstack/vue-table": "^8.21.3",
     "@tauri-apps/api": "^1.6.0",
     "@tauri-apps/cli": "^1.6.2",
     "@tiptap-pro/extension-details": "^2.11.2",
@@ -67,6 +68,7 @@
     "@types/mdast": "^4.0.4",
     "@types/unist": "^3.0.3",
     "@vueuse/components": "^11.1.0",
+    "clsx": "^2.1.1",
     "katex": "^0.16.11",
     "linkifyjs": "^4.2.0",
     "lowlight": "^3.1.0",
@@ -76,6 +78,7 @@
     "nuxt": "^3.13.2",
     "openai": "^4.95.0",
     "plantuml-encoder": "^1.4.0",
+    "reka-ui": "^2.2.0",
     "remark": "^15.0.1",
     "remark-directive": "^4.0.0",
     "remark-gfm": "^4.0.1",
@@ -83,6 +86,8 @@
     "remark-parse": "^11.0.0",
     "remark-stringify": "^11.0.0",
     "smooth-scroll-into-view-if-needed": "^2.0.2",
+    "tailwind-merge": "^3.2.0",
+    "tailwindcss-animate": "^1.0.7",
     "tippy.js": "^6.3.7",
     "tiptap-markdown": "^0.8.10",
     "unified": "^11.0.5",
@@ -102,6 +107,7 @@
     "autoprefixer": "^10.4.20",
     "postcss": "^8.4.49",
     "sass-embedded": "^1.79.1",
-    "tailwindcss": "^3.4.15"
+    "tailwindcss": "^3.4.15",
+    "typescript": "^5.8.3"
   }
 }

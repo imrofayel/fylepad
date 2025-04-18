@@ -12,7 +12,7 @@
           <div class="dropdown-menu overflow-auto flex space-x-2">
             <transition-group name="list" tag="div" class="flex space-x-2 ">
             <div v-for="(tab, index) in tabs" :key="index" @click="activeTab = index"
-              class="border border-gray-200 bg-white/80 text-black !px-[9px] py-[3px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool tab-item"
+              class="border border-gray-200 bg-white/80 text-black !px-[9px] py-[3px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool tab-item"
               :class="{ '!bg-[#24d86c] dark:!bg-[#0c843c] dark:!border-[#196838] !border-[#28c76d] !text-white font-medium': activeTab === index }">
               <span class="tab-title relative -top-[1.5px]">{{ tab.title || 'Untitled' }}</span>
               <button @click.stop="closeTab(index)"
@@ -48,7 +48,7 @@
 }
 
 .tab-item {
-  max-height: 40px;
+  @apply max-h-fit
   /* Ensure tabs don't grow vertically */
 }
 
