@@ -31,9 +31,14 @@ export function filter_free_models(jsonData: { data: { models: any[] } }): any[]
   for (const model of models) {
     if (model.endpoint?.pricing) {
       const pricing = model.endpoint.pricing;
-      // Check if all relevant pricing fields are "0"
+      const isReasoning = model.reasoning_config !== null && model.reasoning_config !== undefined;
+
+      // Check if all relevant pricing fields are "0" and it's not a reasoning model
       const isFree =
-        pricing.prompt === "0" && pricing.completion === "0" && pricing.request === "0";
+        pricing.prompt === "0" && 
+        pricing.completion === "0" && 
+        pricing.request === "0" &&
+        !isReasoning;
 
       if (isFree) {
         freeModels.push(model);
