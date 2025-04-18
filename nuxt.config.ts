@@ -1,6 +1,6 @@
 export default defineNuxtConfig({
   // (optional) Enable the Nuxt devtools
-  devtools: { enabled: true },
+  devtools: { enabled: false },
 
   // Enable SSG
   ssr: false,

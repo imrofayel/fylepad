@@ -102,7 +102,7 @@
   <div class="h-full flex flex-col tiptap dark:bg-[#171717]">
 
     <UiDropdownMenu>
-      <UiDropdownMenuTrigger class="fixed !opacity-100 right-0 p-1.5 px-2.5 top-1 z-[12]">
+      <UiDropdownMenuTrigger class="fixed !opacity-100 right-0 p-1.5 px-2.5 top-1 z-[12] block sm:hidden">
         <button :class="[
         'border dark:bg-[#404040] !py-[6px] dark:border-[#525252] dark:text-white opacity-100 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
       ]" title="Menu">
@@ -179,7 +179,7 @@
       </UiDropdownMenuContent>
     </UiDropdownMenu>
 
-    <div class="space-x-2 fixed right-0 top-1 z-[12] py-2 hidden sm:flex"
+    <div class="space-x-2 fixed right-2 top-1 z-[12] py-2 hidden sm:flex"
       :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
 
       <!-- <button
@@ -433,13 +433,13 @@
           </div>
 
         </div>
-        <div class="sm:hidden md:flex items-center space-x-2 hidden text-onPrimaryContainer relative right-11">
+        <div class="sm:hidden md:flex items-center space-x-2 hidden fixed bottom-0 py-3 right-14">
 
           <div
-            class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
+            class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[4px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool max-h-fit">
             {{ characterCount }} characters</div>
           <div
-            class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
+            class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 max-h-fit bg-white backdrop-blur-xl text-black !px-[10px] py-[4px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
             {{ wordCount }} words</div>
         </div>
       </div>

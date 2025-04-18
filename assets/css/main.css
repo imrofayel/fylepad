@@ -131,6 +131,16 @@
 }
 
 @font-face {
+  font-family: "Instrument Serif";
+  src: url("/assets/fonts/InstrumentSerif-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Instrument Serif Italic";
+  src: url("/assets/fonts/InstrumentSerif-Italic.ttf") format("truetype");
+}
+
+@font-face {
   font-family: "Amiri Arabic";
   src: url("/assets/fonts/Amiri-Regular.ttf") format("truetype");
 }

@@ -76,6 +76,7 @@
     "mdast": "^3.0.0",
     "mdast-util-to-markdown": "^2.1.2",
     "mermaid": "^11.6.0",
+    "motion-v": "1.0.0-beta.2",
     "nuxt": "^3.13.2",
     "openai": "^4.95.0",
     "plantuml-encoder": "^1.4.0",
