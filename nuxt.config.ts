@@ -5,6 +5,8 @@ export default defineNuxtConfig({
   // Enable SSG
   ssr: false,
 
+
+
   // Enables the development server to be discoverable by other devices for mobile development
 
   telemetry: false,
@@ -39,7 +41,54 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ['@nuxt/icon', '@nuxtjs/tailwindcss', '@nuxtjs/color-mode'  ],
+pwa: {
+  manifest: {
+    name: 'fylepad - a notepad of your dreams!',
+    short_name: 'fylepad',
+    theme_color: '#ffffff',
+    icons: [
+      {
+        "src": "icons/icon-32x32.png",
+        "sizes": "32x32",
+        "type": "image/png"
+      },
+      {
+        "src": "icons/icon-64x64.png",
+        "sizes": "64x64",
+        "type": "image/png"
+      },
+      {
+        "src": "icons/icon-128x128.png",
+        "sizes": "128x128",
+        "type": "image/png"
+      },
+      {
+        "src": "icons/icon-144x144.png",
+        "sizes": "144x144",
+        "type": "image/png"
+      },
+      {
+        src: 'icons/icon-192x192.png',
+        sizes: '192x192',
+        type: 'image/png',
+      },
+      {
+        src: 'icons/icon-512x512.png',
+        sizes: '512x512',
+        type: 'image/png',
+      },
+      {
+        src: 'icons/icon-512x512.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'any maskable',
+      },
+    ],
+  }
+},
+
+  modules: ['@nuxt/icon', '@nuxtjs/tailwindcss', '@nuxtjs/color-mode',  '@vite-pwa/nuxt'  ],
   css: ['assets/css/main.css'],
-  compatibilityDate: '2024-12-23'
+  compatibilityDate: '2024-12-23',
+ 
 });
