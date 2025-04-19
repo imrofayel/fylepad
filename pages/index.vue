@@ -79,7 +79,7 @@
 
         <span data-name="high_voltage" data-type="emoji" class="!inline-flex gap-2"><img src="https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/26a1.png" draggable="false" loading="lazy" align="absmiddle" class="w-[22px] max-h-fit"><span>Powered by a Rust core, it is fast, secure, and memory-efficient.</span></span>
 
-        <span>Its still beta, so expect multiple new features along the way.</span>
+        <span class="pt-4">Its still beta, so expect multiple new features along the way.</span>
       </div>
     </UiBlurReveal>
   </ClientOnly>

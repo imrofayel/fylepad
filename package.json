@@ -67,6 +67,7 @@
     "@tiptap/vue-3": "^2.7.1",
     "@types/mdast": "^4.0.4",
     "@types/unist": "^3.0.3",
+    "@vercel/analytics": "^1.5.0",
     "@vite-pwa/nuxt": "^1.0.0",
     "@vueuse/components": "^11.1.0",
     "clsx": "^2.1.1",
