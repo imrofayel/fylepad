@@ -144,7 +144,13 @@ function onClick(val: string) {
   colorMode.preference = val
 }
 
-
+useHead({
+  title: 'fylepad - your dream notepad!',
+  meta: [
+    { name: 'description', content: 'An aesthetic notepad for effortless note-taking with AI. Enjoy rich editing, auto-save, multi-tab support, Mermaid / PlantUML diagrams, tables, code-blocks and much more — all in one.' },
+    { name: 'keywords', content: 'notepad, note-taking, rich editing, auto-save, multi-tab, Mermaid, PlantUML, tables, code-blocks, AI, productivity, open source, aesthetic' },
+  ],
+})
 
 </script>
 

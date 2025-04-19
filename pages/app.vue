@@ -218,10 +218,20 @@ onBeforeUnmount(() => {
   document.removeEventListener('keydown', handleShortcut);
 });
 
+const fallbackTitle = 'Untitled';
+const currentTab = computed(() => tabs[activeTab.value as any]);
+const currentTabTitle = computed(() => currentTab.value?.title ?? fallbackTitle);
+
+useHead({
+  title: currentTabTitle,
+  meta: [
+    { name: 'description', content: 'A minimal notepad with literally everything you need.' }
+  ],
+})
 
 useSeoMeta({
-  title: tabs[activeTab as any].title,
-  ogTitle: tabs[activeTab as any].title,
+  title: currentTabTitle,
+  ogTitle: currentTabTitle,
   description: 'A minimal notepad with literally everything you need.',
   ogDescription: 'An aesthetic notepad for effortless note-taking with AI. Enjoy rich editing, auto-save, multi-tab support, Mermaid / PlantUML diagrams, tables, code-blocks and much more — all in one.',
 })
