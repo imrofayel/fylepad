@@ -144,6 +144,8 @@ function onClick(val: string) {
   colorMode.preference = val
 }
 
+
+
 </script>
 
 <style scoped>

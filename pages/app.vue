@@ -218,4 +218,12 @@ onBeforeUnmount(() => {
   document.removeEventListener('keydown', handleShortcut);
 });
 
+
+useSeoMeta({
+  title: tabs[activeTab as any].title,
+  ogTitle: tabs[activeTab as any].title,
+  description: 'A minimal notepad with literally everything you need.',
+  ogDescription: 'An aesthetic notepad for effortless note-taking with AI. Enjoy rich editing, auto-save, multi-tab support, Mermaid / PlantUML diagrams, tables, code-blocks and much more — all in one.',
+})
+
 </script>
