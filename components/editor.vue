@@ -1,4 +1,402 @@
+<script lang="ts" setup>
+import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
+import { Editor, EditorContent, BubbleMenu, FloatingMenu } from '@tiptap/vue-3';
+import StarterKit from "@tiptap/starter-kit";
+import Highlight from "@tiptap/extension-highlight";
+import TaskList from '@tiptap/extension-task-list';
+import TaskItem from '@tiptap/extension-task-item';
+import { Color } from "@tiptap/extension-color";
+import Link from "@tiptap/extension-link";
+import ListItem from "@tiptap/extension-list-item";
+import SubScript from "@tiptap/extension-subscript";
+import Superscript from "@tiptap/extension-superscript";
+import Table from "@tiptap/extension-table";
+import TableCell from "@tiptap/extension-table-cell";
+import TableHeader from "@tiptap/extension-table-header";
+import TableRow from "@tiptap/extension-table-row";
+import TextStyle from "@tiptap/extension-text-style";
+import Typography from "@tiptap/extension-typography";
+import ListKeymap from '@tiptap/extension-list-keymap'
+import Placeholder from '@tiptap/extension-placeholder'
+import Image from "@tiptap/extension-image";
+import CharacterCount from '@tiptap/extension-character-count'
+import TextAlign from '@tiptap/extension-text-align'
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
+import FontFamily from '@tiptap/extension-font-family'
+import { useBase64 } from '@vueuse/core'
+
+import { Mathematics } from '@tiptap-pro/extension-mathematics'
+import Emoji, { gitHubEmojis } from '@tiptap-pro/extension-emoji'
+
+import { SearchAndReplace } from "../extensions/search&replace.ts";
+import { type Range as EditorRange } from '@tiptap/core'
+
+import 'katex/dist/katex.min.css'
+
+import { Markdown } from 'tiptap-markdown';
+
+import { ColorHighlighter } from '../extensions/ColorHighlighter.ts'
+
+import { SmilieReplacer } from '../extensions/SmilieReplacer.ts'
+
+// load all languages with "all" or common languages with "common"
+import { all, createLowlight } from 'lowlight'
+
+import { UseDraggable } from '@vueuse/components'
+
+const isBottomSheetOpen = ref(false);
+
+function printPDF() {
+  window.print()
+}
+
+const colorMode = useColorMode()
+
+function onClick(val: string) {
+  colorMode.preference = val
+}
+
+const showSearch = ref(false);
+
+function toggleSearch() {
+  if (showSearch.value == true) {
+    showSearch.value = false
+    clear()
+  }
+  else {
+    showSearch.value = true
+  }
+}
+
+const focusMode = ref(false);
+
+function focus() {
+  if (focusMode.value == true) {
+    focusMode.value = false,
+      editor.value?.setEditable(true)
+  }
+  else {
+    focusMode.value = true,
+      editor.value?.setEditable(false)
+
+  }
+}
+
+// create a lowlight instance
+const lowlight = createLowlight(all)
+
+const editor = ref<Editor | null>(null);
+
+const CustomTaskItem = TaskItem.extend({
+  content: 'inline*',
+})
+
+const props = defineProps<{
+  title: string;
+  content: any;
+}>();
+
+const emit = defineEmits(['update:title', 'update:content']);
+const file = shallowRef<File>()
+const localTitle = ref(props.title);
+const { base64: fileBase64 } = useBase64(file)
+
+function onFileInput(e: Event) {
+  file.value = (e.target as HTMLInputElement).files![0]
+}
+
+onMounted(() => {
+  editor.value = new Editor({
+    content: props.content,
+
+    editable: true,
+
+    editorProps: {
+      attributes: {
+        class: 'dark:text-white/90 p-6 leading-loose py-2 text-[19px] min-h-[150px] w-full h-full overflow-auto border-none bg-transparent placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 !opacity-100 geist',
+      },
+    },
+    extensions: [
+      CustomTaskItem,
+      Color.configure({ types: [TextStyle.name, ListItem.name] }),
+      TextStyle,
+      Table.configure({ resizable: true }),
+      Superscript,
+      SubScript,
+      Link,
+      Image,
+      Typography,
+      TableRow,
+      TableHeader,
+      TableCell,
+      ListKeymap,
+      StarterKit,
+      Highlight,
+      TaskList,
+      FontFamily,
+      Mathematics,
+      SearchAndReplace.configure(),
+      Link.configure({
+        autolink: true,
+      }),
+
+      Image.configure({
+        allowBase64: true,
+      }),
+
+      Emoji.configure({
+        emojis: gitHubEmojis,
+        forceFallbackImages: true,
+        enableEmoticons: true
+      }),
+
+      CodeBlockLowlight.configure({
+        lowlight,
+      }),
+
+      TextAlign.configure({
+        types: ['heading', 'paragraph'],
+      }),
+      TaskItem.configure({
+        nested: true,
+      }),
+      Markdown,
+      SmilieReplacer,
+      ColorHighlighter,
+      CharacterCount.configure({
+        limit: Infinity,
+      }),
+      Placeholder.configure({
+        includeChildren: true,
+        placeholder: ({ node }) => {
+          if (node.type.name === 'heading') {
+            return 'heading'
+          }
+          if (node.type.name === 'paragraph') {
+            return 'Begin!'
+          }
+          return ''
+        },
+      }),
+    ],
+    onUpdate: ({ editor }) => {
+      emit('update:content', editor.getJSON());
+    },
+  });
+});
+
+watch(() => props.title, (newTitle) => {
+  localTitle.value = newTitle;
+});
+
+watch(() => props.content, (newContent) => {
+  if (editor.value && JSON.stringify(newContent) !== JSON.stringify(editor.value.getJSON())) {
+    editor.value.commands.setContent(newContent);
+  }
+}, { deep: true });
+
+onBeforeUnmount(() => {
+  editor.value?.destroy();
+});
+
+const exportMarkdown = () => {
+  if (editor.value) {
+    const markdownContent = editor.value.storage.markdown.getMarkdown();
+    console.log('Markdown Content:', markdownContent);
+
+    const blob = new Blob([markdownContent], { type: "text/markdown" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${localTitle.value || 'untitled'}.md`;
+    link.click();
+    URL.revokeObjectURL(url);
+  } else {
+    console.error('Editor instance is not available.');
+  }
+};
+
+const importMarkdownOrText = () => {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.md,.txt';
+
+  input.onchange = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    const file = target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        const content = e.target?.result;
+        if (typeof content === 'string' && editor.value) {
+          editor.value.commands.setContent(content);
+          console.log('Content imported successfully');
+
+          // Update the title based on the file name (optional)
+          const fileName = file.name.replace(/\.(md|txt)$/, '');
+          if (localTitle && typeof localTitle.value === 'string') {
+            localTitle.value = fileName;
+
+            // Update the title using the file name
+            emit('update:title', localTitle.value);
+          }
+        } else {
+          console.error('Failed to import content: Invalid content or editor not available');
+        }
+      };
+
+      reader.onerror = (e: ProgressEvent<FileReader>) => {
+        console.error('Error reading file:', e);
+      };
+
+      reader.readAsText(file);
+    } else {
+      console.error('No file selected');
+    }
+  };
+
+  input.click();
+};
+
+const characterCount = computed(() => editor.value?.storage.characterCount.characters() ?? 0);
+const wordCount = computed(() => editor.value?.storage.characterCount.words() ?? 0);
+
+const searchTerm = ref<string>("");
+
+const replaceTerm = ref<string>("");
+
+const caseSensitive = ref<boolean>(false);
+
+function toggleCase() {
+  if (caseSensitive.value == true) {
+    caseSensitive.value = false;
+    updateSearchReplace()
+  } else {
+    caseSensitive.value = true;
+    updateSearchReplace()
+  }
+}
+
+const updateSearchReplace = (clearIndex: boolean = false) => {
+  if (!editor.value) return;
+
+  if (clearIndex) editor.value.commands.resetIndex();
+
+  editor.value.commands.setSearchTerm(searchTerm.value);
+  editor.value.commands.setReplaceTerm(replaceTerm.value);
+  editor.value.commands.setCaseSensitive(caseSensitive.value);
+};
+
+const goToSelection = () => {
+  if (!editor.value) return;
+
+  const { results, resultIndex } = editor.value.storage.searchAndReplace;
+  const position: EditorRange = results[resultIndex];
+
+  if (!position) return;
+
+  editor.value.commands.setTextSelection(position);
+
+  const { node } = editor.value.view.domAtPos(
+    editor.value.state.selection.anchor
+  );
+  node instanceof HTMLElement &&
+    node.scrollIntoView({ behavior: "smooth", block: "center" });
+};
+
+watch(
+  () => searchTerm.value.trim(),
+  (val, oldVal) => {
+    if (!val) clear();
+    if (val !== oldVal) updateSearchReplace(true);
+  }
+);
+
+watch(
+  () => replaceTerm.value.trim(),
+  (val, oldVal) => (val === oldVal ? null : updateSearchReplace())
+);
+
+watch(
+  () => caseSensitive.value,
+  (val, oldVal) => (val === oldVal ? null : updateSearchReplace(true))
+);
+
+const replace = () => {
+  editor.value?.commands.replace();
+  goToSelection();
+};
+
+const next = () => {
+  editor.value?.commands.nextSearchResult();
+  goToSelection();
+};
+
+const previous = () => {
+  editor.value?.commands.previousSearchResult();
+  goToSelection();
+};
+
+const clear = () => {
+  searchTerm.value = replaceTerm.value = "";
+  editor.value!.commands.resetIndex();
+};
+
+const replaceAll = () => editor.value?.commands.replaceAll();
+
+onMounted(() => {
+  setTimeout(updateSearchReplace);
+
+  // Add the event listener when the component is mounted
+  document.addEventListener('keydown', handleShortcut);
+});
+
+onBeforeUnmount(() => {
+  // Clean up the event listener to prevent memory leaks
+  document.removeEventListener('keydown', handleShortcut);
+});
+
+function handleShortcut(event: KeyboardEvent) {
+  // CTRL + F -> Open search
+  if (event.ctrlKey && event.key === 'f') {
+    event.preventDefault();
+    toggleSearch();
+  }
+
+  if (event.ctrlKey && event.key === 'p') {
+    event.preventDefault();
+    window.print()
+  }
+
+  // CTRL + R -> Toggle focus mode
+  if (event.ctrlKey && event.key === 'r') {
+    event.preventDefault();
+    focus()
+  }
+
+  // CTRL + O -> Open import
+  if (event.ctrlKey && event.key === 'o') {
+    event.preventDefault();
+    importMarkdownOrText();
+  }
+
+  // CTRL + S -> Save (export markdown)
+  if (event.ctrlKey && event.key === 's') {
+    event.preventDefault();
+    exportMarkdown();
+  }
+
+  if (event.ctrlKey && event.key === 't') {
+    event.preventDefault();
+    editor.value?.commands.insertTable({ rows: 3, cols: 3 })
+  }
+}
+
+</script>
+
 <template>
+
 
   <UseDraggable class="absolute flex w-full items-center justify-center" style="user-select: none">
     <div class="w-full flex justify-center cursor-move z-[40] items-center">
@@ -468,392 +866,6 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
-import { Editor, EditorContent, BubbleMenu, FloatingMenu } from '@tiptap/vue-3';
-import StarterKit from "@tiptap/starter-kit";
-import Highlight from "@tiptap/extension-highlight";
-import TaskList from '@tiptap/extension-task-list';
-import TaskItem from '@tiptap/extension-task-item';
-import { Color } from "@tiptap/extension-color";
-import Link from "@tiptap/extension-link";
-import ListItem from "@tiptap/extension-list-item";
-import SubScript from "@tiptap/extension-subscript";
-import Superscript from "@tiptap/extension-superscript";
-import Table from "@tiptap/extension-table";
-import TableCell from "@tiptap/extension-table-cell";
-import TableHeader from "@tiptap/extension-table-header";
-import TableRow from "@tiptap/extension-table-row";
-import TextStyle from "@tiptap/extension-text-style";
-import Typography from "@tiptap/extension-typography";
-import ListKeymap from '@tiptap/extension-list-keymap'
-import Placeholder from '@tiptap/extension-placeholder'
-import Image from "@tiptap/extension-image";
-import CharacterCount from '@tiptap/extension-character-count'
-import TextAlign from '@tiptap/extension-text-align'
-import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
-import FontFamily from '@tiptap/extension-font-family'
-
-import { Mathematics } from '@tiptap-pro/extension-mathematics'
-import Emoji, { gitHubEmojis } from '@tiptap-pro/extension-emoji'
-
-import { SearchAndReplace } from "../extensions/search&replace.ts";
-import { type Range as EditorRange } from '@tiptap/core'
-
-import 'katex/dist/katex.min.css'
-
-import { Markdown } from 'tiptap-markdown';
-
-import { ColorHighlighter } from '../extensions/ColorHighlighter.ts'
-
-import { SmilieReplacer } from '../extensions/SmilieReplacer.ts'
-
-// load all languages with "all" or common languages with "common"
-import { all, createLowlight } from 'lowlight'
-
-import { UseDraggable } from '@vueuse/components'
-
-const isBottomSheetOpen = ref(false);
-
-function printPDF() {
-  window.print()
-}
-
-const colorMode = useColorMode()
-
-function onClick(val: string) {
-  colorMode.preference = val
-}
-
-const showSearch = ref(false);
-
-function toggleSearch() {
-  if (showSearch.value == true) {
-    showSearch.value = false
-    clear()
-  }
-  else {
-    showSearch.value = true
-  }
-}
-
-const focusMode = ref(false);
-
-function focus() {
-  if (focusMode.value == true) {
-    focusMode.value = false,
-      editor.value?.setEditable(true)
-  }
-  else {
-    focusMode.value = true,
-      editor.value?.setEditable(false)
-
-  }
-}
-
-// create a lowlight instance
-const lowlight = createLowlight(all)
-
-const editor = ref<Editor | null>(null);
-
-const CustomTaskItem = TaskItem.extend({
-  content: 'inline*',
-})
-
-const props = defineProps<{
-  title: string;
-  content: any;
-}>();
-
-const emit = defineEmits(['update:title', 'update:content']);
-
-const localTitle = ref(props.title);
-
-onMounted(() => {
-  editor.value = new Editor({
-    content: props.content,
-
-    editable: true,
-
-    editorProps: {
-      attributes: {
-        class: 'dark:text-white/90 p-6 leading-loose py-2 text-[19px] min-h-[150px] w-full h-full overflow-auto border-none bg-transparent placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 !opacity-100 geist',
-      },
-    },
-    extensions: [
-      CustomTaskItem,
-      Color.configure({ types: [TextStyle.name, ListItem.name] }),
-      TextStyle,
-      Table.configure({ resizable: true }),
-      Superscript,
-      SubScript,
-      Link,
-      Image,
-      Typography,
-      TableRow,
-      TableHeader,
-      TableCell,
-      ListKeymap,
-      StarterKit,
-      Highlight,
-      TaskList,
-      FontFamily,
-      Mathematics,
-      SearchAndReplace.configure(),
-      Link.configure({
-        autolink: true,
-      }),
-
-      Emoji.configure({
-        emojis: gitHubEmojis,
-        forceFallbackImages: true,
-        enableEmoticons: true
-      }),
-
-      CodeBlockLowlight.configure({
-        lowlight,
-      }),
-
-      TextAlign.configure({
-        types: ['heading', 'paragraph'],
-      }),
-      TaskItem.configure({
-        nested: true,
-      }),
-      Markdown,
-      SmilieReplacer,
-      ColorHighlighter,
-      CharacterCount.configure({
-        limit: Infinity,
-      }),
-      Placeholder.configure({
-        includeChildren: true,
-        placeholder: ({ node }) => {
-          if (node.type.name === 'heading') {
-            return 'heading'
-          }
-          if (node.type.name === 'paragraph') {
-            return 'Begin!'
-          }
-          return ''
-        },
-      }),
-    ],
-    onUpdate: ({ editor }) => {
-      emit('update:content', editor.getJSON());
-    },
-  });
-});
-
-watch(() => props.title, (newTitle) => {
-  localTitle.value = newTitle;
-});
-
-watch(() => props.content, (newContent) => {
-  if (editor.value && JSON.stringify(newContent) !== JSON.stringify(editor.value.getJSON())) {
-    editor.value.commands.setContent(newContent);
-  }
-}, { deep: true });
-
-onBeforeUnmount(() => {
-  editor.value?.destroy();
-});
-
-const exportMarkdown = () => {
-  if (editor.value) {
-    const markdownContent = editor.value.storage.markdown.getMarkdown();
-    console.log('Markdown Content:', markdownContent);
-
-    const blob = new Blob([markdownContent], { type: "text/markdown" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `${localTitle.value || 'untitled'}.md`;
-    link.click();
-    URL.revokeObjectURL(url);
-  } else {
-    console.error('Editor instance is not available.');
-  }
-};
-
-const importMarkdownOrText = () => {
-  const input = document.createElement('input');
-  input.type = 'file';
-  input.accept = '.md,.txt';
-
-  input.onchange = (event: Event) => {
-    const target = event.target as HTMLInputElement;
-    const file = target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-
-      reader.onload = (e: ProgressEvent<FileReader>) => {
-        const content = e.target?.result;
-        if (typeof content === 'string' && editor.value) {
-          editor.value.commands.setContent(content);
-          console.log('Content imported successfully');
-
-          // Update the title based on the file name (optional)
-          const fileName = file.name.replace(/\.(md|txt)$/, '');
-          if (localTitle && typeof localTitle.value === 'string') {
-            localTitle.value = fileName;
-
-            // Update the title using the file name
-            emit('update:title', localTitle.value);
-          }
-        } else {
-          console.error('Failed to import content: Invalid content or editor not available');
-        }
-      };
-
-      reader.onerror = (e: ProgressEvent<FileReader>) => {
-        console.error('Error reading file:', e);
-      };
-
-      reader.readAsText(file);
-    } else {
-      console.error('No file selected');
-    }
-  };
-
-  input.click();
-};
-
-const characterCount = computed(() => editor.value?.storage.characterCount.characters() ?? 0);
-const wordCount = computed(() => editor.value?.storage.characterCount.words() ?? 0);
-
-const searchTerm = ref<string>("");
-
-const replaceTerm = ref<string>("");
-
-const caseSensitive = ref<boolean>(false);
-
-function toggleCase() {
-  if (caseSensitive.value == true) {
-    caseSensitive.value = false;
-    updateSearchReplace()
-  } else {
-    caseSensitive.value = true;
-    updateSearchReplace()
-  }
-}
-
-const updateSearchReplace = (clearIndex: boolean = false) => {
-  if (!editor.value) return;
-
-  if (clearIndex) editor.value.commands.resetIndex();
-
-  editor.value.commands.setSearchTerm(searchTerm.value);
-  editor.value.commands.setReplaceTerm(replaceTerm.value);
-  editor.value.commands.setCaseSensitive(caseSensitive.value);
-};
-
-const goToSelection = () => {
-  if (!editor.value) return;
-
-  const { results, resultIndex } = editor.value.storage.searchAndReplace;
-  const position: EditorRange = results[resultIndex];
-
-  if (!position) return;
-
-  editor.value.commands.setTextSelection(position);
-
-  const { node } = editor.value.view.domAtPos(
-    editor.value.state.selection.anchor
-  );
-  node instanceof HTMLElement &&
-    node.scrollIntoView({ behavior: "smooth", block: "center" });
-};
-
-watch(
-  () => searchTerm.value.trim(),
-  (val, oldVal) => {
-    if (!val) clear();
-    if (val !== oldVal) updateSearchReplace(true);
-  }
-);
-
-watch(
-  () => replaceTerm.value.trim(),
-  (val, oldVal) => (val === oldVal ? null : updateSearchReplace())
-);
-
-watch(
-  () => caseSensitive.value,
-  (val, oldVal) => (val === oldVal ? null : updateSearchReplace(true))
-);
-
-const replace = () => {
-  editor.value?.commands.replace();
-  goToSelection();
-};
-
-const next = () => {
-  editor.value?.commands.nextSearchResult();
-  goToSelection();
-};
-
-const previous = () => {
-  editor.value?.commands.previousSearchResult();
-  goToSelection();
-};
-
-const clear = () => {
-  searchTerm.value = replaceTerm.value = "";
-  editor.value!.commands.resetIndex();
-};
-
-const replaceAll = () => editor.value?.commands.replaceAll();
-
-onMounted(() => {
-  setTimeout(updateSearchReplace);
-
-  // Add the event listener when the component is mounted
-  document.addEventListener('keydown', handleShortcut);
-});
-
-onBeforeUnmount(() => {
-  // Clean up the event listener to prevent memory leaks
-  document.removeEventListener('keydown', handleShortcut);
-});
-
-function handleShortcut(event: KeyboardEvent) {
-  // CTRL + F -> Open search
-  if (event.ctrlKey && event.key === 'f') {
-    event.preventDefault();
-    toggleSearch();
-  }
-
-  if (event.ctrlKey && event.key === 'p') {
-    event.preventDefault();
-    window.print()
-  }
-
-  // CTRL + R -> Toggle focus mode
-  if (event.ctrlKey && event.key === 'r') {
-    event.preventDefault();
-    focus()
-  }
-
-  // CTRL + O -> Open import
-  if (event.ctrlKey && event.key === 'o') {
-    event.preventDefault();
-    importMarkdownOrText();
-  }
-
-  // CTRL + S -> Save (export markdown)
-  if (event.ctrlKey && event.key === 's') {
-    event.preventDefault();
-    exportMarkdown();
-  }
-
-  if (event.ctrlKey && event.key === 't') {
-    event.preventDefault();
-    editor.value?.commands.insertTable({ rows: 3, cols: 3 })
-  }
-}
-
-</script>
 
 <style>
 /* Basic editor styles */
