@@ -19,12 +19,7 @@
 
               <button title="Case Sensitive" @click="toggleCase" class="px-1.5"
                 :class="caseSensitive ? 'text-gray-700 dark:text-white' : 'opacity-40 dark:opacity-50'">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" class="drop-shadow-sm">
-                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                    stroke-width="1.5"
-                    d="m14 19l-2.893-8.252C9.763 6.916 9.092 5 8 5s-1.763 1.916-3.107 5.748L2 19m2.5-7h7m10.47 1.94v4.5m0-4.5c.046-.824.048-1.45-.05-1.963c-.234-1.206-1.494-1.933-2.714-2.081c-1.168-.142-2.104.159-3.052 1.54m5.815 2.503h-2.843c-.437 0-.878.021-1.299.138c-2.573.716-2.384 4.323.196 4.768c.287.05.58.07.87.058c.677-.03 1.302-.358 1.84-.773c.627-.486 1.236-1.165 1.236-2.19z"
-                    color="currentColor" />
-                </svg>
+                <img :src="CaseSensitiveIcon" width="24" class="drop-shadow-sm" />
               </button>
             </div>
           </div>
@@ -42,50 +37,19 @@
             class="inline-flex rounded-md isolate !text-[15px] drop-shadow-cool">
             <button @click="previous" type="button"
               class="mt-1 p-2 px-3 border dark:border-none border-gray-200 rounded-xl rounded-r-none bg-gray-50/30 dark:bg-[#171717] dark:border-[#484747] text-black dark:text-white/90 flex justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                class="drop-shadow-sm">
-                <path d="m12 19-7-7 7-7" />
-                <path d="M19 12H5" />
-              </svg>
+              <img :src="PreviousIcon" width="24" class="drop-shadow-sm" />
             </button>
             <button @click="next" type="button"
               class="mt-1 p-2 px-3 border-x-0 bg-gray-50/30 border dark:border-none dark:bg-[#171717] dark:border-[#484747] border-gray-200  text-black dark:text-white/90 flex justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                class="drop-shadow-sm">
-                <path d="M5 12h14" />
-                <path d="m12 5 7 7-7 7" />
-              </Import Markdownsvg>
+              <img :src="NextIcon" width="24" class="drop-shadow-sm" />
             </button>
             <button @click="replace" type="button"
               class="mt-1 p-2 px-3 bg-gray-50/30 border dark:border-none border-gray-200 dark:bg-[#171717] dark:border-[#484747] text-black dark:text-white/90 flex justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                class="drop-shadow-sm" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M14 4a2 2 0 0 1 2-2" />
-                <path d="M16 10a2 2 0 0 1-2-2" />
-                <path d="M20 2a2 2 0 0 1 2 2" />
-                <path d="M22 8a2 2 0 0 1-2 2" />
-                <path d="m3 7 3 3 3-3" />
-                <path d="M6 10V5a3 3 0 0 1 3-3h1" />
-                <rect x="2" y="14" width="8" height="8" rx="2" />
-              </svg>
+              <img :src="ReplaceIcon" width="24" class="drop-shadow-sm" />
             </button>
             <button @click="replaceAll" type="button"
               class="mt-1 p-2 px-3 border-x-0 bg-gray-50/30 border dark:border-none border-gray-200 border-r rounded-r-xl dark:bg-[#171717] dark:border-[#484747] text-black dark:text-white/90 flex justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-                class="drop-shadow-sm">
-                <path d="M14 14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2" />
-                <path d="M14 4a2 2 0 0 1 2-2" />
-                <path d="M16 10a2 2 0 0 1-2-2" />
-                <path d="M20 14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2" />
-                <path d="M20 2a2 2 0 0 1 2 2" />
-                <path d="M22 8a2 2 0 0 1-2 2" />
-                <path d="m3 7 3 3 3-3" />
-                <path d="M6 10V5a 3 3 0 0 1 3-3h1" />
-                <rect x="2" y="14" width="8" height="8" rx="2" />
-              </svg>
+              <img :src="ReplaceAllIcon" width="24" class="drop-shadow-sm" />
             </button>
 
           </span>
@@ -119,60 +83,36 @@
       <button @click="exportMarkdown" :class="[
         'border dark:bg-[#404040] !py-[6px] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
       ]" title="Export Markdown">
-        <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24" class="drop-shadow-sm">
-          <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-            color="currentColor">
-            <path d="M3.095 10Q3 10.687 3 11.4c0 5.302 4.03 9.6 9 9.6s9-4.298 9-9.6q0-.714-.095-1.4" />
-            <path d="M12 13V3m0 10c-.7 0-2.008-1.994-2.5-2.5M12 13c.7 0 2.008-1.994 2.5-2.5" />
-          </g>
-        </svg>
+        <img :src="ExportMarkdownIcon" width="21" class="drop-shadow-sm" />
       </button>
 
       <button @click="importMarkdownOrText" class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool" title="Import Markdown">
-        <svg xmlns="http://www.w3.org/2000/svg" width="21.5" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.5 12v1.5a7.5 7.5 0 0 1-15 0V8a5 5 0 0 1 10 0v5.5a2.5 2.5 0 0 1-5 0v-4" color="currentColor"/></svg>
+        <img :src="ImportMarkdownIcon" width="21.5" class="drop-shadow-sm" />
       </button>
 
       <button @click="onClick('light')" v-if="colorMode.value == 'dark'" :class="[
         'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
       ]" title="Light Mode">
-        <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24" class="drop-shadow-sm">
-          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-            d="M21.5 14.078A8.557 8.557 0 0 1 9.922 2.5C5.668 3.497 2.5 7.315 2.5 11.873a9.627 9.627 0 0 0 9.627 9.627c4.558 0 8.376-3.168 9.373-7.422"
-            color="currentColor" />
-        </svg>
+        <img :src="LightModeIcon" width="21" class="drop-shadow-sm" />
 
       </button>
 
       <button @click="onClick('dark')" v-if="colorMode.value == 'light'" :class="[
         'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
       ]" title="Dark Mode">
-        <svg width="21" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="drop-shadow-sm">
-          <path d="M17 12a5 5 0 11-10 0 5 5 0 0110 0z" stroke="currentColor" stroke-width="1.5"
-            vector-effect="non-scaling-stroke"></path>
-          <path
-            d="M12 2c-.377.333-.905 1.2 0 2m0 16c.377.333.905 1.2 0 2m7.5-17.497c-.532-.033-1.575.22-1.496 1.495M5.496 17.5c.033.532-.22 1.575-1.496 1.496M5.003 4.5c-.033.532.22 1.576 1.497 1.497M18 17.503c.532-.032 1.575.208 1.496 1.414M22 12c-.333-.377-1.2-.905-2 0m-16-.5c-.333.377-1.2.905-2 0"
-            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
-        </svg>
+        <img :src="DarkModeIcon" width="21" class="drop-shadow-sm" />
       </button>
 
       <button @click="isBottomSheetOpen = true" :class="[
         'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
       ]" title="Styling">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24" class="drop-shadow-sm">
-          <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-            color="currentColor">
-            <path
-              d="M6 22v-8.306c0-1.565 0-2.348.215-3.086c.214-.739.63-1.39 1.465-2.693l2.656-4.15C11.088 2.587 11.465 2 12 2s.912.588 1.664 1.764l2.656 4.151c.834 1.303 1.25 1.954 1.465 2.693c.215.738.215 1.52.215 3.086V22" />
-            <path
-              d="M7 11c.632.323 1.489.973 2.28 1c1.019.032 1.707-.863 2.72-.863s1.701.895 2.72.862c.791-.026 1.649-.676 2.28-.999m-5 1v10M10 5h4" />
-          </g>
-        </svg>
+        <img :src="StylingIcon" width="22" class="drop-shadow-sm" />
       </button>
 
       <button @click="open = true" :class="[
         'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
       ]" title="About">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22.5" viewBox="0 0 24 24" class="drop-shadow-sm"><!-- Icon from Huge Icons by Hugeicons - undefined --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M10.456 2.64a2.18 2.18 0 0 1 3.088 0l1.009 1.011c.41.41.966.64 1.545.64h1.429a2.18 2.18 0 0 1 2.183 2.182l-.001 1.429c0 .58.23 1.135.64 1.545l1.01 1.01a2.18 2.18 0 0 1 0 3.087l-1.01 1.009c-.41.41-.64.966-.64 1.545v1.429a2.18 2.18 0 0 1-2.182 2.183l-1.429-.001c-.58 0-1.135.23-1.545.64l-1.01 1.01a2.18 2.18 0 0 1-3.087 0l-1.009-1.01a2.18 2.18 0 0 0-1.545-.64H6.473a2.18 2.18 0 0 1-2.183-2.182l.001-1.429c0-.58-.23-1.135-.64-1.545l-1.01-1.01a2.18 2.18 0 0 1 0-3.087l1.01-1.009c.41-.41.64-.966.64-1.545V6.473A2.18 2.18 0 0 1 6.472 4.29l1.429.001c.58 0 1.135-.23 1.545-.64z"/><path d="M10 9a2 2 0 1 1 3.683 1.08C13.085 11.01 12 11.896 12 13v.5m-.008 3.5h.009"/></g></svg>
+        <img :src="AboutIcon" width="22.5" class="drop-shadow-sm" />
       </button>
 
       <UiBottomSheet :isOpen="isBottomSheetOpen" @close="isBottomSheetOpen = false" :editor="editor as any" />
@@ -209,19 +149,19 @@
 
             <div @click="editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()"
               class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
-              <svg xmlns="http://www.w3.org/2000/svg" width="19" viewBox="0 0 16 16" class="drop-shadow-sm"><path fill="currentColor" fill-rule="evenodd" d="M12 3.5H4A1.5 1.5 0 0 0 2.5 5v.5h11V5A1.5 1.5 0 0 0 12 3.5M2.5 11V7h2v5.5H4A1.5 1.5 0 0 1 2.5 11M6 12.5h6a1.5 1.5 0 0 0 1.5-1.5V7H6zM4 2a3 3 0 0 0-3 3v6a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V5a3 3 0 0 0-3-3z" clip-rule="evenodd"/></svg><span class="drop-shadow-sm">Table</span>
+              <img :src="TableIcon" width="19" class="drop-shadow-sm" /><span class="drop-shadow-sm">Table</span>
             </div>
 
             <div @click="editor.commands.setMermaid('graph TD;\n  A-->B;  A-->C;\n  B-->D;\n  C-->D;')"
-            
+
             class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
-            <svg xmlns="http://www.w3.org/2000/svg" width="19" viewBox="0 0 16 16" class="drop-shadow-sm"><path fill="currentColor" fill-rule="evenodd" d="M11.5 12.5A1.5 1.5 0 0 1 10 14H6a1.5 1.5 0 0 1-1.5-1.5v-.823a3.11 3.11 0 0 0-1.35-2.566A6.11 6.11 0 0 1 .5 4.073V3A1.5 1.5 0 0 1 2 1.5h.666A6.43 6.43 0 0 1 8 4.343A6.43 6.43 0 0 1 13.334 1.5H14A1.5 1.5 0 0 1 15.5 3v1.073a6.11 6.11 0 0 1-2.65 5.038a3.11 3.11 0 0 0-1.35 2.566zm-8-9.43a4.92 4.92 0 0 1 3.738 3.025c.275.688 1.249.688 1.524 0A4.92 4.92 0 0 1 13.334 3H14v1.073q0 .215-.02.427A4.61 4.61 0 0 1 12 7.875c-1.252.86-2 2.283-2 3.802v.823H6v-.823c0-1.52-.748-2.941-2-3.802a4.61 4.61 0 0 1-2-3.802V3h.666q.425 0 .834.07" clip-rule="evenodd"/></svg><span class="drop-shadow-sm">Mermaid</span>
+            <img :src="MermaidIcon" width="19" class="drop-shadow-sm" /><span class="drop-shadow-sm">Mermaid</span>
             </div>
 
             <div @click="editor.commands.setPlantuml('@startuml\nBob -> Alice : hello\n@enduml')"
-            
+
             class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
-            <svg xmlns="http://www.w3.org/2000/svg" width="19" viewBox="0 0 16 16" class="drop-shadow-sm"><path fill="currentColor" fill-rule="evenodd" d="M5.731 4H4.5A1.5 1.5 0 0 0 3 5.5v.377a2.72 2.72 0 0 1 0 5.246v.377A1.5 1.5 0 0 0 4.5 13h.377a2.72 2.72 0 0 1 5.246 0h.377a1.5 1.5 0 0 0 1.5-1.5v-1.232l1-.353a1.501 1.501 0 0 0 0-2.83l-1-.354V5.5A1.5 1.5 0 0 0 10.5 4H9.269l-.354-1a1.501 1.501 0 0 0-2.83 0zM8.9 14.5l-.204-1.02a1.22 1.22 0 0 0-2.392 0L6.1 14.5H4.5a3 3 0 0 1-3-3V9.9l1.02-.204a1.22 1.22 0 0 0 0-2.392L1.5 7.1V5.5a3 3 0 0 1 3-3h.17a3.001 3.001 0 0 1 5.66 0h.17a3 3 0 0 1 3 3v.17a3.001 3.001 0 0 1 0 5.66v.17a3 3 0 0 1-3 3z" clip-rule="evenodd"/></svg><span class="drop-shadow-sm">Plant UML</span>
+            <img :src="PlantumlIcon" width="19" class="drop-shadow-sm" /><span class="drop-shadow-sm">Plant UML</span>
             </div>
 
           </div>
@@ -235,11 +175,7 @@
 
               <button @click="editor.chain().focus().deleteRow().run()" :disabled="!editor.can().deleteRow()">
 
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24"
-                  class="text-red-600 dark:text-red-500">
-                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                    stroke-width="2" d="M5 12h14" />
-                </svg>
+                <img :src="DeleteRowIcon" width="18" class="text-red-600 dark:text-red-500" />
 
               </button>
 
@@ -248,10 +184,7 @@
               <button @click="editor.chain().focus().addRowAfter().run()" :disabled="!editor.can().addRowAfter()"
                 class="text-black dark:text-gray-50">
 
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24">
-                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                    stroke-width="2" d="M5 12h14m-7-7v14" />
-                </svg>
+                <img :src="AddRowIcon" width="18" />
 
               </button>
 
@@ -266,11 +199,7 @@
 
                 <button @click="editor.chain().focus().deleteColumn().run()" :disabled="!editor.can().deleteColumn()">
 
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24"
-                    class="text-red-600 dark:text-red-500">
-                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                      stroke-width="2" d="M5 12h14" />
-                  </svg>
+                  <img :src="DeleteRowIcon" width="18" class="text-red-600 dark:text-red-500" />
 
                 </button>
 
@@ -280,10 +209,7 @@
                 <button @click="editor.chain().focus().addColumnAfter().run()"
                   :disabled="!editor.can().addColumnAfter()" class="text-black dark:text-gray-50">
 
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24">
-                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                      stroke-width="2" d="M5 12h14m-7-7v14" />
-                  </svg>
+                  <img :src="AddRowIcon" width="18" />
 
                 </button>
 
@@ -292,25 +218,14 @@
 
             <div @click="editor.chain().focus().toggleHeaderCell().run()" :disabled="!editor.can().toggleHeaderCell()"
               class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] !py-[4px] rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool space-x-1">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"
-                class="drop-shadow-sm text-black dark:text-gray-50">
-                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                  stroke-width="1.5"
-                  d="M3.891 3.891C5.282 2.5 7.521 2.5 12 2.5c4.478 0 6.718 0 8.109 1.391S21.5 7.521 21.5 12c0 4.478 0 6.718-1.391 8.109S16.479 21.5 12 21.5c-4.478 0-6.718 0-8.109-1.391S2.5 16.479 2.5 12c0-4.478 0-6.718 1.391-8.109"
-                  color="currentColor" />
-              </svg>
+              <img :src="HeaderCellIcon" width="20" class="drop-shadow-sm text-black dark:text-gray-50" />
               <span>Header Cell</span>
             </div>
 
             <div @click="editor.chain().focus().deleteTable().run()"
               class="text-base dark:bg-[#cc1212] dark:hover:bg-[#b81010] bg-[#e01212] hover:bg-[#cc1212] border-[#bb1212] dark:border-[#b91616] border backdrop-blur-xl text-white !px-[10px] py-[6px] rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool space-x-1.5">
 
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
-                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                  stroke-width="1.5"
-                  d="m19.5 5.5l-.62 10.025c-.158 2.561-.237 3.842-.88 4.763a4 4 0 0 1-1.2 1.128c-.957.584-2.24.584-4.806.584c-2.57 0-3.855 0-4.814-.585a4 4 0 0 1-1.2-1.13c-.642-.922-.72-2.205-.874-4.77L4.5 5.5M3 5.5h18m-4.944 0l-.683-1.408c-.453-.936-.68-1.403-1.071-1.695a2 2 0 0 0-.275-.172C13.594 2 13.074 2 12.035 2c-1.066 0-1.599 0-2.04.234a2 2 0 0 0-.278.18c-.395.303-.616.788-1.058 1.757L8.053 5.5"
-                  color="currentColor" />
-              </svg>
+              <img :src="DeleteTableIcon" width="20" />
 
               <span>Delete</span>
             </div>
@@ -331,7 +246,7 @@
 
       <button
         class="fixed bottom-3 mx-2 right-0 border border-gray-200 bg-white dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 backdrop-blur-xl text-black !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool"
-        title="Focus Mode" @click="focus"><svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v14M5.98 3.285c3.342.637 5.333 1.967 6.02 2.731c.687-.764 2.678-2.094 6.02-2.73c1.692-.323 2.538-.484 3.26.134c.72.617.72 1.62.72 3.626v7.209c0 1.834 0 2.751-.463 3.324c-.462.572-1.48.766-3.518 1.154c-1.815.346-3.232.896-4.258 1.45c-1.01.545-1.514.817-1.761.817s-.752-.272-1.76-.817c-1.027-.553-2.444-1.104-4.26-1.45c-2.036-.388-3.055-.582-3.517-1.154C2 17.006 2 16.089 2 14.255V7.046c0-2.006 0-3.009.72-3.626c.722-.618 1.568-.457 3.26-.135" color="currentColor"/></svg></button>
+        title="Focus Mode" @click="focus"><img :src="FocusModeIcon" width="22" /></button>
 
       <button
         class="fixed bottom-3 border border-gray-200 bg-white backdrop-blur-xl dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 text-black !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool right-[60px]"
@@ -406,6 +321,27 @@ import {
   setHyperlinkModal,
 } from "../extensions/modals/setHyperlink";
 
+// Import SVG icons
+import CaseSensitiveIcon from '~/assets/icons/case-sensitive.svg';
+import PreviousIcon from '~/assets/icons/previous.svg';
+import NextIcon from '~/assets/icons/next.svg';
+import ReplaceIcon from '~/assets/icons/replace.svg';
+import ReplaceAllIcon from '~/assets/icons/replace-all.svg';
+import ExportMarkdownIcon from '~/assets/icons/export-markdown.svg';
+import ImportMarkdownIcon from '~/assets/icons/import-markdown.svg';
+import LightModeIcon from '~/assets/icons/light-mode.svg';
+import DarkModeIcon from '~/assets/icons/dark-mode.svg';
+import StylingIcon from '~/assets/icons/styling.svg';
+import AboutIcon from '~/assets/icons/about.svg';
+import PrintIcon from '~/assets/icons/print.svg';
+import TableIcon from '~/assets/icons/table.svg';
+import MermaidIcon from '~/assets/icons/mermaid.svg';
+import PlantumlIcon from '~/assets/icons/plantuml.svg';
+import DeleteRowIcon from '~/assets/icons/delete-row.svg';
+import AddRowIcon from '~/assets/icons/add-row.svg';
+import HeaderCellIcon from '~/assets/icons/header-cell.svg';
+import DeleteTableIcon from '~/assets/icons/delete-table.svg';
+import FocusModeIcon from '~/assets/icons/focus-mode.svg';
 
 var open = ref(false);
 
