@@ -1,35 +1,35 @@
 <script lang="ts" setup>
-import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
-import { Editor, EditorContent, BubbleMenu, FloatingMenu } from '@tiptap/vue-3';
-import StarterKit from "@tiptap/starter-kit";
-import Highlight from "@tiptap/extension-highlight";
-import TaskList from '@tiptap/extension-task-list';
-import TaskItem from '@tiptap/extension-task-item';
+import CharacterCount from '@tiptap/extension-character-count'
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import { Color } from "@tiptap/extension-color";
+import FontFamily from '@tiptap/extension-font-family'
+import Highlight from "@tiptap/extension-highlight";
+import Image from "@tiptap/extension-image";
 import Link from "@tiptap/extension-link";
 import ListItem from "@tiptap/extension-list-item";
+import ListKeymap from '@tiptap/extension-list-keymap'
+import Placeholder from '@tiptap/extension-placeholder'
 import SubScript from "@tiptap/extension-subscript";
 import Superscript from "@tiptap/extension-superscript";
 import Table from "@tiptap/extension-table";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
 import TableRow from "@tiptap/extension-table-row";
+import TaskItem from '@tiptap/extension-task-item';
+import TaskList from '@tiptap/extension-task-list';
+import TextAlign from '@tiptap/extension-text-align'
 import TextStyle from "@tiptap/extension-text-style";
 import Typography from "@tiptap/extension-typography";
-import ListKeymap from '@tiptap/extension-list-keymap'
-import Placeholder from '@tiptap/extension-placeholder'
-import Image from "@tiptap/extension-image";
-import CharacterCount from '@tiptap/extension-character-count'
-import TextAlign from '@tiptap/extension-text-align'
-import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
-import FontFamily from '@tiptap/extension-font-family'
+import StarterKit from "@tiptap/starter-kit";
+import { BubbleMenu, Editor, EditorContent, FloatingMenu } from '@tiptap/vue-3';
 import { useBase64 } from '@vueuse/core'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
-import { Mathematics } from '@tiptap-pro/extension-mathematics'
 import Emoji, { gitHubEmojis } from '@tiptap-pro/extension-emoji'
+import { Mathematics } from '@tiptap-pro/extension-mathematics'
 
-import { SearchAndReplace } from "../extensions/search&replace.ts";
 import { type Range as EditorRange } from '@tiptap/core'
+import { SearchAndReplace } from "../extensions/search&replace.ts";
 
 import 'katex/dist/katex.min.css'
 
@@ -439,7 +439,7 @@ function handleShortcut(event: KeyboardEvent) {
         <div class="flex justify-between w-full items-center"><span
             class="inline-flex rounded-md isolate !text-[15px] drop-shadow-cool">
             <button @click="previous" type="button"
-              class="mt-1 p-2 px-3 border dark:border-none border-gray-200 rounded-xl rounded-r-none bg-gray-50/30 dark:bg-[#171717] dark:border-[#484747] text-gray-800 dark:text-white/90 flex justify-center">
+              class="mt-1 p-2 px-3 border dark:border-none border-gray-200 rounded-xl rounded-r-none bg-gray-50/30 dark:bg-[#171717] dark:border-[#484747] text-black dark:text-white/90 flex justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
                 class="drop-shadow-sm">
@@ -448,7 +448,7 @@ function handleShortcut(event: KeyboardEvent) {
               </svg>
             </button>
             <button @click="next" type="button"
-              class="mt-1 p-2 px-3 border-x-0 bg-gray-50/30 border dark:border-none dark:bg-[#171717] dark:border-[#484747] border-gray-200  text-gray-800 dark:text-white/90 flex justify-center">
+              class="mt-1 p-2 px-3 border-x-0 bg-gray-50/30 border dark:border-none dark:bg-[#171717] dark:border-[#484747] border-gray-200  text-black dark:text-white/90 flex justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
                 class="drop-shadow-sm">
@@ -457,7 +457,7 @@ function handleShortcut(event: KeyboardEvent) {
               </svg>
             </button>
             <button @click="replace" type="button"
-              class="mt-1 p-2 px-3 bg-gray-50/30 border dark:border-none border-gray-200 dark:bg-[#171717] dark:border-[#484747] text-gray-800 dark:text-white/90 flex justify-center">
+              class="mt-1 p-2 px-3 bg-gray-50/30 border dark:border-none border-gray-200 dark:bg-[#171717] dark:border-[#484747] text-black dark:text-white/90 flex justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 class="drop-shadow-sm" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M14 4a2 2 0 0 1 2-2" />
@@ -470,7 +470,7 @@ function handleShortcut(event: KeyboardEvent) {
               </svg>
             </button>
             <button @click="replaceAll" type="button"
-              class="mt-1 p-2 px-3 border-x-0 bg-gray-50/30 border dark:border-none border-gray-200 border-r rounded-r-xl dark:bg-[#171717] dark:border-[#484747] text-gray-800 dark:text-white/90 flex justify-center">
+              class="mt-1 p-2 px-3 border-x-0 bg-gray-50/30 border dark:border-none border-gray-200 border-r rounded-r-xl dark:bg-[#171717] dark:border-[#484747] text-black dark:text-white/90 flex justify-center">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
                 class="drop-shadow-sm">
@@ -502,22 +502,22 @@ function handleShortcut(event: KeyboardEvent) {
     <div class="flex space-x-2 fixed right-0 top-1 z-[12] py-2"
       :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
 
-      <button
-        class="border border-gray-200 bg-white/80 text-gray-800/90 !px-[7px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer !py-[6px] inline-block drop-shadow-cool"
-        @click="toggleSearch"><svg width="23" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+      <!-- <button
+        class="border border-gray-200 bg-white text-black !px-[7px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer !py-[6px] inline-block drop-shadow-cool"
+        @click="toggleSearch"><svg width="21" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
           class="drop-shadow-sm">
           <path d="M17 17L21 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
             vector-effect="non-scaling-stroke"></path>
           <path
             d="M19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19C15.4183 19 19 15.4183 19 11Z"
             stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" vector-effect="non-scaling-stroke"></path>
-        </svg></button>
+        </svg></button> -->
 
 
       <button @click="exportMarkdown" :class="[
-        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white/80 text-gray-800/90 !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
-      ]">
-        <svg xmlns="http://www.w3.org/2000/svg" width="23" viewBox="0 0 24 24" class="drop-shadow-sm">
+        'border dark:bg-[#404040] !py-[6px] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+      ]" title="Export Markdown">
+        <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24" class="drop-shadow-sm">
           <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
             color="currentColor">
             <path d="M3.095 10Q3 10.687 3 11.4c0 5.302 4.03 9.6 9 9.6s9-4.298 9-9.6q0-.714-.095-1.4" />
@@ -527,21 +527,15 @@ function handleShortcut(event: KeyboardEvent) {
       </button>
 
       <button @click="importMarkdownOrText" :class="[
-        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white/80 text-gray-800/90 !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
-      ]">
-        <svg width="23" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="drop-shadow-sm">
-          <path d="M9.5 14.5L14.5 9.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-            vector-effect="non-scaling-stroke"></path>
-          <path
-            d="M16.8463 14.6095L19.4558 12C21.5147 9.94112 21.5147 6.60302 19.4558 4.54415C17.397 2.48528 14.0589 2.48528 12 4.54415L9.39045 7.1537M14.6095 16.8463L12 19.4558C9.94113 21.5147 6.60303 21.5147 4.54416 19.4558C2.48528 17.3969 2.48528 14.0588 4.54416 12L7.1537 9.39045"
-            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
-        </svg>
+        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+      ]" title="Import Markdown">
+        <svg xmlns="http://www.w3.org/2000/svg" width="21.5" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.5 12v1.5a7.5 7.5 0 0 1-15 0V8a5 5 0 0 1 10 0v5.5a2.5 2.5 0 0 1-5 0v-4" color="currentColor"/></svg>
       </button>
 
       <button @click="onClick('light')" v-if="colorMode.value == 'dark'" :class="[
-        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white/80 text-gray-800/90 !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
-      ]">
-        <svg xmlns="http://www.w3.org/2000/svg" width="23" viewBox="0 0 24 24" class="drop-shadow-sm">
+        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+      ]" title="Light Mode">
+        <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24" class="drop-shadow-sm">
           <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
             d="M21.5 14.078A8.557 8.557 0 0 1 9.922 2.5C5.668 3.497 2.5 7.315 2.5 11.873a9.627 9.627 0 0 0 9.627 9.627c4.558 0 8.376-3.168 9.373-7.422"
             color="currentColor" />
@@ -550,9 +544,9 @@ function handleShortcut(event: KeyboardEvent) {
       </button>
 
       <button @click="onClick('dark')" v-if="colorMode.value == 'light'" :class="[
-        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white/80 text-gray-800/90 !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
-      ]">
-        <svg width="23" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="drop-shadow-sm">
+        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+      ]" title="Dark Mode">
+        <svg width="21" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="drop-shadow-sm">
           <path d="M17 12a5 5 0 11-10 0 5 5 0 0110 0z" stroke="currentColor" stroke-width="1.5"
             vector-effect="non-scaling-stroke"></path>
           <path
@@ -562,9 +556,9 @@ function handleShortcut(event: KeyboardEvent) {
       </button>
 
       <button @click="isBottomSheetOpen = true" :class="[
-        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white/80 text-gray-800/90 !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
-      ]">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24" class="drop-shadow-sm">
+        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+      ]" title="Styling">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24" class="drop-shadow-sm">
           <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
             color="currentColor">
             <path
@@ -575,28 +569,25 @@ function handleShortcut(event: KeyboardEvent) {
         </svg>
       </button>
 
+      <button @click="open = true" :class="[
+        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+      ]" title="About">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22.5" viewBox="0 0 24 24" class="drop-shadow-sm"><!-- Icon from Huge Icons by Hugeicons - undefined --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M10.456 2.64a2.18 2.18 0 0 1 3.088 0l1.009 1.011c.41.41.966.64 1.545.64h1.429a2.18 2.18 0 0 1 2.183 2.182l-.001 1.429c0 .58.23 1.135.64 1.545l1.01 1.01a2.18 2.18 0 0 1 0 3.087l-1.01 1.009c-.41.41-.64.966-.64 1.545v1.429a2.18 2.18 0 0 1-2.182 2.183l-1.429-.001c-.58 0-1.135.23-1.545.64l-1.01 1.01a2.18 2.18 0 0 1-3.087 0l-1.009-1.01a2.18 2.18 0 0 0-1.545-.64H6.473a2.18 2.18 0 0 1-2.183-2.182l.001-1.429c0-.58-.23-1.135-.64-1.545l-1.01-1.01a2.18 2.18 0 0 1 0-3.087l1.01-1.009c.41-.41.64-.966.64-1.545V6.473A2.18 2.18 0 0 1 6.472 4.29l1.429.001c.58 0 1.135-.23 1.545-.64z"/><path d="M10 9a2 2 0 1 1 3.683 1.08C13.085 11.01 12 11.896 12 13v.5m-.008 3.5h.009"/></g></svg>
+      </button>
+
       <UiBottomSheet :isOpen="isBottomSheetOpen" @close="isBottomSheetOpen = false" :editor="editor as any" />
 
     </div>
 
-    <div class="flex fixed justify-between w-full p-2 py-0 pt-4 bg-white dark:bg-[#171717] z-10" v-show="!focusMode">
+    <div class="flex fixed justify-between w-full p-2 py-0 pt-4 bg-white dark:bg-[#171717] z-10">
 
       <div class="flex w-full justify-between items-center space-x-2">
         <input v-model="localTitle" @input="$emit('update:title', localTitle)" placeholder="Untitled"
           class="w-full border border-none ring-0 focus:border-none px-3 dark:text-white text-black/90 outline-none bg-transparent rounded flex text-[24px]" />
 
         <button
-          class="border border-gray-200 bg-white text-gray-800 !px-[8px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool"
-          title="Print" @click="focus"><svg xmlns="http://www.w3.org/2000/svg" width="22.5" viewBox="0 0 24 24"
-            class="drop-shadow-sm">
-            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-              color="currentColor">
-              <path
-                d="M7.354 18c-2.123 0-3.185 0-3.94-.453a3.04 3.04 0 0 1-1.15-1.223c-.392-.77-.287-1.787-.075-3.822c.176-1.698.264-2.547.698-3.171c.285-.41.67-.745 1.121-.977C4.695 8 5.582 8 7.354 8h9.292c1.772 0 2.659 0 3.346.354c.451.232.836.567 1.121.977c.434.624.522 1.473.698 3.172c.212 2.034.317 3.052-.076 3.821a3.04 3.04 0 0 1-1.148 1.223C19.83 18 18.769 18 16.646 18M17 8V6c0-1.886 0-2.828-.586-3.414S14.886 2 13 2h-2c-1.886 0-2.828 0-3.414.586S7 4.114 7 6v2" />
-              <path
-                d="M13.989 16H10.01c-.685 0-1.028 0-1.32.109a1.87 1.87 0 0 0-.945.8c-.168.281-.251.642-.417 1.363c-.26 1.128-.39 1.691-.301 2.143c.117.602.484 1.112.995 1.382c.382.203.918.203 1.988.203h3.978c1.07 0 1.606 0 1.988-.203c.51-.27.878-.78.995-1.382c.089-.452-.041-1.015-.3-2.143c-.167-.72-.25-1.082-.418-1.362a1.87 1.87 0 0 0-.946-.801C15.017 16 14.674 16 13.988 16M18 12h.009" />
-            </g>
-          </svg></button>
+          class="border border-gray-200 bg-white text-black !px-[8px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool"
+          title="Print" @click="focus" v-if="!focusMode"><svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M3.5 10c0-3.771 0-5.657 1.245-6.828S7.993 2 12 2h.773c3.26 0 4.892 0 6.024.798c.324.228.612.5.855.805c.848 1.066.848 2.6.848 5.67v2.545c0 2.963 0 4.445-.469 5.628c-.754 1.903-2.348 3.403-4.37 4.113c-1.257.441-2.83.441-5.98.441c-1.798 0-2.698 0-3.416-.252c-1.155-.406-2.066-1.263-2.497-2.35c-.268-.676-.268-1.523-.268-3.216z"/><path d="M20.5 12a3.333 3.333 0 0 1-3.333 3.333c-.666 0-1.451-.116-2.098.057a1.67 1.67 0 0 0-1.179 1.179c-.173.647-.057 1.432-.057 2.098A3.333 3.333 0 0 1 10.5 22M8 7h7m-7 4h3"/></g></svg></button>
 
 
       </div>
@@ -604,111 +595,9 @@ function handleShortcut(event: KeyboardEvent) {
 
     <div class="flex-grow mt-12">
 
-      <floating-menu :editor="editor as any" :tippy-options="{ duration: 100 }" v-if="editor">
-        <div
-          class="flex overflow-hidden bg-white dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 rounded-xl border text-gray-800 dark:text-white/85 relative left-[5rem]">
-          <button @click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
-            :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('heading', { level: 1 }) }"
-            class="rounded-l-lg hover:bg-gray-100 hover:dark:bg-[#171717] p-2 px-2">
+      <UiFloatingMenu :editor="editor as any"/>
 
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24">
-              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M4 12h8m-8 6V6m8 12V6m5 6l3-2v8" />
-            </svg>
-
-          </button>
-
-          <button @click="editor.chain().focus().toggleBulletList().run()"
-            :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('bulletList') }"
-            class="hover:bg-gray-100 p-2 px-2 hover:dark:bg-[#171717]">
-
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24">
-              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01" />
-            </svg>
-
-          </button>
-
-          <button @click="editor.chain().focus().toggleOrderedList().run()"
-            :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('orderedList') }"
-            class="hover:dark:bg-[#171717] hover:bg-gray-100 p-2 px-2">
-
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24">
-              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M10 6h11m-11 6h11m-11 6h11M4 6h1v4m-1 0h2m0 8H4c0-1 2-2 2-3s-1-1.5-2-1" />
-            </svg>
-
-          </button>
-
-          <button @click="editor.chain().focus().toggleTaskList().run()"
-            :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('taskList', { level: 1 }) }"
-            class="hover:bg-gray-100 hover:dark:bg-[#171717] p-2 px-2">
-
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
-              <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                <rect width="7" height="7" x="3" y="3" rx="1" />
-                <rect width="7" height="7" x="3" y="14" rx="1" />
-                <path d="M14 4h7m-7 5h7m-7 6h7m-7 5h7" />
-              </g>
-            </svg>
-
-          </button>
-
-          <button @click="editor.chain().focus().toggleCode().run()"
-            :class="{ 'dark:bg-[#171717] bg-gray-100': editor.isActive('code') }"
-            class="hover:bg-gray-100 p-2 px-2 hover:dark:bg-[#171717]">
-
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24">
-              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="m16 18l6-6l-6-6M8 6l-6 6l6 6" />
-            </svg>
-
-          </button>
-        </div>
-      </floating-menu>
-
-      <bubble-menu :editor="editor as any" :tippy-options="{ duration: 100 }" v-if="editor">
-        <div
-          class="flex overflow-hidden dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50  bg-white border border-gray-200 rounded-xl text-gray-800 drop-shadow-cool dark:text-white/85">
-          <button @click="editor.chain().focus().toggleBold().run()"
-            :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('bold') }"
-            class="rounded-l-lg hover:dark:bg-[#171717] hover:bg-gray-100 p-2 px-2">
-
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24">
-              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8" class="relative top-0.5" />
-            </svg>
-
-          </button>
-          <button @click="editor.chain().focus().toggleItalic().run()"
-            :class="{ 'bg-gray-200/50 dark:bg-[#171717]': editor.isActive('italic') }"
-            class="hover:dark:bg-[#171717] hover:bg-gray-100 p-2 px-2">
-
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24">
-              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M19 4h-9m4 16H5M15 4L9 20" class="relative top-0.5" />
-            </svg>
-
-          </button>
-          <button @click="editor.chain().focus().toggleStrike().run()"
-            :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('strike') }"
-            class="hover:dark:bg-[#171717] hover:bg-gray-100 p-2 px-2">
-
-
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24">
-              <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M16 4H9a3 3 0 0 0-2.83 4M14 12a4 4 0 0 1 0 8H6m-2-8h16" class="relative top-0.5" />
-            </svg>
-
-          </button>
-          <button @click="editor.chain().focus().toggleHighlight().run()"
-            :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('highlight') }"
-            class="hover:dark:bg-[#171717] hover:bg-gray-100 p-2 px-2 rounded-r-lg">
-            <div class="w-5 h-5 bg-yellow-400 dark:bg-yellow-500 rounded-full border dark:border-none border-black/50">
-            </div>
-          </button>
-        </div>
-      </bubble-menu>
+      <UiBubbleMenu :editor="editor as any"/>
 
       <EditorContent :editor="editor as any" class="h-full overflow-auto mb-4 px-4" />
 
@@ -716,19 +605,23 @@ function handleShortcut(event: KeyboardEvent) {
         :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
         <div class="flex space-x-4">
 
-          <div class="flex space-x-4" v-if="!editor.can().deleteTable()">
+          <div class="flex space-x-2" v-if="!editor.can().deleteTable()">
 
             <div @click="editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()"
-              class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-gray-50 backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
-              <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24" class="drop-shadow-sm">
-                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                  color="currentColor">
-                  <path
-                    d="M12 21c.28 0 .539-.127 1.058-.382l4.172-2.044C19.077 17.669 20 17.216 20 16.5v-9M12 21c-.28 0-.539-.127-1.058-.382L6.77 18.574C4.923 17.669 4 17.216 4 16.5v-9M12 21v-9" />
-                  <path
-                    d="M10.942 3.382C11.462 3.127 11.721 3 12 3c.28 0 .539.127 1.058.382l4.172 2.044C19.077 6.331 20 6.784 20 7.5s-.923 1.169-2.77 2.074l-4.172 2.044c-.52.255-.779.382-1.058.382c-.28 0-.539-.127-1.058-.382L6.77 9.574C4.923 8.669 4 8.216 4 7.5s.923-1.169 2.77-2.074z" />
-                </g>
-              </svg><span class="drop-shadow-sm">Table</span>
+              class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
+              <svg xmlns="http://www.w3.org/2000/svg" width="19" viewBox="0 0 16 16" class="drop-shadow-sm"><path fill="currentColor" fill-rule="evenodd" d="M12 3.5H4A1.5 1.5 0 0 0 2.5 5v.5h11V5A1.5 1.5 0 0 0 12 3.5M2.5 11V7h2v5.5H4A1.5 1.5 0 0 1 2.5 11M6 12.5h6a1.5 1.5 0 0 0 1.5-1.5V7H6zM4 2a3 3 0 0 0-3 3v6a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V5a3 3 0 0 0-3-3z" clip-rule="evenodd"/></svg><span class="drop-shadow-sm">Table</span>
+            </div>
+
+            <div @click="editor.commands.setMermaid('graph TD;\n  A-->B;  A-->C;\n  B-->D;\n  C-->D;')"
+            
+            class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
+            <svg xmlns="http://www.w3.org/2000/svg" width="19" viewBox="0 0 16 16" class="drop-shadow-sm"><path fill="currentColor" fill-rule="evenodd" d="M11.5 12.5A1.5 1.5 0 0 1 10 14H6a1.5 1.5 0 0 1-1.5-1.5v-.823a3.11 3.11 0 0 0-1.35-2.566A6.11 6.11 0 0 1 .5 4.073V3A1.5 1.5 0 0 1 2 1.5h.666A6.43 6.43 0 0 1 8 4.343A6.43 6.43 0 0 1 13.334 1.5H14A1.5 1.5 0 0 1 15.5 3v1.073a6.11 6.11 0 0 1-2.65 5.038a3.11 3.11 0 0 0-1.35 2.566zm-8-9.43a4.92 4.92 0 0 1 3.738 3.025c.275.688 1.249.688 1.524 0A4.92 4.92 0 0 1 13.334 3H14v1.073q0 .215-.02.427A4.61 4.61 0 0 1 12 7.875c-1.252.86-2 2.283-2 3.802v.823H6v-.823c0-1.52-.748-2.941-2-3.802a4.61 4.61 0 0 1-2-3.802V3h.666q.425 0 .834.07" clip-rule="evenodd"/></svg><span class="drop-shadow-sm">Mermaid</span>
+            </div>
+
+            <div @click="editor.commands.setPlantuml('@startuml\nBob -> Alice : hello\n@enduml')"
+            
+            class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
+            <svg xmlns="http://www.w3.org/2000/svg" width="19" viewBox="0 0 16 16" class="drop-shadow-sm"><path fill="currentColor" fill-rule="evenodd" d="M5.731 4H4.5A1.5 1.5 0 0 0 3 5.5v.377a2.72 2.72 0 0 1 0 5.246v.377A1.5 1.5 0 0 0 4.5 13h.377a2.72 2.72 0 0 1 5.246 0h.377a1.5 1.5 0 0 0 1.5-1.5v-1.232l1-.353a1.501 1.501 0 0 0 0-2.83l-1-.354V5.5A1.5 1.5 0 0 0 10.5 4H9.269l-.354-1a1.501 1.501 0 0 0-2.83 0zM8.9 14.5l-.204-1.02a1.22 1.22 0 0 0-2.392 0L6.1 14.5H4.5a3 3 0 0 1-3-3V9.9l1.02-.204a1.22 1.22 0 0 0 0-2.392L1.5 7.1V5.5a3 3 0 0 1 3-3h.17a3.001 3.001 0 0 1 5.66 0h.17a3 3 0 0 1 3 3v.17a3.001 3.001 0 0 1 0 5.66v.17a3 3 0 0 1-3 3z" clip-rule="evenodd"/></svg><span class="drop-shadow-sm">Plant UML</span>
             </div>
 
           </div>
@@ -738,7 +631,7 @@ function handleShortcut(event: KeyboardEvent) {
           <div class="flex space-x-2" v-if="editor.can().deleteTable()">
 
             <div
-              class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-gray-50 backdrop-blur-xl text-black !px-[7px] py-[6px] rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool space-x-1">
+              class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[7px] py-[4px] rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool space-x-1">
 
               <button @click="editor.chain().focus().deleteRow().run()" :disabled="!editor.can().deleteRow()">
 
@@ -753,7 +646,7 @@ function handleShortcut(event: KeyboardEvent) {
               <span class="inline">Row</span>
 
               <button @click="editor.chain().focus().addRowAfter().run()" :disabled="!editor.can().addRowAfter()"
-                class="text-gray-800 dark:text-gray-50">
+                class="text-black dark:text-gray-50">
 
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24">
                   <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -769,7 +662,7 @@ function handleShortcut(event: KeyboardEvent) {
             <div class="flex space-x-2" v-if="editor.can().deleteTable()">
 
               <div
-                class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-gray-50 backdrop-blur-xl text-black !px-[7px] py-[6px] rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool space-x-1">
+                class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[7px] py-[4px] rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool space-x-1">
 
                 <button @click="editor.chain().focus().deleteColumn().run()" :disabled="!editor.can().deleteColumn()">
 
@@ -785,7 +678,7 @@ function handleShortcut(event: KeyboardEvent) {
 
 
                 <button @click="editor.chain().focus().addColumnAfter().run()"
-                  :disabled="!editor.can().addColumnAfter()" class="text-gray-800 dark:text-gray-50">
+                  :disabled="!editor.can().addColumnAfter()" class="text-black dark:text-gray-50">
 
                   <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24">
                     <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
@@ -798,9 +691,9 @@ function handleShortcut(event: KeyboardEvent) {
             </div>
 
             <div @click="editor.chain().focus().toggleHeaderCell().run()" :disabled="!editor.can().toggleHeaderCell()"
-              class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-gray-50 backdrop-blur-xl text-black !px-[10px] py-[6px] rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool space-x-1">
+              class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] !py-[4px] rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool space-x-1">
               <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"
-                class="drop-shadow-sm text-gray-800 dark:text-gray-50">
+                class="drop-shadow-sm text-black dark:text-gray-50">
                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                   stroke-width="1.5"
                   d="M3.891 3.891C5.282 2.5 7.521 2.5 12 2.5c4.478 0 6.718 0 8.109 1.391S21.5 7.521 21.5 12c0 4.478 0 6.718-1.391 8.109S16.479 21.5 12 21.5c-4.478 0-6.718 0-8.109-1.391S2.5 16.479 2.5 12c0-4.478 0-6.718 1.391-8.109"
@@ -828,46 +721,588 @@ function handleShortcut(event: KeyboardEvent) {
         <div class="sm:hidden md:flex items-center space-x-2 hidden text-onPrimaryContainer relative right-11">
 
           <div
-            class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-gray-50 backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
+            class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
             {{ characterCount }} characters</div>
           <div
-            class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-gray-50 backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
+            class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
             {{ wordCount }} words</div>
         </div>
       </div>
 
       <button
-        class="fixed bottom-3 mx-2 right-0 border border-gray-200 bg-gray-50 dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 backdrop-blur-xl text-gray-800 !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool"
-        title="Focus Mode" @click="focus"><svg xmlns="http://www.w3.org/2000/svg" width="23" viewBox="0 0 24 24"
-          class="drop-shadow-sm">
-          <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-            color="currentColor">
-            <path
-              d="M16.613 16.085C13.98 17.568 12.477 20.64 12 21.5V8c.415-.746 1.602-2.884 3.632-4.336c.855-.612 1.282-.918 1.825-.64c.543.28.543.896.543 2.127v8.84c0 .666 0 .999-.137 1.232c-.136.234-.508.443-1.25.862" />
-            <path
-              d="M12 7.806c-.687-.722-2.678-2.436-6.02-3.036c-1.692-.305-2.538-.457-3.26.126C2 5.48 2 6.426 2 8.321v6.809c0 1.732 0 2.598.463 3.139c.462.54 1.48.724 3.518 1.09c1.815.326 3.232.847 4.258 1.37c1.01.514 1.514.771 1.761.771s.752-.257 1.76-.771c1.027-.523 2.444-1.044 4.26-1.37c2.036-.366 3.055-.55 3.517-1.09c.463-.541.463-1.407.463-3.14V8.322c0-1.894 0-2.841-.72-3.425C20.557 4.313 19 4.77 18 5.5" />
-          </g>
-        </svg></button>
+        class="fixed bottom-3 mx-2 right-0 border border-gray-200 bg-white dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 backdrop-blur-xl text-black !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool"
+        title="Focus Mode" @click="focus"><svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v14M5.98 3.285c3.342.637 5.333 1.967 6.02 2.731c.687-.764 2.678-2.094 6.02-2.73c1.692-.323 2.538-.484 3.26.134c.72.617.72 1.62.72 3.626v7.209c0 1.834 0 2.751-.463 3.324c-.462.572-1.48.766-3.518 1.154c-1.815.346-3.232.896-4.258 1.45c-1.01.545-1.514.817-1.761.817s-.752-.272-1.76-.817c-1.027-.553-2.444-1.104-4.26-1.45c-2.036-.388-3.055-.582-3.517-1.154C2 17.006 2 16.089 2 14.255V7.046c0-2.006 0-3.009.72-3.626c.722-.618 1.568-.457 3.26-.135" color="currentColor"/></svg></button>
 
       <button
-        class="fixed bottom-3 border border-gray-200 bg-gray-50 backdrop-blur-xl dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 text-gray-800 !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool right-[60px]"
-        title="Print" v-if="focusMode" @click="printPDF"><svg xmlns="http://www.w3.org/2000/svg" width="23"
-          viewBox="0 0 24 24">
-          <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-            color="currentColor">
-            <path
-              d="M7.354 18c-2.123 0-3.185 0-3.94-.453a3.04 3.04 0 0 1-1.15-1.223c-.392-.77-.287-1.787-.075-3.822c.176-1.698.264-2.547.698-3.171c.285-.41.67-.745 1.121-.977C4.695 8 5.582 8 7.354 8h9.292c1.772 0 2.659 0 3.346.354c.451.232.836.567 1.121.977c.434.624.522 1.473.698 3.172c.212 2.034.317 3.052-.076 3.821a3.04 3.04 0 0 1-1.148 1.223C19.83 18 18.769 18 16.646 18M17 8V6c0-1.886 0-2.828-.586-3.414S14.886 2 13 2h-2c-1.886 0-2.828 0-3.414.586S7 4.114 7 6v2" />
-            <path
-              d="M13.989 16H10.01c-.685 0-1.028 0-1.32.109a1.87 1.87 0 0 0-.945.8c-.168.281-.251.642-.417 1.363c-.26 1.128-.39 1.691-.301 2.143c.117.602.484 1.112.995 1.382c.382.203.918.203 1.988.203h3.978c1.07 0 1.606 0 1.988-.203c.51-.27.878-.78.995-1.382c.089-.452-.041-1.015-.3-2.143c-.167-.72-.25-1.082-.418-1.362a1.87 1.87 0 0 0-.946-.801C15.017 16 14.674 16 13.988 16M18 12h.009" />
-          </g>
-        </svg></button>
+        class="fixed bottom-3 border border-gray-200 bg-white backdrop-blur-xl dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 text-black !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool right-[60px]"
+        title="Print" v-if="focusMode" @click="printPDF"><svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M3.5 10c0-3.771 0-5.657 1.245-6.828S7.993 2 12 2h.773c3.26 0 4.892 0 6.024.798c.324.228.612.5.855.805c.848 1.066.848 2.6.848 5.67v2.545c0 2.963 0 4.445-.469 5.628c-.754 1.903-2.348 3.403-4.37 4.113c-1.257.441-2.83.441-5.98.441c-1.798 0-2.698 0-3.416-.252c-1.155-.406-2.066-1.263-2.497-2.35c-.268-.676-.268-1.523-.268-3.216z"/><path d="M20.5 12a3.333 3.333 0 0 1-3.333 3.333c-.666 0-1.451-.116-2.098.057a1.67 1.67 0 0 0-1.179 1.179c-.173.647-.057 1.432-.057 2.098A3.333 3.333 0 0 1 10.5 22M8 7h7m-7 4h3"/></g></svg></button>
 
     </div>
+
+    <UiInfo :open="open" :close="close"/>
+
   </div>
 </template>
 
+<script lang="ts" setup>
+import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
+import { Editor, EditorContent } from '@tiptap/vue-3';
+import StarterKit from "@tiptap/starter-kit";
+import Highlight from "@tiptap/extension-highlight";
+import TaskList from '@tiptap/extension-task-list';
+import TaskItem from '@tiptap/extension-task-item';
+import { Color } from "@tiptap/extension-color";
+import Link from "@tiptap/extension-link";
+import ListItem from "@tiptap/extension-list-item";
+import SubScript from "@tiptap/extension-subscript";
+import Superscript from "@tiptap/extension-superscript";
+import Table from "@tiptap/extension-table";
+import TableCell from "@tiptap/extension-table-cell";
+import TableHeader from "@tiptap/extension-table-header";
+import TableRow from "@tiptap/extension-table-row";
+import TextStyle from "@tiptap/extension-text-style";
+import Typography from "@tiptap/extension-typography";
+import ListKeymap from '@tiptap/extension-list-keymap'
+import Placeholder from '@tiptap/extension-placeholder'
+import CharacterCount from '@tiptap/extension-character-count'
+import TextAlign from '@tiptap/extension-text-align'
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
+import FontFamily from '@tiptap/extension-font-family'
+
+import { Mathematics } from '@tiptap-pro/extension-mathematics'
+import Emoji, { gitHubEmojis } from '@tiptap-pro/extension-emoji'
+
+import { SearchAndReplace } from "../extensions/search&replace.ts";
+import { type Range as EditorRange } from '@tiptap/core'
+
+import 'katex/dist/katex.min.css'
+
+import { Markdown } from 'tiptap-markdown';
+
+import { ColorHighlighter } from '../extensions/ColorHighlighter.ts'
+
+import Underline from '@tiptap/extension-underline'
+
+import { SmilieReplacer } from '../extensions/SmilieReplacer.ts'
+
+// load all languages with "all" or common languages with "common"
+import { all, createLowlight } from 'lowlight'
+
+import { UseDraggable } from '@vueuse/components'
+
+import {
+  Hyperlink,
+} from "../extensions/hyperlink";
+
+import {
+  previewHyperlinkModal,
+} from "../extensions/modals/previewHyperlink";
+
+import {
+  setHyperlinkModal,
+} from "../extensions/modals/setHyperlink";
+import { Mermaid } from '~/extensions/nodes/mermaid.ts';
+import { MathBlock } from '~/extensions/nodes/math.ts';
+import { Plantuml } from '~/extensions/nodes/plantuml.ts';
+import { Embed } from '~/extensions/nodes/embed.ts';
+
+
+var open = ref(false);
+
+function close() {
+  open.value = false
+}
+
+const isBottomSheetOpen = ref(false);
+
+function printPDF() {
+  window.print()
+}
+
+const colorMode = useColorMode()
+
+function onClick(val: string) {
+  colorMode.preference = val
+}
+
+const showSearch = ref(false);
+
+function toggleSearch() {
+  if (showSearch.value == true) {
+    showSearch.value = false
+    clear()
+  }
+  else {
+    showSearch.value = true
+  }
+}
+
+const focusMode = ref(false);
+
+function focus() {
+  if (focusMode.value == true) {
+    focusMode.value = false,
+      editor.value?.setEditable(true)
+  }
+  else {
+    focusMode.value = true,
+      editor.value?.setEditable(false)
+
+  }
+}
+
+// create a lowlight instance
+const lowlight = createLowlight(all)
+
+const editor = ref<Editor | null>(null);
+
+const CustomTaskItem = TaskItem.extend({
+  content: 'inline*',
+})
+
+const props = defineProps<{
+  title: string;
+  content: any;
+}>();
+
+const emit = defineEmits(['update:title', 'update:content']);
+
+const localTitle = ref(props.title);
+
+onMounted(() => {
+  editor.value = new Editor({
+    content: props.content,
+
+    editable: true,
+
+    editorProps: {
+      attributes: {
+        class: 'dark:text-white/90 p-6 leading-loose py-2 text-[19px] min-h-[150px] w-full h-full overflow-auto border-none bg-transparent placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 !opacity-100 geist',
+      },
+    },
+    extensions: [
+      Mermaid,
+      MathBlock,
+      Plantuml,
+      Embed,
+      CustomTaskItem,
+      Underline,
+      Color.configure({ types: [TextStyle.name, ListItem.name] }),
+      TextStyle,
+      Table.configure({ resizable: true }),
+      Superscript,
+      SubScript,
+      Typography,
+      TableRow,
+      TableHeader,
+      TableCell,
+      ListKeymap,
+      StarterKit,
+      Highlight,
+      TaskList,
+      FontFamily,
+      Mathematics,
+      SearchAndReplace.configure(),
+      Link.configure({
+        autolink: false,
+        openOnClick: false
+      }),
+
+      Emoji.configure({
+        emojis: gitHubEmojis,
+        forceFallbackImages: true,
+        enableEmoticons: true
+      }),
+
+      CodeBlockLowlight.configure({
+        lowlight,
+      }),
+
+      TextAlign.configure({
+        types: ['heading', 'paragraph'],
+      }),
+      TaskItem.configure({
+        nested: true,
+      }),
+      Markdown,
+      SmilieReplacer,
+      ColorHighlighter,
+      CharacterCount.configure({
+        limit: Infinity,
+      }),
+      Hyperlink.configure({
+      hyperlinkOnPaste: true,
+      openOnClick: true,
+      modals: {
+        previewHyperlink: previewHyperlinkModal,
+        setHyperlink: setHyperlinkModal,
+      },
+    }),
+    ],
+    onUpdate: ({ editor }) => {
+      emit('update:content', editor.getJSON());
+    },
+  });
+});
+
+watch(() => props.title, (newTitle) => {
+  localTitle.value = newTitle;
+});
+
+watch(() => props.content, (newContent) => {
+  if (editor.value && JSON.stringify(newContent) !== JSON.stringify(editor.value.getJSON())) {
+    editor.value.commands.setContent(newContent);
+  }
+}, { deep: true });
+
+onBeforeUnmount(() => {
+  editor.value?.destroy();
+});
+
+const exportMarkdown = () => {
+  if (editor.value) {
+    const markdownContent = editor.value.storage.markdown.getMarkdown();
+    console.log('Markdown Content:', markdownContent);
+
+    const blob = new Blob([markdownContent], { type: "text/markdown" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${localTitle.value || 'untitled'}.md`;
+    link.click();
+    URL.revokeObjectURL(url);
+  } else {
+    console.error('Editor instance is not available.');
+  }
+};
+
+const importMarkdownOrText = () => {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.md,.txt';
+
+  input.onchange = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    const file = target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        const content = e.target?.result;
+        if (typeof content === 'string' && editor.value) {
+          editor.value.commands.setContent(content);
+          console.log('Content imported successfully');
+
+          // Update the title based on the file name (optional)
+          const fileName = file.name.replace(/\.(md|txt)$/, '');
+          if (localTitle && typeof localTitle.value === 'string') {
+            localTitle.value = fileName;
+
+            // Update the title using the file name
+            emit('update:title', localTitle.value);
+          }
+        } else {
+          console.error('Failed to import content: Invalid content or editor not available');
+        }
+      };
+
+      reader.onerror = (e: ProgressEvent<FileReader>) => {
+        console.error('Error reading file:', e);
+      };
+
+      reader.readAsText(file);
+    } else {
+      console.error('No file selected');
+    }
+  };
+
+  input.click();
+};
+
+const characterCount = computed(() => editor.value?.storage.characterCount.characters() ?? 0);
+const wordCount = computed(() => editor.value?.storage.characterCount.words() ?? 0);
+
+const searchTerm = ref<string>("");
+
+const replaceTerm = ref<string>("");
+
+const caseSensitive = ref<boolean>(false);
+
+function toggleCase() {
+  if (caseSensitive.value == true) {
+    caseSensitive.value = false;
+    updateSearchReplace()
+  } else {
+    caseSensitive.value = true;
+    updateSearchReplace()
+  }
+}
+
+const updateSearchReplace = (clearIndex: boolean = false) => {
+  if (!editor.value) return;
+
+  if (clearIndex) editor.value.commands.resetIndex();
+
+  editor.value.commands.setSearchTerm(searchTerm.value);
+  editor.value.commands.setReplaceTerm(replaceTerm.value);
+  editor.value.commands.setCaseSensitive(caseSensitive.value);
+};
+
+const goToSelection = () => {
+  if (!editor.value) return;
+
+  const { results, resultIndex } = editor.value.storage.searchAndReplace;
+  const position: EditorRange = results[resultIndex];
+
+  if (!position) return;
+
+  editor.value.commands.setTextSelection(position);
+
+  const { node } = editor.value.view.domAtPos(
+    editor.value.state.selection.anchor
+  );
+  node instanceof HTMLElement &&
+    node.scrollIntoView({ behavior: "smooth", block: "center" });
+};
+
+watch(
+  () => searchTerm.value.trim(),
+  (val, oldVal) => {
+    if (!val) clear();
+    if (val !== oldVal) updateSearchReplace(true);
+  }
+);
+
+watch(
+  () => replaceTerm.value.trim(),
+  (val, oldVal) => (val === oldVal ? null : updateSearchReplace())
+);
+
+watch(
+  () => caseSensitive.value,
+  (val, oldVal) => (val === oldVal ? null : updateSearchReplace(true))
+);
+
+const replace = () => {
+  editor.value?.commands.replace();
+  goToSelection();
+};
+
+const next = () => {
+  editor.value?.commands.nextSearchResult();
+  goToSelection();
+};
+
+const previous = () => {
+  editor.value?.commands.previousSearchResult();
+  goToSelection();
+};
+
+const clear = () => {
+  searchTerm.value = replaceTerm.value = "";
+  editor.value!.commands.resetIndex();
+};
+
+const replaceAll = () => editor.value?.commands.replaceAll();
+
+onMounted(() => {
+  setTimeout(updateSearchReplace);
+
+  // Add the event listener when the component is mounted
+  document.addEventListener('keydown', handleShortcut);
+});
+
+onBeforeUnmount(() => {
+  // Clean up the event listener to prevent memory leaks
+  document.removeEventListener('keydown', handleShortcut);
+});
+
+function handleShortcut(event: KeyboardEvent) {
+  // CTRL + F -> Open search
+  if (event.ctrlKey && event.key === 'f') {
+    event.preventDefault();
+    toggleSearch();
+  }
+
+  if (event.ctrlKey && event.key === 'p') {
+    event.preventDefault();
+    window.print()
+  }
+
+  // CTRL + R -> Toggle focus mode
+  if (event.ctrlKey && event.key === 'r') {
+    event.preventDefault();
+    focus()
+  }
+
+  // CTRL + O -> Open import
+  if (event.ctrlKey && event.key === 'o') {
+    event.preventDefault();
+    importMarkdownOrText();
+  }
+
+  // CTRL + S -> Save (export markdown)
+  if (event.ctrlKey && event.key === 's') {
+    event.preventDefault();
+    exportMarkdown();
+  }
+
+  if (event.ctrlKey && event.key === 't') {
+    event.preventDefault();
+    editor.value?.commands.insertTable({ rows: 3, cols: 3 })
+  }
+}
+
+</script>
 
 <style>
+
+  .tippy-box {
+    .hyperlink-preview-modal,
+    .hyperlink-set-modal,
+    .hyperlink-edit-modal {
+      filter: drop-shadow(0px 2px 5px rgba(0, 0, 0, 0.04));
+      @apply flex overflow-hidden dark:!bg-[#404040] dark:border-[#525252] dark:text-gray-50  bg-white/85 backdrop-blur-xl border border-gray-200 rounded-[20px] text-black dark:!text-white/85 px-1.5 pl-2.5
+    }
+
+    .hyperlink-preview-modal__metadata,
+    .hyperlink-set-modal__metadata,
+    .hyperlink-edit-modal__metadata {
+      width: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      flex-direction: row-reverse;
+    }
+
+    .hyperlink-preview-modal__metadata a,
+    .hyperlink-set-modal__metadata a,
+    .hyperlink-edit-modal__metadata a {
+      font-size: 0.9rem;
+      margin-right: 6px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .hyperlink-preview-modal__metadata img,
+    .hyperlink-set-modal__metadata img,
+    .hyperlink-edit-modal__metadata img {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    .hyperlink-preview-modal__remove-button,
+    .hyperlink-set-modal__remove-button,
+    .hyperlink-edit-modal__remove-button,
+    .hyperlink-preview-modal__edit-button,
+    .hyperlink-set-modal__edit-button,
+    .hyperlink-edit-modal__edit-button,
+    .hyperlink-preview-modal__copy-button,
+    .hyperlink-set-modal__copy-button,
+    .hyperlink-edit-modal__copy-button,
+    .hyperlink-preview-modal__apply-button,
+    .hyperlink-set-modal__apply-button {
+      width: 30px;
+      height: 30px;
+      border-radius: 40%;
+      margin: 0 0.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.1s ease-in-out;
+    }
+
+    .hyperlink-edit-modal__apply-button{
+      @apply  border !rounded-xl hover:!bg-gray-50
+    }
+
+    .hyperlink-preview-modal__remove-button:hover,
+    .hyperlink-set-modal__remove-button:hover,
+    .hyperlink-edit-modal__remove-button:hover,
+    .hyperlink-preview-modal__edit-button:hover,
+    .hyperlink-set-modal__edit-button:hover,
+    .hyperlink-edit-modal__edit-button:hover,
+    .hyperlink-preview-modal__copy-button:hover,
+    .hyperlink-set-modal__copy-button:hover,
+    .hyperlink-edit-modal__copy-button:hover,
+    .hyperlink-preview-modal__apply-button:hover,
+    .hyperlink-set-modal__apply-button:hover,
+    .hyperlink-edit-modal__apply-button:hover {
+      @apply bg-gray-100 dark:bg-[#171717]
+    }
+
+    .hyperlink-preview-modal__remove-button > svg,
+    .hyperlink-set-modal__remove-button > svg,
+    .hyperlink-edit-modal__remove-button > svg,
+    .hyperlink-preview-modal__edit-button > svg,
+    .hyperlink-set-modal__edit-button > svg,
+    .hyperlink-edit-modal__edit-button > svg,
+    .hyperlink-preview-modal__copy-button > svg,
+    .hyperlink-set-modal__copy-button > svg,
+    .hyperlink-edit-modal__copy-button > svg,
+    .hyperlink-preview-modal__apply-button > svg,
+    .hyperlink-set-modal__apply-button > svg,
+    .hyperlink-edit-modal__apply-button > svg {
+      width: 19px;
+      height: 19px;
+    }
+
+    .hyperlink-preview-modal form,
+    .hyperlink-set-modal form,
+    .hyperlink-edit-modal form {
+      display: flex;
+      align-items: flex-end;
+      width: 100%;
+    }
+
+    .hyperlink-preview-modal form input,
+    .hyperlink-set-modal form input,
+    .hyperlink-edit-modal form input {
+      border: 1px solid #dadce0;
+      border-radius: 10px;
+      padding: 0.8rem 0.8rem;
+      margin-bottom: 0.2rem;
+      width: 100%;
+      @apply drop-shadow-sm
+    }
+
+    .hyperlink-preview-modal {
+      padding: 8px;
+    }
+
+    .hyperlink-preview-modal form input:last-of-type,
+    .hyperlink-set-modal form input:last-of-type,
+    .hyperlink-edit-modal form input:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .hyperlink-edit-modal__inputs-wrapper > input {
+      @apply bg-white !py-2 dark:bg-[#171717] !rounded-2xl !inline
+    }
+
+
+
+    .hyperlink-set-modal__buttons-wrapper,
+    .hyperlink-edit-modal__buttons-wrapper {
+      margin-left: 8px;
+    }
+
+    .hyperlink-set-modal__buttons-wrapper button,
+    .hyperlink-edit-modal__buttons-wrapper button {
+      border-radius: 6px;
+      padding: 4px 14px;
+      width: 70px;
+      margin-bottom: 0.2rem;
+    }
+
+    .tippy-svg-arrow {
+      top: -6px !important;
+    }
+  }
+
 /* Basic editor styles */
 .tiptap {
   :first-child {
@@ -1039,7 +1474,6 @@ function handleShortcut(event: KeyboardEvent) {
   }
 }
 
-
 h1 {
   font-size: 2rem;
   margin: 1rem 0;
@@ -1095,7 +1529,7 @@ blockquote {
 }
 
 mark {
-  @apply bg-[#c0fcd3] text-gray-700 dark:bg-gray-800 dark:text-[#c0fcd3];
+  @apply bg-[#fff476] dark:bg-[#eeea7f55] dark:text-white;
   border-radius: 0.6rem;
   padding: 0.1rem 0.3rem;
 }
@@ -1106,7 +1540,7 @@ code {
   border-radius: 0.6rem;
   padding: 0.1rem 0.3rem;
 
-  @apply bg-gray-200/70 dark:bg-[#516b53] dark:text-white/80 text-black/80
+  @apply bg-gray-100/40 dark:bg-white/10 text-purple-600 dark:text-red-300
 }
 
 /* Color swatches */
@@ -1175,6 +1609,10 @@ ul[data-type="taskList"] label>input[type="checkbox"] {
 
 ul[data-type="taskList"] label>input[type="checkbox"]:checked {
   @apply bg-[#24d86c] border-[#28c76d]
+}
+
+a {
+  @apply text-blue-700 underline dark:text-blue-200
 }
 
 ul[data-type="taskList"] label>input[type="checkbox"]:checked::after {
