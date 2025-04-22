@@ -181,7 +181,7 @@
 
         <button
           class="border border-gray-200 bg-white text-black !px-[8px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool"
-          title="Print" @click="focus" v-if="!focusMode"><svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M3.5 10c0-3.771 0-5.657 1.245-6.828S7.993 2 12 2h.773c3.26 0 4.892 0 6.024.798c.324.228.612.5.855.805c.848 1.066.848 2.6.848 5.67v2.545c0 2.963 0 4.445-.469 5.628c-.754 1.903-2.348 3.403-4.37 4.113c-1.257.441-2.83.441-5.98.441c-1.798 0-2.698 0-3.416-.252c-1.155-.406-2.066-1.263-2.497-2.35c-.268-.676-.268-1.523-.268-3.216z"/><path d="M20.5 12a3.333 3.333 0 0 1-3.333 3.333c-.666 0-1.451-.116-2.098.057a1.67 1.67 0 0 0-1.179 1.179c-.173.647-.057 1.432-.057 2.098A3.333 3.333 0 0 1 10.5 22M8 7h7m-7 4h3"/></g></svg></button>
+          title="Print" @click="focus" v-if="!focusMode"><PrintIcon /></button>
 
 
       </div>
@@ -206,7 +206,7 @@
             <UiDropdownMenuTrigger>
               <button
                   class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool sm:hidden">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" class="drop-shadow-sm" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10Q2-2 2 6t5 8q-5 3-1 6t6-3q2 6 6 3t-1-6q5 0 5-8t-10 4"/></svg><span class="drop-shadow-sm pl-0.5">Tools</span>
+                  <MenuIcon /><span class="drop-shadow-sm pl-0.5">Tools</span>
                 </button>
             </UiDropdownMenuTrigger>
 
@@ -214,7 +214,7 @@
               <UiDropdownMenuItem>
                 <button @click="editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()"
                   class="border dark:bg-[#17171720] dark:border-[#52525280] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center text-[16.5px]  space-x-1 cursor-pointer flex drop-shadow-cool">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 16 16" class="drop-shadow-sm"><path fill="currentColor" fill-rule="evenodd" d="M12 3.5H4A1.5 1.5 0 0 0 2.5 5v.5h11V5A1.5 1.5 0 0 0 12 3.5M2.5 11V7h2v5.5H4A1.5 1.5 0 0 1 2.5 11M6 12.5h6a1.5 1.5 0 0 0 1.5-1.5V7H6zM4 2a3 3 0 0 0-3 3v6a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V5a3 3 0 0 0-3-3z" clip-rule="evenodd"/></svg><span class="drop-shadow-sm px-0.5">Table</span>
+                  <TableIcon /><span class="drop-shadow-sm px-0.5">Table</span>
                 </button>
               </UiDropdownMenuItem>
 
@@ -222,7 +222,7 @@
                 <div @click="editor.commands.setMermaid('graph TD;\n  A-->B;  A-->C;\n  B-->D;\n  C-->D;')"
 
             class="border dark:bg-[#17171720] dark:border-[#52525280] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center text-[16.5px]  space-x-1 cursor-pointer flex drop-shadow-cool">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 16 16" class="drop-shadow-sm"><path fill="currentColor" fill-rule="evenodd" d="M11.5 12.5A1.5 1.5 0 0 1 10 14H6a1.5 1.5 0 0 1-1.5-1.5v-.823a3.11 3.11 0 0 0-1.35-2.566A6.11 6.11 0 0 1 .5 4.073V3A1.5 1.5 0 0 1 2 1.5h.666A6.43 6.43 0 0 1 8 4.343A6.43 6.43 0 0 1 13.334 1.5H14A1.5 1.5 0 0 1 15.5 3v1.073a6.11 6.11 0 0 1-2.65 5.038a3.11 3.11 0 0 0-1.35 2.566zm-8-9.43a4.92 4.92 0 0 1 3.738 3.025c.275.688 1.249.688 1.524 0A4.92 4.92 0 0 1 13.334 3H14v1.073q0 .215-.02.427A4.61 4.61 0 0 1 12 7.875c-1.252.86-2 2.283-2 3.802v.823H6v-.823c0-1.52-.748-2.941-2-3.802a4.61 4.61 0 0 1-2-3.802V3h.666q.425 0 .834.07" clip-rule="evenodd"/></svg><span class="drop-shadow-sm px-0.5">Mermaid</span>
+            <MermaidIcon /><span class="drop-shadow-sm px-0.5">Mermaid</span>
             </div>
               </UiDropdownMenuItem>
 
@@ -230,7 +230,7 @@
                 <div @click="editor.commands.setPlantuml('@startuml\nBob -> Alice : hello\n@enduml')"
 
             class="border dark:bg-[#17171720] dark:border-[#52525280] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center text-[16.5px]  space-x-1 cursor-pointer flex drop-shadow-cool">
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 16 16" class="drop-shadow-sm"><path fill="currentColor" fill-rule="evenodd" d="M5.731 4H4.5A1.5 1.5 0 0 0 3 5.5v.377a2.72 2.72 0 0 1 0 5.246v.377A1.5 1.5 0 0 0 4.5 13h.377a2.72 2.72 0 0 1 5.246 0h.377a1.5 1.5 0 0 0 1.5-1.5v-1.232l1-.353a1.501 1.501 0 0 0 0-2.83l-1-.354V5.5A1.5 1.5 0 0 0 10.5 4H9.269l-.354-1a1.501 1.501 0 0 0-2.83 0zM8.9 14.5l-.204-1.02a1.22 1.22 0 0 0-2.392 0L6.1 14.5H4.5a3 3 0 0 1-3-3V9.9l1.02-.204a1.22 1.22 0 0 0 0-2.392L1.5 7.1V5.5a3 3 0 0 1 3-3h.17a3.001 3.001 0 0 1 5.66 0h.17a3 3 0 0 1 3 3v.17a3.001 3.001 0 0 1 0 5.66v.17a3 3 0 0 1-3 3z" clip-rule="evenodd"/></svg><span class="drop-shadow-sm scroll-px-0.5">Plant UML</span>
+            <PlantUmlIcon /><span class="drop-shadow-sm scroll-px-0.5">Plant UML</span>
             </div>
               </UiDropdownMenuItem>
             </UiDropdownMenuContent>
@@ -239,20 +239,20 @@
           <div class="space-x-2 hidden sm:flex" v-if="!editor.can().deleteTable()">
 
             <div @click="editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()"
-              class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-cwenter space-x-1 cursor-pointer flex drop-shadow-cool">
-              <svg xmlns="http://www.w3.org/2000/svg" width="19" viewBox="0 0 16 16" class="drop-shadow-sm"><path fill="currentColor" fill-rule="evenodd" d="M12 3.5H4A1.5 1.5 0 0 0 2.5 5v.5h11V5A1.5 1.5 0 0 0 12 3.5M2.5 11V7h2v5.5H4A1.5 1.5 0 0 1 2.5 11M6 12.5h6a1.5 1.5 0 0 0 1.5-1.5V7H6zM4 2a3 3 0 0 0-3 3v6a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V5a3 3 0 0 0-3-3z" clip-rule="evenodd"/></svg><span class="drop-shadow-sm">Table</span>
+              class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
+              <TableIcon /><span class="drop-shadow-sm">Table</span>
             </div>
 
             <div @click="editor.commands.setMermaid('graph TD;\n  A-->B;  A-->C;\n  B-->D;\n  C-->D;')"
 
             class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
-            <svg xmlns="http://www.w3.org/2000/svg" width="19" viewBox="0 0 16 16" class="drop-shadow-sm"><path fill="currentColor" fill-rule="evenodd" d="M11.5 12.5A1.5 1.5 0 0 1 10 14H6a1.5 1.5 0 0 1-1.5-1.5v-.823a3.11 3.11 0 0 0-1.35-2.566A6.11 6.11 0 0 1 .5 4.073V3A1.5 1.5 0 0 1 2 1.5h.666A6.43 6.43 0 0 1 8 4.343A6.43 6.43 0 0 1 13.334 1.5H14A1.5 1.5 0 0 1 15.5 3v1.073a6.11 6.11 0 0 1-2.65 5.038a3.11 3.11 0 0 0-1.35 2.566zm-8-9.43a4.92 4.92 0 0 1 3.738 3.025c.275.688 1.249.688 1.524 0A4.92 4.92 0 0 1 13.334 3H14v1.073q0 .215-.02.427A4.61 4.61 0 0 1 12 7.875c-1.252.86-2 2.283-2 3.802v.823H6v-.823c0-1.52-.748-2.941-2-3.802a4.61 4.61 0 0 1-2-3.802V3h.666q.425 0 .834.07" clip-rule="evenodd"/></svg><span class="drop-shadow-sm">Mermaid</span>
+            <MermaidIcon /><span class="drop-shadow-sm">Mermaid</span>
             </div>
 
             <div @click="editor.commands.setPlantuml('@startuml\nBob -> Alice : hello\n@enduml')"
 
             class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
-            <svg xmlns="http://www.w3.org/2000/svg" width="19" viewBox="0 0 16 16" class="drop-shadow-sm"><path fill="currentColor" fill-rule="evenodd" d="M5.731 4H4.5A1.5 1.5 0 0 0 3 5.5v.377a2.72 2.72 0 0 1 0 5.246v.377A1.5 1.5 0 0 0 4.5 13h.377a2.72 2.72 0 0 1 5.246 0h.377a1.5 1.5 0 0 0 1.5-1.5v-1.232l1-.353a1.501 1.501 0 0 0 0-2.83l-1-.354V5.5A1.5 1.5 0 0 0 10.5 4H9.269l-.354-1a1.501 1.501 0 0 0-2.83 0zM8.9 14.5l-.204-1.02a1.22 1.22 0 0 0-2.392 0L6.1 14.5H4.5a3 3 0 0 1-3-3V9.9l1.02-.204a1.22 1.22 0 0 0 0-2.392L1.5 7.1V5.5a3 3 0 0 1 3-3h.17a3.001 3.001 0 0 1 5.66 0h.17a3 3 0 0 1 3 3v.17a3.001 3.001 0 0 1 0 5.66v.17a3 3 0 0 1-3 3z" clip-rule="evenodd"/></svg><span class="drop-shadow-sm">Plant UML</span>
+            <PlantUmlIcon /><span class="drop-shadow-sm">Plant UML</span>
             </div>
 
           </div>
@@ -266,11 +266,7 @@
 
               <button @click="editor.chain().focus().deleteRow().run()" :disabled="!editor.can().deleteRow()">
 
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24"
-                  class="text-red-600 dark:text-red-500">
-                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                    stroke-width="2" d="M5 12h14" />
-                </svg>
+                <MinusIcon class="text-red-600 dark:text-red-500" />
 
               </button>
 
@@ -279,10 +275,7 @@
               <button @click="editor.chain().focus().addRowAfter().run()" :disabled="!editor.can().addRowAfter()"
                 class="text-black dark:text-gray-50">
 
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24">
-                  <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                    stroke-width="2" d="M5 12h14m-7-7v14" />
-                </svg>
+                <PlusIcon />
 
               </button>
 
@@ -362,11 +355,11 @@
 
       <button
         class="fixed bottom-3 mx-2 right-0 border border-gray-200 bg-white dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 backdrop-blur-xl text-black !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool"
-        title="Focus Mode" @click="focus"><svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v14M5.98 3.285c3.342.637 5.333 1.967 6.02 2.731c.687-.764 2.678-2.094 6.02-2.73c1.692-.323 2.538-.484 3.26.134c.72.617.72 1.62.72 3.626v7.209c0 1.834 0 2.751-.463 3.324c-.462.572-1.48.766-3.518 1.154c-1.815.346-3.232.896-4.258 1.45c-1.01.545-1.514.817-1.761.817s-.752-.272-1.76-.817c-1.027-.553-2.444-1.104-4.26-1.45c-2.036-.388-3.055-.582-3.517-1.154C2 17.006 2 16.089 2 14.255V7.046c0-2.006 0-3.009.72-3.626c.722-.618 1.568-.457 3.26-.135" color="currentColor"/></svg></button>
+        title="Focus Mode" @click="focus"><FocusModeIcon /></button>
 
       <button
         class="fixed bottom-3 border border-gray-200 bg-white backdrop-blur-xl dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 text-black !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool right-[60px]"
-        title="Print" v-if="focusMode" @click="printPDF"><svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M3.5 10c0-3.771 0-5.657 1.245-6.828S7.993 2 12 2h.773c3.26 0 4.892 0 6.024.798c.324.228.612.5.855.805c.848 1.066.848 2.6.848 5.67v2.545c0 2.963 0 4.445-.469 5.628c-.754 1.903-2.348 3.403-4.37 4.113c-1.257.441-2.83.441-5.98.441c-1.798 0-2.698 0-3.416-.252c-1.155-.406-2.066-1.263-2.497-2.35c-.268-.676-.268-1.523-.268-3.216z"/><path d="M20.5 12a3.333 3.333 0 0 1-3.333 3.333c-.666 0-1.451-.116-2.098.057a1.67 1.67 0 0 0-1.179 1.179c-.173.647-.057 1.432-.057 2.098A3.333 3.333 0 0 1 10.5 22M8 7h7m-7 4h3"/></g></svg></button>
+        title="Print" v-if="focusMode" @click="printPDF"><PrintIcon /></button>
 
     </div>
 
