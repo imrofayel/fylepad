@@ -4,7 +4,7 @@
     class="drop-shadow-sm">
     <path d="M14 14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2" />
     <path d="M14 4a2 2 0 0 1 2-2" />
-    <path d="M16 10a2 2 0 0 1-2-2" />
+    <path d="M16s 10a2 2 0 0 1-2-2" />
     <path d="M20 14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2" />
     <path d="M20 2a2 2 0 0 1 2 2" />
     <path d="M22 8a2 2 0 0 1-2 2" />

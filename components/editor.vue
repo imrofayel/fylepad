@@ -122,16 +122,9 @@
     <div class="space-x-2 fixed right-2 top-1 z-[12] py-2 hidden sm:flex"
       :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
 
-      <!-- <button
+      <button
         class="border border-gray-200 bg-white text-black !px-[7px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer !py-[6px] inline-block drop-shadow-cool"
-        @click="toggleSearch"><svg width="21" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-          class="drop-shadow-sm">
-          <path d="M17 17L21 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-            vector-effect="non-scaling-stroke"></path>
-          <path
-            d="M19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19C15.4183 19 19 15.4183 19 11Z"
-            stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" vector-effect="non-scaling-stroke"></path>
-        </svg></button> -->
+        @click="toggleSearch"><SearchIcon /></button>
 
 
       <button @click="exportMarkdown" :class="[
@@ -168,7 +161,7 @@
       <button @click="open = true" :class="[
         'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
       ]" title="About">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22.5" viewBox="0 0 24 24" class="drop-shadow-sm"><!-- Icon from Huge Icons by Hugeicons - undefined --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M10.456 2.64a2.18 2.18 0 0 1 3.088 0l1.009 1.011c.41.41.966.64 1.545.64h1.429a2.18 2.18 0 0 1 2.183 2.182l-.001 1.429c0 .58.23 1.135.64 1.545l1.01 1.01a2.18 2.18 0 0 1 0 3.087l-1.01 1.009c-.41.41-.64.966-.64 1.545v1.429a2.18 2.18 0 0 1-2.182 2.183l-1.429-.001c-.58 0-1.135.23-1.545.64l-1.01 1.01a2.18 2.18 0 0 1-3.087 0l-1.009-1.01a2.18 2.18 0 0 0-1.545-.64H6.473a2.18 2.18 0 0 1-2.183-2.182l.001-1.429c0-.58-.23-1.135-.64-1.545l-1.01-1.01a2.18 2.18 0 0 1 0-3.087l1.01-1.009c.41-.41.64-.966.64-1.545V6.473A2.18 2.18 0 0 1 6.472 4.29l1.429.001c.58 0 1.135-.23 1.545-.64z"/><path d="M10 9a2 2 0 1 1 3.683 1.08C13.085 11.01 12 11.896 12 13v.5m-.008 3.5h.009"/></g></svg>
+        <AboutIcon />
       </button>
 
     </div>
@@ -290,11 +283,7 @@
 
                 <button @click="editor.chain().focus().deleteColumn().run()" :disabled="!editor.can().deleteColumn()">
 
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24"
-                    class="text-red-600 dark:text-red-500">
-                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                      stroke-width="2" d="M5 12h14" />
-                  </svg>
+                  <MinusIcon class="text-red-600 dark:text-red-500" />
 
                 </button>
 
@@ -304,10 +293,7 @@
                 <button @click="editor.chain().focus().addColumnAfter().run()"
                   :disabled="!editor.can().addColumnAfter()" class="text-black dark:text-gray-50">
 
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24">
-                    <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                      stroke-width="2" d="M5 12h14m-7-7v14" />
-                  </svg>
+                  <PlusIcon />
 
                 </button>
 
@@ -316,25 +302,14 @@
 
             <div @click="editor.chain().focus().toggleHeaderCell().run()" :disabled="!editor.can().toggleHeaderCell()"
               class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] !py-[4px] rounded-2xl justify-center items-center cursor-pointer drop-shadow-cool space-x-1 sm:flex hidden max-h-fit">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"
-                class="drop-shadow-sm text-black dark:text-gray-50">
-                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                  stroke-width="1.5"
-                  d="M3.891 3.891C5.282 2.5 7.521 2.5 12 2.5c4.478 0 6.718 0 8.109 1.391S21.5 7.521 21.5 12c0 4.478 0 6.718-1.391 8.109S16.479 21.5 12 21.5c-4.478 0-6.718 0-8.109-1.391S2.5 16.479 2.5 12c0-4.478 0-6.718 1.391-8.109"
-                  color="currentColor" />
-              </svg>
+              <HeaderCellIcon class="drop-shadow-sm text-black dark:text-gray-50" />
               <span>Header Cell</span>
             </div>
 
             <div @click="editor.chain().focus().deleteTable().run()"
               class="text-base dark:bg-[#cc1212] dark:hover:bg-[#b81010] bg-[#e01212] hover:bg-[#cc1212] border-[#bb1212] dark:border-[#b91616] border backdrop-blur-xl text-white sm:!px-[10px] sm:py-[4px] p-1.5 rounded-2xl justify-center max-h-fit items-center cursor-pointer flex drop-shadow-cool space-x-1.5">
 
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
-                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                  stroke-width="1.5"
-                  d="m19.5 5.5l-.62 10.025c-.158 2.561-.237 3.842-.88 4.763a4 4 0 0 1-1.2 1.128c-.957.584-2.24.584-4.806.584c-2.57 0-3.855 0-4.814-.585a4 4 0 0 1-1.2-1.13c-.642-.922-.72-2.205-.874-4.77L4.5 5.5M3 5.5h18m-4.944 0l-.683-1.408c-.453-.936-.68-1.403-1.071-1.695a2 2 0 0 0-.275-.172C13.594 2 13.074 2 12.035 2c-1.066 0-1.599 0-2.04.234a2 2 0 0 0-.278.18c-.395.303-.616.788-1.058 1.757L8.053 5.5"
-                  color="currentColor" />
-              </svg>
+              <TrashIcon />
 
               <span class="sm:block hidden">Delete</span>
             </div>
@@ -431,6 +406,8 @@ import MinusIcon from './icons/MinusIcon.vue'
 import PlusIcon from './icons/PlusIcon.vue'
 import HeaderCellIcon from './icons/HeaderCellIcon.vue'
 import DeleteIcon from './icons/DeleteIcon.vue'
+import TrashIcon from './icons/TrashIcon.vue'
+import SearchIcon from './icons/SearchIcon.vue'
 
 // load all languages with "all" or common languages with "common"
 import { all, createLowlight } from 'lowlight'
@@ -463,6 +440,7 @@ import { text, regexp } from 'linkifyjs'
 import { Input, rule, comment, list } from 'postcss'
 import { space } from 'postcss/lib/list'
 import tippy from 'tippy.js'
+import { hover, m } from 'motion-v'
 
 var open = ref(false);
 
