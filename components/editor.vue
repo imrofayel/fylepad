@@ -1,350 +1,6 @@
-<template>
-
-  <UseDraggable class="absolute flex w-full items-center justify-center" style="user-select: none">
-    <div class="w-full flex justify-center cursor-move z-[40] items-center">
-      <div
-        class="m-8 top-0 p-4 rounded-2xl border justify-center items-center fixed dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 dark:border-none drop-shadow-cool bg-white z-[100] flex flex-col space-y-6"
-        v-if="showSearch">
-
-        <section class="flex gap-2">
-          <div
-            class="absolute -right-[4px] -top-2 z-10 bg-[#e01212] hover:bg-[#cc1212] border-[#bb1212] border w-6 h-6 flex items-center justify-center text-lg text-white rounded-lg cursor-pointer"
-            @click="toggleSearch">&times;</div>
-          <div>
-            <div
-              class="mt-1 p-2 px-3 bg-white border dark:border-none border-gray-200 rounded-xl dark:bg-[#171717] dark:border-[#484747] drop-shadow-cool text-black dark:text-white/90 flex justify-center">
-              <Input v-model="searchTerm" @keydown.enter.prevent="updateSearchReplace" type="text" placeholder="Search"
-                autofocus="true"
-                class="placeholder:text-gray-400 dark:placeholder:text-gray-200/80 bg-transparent outline-none" />
-
-              <button title="Case Sensitive" @click="toggleCase" class="px-1.5"
-                :class="caseSensitive ? 'text-gray-700 dark:text-white' : 'opacity-40 dark:opacity-50'">
-                <CaseSensitiveIcon />
-              </button>
-            </div>
-          </div>
-
-          <div>
-            <div class="mt-1">
-              <input v-model="replaceTerm" @keydown.enter.prevent="replace" type="text" placeholder="Replace"
-                class="mt-1 p-2 px-3 dark:bg-[#171717] dark:border-[#484747] bg-white border dark:border-none border-gray-200 rounded-xl drop-shadow-cool text-black dark:text-white/90 flex justify-center outline-none focus:outline-none" />
-            </div>
-          </div>
-
-        </section>
-
-        <div class="flex justify-between w-full items-center"><span
-            class="inline-flex rounded-md isolate !text-[15px] drop-shadow-cool">
-            <button @click="previous" type="button"
-              class="mt-1 p-2 px-3 border dark:border-none border-gray-200 rounded-xl rounded-r-none bg-gray-50/30 dark:bg-[#171717] dark:border-[#484747] text-black dark:text-white/90 flex justify-center">
-              <ArrowLeftIcon />
-            </button>
-            <button @click="next" type="button"
-              class="mt-1 p-2 px-3 border-x-0 bg-gray-50/30 border dark:border-none dark:bg-[#171717] dark:border-[#484747] border-gray-200  text-black dark:text-white/90 flex justify-center">
-              <ArrowRightIcon />
-            </button>
-            <button @click="replace" type="button"
-              class="mt-1 p-2 px-3 bg-gray-50/30 border dark:border-none border-gray-200 dark:bg-[#171717] dark:border-[#484747] text-black dark:text-white/90 flex justify-center">
-              <ReplaceIcon />
-            </button>
-            <button @click="replaceAll" type="button"
-              class="mt-1 p-2 px-3 border-x-0 bg-gray-50/30 border dark:border-none border-gray-200 border-r rounded-r-xl dark:bg-[#171717] dark:border-[#484747] text-black dark:text-white/90 flex justify-center">
-              <ReplaceAllIcon />
-            </button>
-
-          </span>
-
-          <div class="block text-[18px] drop-shadow-sm text-black dark:text-white/90 py-2 px-4">
-            Results: {{ editor?.storage?.searchAndReplace?.resultIndex + 1 }} / {{
-              editor?.storage?.searchAndReplace?.results.length }}
-          </div>
-        </div>
-      </div>
-    </div>
-  </UseDraggable>
-
-  <div class="h-full flex flex-col tiptap dark:bg-[#171717]">
-
-    <UiDropdownMenu>
-      <UiDropdownMenuTrigger class="fixed !opacity-100 right-0 p-1.5 px-2.5 top-1 z-[12] block sm:hidden">
-        <button :class="[
-        'border dark:bg-[#404040] !py-[6px] dark:border-[#525252] dark:text-white opacity-100 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
-      ]" title="Menu">
-          <MenuIcon />
-      </button>
-      </UiDropdownMenuTrigger>
-      <UiDropdownMenuContent class="flex flex-wrap gap-1.5 px-1.5 py-1 border dark:bg-[#404040] dark:border-[#525252] dark:text-white opacity-100 border-gray-200 bg-white text-black rounded-2xl justify-center items-center cursor-pointer  drop-shadow-cool mr-2">
-        <UiDropdownMenuItem>
-          <button @click="exportMarkdown" :class="[
-        'border dark:bg-[#17171720] !py-[6px] dark:border-[#52525280] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-[14px] justify-center items-center cursor-pointer inline-block drop-shadow-cool'
-      ]" title="Export Markdown">
-        <ExportIcon />
-      </button>
-        </UiDropdownMenuItem>
-        <UiDropdownMenuItem>
-          <button @click="importMarkdownOrText" :class="[
-        'border dark:bg-[#17171720] !py-[6px] dark:border-[#52525280] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-[14px] justify-center items-center cursor-pointer inline-block drop-shadow-cool'
-      ]" title="Import Markdown">
-        <ImportIcon />
-      </button>
-    </UiDropdownMenuItem>
-        <UiDropdownMenuItem>
-          <button @click="onClick('light')" v-if="colorMode.value == 'dark'" :class="[
-        'border dark:bg-[#17171720] !py-[6px] dark:border-[#52525280] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-[14px] justify-center items-center cursor-pointer inline-block drop-shadow-cool'
-      ]" title="Light Mode">
-        <LightModeIcon />
-
-      </button>
-
-      <button @click="onClick('dark')" v-if="colorMode.value == 'light'" :class="[
-        'border dark:bg-[#17171720] !py-[6px] dark:border-[#52525280] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-[14px] justify-center items-center cursor-pointer inline-block drop-shadow-cool'
-      ]" title="Dark Mode">
-        <DarkModeIcon />
-      </button>
-
-        </UiDropdownMenuItem>
-        <UiDropdownMenuItem>      <button @click="isBottomSheetOpen = true" :class="[
-        'border dark:bg-[#17171720] !py-[6px] dark:border-[#52525280] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-[14px] justify-center items-center cursor-pointer inline-block drop-shadow-cool'
-      ]" title="Styling">
-        <StylingIcon />
-      </button>
-</UiDropdownMenuItem>
-<UiDropdownMenuItem>
-  <button @click="open = true" :class="[
-        'border dark:bg-[#17171720] !py-[6px] dark:border-[#52525280] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-[14px] justify-center items-center cursor-pointer inline-block drop-shadow-cool'
-      ]" title="About">
-        <AboutIcon />
-      </button>
-</UiDropdownMenuItem>
-      </UiDropdownMenuContent>
-    </UiDropdownMenu>
-
-    <div class="space-x-2 fixed right-2 top-1 z-[12] py-2 hidden sm:flex"
-      :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
-
-      <button
-        class="border border-gray-200 bg-white text-black !px-[7px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer !py-[6px] inline-block drop-shadow-cool"
-        @click="toggleSearch"><SearchIcon /></button>
-
-
-      <button @click="exportMarkdown" :class="[
-        'border dark:bg-[#404040] !py-[6px] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
-      ]" title="Export Markdown">
-        <ExportIcon />
-      </button>
-
-      <button @click="importMarkdownOrText" :class="[
-        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
-      ]" title="Import Markdown">
-        <ImportIcon />
-      </button>
-
-      <button @click="onClick('light')" v-if="colorMode.value == 'dark'" :class="[
-        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
-      ]" title="Light Mode">
-        <LightModeIcon />
-
-      </button>
-
-      <button @click="onClick('dark')" v-if="colorMode.value == 'light'" :class="[
-        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
-      ]" title="Dark Mode">
-        <DarkModeIcon />
-      </button>
-
-      <button @click="isBottomSheetOpen = true" :class="[
-        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
-      ]" title="Styling">
-        <StylingIcon />
-      </button>
-
-      <button @click="open = true" :class="[
-        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
-      ]" title="About">
-        <AboutIcon />
-      </button>
-
-    </div>
-
-    <div class="flex fixed justify-between w-full p-2 py-0 pt-4 bg-white dark:bg-[#171717] z-10">
-
-      <div class="flex w-full justify-between items-center space-x-2">
-        <input v-model="localTitle" @input="$emit('update:title', localTitle)" placeholder="Untitled"
-          class="w-full border border-none ring-0 focus:border-none px-3 dark:text-white text-black/90 outline-none bg-transparent rounded flex text-[24px]" />
-
-        <button
-          class="border border-gray-200 bg-white text-black !px-[8px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool"
-          title="Print" @click="focus" v-if="!focusMode"><PrintIcon /></button>
-
-
-      </div>
-    </div>
-
-    <UiBottomSheet :isOpen="isBottomSheetOpen" @close="isBottomSheetOpen = false" :editor="editor as any" />
-
-    <div class="flex-grow mt-12">
-
-      <UiFloatingMenu :editor="editor as any"/>
-
-      <UiBubbleMenu :editor="editor as any"/>
-
-      <EditorContent :editor="editor as any" class="h-full overflow-auto mb-4 px-4" />
-
-      <div class="p-3 flex justify-between items-center fixed bottom-0 w-full select-none" v-if="editor"
-        :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
-
-        <div>
-
-          <UiDropdownMenu v-if="!editor.can().deleteTable()">
-            <UiDropdownMenuTrigger>
-              <button
-                  class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool sm:hidden">
-                  <MenuIcon /><span class="drop-shadow-sm pl-0.5">Tools</span>
-                </button>
-            </UiDropdownMenuTrigger>
-
-            <UiDropdownMenuContent class="flex flex-wrap gap-1.5 px-1.5 py-1 border dark:bg-[#404040] dark:border-[#525252] dark:text-white opacity-100 border-gray-200 bg-white text-black rounded-2xl justify-center items-center cursor-pointer  drop-shadow-cool ml-3 mb-1 sm:hidden">
-              <UiDropdownMenuItem>
-                <button @click="editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()"
-                  class="border dark:bg-[#17171720] dark:border-[#52525280] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center text-[16.5px]  space-x-1 cursor-pointer flex drop-shadow-cool">
-                  <TableIcon /><span class="drop-shadow-sm px-0.5">Table</span>
-                </button>
-              </UiDropdownMenuItem>
-
-              <UiDropdownMenuItem>
-                <div @click="editor.commands.setMermaid('graph TD;\n  A-->B;  A-->C;\n  B-->D;\n  C-->D;')"
-
-            class="border dark:bg-[#17171720] dark:border-[#52525280] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center text-[16.5px]  space-x-1 cursor-pointer flex drop-shadow-cool">
-            <MermaidIcon /><span class="drop-shadow-sm px-0.5">Mermaid</span>
-            </div>
-              </UiDropdownMenuItem>
-
-              <UiDropdownMenuItem>
-                <div @click="editor.commands.setPlantuml('@startuml\nBob -> Alice : hello\n@enduml')"
-
-            class="border dark:bg-[#17171720] dark:border-[#52525280] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center text-[16.5px]  space-x-1 cursor-pointer flex drop-shadow-cool">
-            <PlantUmlIcon /><span class="drop-shadow-sm scroll-px-0.5">Plant UML</span>
-            </div>
-              </UiDropdownMenuItem>
-            </UiDropdownMenuContent>
-          </UiDropdownMenu>
-
-          <div class="space-x-2 hidden sm:flex" v-if="!editor.can().deleteTable()">
-
-            <div @click="editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()"
-              class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
-              <TableIcon /><span class="drop-shadow-sm">Table</span>
-            </div>
-
-            <div @click="editor.commands.setMermaid('graph TD;\n  A-->B;  A-->C;\n  B-->D;\n  C-->D;')"
-
-            class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
-            <MermaidIcon /><span class="drop-shadow-sm">Mermaid</span>
-            </div>
-
-            <div @click="editor.commands.setPlantuml('@startuml\nBob -> Alice : hello\n@enduml')"
-
-            class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
-            <PlantUmlIcon /><span class="drop-shadow-sm">Plant UML</span>
-            </div>
-
-          </div>
-
-          <!-- Row Manipulation -->
-
-          <div class="flex space-x-2" v-if="editor.can().deleteTable()">
-
-            <div
-              class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[7px] py-[4px] max-h-fit rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool space-x-1">
-
-              <button @click="editor.chain().focus().deleteRow().run()" :disabled="!editor.can().deleteRow()">
-
-                <MinusIcon class="text-red-600 dark:text-red-500" />
-
-              </button>
-
-              <span class="inline">Row</span>
-
-              <button @click="editor.chain().focus().addRowAfter().run()" :disabled="!editor.can().addRowAfter()"
-                class="text-black dark:text-gray-50">
-
-                <PlusIcon />
-
-              </button>
-
-            </div>
-
-            <!-- Column Manipulation -->
-
-            <div class="flex space-x-2" v-if="editor.can().deleteTable()">
-
-              <div
-                class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[7px] py-[4px] rounded-2xl justify-center items-center cursor-pointer flex  max-h-fit drop-shadow-cool space-x-1">
-
-                <button @click="editor.chain().focus().deleteColumn().run()" :disabled="!editor.can().deleteColumn()">
-
-                  <MinusIcon class="text-red-600 dark:text-red-500" />
-
-                </button>
-
-                <span class="inline">Column</span>
-
-
-                <button @click="editor.chain().focus().addColumnAfter().run()"
-                  :disabled="!editor.can().addColumnAfter()" class="text-black dark:text-gray-50">
-
-                  <PlusIcon />
-
-                </button>
-
-              </div>
-            </div>
-
-            <div @click="editor.chain().focus().toggleHeaderCell().run()" :disabled="!editor.can().toggleHeaderCell()"
-              class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] !py-[4px] rounded-2xl justify-center items-center cursor-pointer drop-shadow-cool space-x-1 sm:flex hidden max-h-fit">
-              <HeaderCellIcon class="drop-shadow-sm text-black dark:text-gray-50" />
-              <span>Header Cell</span>
-            </div>
-
-            <div @click="editor.chain().focus().deleteTable().run()"
-              class="text-base dark:bg-[#cc1212] dark:hover:bg-[#b81010] bg-[#e01212] hover:bg-[#cc1212] border-[#bb1212] dark:border-[#b91616] border backdrop-blur-xl text-white sm:!px-[10px] sm:py-[4px] p-1.5 rounded-2xl justify-center max-h-fit items-center cursor-pointer flex drop-shadow-cool space-x-1.5">
-
-              <TrashIcon />
-
-              <span class="sm:block hidden">Delete</span>
-            </div>
-
-          </div>
-
-        </div>
-        <div class="sm:hidden md:flex items-center space-x-2 hidden fixed bottom-0 py-3 right-14">
-
-          <div
-            class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[4px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool max-h-fit">
-            {{ characterCount }} characters</div>
-          <div
-            class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 max-h-fit bg-white backdrop-blur-xl text-black !px-[10px] py-[4px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
-            {{ wordCount }} words</div>
-        </div>
-      </div>
-
-      <button
-        class="fixed bottom-3 mx-2 right-0 border border-gray-200 bg-white dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 backdrop-blur-xl text-black !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool"
-        title="Focus Mode" @click="focus"><FocusModeIcon /></button>
-
-      <button
-        class="fixed bottom-3 border border-gray-200 bg-white backdrop-blur-xl dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 text-black !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool right-[60px]"
-        title="Print" v-if="focusMode" @click="printPDF"><PrintIcon /></button>
-
-    </div>
-
-    <UiInfo :open="open" :close="close"/>
-
-  </div>
-</template>
-
 <script lang="ts" setup>
 import { ref, watch, onMounted, onBeforeUnmount, computed, effect } from 'vue';
+import UiBottomSheet from '~/components/ui/bottomSheet.vue'
 import { Editor, EditorContent } from '@tiptap/vue-3';
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
@@ -789,6 +445,353 @@ function handleShortcut(event: KeyboardEvent) {
 }
 
 </script>
+
+<template>
+
+  <UseDraggable class="absolute flex w-full items-center justify-center" style="user-select: none">
+    <div class="w-full flex justify-center cursor-move z-[40] items-center">
+      <div
+        class="m-8 top-0 p-4 rounded-2xl border justify-center items-center fixed dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 dark:border-none drop-shadow-cool bg-white z-[100] flex flex-col space-y-6"
+        v-if="showSearch">
+
+        <section class="flex gap-2">
+          <div
+            class="absolute -right-[4px] -top-2 z-10 bg-[#e01212] hover:bg-[#cc1212] border-[#bb1212] border w-6 h-6 flex items-center justify-center text-lg text-white rounded-lg cursor-pointer"
+            @click="toggleSearch">&times;</div>
+          <div>
+            <div
+              class="mt-1 p-2 px-3 bg-white border dark:border-none border-gray-200 rounded-xl dark:bg-[#171717] dark:border-[#484747] drop-shadow-cool text-black dark:text-white/90 flex justify-center">
+              <Input v-model="searchTerm" @keydown.enter.prevent="updateSearchReplace" type="text" placeholder="Search"
+                autofocus="true"
+                class="placeholder:text-gray-400 dark:placeholder:text-gray-200/80 bg-transparent outline-none" />
+
+              <button title="Case Sensitive" @click="toggleCase" class="px-1.5"
+                :class="caseSensitive ? 'text-gray-700 dark:text-white' : 'opacity-40 dark:opacity-50'">
+                <CaseSensitiveIcon />
+              </button>
+            </div>
+          </div>
+
+          <div>
+            <div class="mt-1">
+              <input v-model="replaceTerm" @keydown.enter.prevent="replace" type="text" placeholder="Replace"
+                class="mt-1 p-2 px-3 dark:bg-[#171717] dark:border-[#484747] bg-white border dark:border-none border-gray-200 rounded-xl drop-shadow-cool text-black dark:text-white/90 flex justify-center outline-none focus:outline-none" />
+            </div>
+          </div>
+
+        </section>
+
+        <div class="flex justify-between w-full items-center"><span
+            class="inline-flex rounded-md isolate !text-[15px] drop-shadow-cool">
+            <button @click="previous" type="button"
+              class="mt-1 p-2 px-3 border dark:border-none border-gray-200 rounded-xl rounded-r-none bg-gray-50/30 dark:bg-[#171717] dark:border-[#484747] text-black dark:text-white/90 flex justify-center">
+              <ArrowLeftIcon />
+            </button>
+            <button @click="next" type="button"
+              class="mt-1 p-2 px-3 border-x-0 bg-gray-50/30 border dark:border-none dark:bg-[#171717] dark:border-[#484747] border-gray-200  text-black dark:text-white/90 flex justify-center">
+              <ArrowRightIcon />
+            </button>
+            <button @click="replace" type="button"
+              class="mt-1 p-2 px-3 bg-gray-50/30 border dark:border-none border-gray-200 dark:bg-[#171717] dark:border-[#484747] text-black dark:text-white/90 flex justify-center">
+              <ReplaceIcon />
+            </button>
+            <button @click="replaceAll" type="button"
+              class="mt-1 p-2 px-3 border-x-0 bg-gray-50/30 border dark:border-none border-gray-200 border-r rounded-r-xl dark:bg-[#171717] dark:border-[#484747] text-black dark:text-white/90 flex justify-center">
+              <ReplaceAllIcon />
+            </button>
+
+          </span>
+
+          <div class="block text-[18px] drop-shadow-sm text-black dark:text-white/90 py-2 px-4">
+            Results: {{ editor?.storage?.searchAndReplace?.resultIndex + 1 }} / {{
+              editor?.storage?.searchAndReplace?.results.length }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </UseDraggable>
+
+  <div class="h-full flex flex-col tiptap dark:bg-[#171717]">
+
+    <UiDropdownMenu>
+      <UiDropdownMenuTrigger class="fixed !opacity-100 right-0 p-1.5 px-2.5 top-1 z-[12] block sm:hidden">
+        <button :class="[
+        'border dark:bg-[#404040] !py-[6px] dark:border-[#525252] dark:text-white opacity-100 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+      ]" title="Menu">
+          <MenuIcon />
+      </button>
+      </UiDropdownMenuTrigger>
+      <UiDropdownMenuContent class="flex flex-wrap gap-1.5 px-1.5 py-1 border dark:bg-[#404040] dark:border-[#525252] dark:text-white opacity-100 border-gray-200 bg-white text-black rounded-2xl justify-center items-center cursor-pointer  drop-shadow-cool mr-2">
+        <UiDropdownMenuItem>
+          <button @click="exportMarkdown" :class="[
+        'border dark:bg-[#17171720] !py-[6px] dark:border-[#52525280] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-[14px] justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+      ]" title="Export Markdown">
+        <ExportIcon />
+      </button>
+        </UiDropdownMenuItem>
+        <UiDropdownMenuItem>
+          <button @click="importMarkdownOrText" :class="[
+        'border dark:bg-[#17171720] !py-[6px] dark:border-[#52525280] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-[14px] justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+      ]" title="Import Markdown">
+        <ImportIcon />
+      </button>
+    </UiDropdownMenuItem>
+        <UiDropdownMenuItem>
+          <button @click="onClick('light')" v-if="colorMode.value == 'dark'" :class="[
+        'border dark:bg-[#17171720] !py-[6px] dark:border-[#52525280] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-[14px] justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+      ]" title="Light Mode">
+        <LightModeIcon />
+
+      </button>
+
+      <button @click="onClick('dark')" v-if="colorMode.value == 'light'" :class="[
+        'border dark:bg-[#17171720] !py-[6px] dark:border-[#52525280] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-[14px] justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+      ]" title="Dark Mode">
+        <DarkModeIcon />
+      </button>
+
+        </UiDropdownMenuItem>
+        <UiDropdownMenuItem>      <button @click="isBottomSheetOpen = true" :class="[
+        'border dark:bg-[#17171720] !py-[6px] dark:border-[#52525280] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-[14px] justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+      ]" title="Styling">
+        <StylingIcon />
+      </button>
+</UiDropdownMenuItem>
+<UiDropdownMenuItem>
+  <button @click="open = true" :class="[
+        'border dark:bg-[#17171720] !py-[6px] dark:border-[#52525280] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-[14px] justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+      ]" title="About">
+        <AboutIcon />
+      </button>
+</UiDropdownMenuItem>
+      </UiDropdownMenuContent>
+    </UiDropdownMenu>
+
+    <div class="space-x-2 fixed right-2 top-1 z-[12] py-2 hidden sm:flex"
+      :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
+
+      <button
+        class="border border-gray-200 bg-white text-black !px-[7px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer !py-[6px] inline-block drop-shadow-cool"
+        @click="toggleSearch"><SearchIcon /></button>
+
+
+      <button @click="exportMarkdown" :class="[
+        'border dark:bg-[#404040] !py-[6px] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+      ]" title="Export Markdown">
+        <ExportIcon />
+      </button>
+
+      <button @click="importMarkdownOrText" :class="[
+        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+      ]" title="Import Markdown">
+        <ImportIcon />
+      </button>
+
+      <button @click="onClick('light')" v-if="colorMode.value == 'dark'" :class="[
+        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+      ]" title="Light Mode">
+        <LightModeIcon />
+
+      </button>
+
+      <button @click="onClick('dark')" v-if="colorMode.value == 'light'" :class="[
+        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+      ]" title="Dark Mode">
+        <DarkModeIcon />
+      </button>
+
+      <button @click="isBottomSheetOpen = true" :class="[
+        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+      ]" title="Styling">
+        <StylingIcon />
+      </button>
+
+      <button @click="open = true" :class="[
+        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
+      ]" title="About">
+        <AboutIcon />
+      </button>
+
+    </div>
+
+    <div class="flex fixed justify-between w-full p-2 py-0 pt-4 bg-white dark:bg-[#171717] z-10">
+
+      <div class="flex w-full justify-between items-center space-x-2">
+        <input v-model="localTitle" @input="$emit('update:title', localTitle)" placeholder="Untitled"
+          class="w-full border border-none ring-0 focus:border-none px-3 dark:text-white text-black/90 outline-none bg-transparent rounded flex text-[24px]" />
+
+        <button
+          class="border border-gray-200 bg-white text-black !px-[8px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool"
+          title="Print" @click="focus" v-if="!focusMode"><PrintIcon /></button>
+
+
+      </div>
+    </div>
+
+    <UiBottomSheet :isOpen="isBottomSheetOpen" @close="isBottomSheetOpen = false" :editor="editor as any" />
+
+    <div class="flex-grow mt-12">
+
+      <UiFloatingMenu :editor="editor as any"/>
+
+      <UiBubbleMenu :editor="editor as any"/>
+
+      <EditorContent :editor="editor as any" class="h-full overflow-auto mb-4 px-4" />
+
+      <div class="p-3 flex justify-between items-center fixed bottom-0 w-full select-none" v-if="editor"
+        :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
+
+        <div>
+
+          <UiDropdownMenu v-if="!editor.can().deleteTable()">
+            <UiDropdownMenuTrigger>
+              <button
+                  class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool sm:hidden">
+                  <MenuIcon /><span class="drop-shadow-sm pl-0.5">Tools</span>
+                </button>
+            </UiDropdownMenuTrigger>
+
+            <UiDropdownMenuContent class="flex flex-wrap gap-1.5 px-1.5 py-1 border dark:bg-[#404040] dark:border-[#525252] dark:text-white opacity-100 border-gray-200 bg-white text-black rounded-2xl justify-center items-center cursor-pointer  drop-shadow-cool ml-3 mb-1 sm:hidden">
+              <UiDropdownMenuItem>
+                <button @click="editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()"
+                  class="border dark:bg-[#17171720] dark:border-[#52525280] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center text-[16.5px]  space-x-1 cursor-pointer flex drop-shadow-cool">
+                  <TableIcon /><span class="drop-shadow-sm px-0.5">Table</span>
+                </button>
+              </UiDropdownMenuItem>
+
+              <UiDropdownMenuItem>
+                <div @click="editor.commands.setMermaid('graph TD;\n  A-->B;  A-->C;\n  B-->D;\n  C-->D;')"
+
+            class="border dark:bg-[#17171720] dark:border-[#52525280] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center text-[16.5px]  space-x-1 cursor-pointer flex drop-shadow-cool">
+            <MermaidIcon /><span class="drop-shadow-sm px-0.5">Mermaid</span>
+            </div>
+              </UiDropdownMenuItem>
+
+              <UiDropdownMenuItem>
+                <div @click="editor.commands.setPlantuml('@startuml\nBob -> Alice : hello\n@enduml')"
+
+            class="border dark:bg-[#17171720] dark:border-[#52525280] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center text-[16.5px]  space-x-1 cursor-pointer flex drop-shadow-cool">
+            <PlantUmlIcon /><span class="drop-shadow-sm scroll-px-0.5">Plant UML</span>
+            </div>
+              </UiDropdownMenuItem>
+            </UiDropdownMenuContent>
+          </UiDropdownMenu>
+
+          <div class="space-x-2 hidden sm:flex" v-if="!editor.can().deleteTable()">
+
+            <div @click="editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()"
+              class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
+              <TableIcon /><span class="drop-shadow-sm">Table</span>
+            </div>
+
+            <div @click="editor.commands.setMermaid('graph TD;\n  A-->B;  A-->C;\n  B-->D;\n  C-->D;')"
+
+            class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
+            <MermaidIcon /><span class="drop-shadow-sm">Mermaid</span>
+            </div>
+
+            <div @click="editor.commands.setPlantuml('@startuml\nBob -> Alice : hello\n@enduml')"
+
+            class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
+            <PlantUmlIcon /><span class="drop-shadow-sm">Plant UML</span>
+            </div>
+
+          </div>
+
+          <!-- Row Manipulation -->
+
+          <div class="flex space-x-2" v-if="editor.can().deleteTable()">
+
+            <div
+              class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[7px] py-[4px] max-h-fit rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool space-x-1">
+
+              <button @click="editor.chain().focus().deleteRow().run()" :disabled="!editor.can().deleteRow()">
+
+                <MinusIcon class="text-red-600 dark:text-red-500" />
+
+              </button>
+
+              <span class="inline">Row</span>
+
+              <button @click="editor.chain().focus().addRowAfter().run()" :disabled="!editor.can().addRowAfter()"
+                class="text-black dark:text-gray-50">
+
+                <PlusIcon />
+
+              </button>
+
+            </div>
+
+            <!-- Column Manipulation -->
+
+            <div class="flex space-x-2" v-if="editor.can().deleteTable()">
+
+              <div
+                class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[7px] py-[4px] rounded-2xl justify-center items-center cursor-pointer flex  max-h-fit drop-shadow-cool space-x-1">
+
+                <button @click="editor.chain().focus().deleteColumn().run()" :disabled="!editor.can().deleteColumn()">
+
+                  <MinusIcon class="text-red-600 dark:text-red-500" />
+
+                </button>
+
+                <span class="inline">Column</span>
+
+
+                <button @click="editor.chain().focus().addColumnAfter().run()"
+                  :disabled="!editor.can().addColumnAfter()" class="text-black dark:text-gray-50">
+
+                  <PlusIcon />
+
+                </button>
+
+              </div>
+            </div>
+
+            <div @click="editor.chain().focus().toggleHeaderCell().run()" :disabled="!editor.can().toggleHeaderCell()"
+              class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] !py-[4px] rounded-2xl justify-center items-center cursor-pointer drop-shadow-cool space-x-1 sm:flex hidden max-h-fit">
+              <HeaderCellIcon class="drop-shadow-sm text-black dark:text-gray-50" />
+              <span>Header Cell</span>
+            </div>
+
+            <div @click="editor.chain().focus().deleteTable().run()"
+              class="text-base dark:bg-[#cc1212] dark:hover:bg-[#b81010] bg-[#e01212] hover:bg-[#cc1212] border-[#bb1212] dark:border-[#b91616] border backdrop-blur-xl text-white sm:!px-[10px] sm:py-[4px] p-1.5 rounded-2xl justify-center max-h-fit items-center cursor-pointer flex drop-shadow-cool space-x-1.5">
+
+              <TrashIcon />
+
+              <span class="sm:block hidden">Delete</span>
+            </div>
+
+          </div>
+
+        </div>
+        <div class="sm:hidden md:flex items-center space-x-2 hidden fixed bottom-0 py-3 right-14">
+
+          <div
+            class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[4px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool max-h-fit">
+            {{ characterCount }} characters</div>
+          <div
+            class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 max-h-fit bg-white backdrop-blur-xl text-black !px-[10px] py-[4px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
+            {{ wordCount }} words</div>
+        </div>
+      </div>
+
+      <button
+        class="fixed bottom-3 mx-2 right-0 border border-gray-200 bg-white dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 backdrop-blur-xl text-black !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool"
+        title="Focus Mode" @click="focus"><FocusModeIcon /></button>
+
+      <button
+        class="fixed bottom-3 border border-gray-200 bg-white backdrop-blur-xl dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 text-black !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool right-[60px]"
+        title="Print" v-if="focusMode" @click="printPDF"><PrintIcon /></button>
+
+    </div>
+
+    <UiInfo :open="open" :close="close"/>
+
+  </div>
+</template>
+
+
 
 <style>
 
