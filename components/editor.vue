@@ -27,7 +27,7 @@ import UiBottomSheet from '~/components/ui/bottomSheet.vue'
 import Emoji, { gitHubEmojis } from '@tiptap-pro/extension-emoji'
 import { Mathematics } from '@tiptap-pro/extension-mathematics'
 
-import { type Range as EditorRange } from '@tiptap/core'
+import type { Range as EditorRange } from '@tiptap/core'
 import { SearchAndReplace } from "../extensions/search&replace.ts";
 
 import 'katex/dist/katex.min.css'
@@ -98,7 +98,7 @@ import {
   setHyperlinkModal,
 } from "../extensions/modals/setHyperlink";
 
-var open = ref(false);
+const open = ref(false);
 
 function close() {
   open.value = false
@@ -119,7 +119,7 @@ function onClick(val: string) {
 const showSearch = ref(false);
 
 function toggleSearch() {
-  if (showSearch.value == true) {
+  if (showSearch.value === true) {
     showSearch.value = false
     clear()
   }
@@ -131,14 +131,13 @@ function toggleSearch() {
 const focusMode = ref(false);
 
 function focus() {
-  if (focusMode.value == true) {
-    focusMode.value = false,
-      editor.value?.setEditable(true)
+  if (focusMode.value === true) {
+    focusMode.value = false;
+    editor.value?.setEditable(true);
   }
   else {
-    focusMode.value = true,
-      editor.value?.setEditable(false)
-
+    focusMode.value = true;
+    editor.value?.setEditable(false);
   }
 }
 
@@ -153,7 +152,7 @@ const CustomTaskItem = TaskItem.extend({
 
 const props = defineProps<{
   title: string;
-  content: any;
+  content: Record<string, unknown>;
 }>();
 
 const emit = defineEmits(['update:title', 'update:content']);
@@ -219,7 +218,7 @@ onMounted(() => {
       SmilieReplacer,
       ColorHighlighter,
       CharacterCount.configure({
-        limit: Infinity,
+        limit: Number.POSITIVE_INFINITY,
       }),
       Hyperlink.configure({
       hyperlinkOnPaste: true,
@@ -320,7 +319,7 @@ const replaceTerm = ref<string>("");
 const caseSensitive = ref<boolean>(false);
 
 function toggleCase() {
-  if (caseSensitive.value == true) {
+  if (caseSensitive.value === true) {
     caseSensitive.value = false;
     updateSearchReplace()
   } else {
@@ -329,7 +328,7 @@ function toggleCase() {
   }
 }
 
-const updateSearchReplace = (clearIndex: boolean = false) => {
+const updateSearchReplace = (clearIndex = false) => {
   if (!editor.value) return;
 
   if (clearIndex) editor.value.commands.resetIndex();
@@ -391,7 +390,7 @@ const previous = () => {
 
 const clear = () => {
   searchTerm.value = replaceTerm.value = "";
-  editor.value!.commands.resetIndex();
+  editor.value?.commands.resetIndex();
 };
 
 const replaceAll = () => editor.value?.commands.replaceAll();
@@ -537,14 +536,14 @@ function handleShortcut(event: KeyboardEvent) {
       </button>
     </UiDropdownMenuItem>
         <UiDropdownMenuItem>
-          <button @click="onClick('light')" v-if="colorMode.value == 'dark'" :class="[
+          <button @click="onClick('light')" v-if="colorMode.value === 'dark'" :class="[
         'border dark:bg-[#17171720] !py-[6px] dark:border-[#52525280] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-[14px] justify-center items-center cursor-pointer inline-block drop-shadow-cool'
       ]" title="Light Mode">
         <LightModeIcon />
 
       </button>
 
-      <button @click="onClick('dark')" v-if="colorMode.value == 'light'" :class="[
+      <button @click="onClick('dark')" v-if="colorMode.value === 'light'" :class="[
         'border dark:bg-[#17171720] !py-[6px] dark:border-[#52525280] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-[14px] justify-center items-center cursor-pointer inline-block drop-shadow-cool'
       ]" title="Dark Mode">
         <DarkModeIcon />
@@ -587,14 +586,14 @@ function handleShortcut(event: KeyboardEvent) {
         <ImportIcon />
       </button>
 
-      <button @click="onClick('light')" v-if="colorMode.value == 'dark'" :class="[
+      <button @click="onClick('light')" v-if="colorMode.value === 'dark'" :class="[
         'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
       ]" title="Light Mode">
         <LightModeIcon />
 
       </button>
 
-      <button @click="onClick('dark')" v-if="colorMode.value == 'light'" :class="[
+      <button @click="onClick('dark')" v-if="colorMode.value === 'light'" :class="[
         'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
       ]" title="Dark Mode">
         <DarkModeIcon />
