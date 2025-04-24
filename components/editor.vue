@@ -1,34 +1,34 @@
 <script lang="ts" setup>
-import { ref, watch, onMounted, onBeforeUnmount, computed, effect } from 'vue';
-import UiBottomSheet from '~/components/ui/bottomSheet.vue'
-import { Editor, EditorContent } from '@tiptap/vue-3';
-import StarterKit from "@tiptap/starter-kit";
-import Highlight from "@tiptap/extension-highlight";
-import TaskList from '@tiptap/extension-task-list';
-import TaskItem from '@tiptap/extension-task-item';
+import CharacterCount from '@tiptap/extension-character-count'
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import color, { Color } from "@tiptap/extension-color";
+import FontFamily from '@tiptap/extension-font-family'
+import Highlight from "@tiptap/extension-highlight";
 import Link from "@tiptap/extension-link";
 import ListItem from "@tiptap/extension-list-item";
+import ListKeymap from '@tiptap/extension-list-keymap'
+import Placeholder from '@tiptap/extension-placeholder'
 import SubScript from "@tiptap/extension-subscript";
 import Superscript from "@tiptap/extension-superscript";
 import Table from "@tiptap/extension-table";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
 import TableRow from "@tiptap/extension-table-row";
+import TaskItem from '@tiptap/extension-task-item';
+import TaskList from '@tiptap/extension-task-list';
+import TextAlign from '@tiptap/extension-text-align'
 import TextStyle from "@tiptap/extension-text-style";
 import Typography, { ellipsis } from "@tiptap/extension-typography";
-import ListKeymap from '@tiptap/extension-list-keymap'
-import Placeholder from '@tiptap/extension-placeholder'
-import CharacterCount from '@tiptap/extension-character-count'
-import TextAlign from '@tiptap/extension-text-align'
-import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
-import FontFamily from '@tiptap/extension-font-family'
+import StarterKit from "@tiptap/starter-kit";
+import { Editor, EditorContent } from '@tiptap/vue-3';
+import { computed, effect, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import UiBottomSheet from '~/components/ui/bottomSheet.vue'
 
-import { Mathematics } from '@tiptap-pro/extension-mathematics'
 import Emoji, { gitHubEmojis } from '@tiptap-pro/extension-emoji'
+import { Mathematics } from '@tiptap-pro/extension-mathematics'
 
-import { SearchAndReplace } from "../extensions/search&replace.ts";
 import { type Range as EditorRange } from '@tiptap/core'
+import { SearchAndReplace } from "../extensions/search&replace.ts";
 
 import 'katex/dist/katex.min.css'
 
@@ -40,30 +40,30 @@ import Underline from '@tiptap/extension-underline'
 
 import { SmilieReplacer } from '../extensions/SmilieReplacer.ts'
 
-// Import SVG icon components
-import CaseSensitiveIcon from './icons/CaseSensitiveIcon.vue'
+import AboutIcon from './icons/AboutIcon.vue'
 import ArrowLeftIcon from './icons/ArrowLeftIcon.vue'
 import ArrowRightIcon from './icons/ArrowRightIcon.vue'
-import ReplaceIcon from './icons/ReplaceIcon.vue'
-import ReplaceAllIcon from './icons/ReplaceAllIcon.vue'
-import MenuIcon from './icons/MenuIcon.vue'
+// Import SVG icon components
+import CaseSensitiveIcon from './icons/CaseSensitiveIcon.vue'
+import DarkModeIcon from './icons/DarkModeIcon.vue'
+import DeleteIcon from './icons/DeleteIcon.vue'
 import ExportIcon from './icons/ExportIcon.vue'
+import FocusModeIcon from './icons/FocusModeIcon.vue'
+import HeaderCellIcon from './icons/HeaderCellIcon.vue'
 import ImportIcon from './icons/ImportIcon.vue'
 import LightModeIcon from './icons/LightModeIcon.vue'
-import DarkModeIcon from './icons/DarkModeIcon.vue'
-import StylingIcon from './icons/StylingIcon.vue'
-import AboutIcon from './icons/AboutIcon.vue'
-import FocusModeIcon from './icons/FocusModeIcon.vue'
-import PrintIcon from './icons/PrintIcon.vue'
-import TableIcon from './icons/TableIcon.vue'
+import MenuIcon from './icons/MenuIcon.vue'
 import MermaidIcon from './icons/MermaidIcon.vue'
-import PlantUmlIcon from './icons/PlantUmlIcon.vue'
 import MinusIcon from './icons/MinusIcon.vue'
+import PlantUmlIcon from './icons/PlantUmlIcon.vue'
 import PlusIcon from './icons/PlusIcon.vue'
-import HeaderCellIcon from './icons/HeaderCellIcon.vue'
-import DeleteIcon from './icons/DeleteIcon.vue'
-import TrashIcon from './icons/TrashIcon.vue'
+import PrintIcon from './icons/PrintIcon.vue'
+import ReplaceAllIcon from './icons/ReplaceAllIcon.vue'
+import ReplaceIcon from './icons/ReplaceIcon.vue'
 import SearchIcon from './icons/SearchIcon.vue'
+import StylingIcon from './icons/StylingIcon.vue'
+import TableIcon from './icons/TableIcon.vue'
+import TrashIcon from './icons/TrashIcon.vue'
 
 // load all languages with "all" or common languages with "common"
 import { all, createLowlight } from 'lowlight'
@@ -78,25 +78,25 @@ import {
   previewHyperlinkModal,
 } from "../extensions/modals/previewHyperlink";
 
-import {
-  setHyperlinkModal,
-} from "../extensions/modals/setHyperlink";
-import { Mermaid } from '~/extensions/nodes/mermaid.ts';
-import { MathBlock } from '~/extensions/nodes/math.ts';
-import { Plantuml } from '~/extensions/nodes/plantuml.ts';
-import { Embed } from '~/extensions/nodes/embed.ts';
 import { Menu } from '@headlessui/vue'
 import link from '@tiptap/extension-link'
 import placeholder from '@tiptap/extension-placeholder'
 import table from '@tiptap/extension-table'
 import underline from '@tiptap/extension-underline'
-import { useColorMode, set } from '@vueuse/core'
+import { set, useColorMode } from '@vueuse/core'
 import { apply, data } from 'autoprefixer'
-import { text, regexp } from 'linkifyjs'
-import { Input, rule, comment, list } from 'postcss'
+import { regexp, text } from 'linkifyjs'
+import { hover, m } from 'motion-v'
+import { Input, comment, list, rule } from 'postcss'
 import { space } from 'postcss/lib/list'
 import tippy from 'tippy.js'
-import { hover, m } from 'motion-v'
+import { Embed } from '~/extensions/nodes/embed.ts';
+import { MathBlock } from '~/extensions/nodes/math.ts';
+import { Mermaid } from '~/extensions/nodes/mermaid.ts';
+import { Plantuml } from '~/extensions/nodes/plantuml.ts';
+import {
+  setHyperlinkModal,
+} from "../extensions/modals/setHyperlink";
 
 var open = ref(false);
 
