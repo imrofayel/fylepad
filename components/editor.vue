@@ -134,7 +134,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" width="21.5" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.5 12v1.5a7.5 7.5 0 0 1-15 0V8a5 5 0 0 1 10 0v5.5a2.5 2.5 0 0 1-5 0v-4" color="currentColor"/></svg>
       </button>
 
-      <button @click="onClick('light')" v-if="colorMode.value == 'dark'" :class="[
+      <button @click="onClick('light')" v-if="colorMode.value === 'dark'" :class="[
         'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool'
       ]" title="Light Mode">
         <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24" class="drop-shadow-sm">
@@ -215,13 +215,13 @@
             </div>
 
             <div @click="editor.commands.setMermaid('graph TD;\n  A-->B;  A-->C;\n  B-->D;\n  C-->D;')"
-            
+
             class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
             <svg xmlns="http://www.w3.org/2000/svg" width="19" viewBox="0 0 16 16" class="drop-shadow-sm"><path fill="currentColor" fill-rule="evenodd" d="M11.5 12.5A1.5 1.5 0 0 1 10 14H6a1.5 1.5 0 0 1-1.5-1.5v-.823a3.11 3.11 0 0 0-1.35-2.566A6.11 6.11 0 0 1 .5 4.073V3A1.5 1.5 0 0 1 2 1.5h.666A6.43 6.43 0 0 1 8 4.343A6.43 6.43 0 0 1 13.334 1.5H14A1.5 1.5 0 0 1 15.5 3v1.073a6.11 6.11 0 0 1-2.65 5.038a3.11 3.11 0 0 0-1.35 2.566zm-8-9.43a4.92 4.92 0 0 1 3.738 3.025c.275.688 1.249.688 1.524 0A4.92 4.92 0 0 1 13.334 3H14v1.073q0 .215-.02.427A4.61 4.61 0 0 1 12 7.875c-1.252.86-2 2.283-2 3.802v.823H6v-.823c0-1.52-.748-2.941-2-3.802a4.61 4.61 0 0 1-2-3.802V3h.666q.425 0 .834.07" clip-rule="evenodd"/></svg><span class="drop-shadow-sm">Mermaid</span>
             </div>
 
             <div @click="editor.commands.setPlantuml('@startuml\nBob -> Alice : hello\n@enduml')"
-            
+
             class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
             <svg xmlns="http://www.w3.org/2000/svg" width="19" viewBox="0 0 16 16" class="drop-shadow-sm"><path fill="currentColor" fill-rule="evenodd" d="M5.731 4H4.5A1.5 1.5 0 0 0 3 5.5v.377a2.72 2.72 0 0 1 0 5.246v.377A1.5 1.5 0 0 0 4.5 13h.377a2.72 2.72 0 0 1 5.246 0h.377a1.5 1.5 0 0 0 1.5-1.5v-1.232l1-.353a1.501 1.501 0 0 0 0-2.83l-1-.354V5.5A1.5 1.5 0 0 0 10.5 4H9.269l-.354-1a1.501 1.501 0 0 0-2.83 0zM8.9 14.5l-.204-1.02a1.22 1.22 0 0 0-2.392 0L6.1 14.5H4.5a3 3 0 0 1-3-3V9.9l1.02-.204a1.22 1.22 0 0 0 0-2.392L1.5 7.1V5.5a3 3 0 0 1 3-3h.17a3.001 3.001 0 0 1 5.66 0h.17a3 3 0 0 1 3 3v.17a3.001 3.001 0 0 1 0 5.66v.17a3 3 0 0 1-3 3z" clip-rule="evenodd"/></svg><span class="drop-shadow-sm">Plant UML</span>
             </div>
@@ -347,35 +347,35 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
-import { Editor, EditorContent } from '@tiptap/vue-3';
-import StarterKit from "@tiptap/starter-kit";
-import Highlight from "@tiptap/extension-highlight";
-import TaskList from '@tiptap/extension-task-list';
-import TaskItem from '@tiptap/extension-task-item';
+import CharacterCount from '@tiptap/extension-character-count'
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import { Color } from "@tiptap/extension-color";
+import FontFamily from '@tiptap/extension-font-family'
+import Highlight from "@tiptap/extension-highlight";
 import Link from "@tiptap/extension-link";
 import ListItem from "@tiptap/extension-list-item";
+import ListKeymap from '@tiptap/extension-list-keymap'
+import Placeholder from '@tiptap/extension-placeholder'
 import SubScript from "@tiptap/extension-subscript";
 import Superscript from "@tiptap/extension-superscript";
 import Table from "@tiptap/extension-table";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
 import TableRow from "@tiptap/extension-table-row";
+import TaskItem from '@tiptap/extension-task-item';
+import TaskList from '@tiptap/extension-task-list';
+import TextAlign from '@tiptap/extension-text-align'
 import TextStyle from "@tiptap/extension-text-style";
 import Typography from "@tiptap/extension-typography";
-import ListKeymap from '@tiptap/extension-list-keymap'
-import Placeholder from '@tiptap/extension-placeholder'
-import CharacterCount from '@tiptap/extension-character-count'
-import TextAlign from '@tiptap/extension-text-align'
-import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
-import FontFamily from '@tiptap/extension-font-family'
+import StarterKit from "@tiptap/starter-kit";
+import { Editor, EditorContent } from '@tiptap/vue-3';
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
-import { Mathematics } from '@tiptap-pro/extension-mathematics'
 import Emoji, { gitHubEmojis } from '@tiptap-pro/extension-emoji'
+import { Mathematics } from '@tiptap-pro/extension-mathematics'
 
+import type { Range as EditorRange } from '@tiptap/core'
 import { SearchAndReplace } from "../extensions/search&replace.ts";
-import { type Range as EditorRange } from '@tiptap/core'
 
 import 'katex/dist/katex.min.css'
 
@@ -400,16 +400,16 @@ import {
   previewHyperlinkModal,
 } from "../extensions/modals/previewHyperlink";
 
+import { Embed } from '~/extensions/nodes/embed.ts';
+import { MathBlock } from '~/extensions/nodes/math.ts';
+import { Mermaid } from '~/extensions/nodes/mermaid.ts';
+import { Plantuml } from '~/extensions/nodes/plantuml.ts';
 import {
   setHyperlinkModal,
 } from "../extensions/modals/setHyperlink";
-import { Mermaid } from '~/extensions/nodes/mermaid.ts';
-import { MathBlock } from '~/extensions/nodes/math.ts';
-import { Plantuml } from '~/extensions/nodes/plantuml.ts';
-import { Embed } from '~/extensions/nodes/embed.ts';
 
 
-var open = ref(false);
+const open = ref(false);
 
 function close() {
   open.value = false
@@ -430,7 +430,7 @@ function onClick(val: string) {
 const showSearch = ref(false);
 
 function toggleSearch() {
-  if (showSearch.value == true) {
+  if (showSearch.value === true) {
     showSearch.value = false
     clear()
   }
@@ -442,14 +442,13 @@ function toggleSearch() {
 const focusMode = ref(false);
 
 function focus() {
-  if (focusMode.value == true) {
-    focusMode.value = false,
-      editor.value?.setEditable(true)
+  if (focusMode.value === true) {
+    focusMode.value = false;
+    editor.value?.setEditable(true);
   }
   else {
-    focusMode.value = true,
-      editor.value?.setEditable(false)
-
+    focusMode.value = true;
+    editor.value?.setEditable(false);
   }
 }
 
@@ -464,7 +463,7 @@ const CustomTaskItem = TaskItem.extend({
 
 const props = defineProps<{
   title: string;
-  content: any;
+  content: Record<string, unknown>;
 }>();
 
 const emit = defineEmits(['update:title', 'update:content']);
@@ -530,7 +529,7 @@ onMounted(() => {
       SmilieReplacer,
       ColorHighlighter,
       CharacterCount.configure({
-        limit: Infinity,
+        limit: Number.POSITIVE_INFINITY,
       }),
       Hyperlink.configure({
       hyperlinkOnPaste: true,
@@ -631,7 +630,7 @@ const replaceTerm = ref<string>("");
 const caseSensitive = ref<boolean>(false);
 
 function toggleCase() {
-  if (caseSensitive.value == true) {
+  if (caseSensitive.value === true) {
     caseSensitive.value = false;
     updateSearchReplace()
   } else {
@@ -640,7 +639,7 @@ function toggleCase() {
   }
 }
 
-const updateSearchReplace = (clearIndex: boolean = false) => {
+const updateSearchReplace = (clearIndex = false) => {
   if (!editor.value) return;
 
   if (clearIndex) editor.value.commands.resetIndex();
@@ -718,6 +717,54 @@ onBeforeUnmount(() => {
   // Clean up the event listener to prevent memory leaks
   document.removeEventListener('keydown', handleShortcut);
 });
+
+import { useMagicKeys, watchArray } from '@vueuse/core'
+
+const keys = useMagicKeys({
+  passive: false,
+  onEventFired(e) {
+    if (e.metaKey && (e.key === 'f' || e.key === 'r' || e.key === 'o' || e.key === 's' || e.key === 't') && e.type === 'keydown')
+      e.preventDefault()
+  },
+})
+const cmdF = keys['Cmd+f']
+const cmdS = keys['Cmd+s']
+const cmdP = keys['Cmd+p'] 
+const cmdR = keys['Cmd+r']
+const cmdO = keys['Cmd+o']
+const cmdT = keys['Cmd+t']
+
+//watchArray([cmdF, cmdS, cmdP, cmdR, cmdO, cmdT], (v, k, i) => {
+//  console.log({v, k, i})
+//    toggleSearch();
+// })
+
+
+watch(cmdP, (v) => {
+  if (v)
+    window.print()
+})
+
+watch(cmdR, (v) => {
+  if (v)
+    focus()
+})
+
+watch(cmdO, (v) => {
+  if (v)
+    importMarkdownOrText();
+})
+
+watch(cmdT, (v) => {
+  if (v)
+    editor.value?.commands.insertTable({ rows: 3, cols: 3 })
+})
+
+
+watch(cmdF, (v) => {
+  if (v)
+    toggleSearch();
+})
 
 function handleShortcut(event: KeyboardEvent) {
   // CTRL + F -> Open search
