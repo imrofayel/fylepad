@@ -66,6 +66,7 @@
     "@tiptap/vue-3": "^2.7.1",
     "@types/mdast": "^4.0.4",
     "@types/unist": "^3.0.3",
+    "@vite-pwa/nuxt": "^1.0.0",
     "@vueuse/components": "^11.1.0",
     "katex": "^0.16.11",
     "linkifyjs": "^4.2.0",
@@ -102,5 +103,6 @@
     "postcss": "^8.4.49",
     "sass-embedded": "^1.79.1",
     "tailwindcss": "^3.4.15"
-  }
+  },
+  "packageManager": "pnpm@10.10.0+sha512.d615db246fe70f25dcfea6d8d73dee782ce23e2245e3c4f6f888249fb568149318637dca73c2c5c8ef2a4ca0d5657fb9567188bfab47f566d1ee6ce987815c39"
 }
