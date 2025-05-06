@@ -22,5 +22,5 @@ export default defineConfig({
       }
     },
   },
-  images: ['assets/icon.png'],
+  images: ['public/icon.png'],
 })

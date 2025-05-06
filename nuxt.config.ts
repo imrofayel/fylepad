@@ -48,37 +48,28 @@ export default defineNuxtConfig({
       short_name: 'fylepad',
       description: 'a minimal notepad with everything you\'d need',
 
-      icons: [
+      "icons": [
         {
-          src: "icons/32x32.png",
-          sizes: "32x32",
-          type: "image/png",
+          "src": "pwa-64x64.png",
+          "sizes": "64x64",
+          "type": "image/png"
         },
         {
-          src: "icons/64x64.png",
-          sizes: "64x64",
-          type: "image/png",
+          "src": "pwa-192x192.png",
+          "sizes": "192x192",
+          "type": "image/png"
         },
         {
-          src: "icons/128x128.png",
-          sizes: "128x128",
-          type: "image/png",
+          "src": "pwa-512x512.png",
+          "sizes": "512x512",
+          "type": "image/png"
         },
         {
-          src: "icons/144x144.png",
-          sizes: "144x144",
-          type: "image/png",
-        },
-        {
-          src: "icons/192x192.png",
-          sizes: "192x192",
-          type: "image/png",
-        },
-        {
-          src: "icons/512x512.png",
-          sizes: "512x512",
-          type: "image/png",
-        },
+          "src": "maskable-icon.png",
+          "sizes": "512x512",
+          "type": "image/png",
+          "purpose": "maskable"
+        }
       ]
     },
     workbox: {
@@ -92,6 +83,6 @@ export default defineNuxtConfig({
   },
 
   modules: ['@nuxt/icon', '@nuxtjs/tailwindcss', '@nuxtjs/color-mode', '@vite-pwa/nuxt'  ],
-  css: ['assets/css/main.css'],
+  css: ['public/css/main.css'],
   compatibilityDate: '2024-12-23'
 });
