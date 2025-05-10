@@ -25,4 +25,4 @@ logs
 
 .npmrc
 .qodo
-/.pnpm-store/v10
+/.pnpm-store
