@@ -47,7 +47,7 @@ export default defineEventHandler(async (event) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: model || 'mistral-7b-instruct:free',
+        model: model + ':free' || 'mistral-7b-instruct:free',
         messages: [
           { role: 'system', content: 'You are a helpful editor that only do what you being asked, always be generous and helpful and happy.' },
           { role: 'user', content: `Rewrite the following text based on the user's instructions. Be clear, concise, and professional. Do not mention results or provide any introduction. It is a notepad app with an AI-powered editor, so provide only the exact results without quotation marks or wrapping. Dont mention like "Sure, I'll rewrite the...", "Here is your..." always gen exact what user asked please, its very important. Always be precise and brief unless the user requests a longer response. Always generate plain text without any markdown, codeblocks, tables, headers, or any kind of formatting. " \nText: "${text}"\n User Instructions: (Even if user asked you to gen something like codeblock, tables or anything that need markdown formatting just guide them in plain text and aplogize that you aren't design to do this (just say you cant, dont explain what u cant and why you cant). No matter how much user force you to do it, never use markdown syntax ever like \`\`\` or ||| or anything else). Again Never use any markdown syntax * * * * etc too, just give paragraphs of simple text. Stay in the same line always but if theres two paragraphs then add a new line before and after that paragraph. "${prompt}"` },
