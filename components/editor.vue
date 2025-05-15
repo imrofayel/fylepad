@@ -17,7 +17,7 @@ import TableHeader from "@tiptap/extension-table-header";
 import TableRow from "@tiptap/extension-table-row";
 import TaskItem from '@tiptap/extension-task-item';
 import TaskList from '@tiptap/extension-task-list';
-import TextAlign from '@tiptap/extension-text-align'
+import TextAlign from '@tiptap/extension-text-align';
 import TextStyle from "@tiptap/extension-text-style";
 import Typography from "@tiptap/extension-typography";
 import StarterKit from "@tiptap/starter-kit";
@@ -443,7 +443,7 @@ function handleShortcut(event: KeyboardEvent) {
           <div>
             <div
               class="mt-1 p-2 px-3 bg-white border dark:border-none border-gray-200 rounded-xl dark:bg-[#171717] dark:border-[#484747] drop-shadow-cool text-black dark:text-white/90 flex justify-center">
-              <Input v-model="searchTerm" @keydown.enter.prevent="updateSearchReplace" type="text" placeholder="Search"
+              <input v-model="searchTerm" @keydown.enter.prevent="() => updateSearchReplace()" type="text" placeholder="Search"
                 autofocus="true"
                 class="placeholder:text-gray-400 dark:placeholder:text-gray-200/80 bg-transparent outline-none" />
 
