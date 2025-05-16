@@ -756,7 +756,7 @@ function toggleCase() {
 const updateSearchReplace = () => {
   if (!editor.value) return;
 
-  // if (clearIndex) editor.value.commands.resetIndex();
+  if (clearIndex) editor.value.commands.resetIndex();
 
   editor.value.commands.setSearchTerm(searchTerm.value);
   editor.value.commands.setReplaceTerm(replaceTerm.value);
