@@ -13,9 +13,7 @@
           <div>
             <div
               class="mt-1 p-2 px-3 bg-white border dark:border-none border-gray-200 rounded-xl dark:bg-[#171717] dark:border-[#484747] drop-shadow-cool text-black dark:text-white/90 flex justify-center">
-              <Input v-model="searchTerm" @keydown.enter.prevent="updateSearchReplace" type="text" placeholder="Search"
-                autofocus="true"
-                class="placeholder:text-gray-400 dark:placeholder:text-gray-200/80 bg-transparent outline-none" />
+              <input v-model="searchTerm" @keydown.enter.prevent="updateSearchReplace" type="text" placeholder="Search" :autofocus="true" class="placeholder:text-gray-400 dark:placeholder:text-gray-200/80 bg-transparent outline-none" />
 
               <button title="Case Sensitive" @click="toggleCase" class="px-1.5"
                 :class="caseSensitive ? 'text-gray-700 dark:text-white' : 'opacity-40 dark:opacity-50'">
@@ -99,7 +97,7 @@
     </div>
   </UseDraggable>
 
-  <div class="h-full flex flex-col tiptap dark:bg-[#171717]">
+  <div id="editorContent" class="h-full flex flex-col tiptap dark:bg-[#171717]">
 
     <UiDropdownMenu>
       <UiDropdownMenuTrigger class="fixed !opacity-100 right-0 p-1.5 px-2.5 top-1 z-[12] block sm:hidden">
@@ -112,8 +110,7 @@
       <UiDropdownMenuContent class="flex flex-wrap gap-1.5 px-1.5 py-1 border dark:bg-[#404040] dark:border-[#525252] dark:text-white opacity-100 border-gray-200 bg-white text-black rounded-2xl justify-center items-center cursor-pointer  drop-shadow-cool mr-2">
         <UiDropdownMenuItem>
           <button @click="exportMarkdown" :class="[
-        'border dark:bg-[#17171720] !py-[6px] dark:border-[#52525280] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-[14px] justify-center items-center cursor-pointer inline-block drop-shadow-cool'
-      ]" title="Export Markdown">
+        'border dark:bg-[#17171720] !py-[6px] dark:border-[#52525280] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-[14px] justify-center items-center cursor-pointer inline-block drop-shadow-cool']" title="Export Markdown">
         <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24" class="drop-shadow-sm">
           <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
             color="currentColor">
@@ -257,7 +254,7 @@
 
     </div>
 
-    <div class="flex fixed justify-between w-full p-2 py-0 pt-4 bg-white dark:bg-[#171717] z-10">
+    <div class="flex fixed justify-between w-full p-2 py-0 pt-4 bg-white dark:bg-[#171717] z-10 heading">
 
       <div class="flex w-full justify-between items-center space-x-2">
         <input v-model="localTitle" @input="$emit('update:title', localTitle)" placeholder="Untitled"
@@ -281,7 +278,7 @@
 
       <EditorContent :editor="editor as any" class="h-full overflow-auto mb-4 px-4" />
 
-      <div class="p-3 flex justify-between items-center fixed bottom-0 w-full select-none" v-if="editor"
+      <div class="p-3 flex justify-between items-center fixed bottom-0 w-full select-none bottom-sheet" v-if="editor"
         :class="focusMode ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
 
         <div>
@@ -438,9 +435,7 @@
           <div
             class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white backdrop-blur-xl text-black !px-[10px] py-[4px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool max-h-fit">
             {{ characterCount }} characters</div>
-          <div
-            class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 max-h-fit bg-white backdrop-blur-xl text-black !px-[10px] py-[4px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">
-            {{ wordCount }} words</div>
+          <div class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 max-h-fit bg-white backdrop-blur-xl text-black !px-[10px] py-[4px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex drop-shadow-cool">{{ wordCount }} words</div>
         </div>
       </div>
 
@@ -455,55 +450,53 @@
     </div>
 
     <UiInfo :open="open" :close="close"/>
-
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
-import { Editor, EditorContent } from '@tiptap/vue-3';
-import StarterKit from "@tiptap/starter-kit";
-import Highlight from "@tiptap/extension-highlight";
-import TaskList from '@tiptap/extension-task-list';
-import TaskItem from '@tiptap/extension-task-item';
+import Emoji, { gitHubEmojis } from '@tiptap-pro/extension-emoji';
+import { Mathematics } from '@tiptap-pro/extension-mathematics';
+import CharacterCount from '@tiptap/extension-character-count';
+import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
 import { Color } from "@tiptap/extension-color";
+import FontFamily from '@tiptap/extension-font-family';
+import Highlight from "@tiptap/extension-highlight";
 import Link from "@tiptap/extension-link";
 import ListItem from "@tiptap/extension-list-item";
+import ListKeymap from '@tiptap/extension-list-keymap';
 import SubScript from "@tiptap/extension-subscript";
 import Superscript from "@tiptap/extension-superscript";
 import Table from "@tiptap/extension-table";
 import TableCell from "@tiptap/extension-table-cell";
 import TableHeader from "@tiptap/extension-table-header";
 import TableRow from "@tiptap/extension-table-row";
+import TaskItem from '@tiptap/extension-task-item';
+import TaskList from '@tiptap/extension-task-list';
+import TextAlign from '@tiptap/extension-text-align';
 import TextStyle from "@tiptap/extension-text-style";
 import Typography from "@tiptap/extension-typography";
-import ListKeymap from '@tiptap/extension-list-keymap'
-import Placeholder from '@tiptap/extension-placeholder'
-import CharacterCount from '@tiptap/extension-character-count'
-import TextAlign from '@tiptap/extension-text-align'
-import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
-import FontFamily from '@tiptap/extension-font-family'
+import StarterKit from "@tiptap/starter-kit";
+import { Editor, EditorContent } from '@tiptap/vue-3';
+import html2PDF from 'jspdf-html2canvas';
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
-import { Mathematics } from '@tiptap-pro/extension-mathematics'
-import Emoji, { gitHubEmojis } from '@tiptap-pro/extension-emoji'
-
+import { type Range as EditorRange } from '@tiptap/core';
 import { SearchAndReplace } from "../extensions/search&replace.ts";
-import { type Range as EditorRange } from '@tiptap/core'
 
-import 'katex/dist/katex.min.css'
+import 'katex/dist/katex.min.css';
 
 import { Markdown } from 'tiptap-markdown';
 
-import { ColorHighlighter } from '../extensions/ColorHighlighter.ts'
+import { ColorHighlighter } from '../extensions/ColorHighlighter.ts';
 
-import Underline from '@tiptap/extension-underline'
+import Underline from '@tiptap/extension-underline';
 
-import { SmilieReplacer } from '../extensions/SmilieReplacer.ts'
+import { SmilieReplacer } from '../extensions/SmilieReplacer.ts';
 
 // load all languages with "all" or common languages with "common"
-import { all, createLowlight } from 'lowlight'
+import { all, createLowlight } from 'lowlight';
 
-import { UseDraggable } from '@vueuse/components'
+import { UseDraggable } from '@vueuse/components';
 
 import {
   Hyperlink,
@@ -513,13 +506,15 @@ import {
   previewHyperlinkModal,
 } from "../extensions/modals/previewHyperlink";
 
+import { Embed } from '~/extensions/nodes/embed.ts';
+import { MathBlock } from '~/extensions/nodes/math.ts';
+import { Mermaid } from '~/extensions/nodes/mermaid.ts';
+import { Plantuml } from '~/extensions/nodes/plantuml.ts';
 import {
   setHyperlinkModal,
 } from "../extensions/modals/setHyperlink";
-import { Mermaid } from '~/extensions/nodes/mermaid.ts';
-import { MathBlock } from '~/extensions/nodes/math.ts';
-import { Plantuml } from '~/extensions/nodes/plantuml.ts';
-import { Embed } from '~/extensions/nodes/embed.ts';
+
+
 
 var open = ref(false);
 
@@ -530,8 +525,14 @@ function close() {
 const isBottomSheetOpen = ref(false);
 
 function printPDF() {
-  window.print()
-}
+  let page = document.querySelector('#editorContent') || document.body;
+
+    html2PDF(page as HTMLElement, {html2canvas : { scale: 1, useCORS: true, ignoreElements: (element) => {
+        return element.classList.contains('bottom-sheet')
+      }}});
+};
+
+
 
 const colorMode = useColorMode()
 
@@ -752,10 +753,10 @@ function toggleCase() {
   }
 }
 
-const updateSearchReplace = (clearIndex: boolean = false) => {
+const updateSearchReplace = () => {
   if (!editor.value) return;
 
-  if (clearIndex) editor.value.commands.resetIndex();
+  // if (clearIndex) editor.value.commands.resetIndex();
 
   editor.value.commands.setSearchTerm(searchTerm.value);
   editor.value.commands.setReplaceTerm(replaceTerm.value);
@@ -840,7 +841,7 @@ function handleShortcut(event: KeyboardEvent) {
 
   if (event.ctrlKey && event.key === 'p') {
     event.preventDefault();
-    window.print()
+    printPDF();
   }
 
   // CTRL + R -> Toggle focus mode
