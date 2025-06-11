@@ -80,6 +80,7 @@
     "motion-v": "1.0.0-beta.2",
     "nuxt": "^3.13.2",
     "openai": "^4.95.0",
+    "pinia": "^3.0.3",
     "plantuml-encoder": "^1.4.0",
     "reka-ui": "^2.2.0",
     "remark": "^15.0.1",
