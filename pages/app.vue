@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full w-full flex flex-col">
+  <div class="h-full w-full gap-0 flex flex-col">
     <div class="flex justify-between items-center w-full p-3 py-2 fixed bg-white z-10 pr-[7.5rem] dark:bg-[#171717]">
       <div class="flex space-x-2 overflow-auto justify-center items-center">
         <button @click="newTab"
@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <div class="mt-8 flex-grow">
+    <div class="mt-7 flex-grow">
       <Editor v-if="tabs.length > 0" :key="activeTab" :title="tabs[activeTab].title" :content="tabs[activeTab].content"
         @update:title="updateTabTitle" @update:content="updateTabContent" />
     </div>
