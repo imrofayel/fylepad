@@ -408,11 +408,11 @@
       </div>
 
       <button
-        class="mx-2 right-0 border border-gray-200 bg-white/80 dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 backdrop-blur-xl text-black !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex" :class="focusMode.focused ? 'absolute top-3' : 'fixed bottom-3'"
+        class="mx-2 right-0 border border-gray-200 bg-white/80 dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 backdrop-blur-xl text-black !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex" :class="focusMode.focused ? 'absolute top-3 right-3' : 'fixed bottom-3'"
         title="Focus Mode" @click="focus"><svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v14M5.98 3.285c3.342.637 5.333 1.967 6.02 2.731c.687-.764 2.678-2.094 6.02-2.73c1.692-.323 2.538-.484 3.26.134c.72.617.72 1.62.72 3.626v7.209c0 1.834 0 2.751-.463 3.324c-.462.572-1.48.766-3.518 1.154c-1.815.346-3.232.896-4.258 1.45c-1.01.545-1.514.817-1.761.817s-.752-.272-1.76-.817c-1.027-.553-2.444-1.104-4.26-1.45c-2.036-.388-3.055-.582-3.517-1.154C2 17.006 2 16.089 2 14.255V7.046c0-2.006 0-3.009.72-3.626c.722-.618 1.568-.457 3.26-.135" color="currentColor"/></svg></button>
 
       <button
-        class="absolute top-3 border border-gray-200 bg-white/80 backdrop-blur-xl dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 text-black !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex   right-[60px]"
+        class="absolute top-3 border border-gray-200 bg-white/80 backdrop-blur-xl dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 text-black !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex right-[70px]"
         title="Print" v-if="focusMode.focused" @click="printPDF"><svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M12.5 2h.273c3.26 0 4.892 0 6.024.798c.324.228.612.5.855.805c.848 1.066.848 2.6.848 5.67v2.545c0 2.963 0 4.445-.469 5.628c-.754 1.903-2.348 3.403-4.37 4.113c-1.257.441-2.83.441-5.98.441c-1.798 0-2.698 0-3.416-.252c-1.155-.406-2.066-1.263-2.497-2.35c-.268-.676-.268-1.523-.268-3.216V12"/><path d="M20.5 12a3.333 3.333 0 0 1-3.333 3.333c-.666 0-1.451-.116-2.098.057a1.67 1.67 0 0 0-1.179 1.179c-.173.647-.057 1.432-.057 2.098A3.333 3.333 0 0 1 10.5 22m-6-14.5C4.992 8.006 6.3 10 7 10m2.5-2.5C9.008 8.006 7.7 10 7 10m0 0V2"/></g></svg></button>
 
     </div>
@@ -446,10 +446,10 @@ import CharacterCount from '@tiptap/extension-character-count'
 import TextAlign from '@tiptap/extension-text-align'
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import FontFamily from '@tiptap/extension-font-family'
-
+import Image from '@tiptap/extension-image'
 import { Mathematics } from '@tiptap-pro/extension-mathematics'
 import Emoji, { gitHubEmojis } from '@tiptap-pro/extension-emoji'
-
+import { useBase64 } from '@vueuse/core'
 import { SearchAndReplace } from "../extensions/search&replace.ts";
 import { type Range as EditorRange } from '@tiptap/core'
 
@@ -483,8 +483,10 @@ import { Mermaid } from '~/extensions/nodes/mermaid.ts';
 import { MathBlock } from '~/extensions/nodes/math.ts';
 import { Plantuml } from '~/extensions/nodes/plantuml.ts';
 import { Embed } from '~/extensions/nodes/embed.ts';
+import FileHandler from '@tiptap-pro/extension-file-handler'
 
 import { useFocusStore } from '~/stores/focus'
+import { ImageResize } from '~/extensions/ImageResize.ts';
 
 var open = ref(false);
 
@@ -545,6 +547,10 @@ const props = defineProps<{
 
 const emit = defineEmits(['update:title', 'update:content']);
 
+const file = shallowRef<File>()
+
+const { base64: fileBase64 } = useBase64(file)
+
 const localTitle = ref(props.title);
 
 onMounted(() => {
@@ -559,6 +565,8 @@ onMounted(() => {
       },
     },
     extensions: [
+      Image,
+      ImageResize,
       Mermaid,
       MathBlock,
       Plantuml,
@@ -584,6 +592,41 @@ onMounted(() => {
       Link.configure({
         autolink: false,
         openOnClick: false
+      }),
+
+      FileHandler.configure({
+          allowedMimeTypes: ['image/png', 'image/jpeg', 'image/gif', 'image/webp'],
+          onDrop: (currentEditor, files, pos) => {
+            files.forEach(file => {
+              const fileReader = new FileReader()
+              fileReader.readAsDataURL(file)
+              fileReader.onload = () => {
+                currentEditor.chain().insertContentAt(pos, {
+                  type: 'image',
+                  attrs: {
+                    src: fileReader.result,
+                  },
+                }).focus().run()
+              }
+            })
+          },
+          onPaste: (currentEditor, files) => {
+            files.forEach(file => {
+              const fileReader = new FileReader()
+              fileReader.readAsDataURL(file)
+              fileReader.onload = () => {
+                currentEditor.chain().insertContentAt(currentEditor.state.selection.anchor, {
+                  type: 'image',
+                  attrs: {
+                    src: fileReader.result,
+                  },
+                }).focus().run()
+              }
+            })
+          },
+      }),
+      Image.configure({
+        allowBase64: true,
       }),
 
       Emoji.configure({
@@ -818,10 +861,6 @@ function handleShortcut(event: KeyboardEvent) {
       event.preventDefault()
       exportMarkdown()
       break
-    // case 't':
-    //   event.preventDefault()
-    //   editor.value?.commands.insertTable({ rows: 3, cols: 3 })
-    //   break
     case 'p':
       if (!focusMode.focused) {
         event.preventDefault()
