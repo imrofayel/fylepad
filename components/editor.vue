@@ -1113,7 +1113,7 @@ function handleShortcut(event: KeyboardEvent) {
       @apply font-normal text-left;
 
       /* Light and dark mode for table header */
-      @apply bg-gray-50 dark:bg-[#303030];
+      @apply bg-gray-100/40 dark:bg-[#303030];
     }
 
     /* Selected cell styling */
