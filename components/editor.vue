@@ -212,11 +212,12 @@
         </svg>
       </button>
 
-      <button @click="open = true" :class="[
-        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block  '
-      ]" title="About">
+      <!-- @click="open = true" -->
+      <NuxtLink :class="[
+        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer flex'
+      ]" to="/about">
         <svg xmlns="http://www.w3.org/2000/svg" width="22.5" viewBox="0 0 24 24" class="drop-shadow-sm"><!-- Icon from Huge Icons by Hugeicons - undefined --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M10.456 2.64a2.18 2.18 0 0 1 3.088 0l1.009 1.011c.41.41.966.64 1.545.64h1.429a2.18 2.18 0 0 1 2.183 2.182l-.001 1.429c0 .58.23 1.135.64 1.545l1.01 1.01a2.18 2.18 0 0 1 0 3.087l-1.01 1.009c-.41.41-.64.966-.64 1.545v1.429a2.18 2.18 0 0 1-2.182 2.183l-1.429-.001c-.58 0-1.135.23-1.545.64l-1.01 1.01a2.18 2.18 0 0 1-3.087 0l-1.009-1.01a2.18 2.18 0 0 0-1.545-.64H6.473a2.18 2.18 0 0 1-2.183-2.182l.001-1.429c0-.58-.23-1.135-.64-1.545l-1.01-1.01a2.18 2.18 0 0 1 0-3.087l1.01-1.009c.41-.41.64-.966.64-1.545V6.473A2.18 2.18 0 0 1 6.472 4.29l1.429.001c.58 0 1.135-.23 1.545-.64z"/><path d="M10 9a2 2 0 1 1 3.683 1.08C13.085 11.01 12 11.896 12 13v.5m-.008 3.5h.009"/></g></svg>
-      </button>
+    </NuxtLink>
 
     </div>
 
@@ -834,7 +835,7 @@ function handleShortcut(event: KeyboardEvent) {
     .hyperlink-set-modal,
     .hyperlink-edit-modal {
       filter: drop-shadow(0px 2px 5px rgba(0, 0, 0, 0.04));
-      @apply flex overflow-hidden dark:!bg-[#404040] dark:border-[#525252] dark:text-gray-50  bg-white/85 backdrop-blur-xl border border-gray-200 rounded-[20px] text-black dark:!text-white/85 px-1.5 pl-2.5
+      @apply flex overflow-hidden dark:!bg-[#404040] dark:border-[#525252] dark:text-gray-50  bg-white/80 backdrop-blur-xl border border-gray-200 rounded-[20px] text-black dark:!text-white/85 px-1.5 pl-2.5 !py-1
     }
 
     .hyperlink-preview-modal__metadata,
@@ -851,7 +852,8 @@ function handleShortcut(event: KeyboardEvent) {
     .hyperlink-set-modal__metadata a,
     .hyperlink-edit-modal__metadata a {
       font-size: 0.9rem;
-      margin-right: 6px;
+      margin-right: 4px;
+      margin-left: 4px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -888,7 +890,7 @@ function handleShortcut(event: KeyboardEvent) {
     }
 
     .hyperlink-edit-modal__apply-button{
-      @apply  border !rounded-xl hover:!bg-gray-50
+      @apply  border !rounded-xl hover:!bg-gray-100/50
     }
 
     .hyperlink-preview-modal__remove-button:hover,
@@ -918,8 +920,8 @@ function handleShortcut(event: KeyboardEvent) {
     .hyperlink-preview-modal__apply-button > svg,
     .hyperlink-set-modal__apply-button > svg,
     .hyperlink-edit-modal__apply-button > svg {
-      width: 19px;
-      height: 19px;
+      width: 18px;
+      height: 18px;
     }
 
     .hyperlink-preview-modal form,
