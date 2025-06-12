@@ -565,7 +565,6 @@ onMounted(() => {
       },
     },
     extensions: [
-      Image,
       ImageResize,
       Mermaid,
       MathBlock,

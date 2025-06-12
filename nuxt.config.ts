@@ -41,43 +41,39 @@ export default defineNuxtConfig({
 
   pwa: {
     manifest: {
-      name: 'fylepad - a notepad of your dreams!',
-      short_name: 'fylepad',
-      description: 'a minimal notepad with everything you\'d need',
+  name: 'fylepad - a notepad of your dreams!',
+  short_name: 'fylepad',
+  description: 'a minimal notepad with everything you\'d need',
+  start_url: '/',
+  display: 'standalone',
+  background_color: '#ffffff',
+  theme_color: '#ffffff',
+  icons: [
+    { src: "icons/32x32.png", sizes: "32x32", type: "image/png" },
+    { src: "icons/64x64.png", sizes: "64x64", type: "image/png" },
+    { src: "icons/128x128.png", sizes: "128x128", type: "image/png" },
+    { src: "icons/144x144.png", sizes: "144x144", type: "image/png" },
+    { src: "icons/192x192.png", sizes: "192x192", type: "image/png" },
+    { src: "icons/512x512.png", sizes: "512x512", type: "image/png" }
+  ],
 
-      icons: [
-        {
-          src: "icons/32x32.png",
-          sizes: "32x32",
-          type: "image/png",
-        },
-        {
-          src: "icons/64x64.png",
-          sizes: "64x64",
-          type: "image/png",
-        },
-        {
-          src: "icons/128x128.png",
-          sizes: "128x128",
-          type: "image/png",
-        },
-        {
-          src: "icons/144x144.png",
-          sizes: "144x144",
-          type: "image/png",
-        },
-        {
-          src: "icons/192x192.png",
-          sizes: "192x192",
-          type: "image/png",
-        },
-        {
-          src: "icons/512x512.png",
-          sizes: "512x512",
-          type: "image/png",
-        },
-      ]
-    },
+  screenshots: [
+  {
+    src: "screenshots/main.png",
+    sizes: "1413x870",
+    type: "image/png",
+    form_factor: "wide"
+  },
+  {
+    src: "screenshots/narrow.png",
+    sizes: "750x1334",
+    type: "image/png",
+    form_factor: "narrow"
+  }
+]
+
+},
+
     workbox: {
       navigateFallback: "/"
     },
