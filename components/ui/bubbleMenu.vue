@@ -232,21 +232,22 @@ onBeforeUnmount(() => {
   if (props.editor) props.editor.off('selectionUpdate', updateAIBtn);
 });
 
-async function loadFreeModels() {
-  try {
-    const res = await fetch('/api/free-models');
-    if (res.ok) {
-      const json = await res.json();
-      freeModels.value = json.models;
-      selectedModel.value = freeModels.value[0]?.slug || '';
-    } else {
-      console.error('Failed to fetch models', res.statusText);
-    }
-  } catch (e) {
-    console.error('Error loading models', e);
-  }
-}
-onMounted(loadFreeModels);
+// async function loadFreeModels() {
+//   try {
+//     const res = await fetch('/api/free-models');
+//     if (res.ok) {
+//       const json = await res.json();
+//       freeModels.value = json.models;
+//       selectedModel.value = freeModels.value[0]?.slug || '';
+//     } else {
+//       console.error('Failed to fetch models', res.statusText);
+//     }
+//   } catch (e) {
+//     console.error('Error loading models', e);
+//   }
+// }
+
+// onMounted(loadFreeModels);
 
 function openAIBar() {
   showAIBar.value = true;
