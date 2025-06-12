@@ -193,7 +193,9 @@ const fonts = [
   'SpaceGrotesk',
   'Times New Roman',
   'Trebuchet MS',
-  'Verdana'
+  'Verdana',
+  'Instrument Serif',
+  'Instrument Serif Italic'
 ]
 
 const filteredFonts = computed(() => {

@@ -1,6 +1,6 @@
 <template>
-  <div class="h-full w-full flex flex-col">
-    <div class="flex justify-between items-center w-full p-3 py-2 fixed bg-white z-10 pr-[7.5rem] dark:bg-[#171717]">
+  <div class="h-full w-full gap-0 flex flex-col">
+    <div class="flex justify-between items-center w-full p-3 py-2 fixed bg-white z-10 pr-[7.5rem] dark:bg-[#171717]" v-if="!focusMode.focused">
       <div class="flex space-x-2 overflow-auto justify-center items-center">
         <button @click="newTab"
           class="hover:!scale-100 drop-shadow-sm" title="New Tab">
@@ -12,11 +12,11 @@
           <div class="dropdown-menu overflow-auto flex space-x-2">
             <transition-group name="list" tag="div" class="flex space-x-2 ">
             <div v-for="(tab, index) in tabs" :key="index" @click="activeTab = index"
-              class="border border-gray-200 bg-white/80 text-black !px-[9px] py-[3px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer inline-block drop-shadow-cool tab-item"
+              class="border border-gray-200 bg-white/80 text-black !px-[9px] py-[3px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool tab-item"
               :class="{ '!bg-[#24d86c] dark:!bg-[#0c843c] dark:!border-[#196838] !border-[#28c76d] !text-white font-medium': activeTab === index }">
-              <span class="tab-title relative -top-[1.5px]">{{ tab.title || 'Untitled' }}</span>
+              <span class="tab-title">{{ tab.title || 'Untitled' }}</span>
               <button @click.stop="closeTab(index)"
-                class="ml-2 text-onPrimaryContainer/30 hover:text-onPrimaryContainer dark:text-gray-50/50 dark:hover:text-gray-100 text-lg"
+                class="ml-2 text-onPrimaryContainer/30 hover:text-onPrimaryContainer dark:text-gray-50/50 dark:hover:text-gray-100"
                 :class="{ 'text-white font-normal': activeTab === index }">&times;</button>
             </div>
           </transition-group>
@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <div class="mt-8 flex-grow">
+    <div class="flex-grow" :class="focusMode.focused ? 'mt-1' : 'mt-7'">
       <Editor v-if="tabs.length > 0" :key="activeTab" :title="tabs[activeTab].title" :content="tabs[activeTab].content"
         @update:title="updateTabTitle" @update:content="updateTabContent" />
     </div>
@@ -48,7 +48,7 @@
 }
 
 .tab-item {
-  max-height: 40px;
+  @apply max-h-fit
   /* Ensure tabs don't grow vertically */
 }
 
@@ -79,6 +79,10 @@
 import { ref, reactive, onMounted, watch, onBeforeUnmount } from 'vue';
 import { fs, path } from '@tauri-apps/api';
 import { isNumber } from '@tiptap/core';
+
+import { useFocusStore } from '~/stores/focus'
+
+const focusMode = useFocusStore()
 
 const colorMode = useColorMode()
 
@@ -217,5 +221,23 @@ onBeforeUnmount(() => {
   // Clean up the event listener to prevent memory leaks
   document.removeEventListener('keydown', handleShortcut);
 });
+
+const fallbackTitle = 'Untitled';
+const currentTab = computed(() => tabs[activeTab.value as any]);
+const currentTabTitle = computed(() => currentTab.value?.title ?? fallbackTitle);
+
+useHead({
+  title: currentTabTitle,
+  meta: [
+    { name: 'description', content: 'A minimal notepad with literally everything you need.' }
+  ],
+})
+
+useSeoMeta({
+  title: currentTabTitle,
+  ogTitle: currentTabTitle,
+  description: 'A minimal notepad with literally everything you need.',
+  ogDescription: 'An aesthetic notepad for effortless note-taking with AI. Enjoy rich editing, auto-save, multi-tab support, Mermaid / PlantUML diagrams, tables, code-blocks and much more — all in one.',
+})
 
 </script>

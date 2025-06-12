@@ -1,6 +1,6 @@
 export default defineNuxtConfig({
   // (optional) Enable the Nuxt devtools
-  devtools: { enabled: true },
+  devtools: { enabled: false },
 
   // Enable SSG
   ssr: false,
@@ -39,7 +39,56 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ['@nuxt/icon', '@nuxtjs/tailwindcss', '@nuxtjs/color-mode'  ],
+  pwa: {
+    manifest: {
+      name: 'fylepad - a notepad of your dreams!',
+      short_name: 'fylepad',
+      description: 'a minimal notepad with everything you\'d need',
+
+      icons: [
+        {
+          src: "icons/32x32.png",
+          sizes: "32x32",
+          type: "image/png",
+        },
+        {
+          src: "icons/64x64.png",
+          sizes: "64x64",
+          type: "image/png",
+        },
+        {
+          src: "icons/128x128.png",
+          sizes: "128x128",
+          type: "image/png",
+        },
+        {
+          src: "icons/144x144.png",
+          sizes: "144x144",
+          type: "image/png",
+        },
+        {
+          src: "icons/192x192.png",
+          sizes: "192x192",
+          type: "image/png",
+        },
+        {
+          src: "icons/512x512.png",
+          sizes: "512x512",
+          type: "image/png",
+        },
+      ]
+    },
+    workbox: {
+      navigateFallback: "/"
+    },
+
+    devOptions: {
+      enabled: true,
+      type: "module"
+    },
+  },
+
+  modules: ['@nuxt/icon', '@nuxtjs/tailwindcss', '@nuxtjs/color-mode', '@vite-pwa/nuxt'  ],
   css: ['assets/css/main.css'],
   compatibilityDate: '2024-12-23'
 });
