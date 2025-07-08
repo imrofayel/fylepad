@@ -9,9 +9,7 @@
 <script>
 import { inject } from '@vercel/analytics';
 
-onMounted(() => {
-  inject();
-})
+inject();
 
 useSeoMeta({
   title: 'fylepad - your dream notepad!',
