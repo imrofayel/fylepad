@@ -100,25 +100,20 @@
 /* Enhanced drag and drop styles */
 .tab-item[draggable="true"] {
   cursor: grab;
-  transition: all 0.2s ease;
+  transition: all 0.5s ease;
 }
 
 .tab-item[draggable="true"]:active {
   cursor: grabbing;
 }
 
-.tab-item.dragging {
-  opacity: 0.5;
-  z-index: 1000;
-}
-
 .tab-item.drag-over-left {
-  border-left: 3px solid #3b82f6;
+  border-left: 6px solid #24d86c;
   padding-left: 6px;
 }
 
 .tab-item.drag-over-right {
-  border-right: 3px solid #3b82f6;
+  border-right: 6px solid #24d86c;
   padding-right: 6px;
 }
 
@@ -130,7 +125,7 @@
 .list-enter-from,
 .list-leave-to {
   opacity: 0;
-  /* transform: translateY(20px); */
+  transform: translateY(20px);
 }
 
 </style>
@@ -173,26 +168,39 @@ const dragState = reactive({
   startY: 0
 });
 
-// Enhanced drag start handler
 const onTabDragStart = (index: number, event: DragEvent) => {
   dragState.dragging = true;
   dragState.draggedTabIndex = index;
   dragState.startX = event.clientX;
   dragState.startY = event.clientY;
-  
-  // Set drag data
+
   if (event.dataTransfer) {
     event.dataTransfer.effectAllowed = 'move';
     event.dataTransfer.setData('text/plain', index.toString());
-    
-    // Create a custom drag image (optional)
-    const draggedElement = tabRefs.value[index];
-    if (draggedElement) {
-      const rect = draggedElement.getBoundingClientRect();
-      event.dataTransfer.setDragImage(draggedElement, rect.width / 2, rect.height / 2);
-    }
+
+    // Create a fully invisible drag image
+    const invisible = document.createElement('div');
+    invisible.style.width = '1px';
+    invisible.style.height = '1px';
+    invisible.style.opacity = '0';
+    invisible.style.position = 'absolute';
+    invisible.style.top = '-1000px';
+    invisible.style.left = '-1000px';
+
+    document.body.appendChild(invisible);
+    void invisible.offsetWidth; // Force layout
+
+    event.dataTransfer.setDragImage(invisible, 0, 0);
+
+    // Clean up
+    setTimeout(() => {
+      if (document.body.contains(invisible)) {
+        document.body.removeChild(invisible);
+      }
+    }, 0);
   }
 };
+
 
 // Enhanced drag over handler
 const onTabDragOver = (event: DragEvent, targetIndex: number) => {
@@ -391,13 +399,15 @@ const getTabClasses = (tabIndex: number) => {
   return classes;
 };
 
+
+
 // Get tab style for drag effects
 const getTabStyle = (tabIndex: number) => {
   const isDragging = dragState.dragging && dragState.draggedTabIndex === tabIndex;
   
   if (isDragging) {
     return {
-      opacity: '0.4',
+      transform: 'scale(0.92)',
       zIndex: '1000',
     };
   }
