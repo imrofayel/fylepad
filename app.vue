@@ -1,6 +1,5 @@
 <template>
-  <Analytics/>
-  <VitePwaManifest/>
+  <!-- <VitePwaManifest/> -->
   <NuxtLayout>
     <NuxtPage/>
   </NuxtLayout>

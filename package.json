@@ -6,7 +6,7 @@
   "scripts": {
     "nuxt": "nuxt",
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "dev": "nuxt dev --port 8080",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
@@ -17,8 +17,11 @@
     "tauri:build:debug": "pnpm tauri build --debug"
   },
   "dependencies": {
+    "@clerk/nuxt": "^1.7.14",
+    "@clerk/vue": "^1.8.21",
     "@floating-ui/vue": "^1.1.7",
     "@headlessui/vue": "^1.7.23",
+    "@libsql/client": "^0.15.10",
     "@nuxt/icon": "^1.5.1",
     "@nuxtjs/color-mode": "^3.5.1",
     "@nuxtjs/tailwindcss": "^6.12.1",
@@ -73,6 +76,8 @@
     "@vite-pwa/nuxt": "^1.0.0",
     "@vueuse/components": "^11.1.0",
     "clsx": "^2.1.1",
+    "dotenv": "^17.2.1",
+    "drizzle-orm": "^0.44.3",
     "katex": "^0.16.11",
     "linkifyjs": "^4.2.0",
     "lowlight": "^3.1.0",
@@ -113,6 +118,7 @@
     "@vueuse/core": "^11.1.0",
     "@vueuse/nuxt": "^11.1.0",
     "autoprefixer": "^10.4.20",
+    "drizzle-kit": "^0.31.4",
     "postcss": "^8.4.49",
     "sass-embedded": "^1.79.1",
     "tailwindcss": "^3.4.15",
