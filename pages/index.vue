@@ -60,8 +60,6 @@
       @close="closeContextMenu"
       @colorChanged="changeTabColor"
       @duplicateTab="duplicateTab"
-      @closeTab="closeTab"
-      @moveTab="moveTab"
     />
 
   </div>
