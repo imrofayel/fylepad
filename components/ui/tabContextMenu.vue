@@ -24,40 +24,6 @@
         </div>
       </div>
 
-      <!-- Group Management -->
-      <div>
-        <label class="block text-sm font-medium mb-2 text-gray-700 dark:text-gray-300">Group</label>
-        <div class="space-y-2">
-          <!-- Existing Groups -->
-          <select
-            v-model="selectedGroup"
-            class="w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-[#404040] text-gray-900 dark:text-gray-100"
-          >
-            <option value="">No Group</option>
-            <option v-for="group in existingGroups" :key="group" :value="group">
-              {{ group }}
-            </option>
-          </select>
-          
-          <!-- New Group Input -->
-          <div class="flex gap-2">
-            <input
-              v-model="newGroupName"
-              placeholder="New group name"
-              class="flex-1 px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-[#404040] text-gray-900 dark:text-gray-100"
-              @keydown.enter="createNewGroup"
-            />
-            <button
-              @click="createNewGroup"
-              :disabled="!newGroupName.trim()"
-              class="px-2 py-1 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              Add
-            </button>
-          </div>
-        </div>
-      </div>
-
       <!-- Actions -->
       <div class="flex gap-2 pt-2 border-t border-gray-200 dark:border-gray-600">
         <button
@@ -109,15 +75,12 @@ interface Props {
   targetElement?: HTMLElement | null
   tabIndex: number
   tabColor?: string
-  tabGroup?: string
-  existingGroups: string[]
   totalTabs: number
 }
 
 interface Emits {
   (e: 'close'): void
   (e: 'colorChanged', tabIndex: number, color: TabColor): void
-  (e: 'groupChanged', tabIndex: number, group: string): void
   (e: 'duplicateTab', tabIndex: number): void
   (e: 'closeTab', tabIndex: number): void
   (e: 'moveTab', tabIndex: number, direction: 'left' | 'right'): void
@@ -127,8 +90,6 @@ const props = withDefaults(defineProps<Props>(), {
   visible: false,
   targetElement: null,
   tabColor: '',
-  tabGroup: '',
-  existingGroups: () => [],
   totalTabs: 1
 })
 
@@ -136,8 +97,6 @@ const emit = defineEmits<Emits>()
 
 const popoverRef = ref<HTMLElement>()
 const popoverStyle = ref<Record<string, string>>({})
-const selectedGroup = ref(props.tabGroup)
-const newGroupName = ref('')
 
 const tabColors: TabColor[] = [
   { name: 'Default', bg: 'bg-gray-300 dark:bg-gray-600', activeStyles: '!bg-[#24d86c] dark:!bg-[#0c843c] dark:!border-[#196838] !border-[#28c76d]' },
@@ -186,18 +145,6 @@ watch(() => props.targetElement, updatePosition)
 const selectColor = (color: TabColor) => {
   emit('colorChanged', props.tabIndex, color)
 }
-
-const createNewGroup = () => {
-  if (newGroupName.value.trim()) {
-    selectedGroup.value = newGroupName.value.trim()
-    newGroupName.value = ''
-    emit('groupChanged', props.tabIndex, selectedGroup.value)
-  }
-}
-
-watch(selectedGroup, (newGroup) => {
-  emit('groupChanged', props.tabIndex, newGroup || '')
-})
 
 const duplicateTab = () => {
   emit('duplicateTab', props.tabIndex)
