@@ -575,7 +575,7 @@ function handleShortcut(event: KeyboardEvent) {
   }
   
   // CTRL + G + [number] -> Switch to tab
-  if (event.AT_TARGET) {
+  if (event.altKey) {
     event.preventDefault();
     const numberListener = (e: KeyboardEvent) => {
       if (isNumber(parseInt(e.key)) && parseInt(e.key) <= tabs.length) {
