@@ -236,7 +236,7 @@
 
     <UiBottomSheet :isOpen="isBottomSheetOpen" @close="isBottomSheetOpen = false" :editor="editor as any" />
 
-    <div class="flex-grow " :class="focusMode.focused ? 'mt-2 mx-2' : 'mt-12'">
+    <div class="flex-grow " :class="focusMode.focused ? 'mt-2 mx-2' : 'mt-10'">
 
       <UiFloatingMenu :editor="editor as any"/>
 

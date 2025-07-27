@@ -37,7 +37,7 @@
               
               <span class="tab-title">{{ tab.title || 'Untitled' }}</span>
               <button @click.stop="closeTab(tabIndex)"
-                class="ml-2 text-onPrimaryContainer/30 hover:text-onPrimaryContainer dark:text-gray-50/50 dark:hover:text-gray-100"
+                v-if="!tab.lock" class="ml-2 text-onPrimaryContainer/30 hover:text-onPrimaryContainer dark:text-gray-50/50 dark:hover:text-gray-100"
                 :class="{ 'text-white font-normal': activeTab === tabIndex }">&times;</button>
             </div>
           </div>
@@ -60,6 +60,9 @@
       @close="closeContextMenu"
       @colorChanged="changeTabColor"
       @duplicateTab="duplicateTab"
+      @lock-tab="lockTab"
+      :status="tabs[activeTab].lock"
+
     />
 
   </div>
@@ -144,6 +147,7 @@ interface Tab {
   title: string;
   content: any;
   color?: string;
+  lock: boolean
   id: string; // Add unique ID for tabs
 }
 
@@ -151,6 +155,7 @@ const tabs = reactive<Tab[]>([{
   title: 'Untitled', 
   content: '', 
   color: 'Default',
+  lock: false,
   id: crypto.randomUUID() // Generate unique ID
 }]);
 const activeTab = ref(0);
@@ -443,10 +448,18 @@ const duplicateTab = (tabIndex: number) => {
       title: `${originalTab.title} (Copy)`,
       content: originalTab.content,
       color: originalTab.color,
+      lock: false,
       id: crypto.randomUUID()
     };
     tabs.splice(tabIndex + 1, 0, newTab);
     activeTab.value = tabIndex + 1;
+    saveAppState();
+  }
+};
+
+const lockTab = (tabIndex: number) => {
+    if (tabs[tabIndex]) {
+    tabs[tabIndex].lock = !tabs[tabIndex].lock;
     saveAppState();
   }
 };
@@ -536,6 +549,7 @@ const newTab = () => {
     title: 'Untitled', 
     content: '', 
     color: 'Default',
+    lock: false,
     id: crypto.randomUUID()
   });
   activeTab.value = tabs.length - 1;
