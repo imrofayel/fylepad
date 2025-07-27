@@ -224,7 +224,7 @@
     <div class="flex fixed justify-between w-full p-2 py-0  bg-white dark:bg-[#171717] z-10" :class="focusMode.focused ? '!pt-0' : '!pt-3'">
 
       <div class="flex w-full justify-between items-center space-x-2">
-        <input v-model="localTitle" @input="$emit('update:title', localTitle)" placeholder="Untitled"
+        <input v-model="localTitle" @input="$emit('update:title', localTitle)" @keydown="handleTitleKeydown" placeholder="Untitled"
           class="w-full border border-none ring-0 focus:border-none px-3 dark:text-white text-black/90 outline-none bg-transparent rounded flex text-[24px]" v-if="!focusMode.focused"/>
 
         <button
@@ -236,7 +236,7 @@
 
     <UiBottomSheet :isOpen="isBottomSheetOpen" @close="isBottomSheetOpen = false" :editor="editor as any" />
 
-    <div class="flex-grow " :class="focusMode.focused ? 'mt-2 mx-2' : 'mt-12'">
+    <div class="flex-grow " :class="focusMode.focused ? 'mt-2 mx-2' : 'mt-10'">
 
       <UiFloatingMenu :editor="editor as any"/>
 
@@ -423,7 +423,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
+import { ref, watch, onMounted, onBeforeUnmount, computed } from 'vue';
 import { Editor, EditorContent } from '@tiptap/vue-3';
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
@@ -530,6 +530,14 @@ function focus() {
     editor.value?.setEditable(false)
   }
 }
+
+const handleTitleKeydown = (event: KeyboardEvent) => {
+  if (event.key === 'Tab' || event.key === 'Enter') {
+    event.preventDefault();
+    // Focus the editor
+    editor.value?.chain().focus().run();
+  }
+};
 
 // create a lowlight instance
 const lowlight = createLowlight(all)
@@ -684,7 +692,16 @@ const exportMarkdown = () => {
     const markdownContent = editor.value.storage.markdown.getMarkdown();
     console.log('Markdown Content:', markdownContent);
 
-    const blob = new Blob([markdownContent], { type: "text/markdown" });
+    // Create frontmatter with title
+    const frontmatter = `---
+title: "${localTitle.value || 'Untitled'}"
+---
+
+`;
+    
+    const fullContent = frontmatter + markdownContent;
+
+    const blob = new Blob([fullContent], { type: "text/markdown" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
@@ -710,15 +727,39 @@ const importMarkdownOrText = () => {
       reader.onload = (e: ProgressEvent<FileReader>) => {
         const content = e.target?.result;
         if (typeof content === 'string' && editor.value) {
-          editor.value.commands.setContent(content);
+          let markdownContent = content;
+          let titleFromFrontmatter = '';
+
+          // Check if content has YAML frontmatter
+          const frontmatterRegex = /^---\n([\s\S]*?)\n---\n?([\s\S]*)$/;
+          const match = content.match(frontmatterRegex);
+          
+          if (match) {
+            const frontmatterYaml = match[1];
+            markdownContent = match[2]; // Content after frontmatter
+            
+            // Extract title from frontmatter
+            const titleMatch = frontmatterYaml.match(/^title:\s*["']?([^"'\n]+)["']?$/m);
+            if (titleMatch) {
+              titleFromFrontmatter = titleMatch[1].trim();
+            }
+          }
+
+          // Set the editor content (without frontmatter)
+          editor.value.commands.setContent(markdownContent);
           console.log('Content imported successfully');
 
-          // Update the title based on the file name (optional)
-          const fileName = file.name.replace(/\.(md|txt)$/, '');
-          if (localTitle && typeof localTitle.value === 'string') {
-            localTitle.value = fileName;
+          // Update the title - prioritize frontmatter title, then filename
+          let newTitle = '';
+          if (titleFromFrontmatter) {
+            newTitle = titleFromFrontmatter;
+          } else {
+            newTitle = file.name.replace(/\.(md|txt)$/, '');
+          }
 
-            // Update the title using the file name
+          if (localTitle && typeof localTitle.value === 'string') {
+            localTitle.value = newTitle;
+            // Update the title using the extracted or file name
             emit('update:title', localTitle.value);
           }
         } else {

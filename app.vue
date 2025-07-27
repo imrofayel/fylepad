@@ -7,8 +7,9 @@
 </template>
 
 <script>
+import { inject } from '@vercel/analytics';
 
-import { Analytics } from '@vercel/analytics/nuxt'
+inject();
 
 useSeoMeta({
   title: 'fylepad - your dream notepad!',

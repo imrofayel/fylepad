@@ -17,10 +17,12 @@
     "tauri:build:debug": "pnpm tauri build --debug"
   },
   "dependencies": {
+    "@floating-ui/vue": "^1.1.7",
     "@headlessui/vue": "^1.7.23",
     "@nuxt/icon": "^1.5.1",
     "@nuxtjs/color-mode": "^3.5.1",
     "@nuxtjs/tailwindcss": "^6.12.1",
+    "@shopify/draggable": "^1.1.4",
     "@tailwindcss/typography": "^0.5.15",
     "@tanstack/vue-table": "^8.21.3",
     "@tauri-apps/api": "^1.6.0",
@@ -90,6 +92,7 @@
     "remark-parse": "^11.0.0",
     "remark-stringify": "^11.0.0",
     "smooth-scroll-into-view-if-needed": "^2.0.2",
+    "swapy": "^1.0.5",
     "tailwind-merge": "^3.2.0",
     "tailwindcss-animate": "^1.0.7",
     "tippy.js": "^6.3.7",
@@ -99,6 +102,7 @@
     "unist-builder": "^4.0.0",
     "unist-util-visit": "^5.0.0",
     "vue": "latest",
+    "vue-draggable-next": "^2.2.1",
     "vue-router": "latest"
   },
   "devDependencies": {
