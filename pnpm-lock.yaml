@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@floating-ui/vue':
+        specifier: ^1.1.7
+        version: 1.1.7(vue@3.5.13(typescript@5.8.3))
       '@headlessui/vue':
         specifier: ^1.7.23
         version: 1.7.23(vue@3.5.13(typescript@5.8.3))
@@ -254,6 +257,9 @@ importers:
       vue:
         specifier: latest
         version: 3.5.13(typescript@5.8.3)
+      vue-draggable-next:
+        specifier: ^2.2.1
+        version: 2.2.1(sortablejs@1.15.6)(vue@3.5.13(typescript@5.8.3))
       vue-router:
         specifier: latest
         version: 4.5.0(vue@3.5.13(typescript@5.8.3))
@@ -1016,14 +1022,23 @@ packages:
   '@floating-ui/core@1.6.9':
     resolution: {integrity: sha512-uMXCuQ3BItDUbAMhIXw7UPXRfAlOAvZzdK9BWpE60MCn+Svt3aLn9jsPTi/WNGlRUu2uI0v5S7JiIUsbsvh3fw==}
 
+  '@floating-ui/core@1.7.2':
+    resolution: {integrity: sha512-wNB5ooIKHQc+Kui96jE/n69rHFWAVoxn5CAzL1Xdd8FG03cgY3MLO+GF9U3W737fYDSgPWA6MReKhBQBop6Pcw==}
+
   '@floating-ui/dom@1.6.13':
     resolution: {integrity: sha512-umqzocjDgNRGTuO7Q8CU32dkHkECqI8ZdMZ5Swb6QAM0t5rnlrN3lGo1hdpscRd3WS8T6DKYK4ephgIH9iRh3w==}
+
+  '@floating-ui/dom@1.7.2':
+    resolution: {integrity: sha512-7cfaOQuCS27HD7DX+6ib2OrnW+b4ZBwDNnCcT0uTyidcmyWb03FnQqJybDBoCnpdxwBSfA94UAYlRCt7mV+TbA==}
+
+  '@floating-ui/utils@0.2.10':
+    resolution: {integrity: sha512-aGTxbpbg8/b5JfU1HXSrbH3wXZuLPJcNEcZQFMxLs3oSzgtVu6nFPkbbGGUvBcUjKV2YyB9Wxxabo+HEH9tcRQ==}
 
   '@floating-ui/utils@0.2.9':
     resolution: {integrity: sha512-MDWhGtE+eHw5JW7lq4qhc5yRLS11ERl1c7Z6Xd0a58DozHES6EnNNwUWbMiG4J9Cgj053Bhk8zvlhFYKVhULwg==}
 
-  '@floating-ui/vue@1.1.6':
-    resolution: {integrity: sha512-XFlUzGHGv12zbgHNk5FN2mUB7ROul3oG2ENdTpWdE+qMFxyNxWSRmsoyhiEnpmabNm6WnUvR1OvJfUfN4ojC1A==}
+  '@floating-ui/vue@1.1.7':
+    resolution: {integrity: sha512-idmAtbAIigGXN2SI5gItiXYBYtNfDTP9yIiObxgu13dgtG7ARCHlNfnR29GxP4LI4o13oiwsJ8wVgghj1lNqcw==}
 
   '@headlessui/vue@1.7.23':
     resolution: {integrity: sha512-JzdCNqurrtuu0YW6QaDtR2PIYCKPUWq28csDyMvN4zmGccmE7lz40Is6hc3LA4HFeCI7sekZ/PQMTNmn9I/4Wg==}
@@ -5318,6 +5333,9 @@ packages:
   smooth-scroll-into-view-if-needed@2.0.2:
     resolution: {integrity: sha512-z54WzUSlM+xHHvJu3lMIsh+1d1kA4vaakcAtQvqzeGJ5Ffau7EKjpRrMHh1/OBo5zyU2h30ZYEt77vWmPHqg7Q==}
 
+  sortablejs@1.15.6:
+    resolution: {integrity: sha512-aNfiuwMEpfBM/CN6LY0ibyhxPfPbyFeBTYJKCvzkJ2GkUpazIt3H+QIPAMHwqQ7tMKaHz1Qj+rJJCqljnf4p3A==}
+
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
     engines: {node: '>=0.10.0'}
@@ -5991,6 +6009,12 @@ packages:
 
   vue-devtools-stub@0.1.0:
     resolution: {integrity: sha512-RutnB7X8c5hjq39NceArgXg28WZtZpGc3+J16ljMiYnFhKvd8hITxSWQSQ5bvldxMDU6gG5mkxl1MTQLXckVSQ==}
+
+  vue-draggable-next@2.2.1:
+    resolution: {integrity: sha512-EAMS1IRHF0kZO0o5PMOinsQsXIqsrKT1hKmbICxG3UEtn7zLFkLxlAtajcCcUTisNvQ6TtCB5COjD9a1raNADw==}
+    peerDependencies:
+      sortablejs: ^1.14.0
+      vue: ^3.2.2
 
   vue-router@4.5.0:
     resolution: {integrity: sha512-HDuk+PuH5monfNuY+ct49mNmkCRK4xJAV9Ts4z9UFc4rzdDnxQLyCMGGc8pKhZhHTVzfanpNwB/lwqevcBwI4w==}
@@ -6999,17 +7023,28 @@ snapshots:
     dependencies:
       '@floating-ui/utils': 0.2.9
 
+  '@floating-ui/core@1.7.2':
+    dependencies:
+      '@floating-ui/utils': 0.2.10
+
   '@floating-ui/dom@1.6.13':
     dependencies:
       '@floating-ui/core': 1.6.9
       '@floating-ui/utils': 0.2.9
 
+  '@floating-ui/dom@1.7.2':
+    dependencies:
+      '@floating-ui/core': 1.7.2
+      '@floating-ui/utils': 0.2.10
+
+  '@floating-ui/utils@0.2.10': {}
+
   '@floating-ui/utils@0.2.9': {}
 
-  '@floating-ui/vue@1.1.6(vue@3.5.13(typescript@5.8.3))':
+  '@floating-ui/vue@1.1.7(vue@3.5.13(typescript@5.8.3))':
     dependencies:
-      '@floating-ui/dom': 1.6.13
-      '@floating-ui/utils': 0.2.9
+      '@floating-ui/dom': 1.7.2
+      '@floating-ui/utils': 0.2.10
       vue-demi: 0.14.10(vue@3.5.13(typescript@5.8.3))
     transitivePeerDependencies:
       - '@vue/composition-api'
@@ -11743,7 +11778,7 @@ snapshots:
   reka-ui@2.2.0(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3)):
     dependencies:
       '@floating-ui/dom': 1.6.13
-      '@floating-ui/vue': 1.1.6(vue@3.5.13(typescript@5.8.3))
+      '@floating-ui/vue': 1.1.7(vue@3.5.13(typescript@5.8.3))
       '@internationalized/date': 3.8.0
       '@internationalized/number': 3.6.1
       '@tanstack/vue-virtual': 3.13.6(vue@3.5.13(typescript@5.8.3))
@@ -12146,6 +12181,8 @@ snapshots:
   smooth-scroll-into-view-if-needed@2.0.2:
     dependencies:
       scroll-into-view-if-needed: 3.1.0
+
+  sortablejs@1.15.6: {}
 
   source-map-js@1.2.1: {}
 
@@ -12870,6 +12907,11 @@ snapshots:
       vue: 3.5.13(typescript@5.8.3)
 
   vue-devtools-stub@0.1.0: {}
+
+  vue-draggable-next@2.2.1(sortablejs@1.15.6)(vue@3.5.13(typescript@5.8.3)):
+    dependencies:
+      sortablejs: 1.15.6
+      vue: 3.5.13(typescript@5.8.3)
 
   vue-router@4.5.0(vue@3.5.13(typescript@5.8.3)):
     dependencies:
