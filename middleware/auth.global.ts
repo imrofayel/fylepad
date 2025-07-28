@@ -10,11 +10,11 @@ export default defineNuxtRouteMiddleware((to) => {
   
   // If user is not signed in and trying to access protected route
   if (!isSignedIn.value && isProtectedRoute) {
-    return navigateTo('/signin')
+    return navigateTo('/')
   }
   
   // If user is signed in and trying to access sign-in page, redirect to notes
-  if (isSignedIn.value && to.path === '/signin') {
-    return navigateTo('/app')
-  }
+  // if (isSignedIn.value && to.path === '/') {
+  //   return navigateTo('/app')
+  // }
 })

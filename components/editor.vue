@@ -146,7 +146,7 @@
       :class="focusMode.focused ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'" v-if="!focusMode.focused">
 
       <button
-        class="border border-gray-200 bg-white text-black !px-[7px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer !py-[6px] inline-block  "
+        class="border !max-h-fit border-gray-200 bg-white text-black !px-[7px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer !py-[6px] inline-block  "
         @click="toggleSearch"><svg width="21" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
           class="drop-shadow-sm">
           <path d="M17 17L21 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
@@ -158,7 +158,7 @@
 
 
       <button @click="exportMarkdown" :class="[
-        'border dark:bg-[#404040] !py-[6px] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block  '
+        'border !max-h-fit dark:bg-[#404040] !py-[6px] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block  '
       ]" title="Export Markdown">
         <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24" class="drop-shadow-sm">
           <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -170,13 +170,13 @@
       </button>
 
       <button @click="importMarkdownOrText" :class="[
-        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block  '
+        'border !max-h-fit dark:bg-[#404040] !py-[6px] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block  '
       ]" title="Import Markdown">
         <svg xmlns="http://www.w3.org/2000/svg" width="21.5" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.5 12v1.5a7.5 7.5 0 0 1-15 0V8a5 5 0 0 1 10 0v5.5a2.5 2.5 0 0 1-5 0v-4" color="currentColor"/></svg>
       </button>
 
       <button @click="onClick('light')" v-if="colorMode.value == 'dark'" :class="[
-        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block  '
+        'border !max-h-fit dark:bg-[#404040] !py-[6px] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block  '
       ]" title="Light Mode">
         <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24" class="drop-shadow-sm">
           <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -187,7 +187,7 @@
       </button>
 
       <button @click="onClick('dark')" v-if="colorMode.value == 'light'" :class="[
-        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block  '
+        'border !max-h-fit dark:bg-[#404040] !py-[6px] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block   '
       ]" title="Dark Mode">
         <svg width="21" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="drop-shadow-sm">
           <path d="M17 12a5 5 0 11-10 0 5 5 0 0110 0z" stroke="currentColor" stroke-width="1.5"
@@ -199,7 +199,7 @@
       </button>
 
       <button @click="isBottomSheetOpen = true" :class="[
-        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block  '
+        'border !max-h-fit dark:bg-[#404040] !py-[6px] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block  '
       ]" title="Styling">
         <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24" class="drop-shadow-sm">
           <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -212,12 +212,18 @@
         </svg>
       </button>
 
-      <!-- @click="open = true" -->
-      <NuxtLink :class="[
-        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer flex'
-      ]" to="/about">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22.5" viewBox="0 0 24 24" class="drop-shadow-sm"><!-- Icon from Huge Icons by Hugeicons - undefined --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M10.456 2.64a2.18 2.18 0 0 1 3.088 0l1.009 1.011c.41.41.966.64 1.545.64h1.429a2.18 2.18 0 0 1 2.183 2.182l-.001 1.429c0 .58.23 1.135.64 1.545l1.01 1.01a2.18 2.18 0 0 1 0 3.087l-1.01 1.009c-.41.41-.64.966-.64 1.545v1.429a2.18 2.18 0 0 1-2.182 2.183l-1.429-.001c-.58 0-1.135.23-1.545.64l-1.01 1.01a2.18 2.18 0 0 1-3.087 0l-1.009-1.01a2.18 2.18 0 0 0-1.545-.64H6.473a2.18 2.18 0 0 1-2.183-2.182l.001-1.429c0-.58-.23-1.135-.64-1.545l-1.01-1.01a2.18 2.18 0 0 1 0-3.087l1.01-1.009c.41-.41.64-.966.64-1.545V6.473A2.18 2.18 0 0 1 6.472 4.29l1.429.001c.58 0 1.135-.23 1.545-.64z"/><path d="M10 9a2 2 0 1 1 3.683 1.08C13.085 11.01 12 11.896 12 13v.5m-.008 3.5h.009"/></g></svg>
-    </NuxtLink>
+      <div class="inline-block">
+              <UserButton
+  :appearance="{
+    elements: {
+      userButtonAvatarBox: {
+        width: '2.3rem',
+        height: '2.3rem',
+      },
+    },
+  }"
+/>
+      </div>
 
     </div>
 
@@ -1414,7 +1420,7 @@ ul[data-type="taskList"] label>div {
   background-color: rgba(255, 217, 0, 0.5);
 }
 
-.tiptap .ProseMirror .search-result-current {
+.tiptap .ProseMirror .search-resault-current {
   background-color: rgba(13, 255, 0, 0.5);
 }
 </style>
