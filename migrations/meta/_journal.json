@@ -8,6 +8,20 @@
       "when": 1753621140000,
       "tag": "0000_same_bill_hollister",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1753680886170,
+      "tag": "0001_burly_xorn",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1753681654828,
+      "tag": "0002_pale_excalibur",
+      "breakpoints": true
     }
   ]
 }

@@ -19,7 +19,8 @@ export default defineEventHandler(async (event) => {
       content: body.content || '',
       color: body.color || 'Default',
       lock: body.lock || false,
-      id: crypto.randomUUID(),
+      position: body.position, // Allow explicit position setting
+      id: body.id || crypto.randomUUID(),
     });
     
     return { note };

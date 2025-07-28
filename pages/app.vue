@@ -158,6 +158,7 @@ interface Tab {
   color?: string;
   lock: boolean;
   id: string;
+  position: number;
   noteId?: string; // Database ID
 }
 
@@ -199,7 +200,7 @@ const contextMenu = reactive({
 });
 
 // API Functions
-const apiRequest = async (url: string, options: RequestInit = {}) => {
+const apiRequest = async (url: string, options: any = {}) => {
   const response = await $fetch(url, {
     ...options,
     headers: {
@@ -227,17 +228,21 @@ const loadNotesFromCloud = async (forceRefresh = false) => {
     isLoading.value = true;
     console.log('Fetching notes from cloud...');
     
-    const response = await apiRequest('/api/notes');
+    const response: any = await apiRequest('/api/notes');
     
     if (response.notes && response.notes.length > 0) {
-      const cloudTabs = response.notes.map((note: any) => ({
+      const cloudTabs = response.notes.map((note: any, index: number) => ({
         title: note.title || 'Untitled',
         content: note.content || '', // Keep as string, will be parsed when needed
         color: note.color || 'Default',
         lock: note.lock || false,
+        position: note.position || (index + 1), // Fallback to index-based position
         id: note.id || crypto.randomUUID(),
         noteId: note.noteId || note._id || note.id, // Handle different ID fields
       }));
+      
+      // Sort by position to ensure correct order
+      cloudTabs.sort((a: any, b: any) => a.position - b.position);
       
       tabs.splice(0, tabs.length, ...cloudTabs);
       activeTab.value = Math.min(0, cloudTabs.length - 1);
@@ -272,11 +277,12 @@ const createInitialTab = async () => {
     content: '',
     color: 'Default',
     lock: false,
+    position: 1, // First tab gets position 1
     id: crypto.randomUUID(),
   };
   
   try {
-    const response = await apiRequest('/api/notes', {
+    const response: any = await apiRequest('/api/notes', {
       method: 'POST',
       body: JSON.stringify(newTabData),
     });
@@ -309,13 +315,14 @@ const saveTabToCloud = async (tab: Tab) => {
         contentToSave = JSON.stringify(contentToSave);
       }
 
-      const response = await apiRequest('/api/notes', {
+      const response: any = await apiRequest('/api/notes', {
         method: 'POST',
         body: JSON.stringify({
           title: tab.title || 'Untitled',
           content: contentToSave || '',
           color: tab.color || 'Default',
           lock: tab.lock || false,
+          position: tab.position,
           id: tab.id,
         }),
       });
@@ -340,6 +347,7 @@ const saveTabToCloud = async (tab: Tab) => {
           content: contentToSave || '',
           color: tab.color || 'Default',
           lock: tab.lock || false,
+          position: tab.position,
         }),
       });
       console.log('Note updated in cloud:', tab.noteId);
@@ -524,20 +532,94 @@ const moveTabToPosition = async (sourceIndex: number, targetIndex: number) => {
     return;
   }
   
-  const [movedTab] = tabs.splice(sourceIndex, 1);
-  tabs.splice(targetIndex, 0, movedTab);
+  const movedTab = tabs[sourceIndex];
+  if (!movedTab?.noteId) return;
   
-  if (activeTab.value === sourceIndex) {
-    activeTab.value = targetIndex;
-  } else if (activeTab.value > sourceIndex && activeTab.value <= targetIndex) {
-    activeTab.value--;
-  } else if (activeTab.value < sourceIndex && activeTab.value >= targetIndex) {
-    activeTab.value++;
+  // Calculate new position (1-based)
+  const newPosition = targetIndex + 1;
+  
+  try {
+    // Use the reorder API to handle all position updates
+    const response: any = await apiRequest('/api/notes/reorder', {
+      method: 'POST',
+      body: JSON.stringify({
+        noteId: movedTab.noteId,
+        newPosition: newPosition
+      }),
+    });
+
+    // Update local state with the response from server
+    if (response.notes) {
+      const updatedTabs = response.notes.map((note: any) => {
+        // Find the corresponding tab in our local tabs
+        const existingTab = tabs.find(t => t.noteId === note.id);
+        return {
+          title: note.title || 'Untitled',
+          content: existingTab?.content || note.content || '',
+          color: note.color || 'Default',
+          lock: note.lock || false,
+          position: note.position,
+          id: existingTab?.id || note.id,
+          noteId: note.id,
+        };
+      });
+
+      // Update tabs array
+      tabs.splice(0, tabs.length, ...updatedTabs);
+      
+      // Update active tab to follow the moved tab
+      const movedTabNewIndex = updatedTabs.findIndex((t: any) => t.noteId === movedTab.noteId);
+      if (activeTab.value === sourceIndex && movedTabNewIndex >= 0) {
+        activeTab.value = movedTabNewIndex;
+      }
+    }
+    
+    console.log('Tab order changed and saved to cloud');
+  } catch (error) {
+    console.error('Failed to reorder tab:', error);
+    // Fallback to local reorder without server sync
+    const [movedTabLocal] = tabs.splice(sourceIndex, 1);
+    tabs.splice(targetIndex, 0, movedTabLocal);
+    
+    if (activeTab.value === sourceIndex) {
+      activeTab.value = targetIndex;
+    } else if (activeTab.value > sourceIndex && activeTab.value <= targetIndex) {
+      activeTab.value--;
+    } else if (activeTab.value < sourceIndex && activeTab.value >= targetIndex) {
+      activeTab.value++;
+    }
   }
+};
+
+// Enhanced function to update all tab positions after reordering
+const updateTabPositions = async () => {
+  if (!isInitialized.value || tabs.length === 0) return;
   
-  // Save all tabs to maintain order in cloud
-  await saveAllTabsToCloud();
-  console.log('Tab order changed and saved to cloud');
+  try {
+    // Update positions in memory
+    tabs.forEach((tab, index) => {
+      tab.position = index + 1;
+    });
+
+    // Filter out tabs without noteId
+    const validTabs = tabs.filter(tab => tab.noteId);
+    if (validTabs.length === 0) return;
+
+    // Prepare position updates
+    const positionUpdates = validTabs.map(tab => ({
+      id: tab.noteId!,
+      position: tab.position
+    }));
+
+    // Call API to batch update positions
+    await apiRequest('/api/notes/positions', {
+      method: 'PUT',
+      body: JSON.stringify({ updates: positionUpdates }),
+    });
+
+  } catch (error) {
+    console.error('Failed to update tab positions:', error);
+  }
 };
 
 // Set tab reference
@@ -647,22 +729,27 @@ const newTab = async () => {
     return;
   }
 
+  // Calculate next position
+  const nextPosition = tabs.length > 0 ? Math.max(...tabs.map(t => t.position)) + 1 : 1;
+
   const newTabData: Tab = {
     title: 'Untitled',
     content: '',
     color: 'Default',
     lock: false,
+    position: nextPosition,
     id: crypto.randomUUID(),
   };
 
   try {
-    const response = await apiRequest('/api/notes', {
+    const response: any = await apiRequest('/api/notes', {
       method: 'POST',
       body: JSON.stringify({
         title: newTabData.title,
         content: newTabData.content,
         color: newTabData.color,
         lock: newTabData.lock,
+        position: newTabData.position,
         id: newTabData.id,
       }),
     });
@@ -687,13 +774,27 @@ const closeTab = async (index: number) => {
   
   if (tabs.length > 1) {
     await deleteTabFromCloud(tabToClose);
+    
+    // Remove the tab from the array
     tabs.splice(index, 1);
+    
+    // Update positions of remaining tabs
+    tabs.forEach((tab, i) => {
+      tab.position = i + 1;
+    });
+    
+    // Update active tab index
     if (activeTab.value >= index && activeTab.value > 0) {
       activeTab.value--;
     }
+    
+    // Save position updates to cloud
+    await updateTabPositions();
+    
     // Cache is still valid, just removed item
     lastFetchTime.value = Date.now();
   } else {
+    // If it's the last tab, delete it and create a new one
     await deleteTabFromCloud(tabToClose);
     tabs.splice(index, 1);
     await newTab();
@@ -738,11 +839,23 @@ const changeTabColor = async (tabIndex: number, color: { name: string }) => {
 const duplicateTab = async (tabIndex: number) => {
   if (tabs[tabIndex]) {
     const originalTab = tabs[tabIndex];
+    
+    // Calculate next position after the original tab
+    const nextPosition = originalTab.position + 1;
+    
+    // Shift positions of all tabs after the original
+    tabs.forEach(tab => {
+      if (tab.position >= nextPosition) {
+        tab.position++;
+      }
+    });
+
     const newTabData: Tab = {
       title: `${originalTab.title} (Copy)`,
       content: originalTab.content,
       color: originalTab.color,
       lock: false, // Always unlock duplicated tabs
+      position: nextPosition,
       id: crypto.randomUUID(),
     };
 
@@ -753,13 +866,14 @@ const duplicateTab = async (tabIndex: number) => {
         contentToSave = JSON.stringify(contentToSave);
       }
 
-      const response = await apiRequest('/api/notes', {
+      const response: any = await apiRequest('/api/notes', {
         method: 'POST',
         body: JSON.stringify({
           title: newTabData.title,
           content: contentToSave,
           color: newTabData.color,
           lock: newTabData.lock,
+          position: newTabData.position,
           id: newTabData.id,
         }),
       });
@@ -767,6 +881,9 @@ const duplicateTab = async (tabIndex: number) => {
       newTabData.noteId = response.note.noteId || response.note._id || response.note.id;
       tabs.splice(tabIndex + 1, 0, newTabData);
       activeTab.value = tabIndex + 1;
+      
+      // Update positions in the database
+      await updateTabPositions();
       
       // Cache is still valid, just added new item
       lastFetchTime.value = Date.now();

@@ -7,6 +7,7 @@ export const notes = sqliteTable("notes", {
   content: text("content").notNull().default(""),
   color: text("color").notNull().default("Default"),
   lock: integer("lock", { mode: "boolean" }).notNull().default(false),
+  position: integer("position").notNull(),
   isOpen: integer("isOpen", { mode: "boolean" }).notNull().default(true),
   userId: text("userId").notNull(), // This will be Clerk's user ID
   createdAt: integer("createdAt", { mode: "timestamp" })

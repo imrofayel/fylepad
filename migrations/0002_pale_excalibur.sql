@@ -1,0 +1,1 @@
+ALTER TABLE `notes` ALTER COLUMN "position" TO "position" integer NOT NULL;
