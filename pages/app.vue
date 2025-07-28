@@ -76,6 +76,14 @@
       <div class="h-full bg-green-500 animate-pulse"></div>
     </div>
 
+    <!-- Background sync indicator -->
+    <div v-if="syncStatus.isSyncing && !isLoading" class="fixed top-0 right-4 mt-2 z-20">
+      <div class="flex items-center space-x-2 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-xs">
+        <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+        <span>Syncing...</span>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -171,14 +179,22 @@ const isInitialized = ref(false);
 const isCached = ref(false); // Track if data is already cached
 const lastFetchTime = ref(0); // Track last fetch time for cache invalidation
 
-// Debounced save function - now saves the current active tab specifically
-const debouncedSave = debounce(async () => {
+// Background sync status
+const syncStatus = reactive({
+  isSyncing: false,
+  pendingSyncs: 0,
+  lastSyncTime: 0
+});
+
+// Debounced save function - now saves the current active tab specifically in background
+const debouncedSave = debounce(() => {
   if (!isInitialized.value || tabs.length === 0) return;
   
   const currentTab = tabs[activeTab.value];
   if (currentTab) {
-    await saveTabToCloud(currentTab);
-    console.log('Tab auto-saved to cloud');
+    // Background sync without await - no blocking
+    syncTabToCloud(currentTab);
+    console.log('Tab auto-save triggered, syncing to cloud...');
   }
 }, 1000);
 
@@ -526,81 +542,43 @@ const resetDragState = () => {
   dragState.startY = 0;
 };
 
-const moveTabToPosition = async (sourceIndex: number, targetIndex: number) => {
+const moveTabToPosition = (sourceIndex: number, targetIndex: number) => {
   if (sourceIndex === targetIndex || sourceIndex < 0 || targetIndex < 0 || 
       sourceIndex >= tabs.length || targetIndex > tabs.length) {
     return;
   }
   
-  const movedTab = tabs[sourceIndex];
-  if (!movedTab?.noteId) return;
+  // Perform instant UI update
+  const [movedTab] = tabs.splice(sourceIndex, 1);
+  tabs.splice(targetIndex, 0, movedTab);
   
-  // Calculate new position (1-based)
-  const newPosition = targetIndex + 1;
-  
-  try {
-    // Use the reorder API to handle all position updates
-    const response: any = await apiRequest('/api/notes/reorder', {
-      method: 'POST',
-      body: JSON.stringify({
-        noteId: movedTab.noteId,
-        newPosition: newPosition
-      }),
-    });
-
-    // Update local state with the response from server
-    if (response.notes) {
-      const updatedTabs = response.notes.map((note: any) => {
-        // Find the corresponding tab in our local tabs
-        const existingTab = tabs.find(t => t.noteId === note.id);
-        return {
-          title: note.title || 'Untitled',
-          content: existingTab?.content || note.content || '',
-          color: note.color || 'Default',
-          lock: note.lock || false,
-          position: note.position,
-          id: existingTab?.id || note.id,
-          noteId: note.id,
-        };
-      });
-
-      // Update tabs array
-      tabs.splice(0, tabs.length, ...updatedTabs);
-      
-      // Update active tab to follow the moved tab
-      const movedTabNewIndex = updatedTabs.findIndex((t: any) => t.noteId === movedTab.noteId);
-      if (activeTab.value === sourceIndex && movedTabNewIndex >= 0) {
-        activeTab.value = movedTabNewIndex;
-      }
-    }
-    
-    console.log('Tab order changed and saved to cloud');
-  } catch (error) {
-    console.error('Failed to reorder tab:', error);
-    // Fallback to local reorder without server sync
-    const [movedTabLocal] = tabs.splice(sourceIndex, 1);
-    tabs.splice(targetIndex, 0, movedTabLocal);
-    
-    if (activeTab.value === sourceIndex) {
-      activeTab.value = targetIndex;
-    } else if (activeTab.value > sourceIndex && activeTab.value <= targetIndex) {
-      activeTab.value--;
-    } else if (activeTab.value < sourceIndex && activeTab.value >= targetIndex) {
-      activeTab.value++;
-    }
+  // Update active tab index instantly
+  if (activeTab.value === sourceIndex) {
+    activeTab.value = targetIndex;
+  } else if (activeTab.value > sourceIndex && activeTab.value <= targetIndex) {
+    activeTab.value--;
+  } else if (activeTab.value < sourceIndex && activeTab.value >= targetIndex) {
+    activeTab.value++;
   }
+
+  // Update positions in memory instantly
+  tabs.forEach((tab, index) => {
+    tab.position = index + 1;
+  });
+  
+  // Sync to database in background (no await)
+  syncTabPositionsToCloud();
+  console.log('Tab order changed instantly, syncing to cloud...');
 };
 
-// Enhanced function to update all tab positions after reordering
-const updateTabPositions = async () => {
+// Background sync function for tab positions
+const syncTabPositionsToCloud = async () => {
   if (!isInitialized.value || tabs.length === 0) return;
   
+  syncStatus.pendingSyncs++;
+  syncStatus.isSyncing = true;
+  
   try {
-    // Update positions in memory
-    tabs.forEach((tab, index) => {
-      tab.position = index + 1;
-    });
-
     // Filter out tabs without noteId
     const validTabs = tabs.filter(tab => tab.noteId);
     if (validTabs.length === 0) return;
@@ -617,9 +595,22 @@ const updateTabPositions = async () => {
       body: JSON.stringify({ updates: positionUpdates }),
     });
 
+    syncStatus.lastSyncTime = Date.now();
+    console.log('Tab positions synced to cloud successfully');
   } catch (error) {
-    console.error('Failed to update tab positions:', error);
+    console.error('Failed to sync tab positions to cloud:', error);
+    // Could implement retry logic here if needed
+  } finally {
+    syncStatus.pendingSyncs = Math.max(0, syncStatus.pendingSyncs - 1);
+    if (syncStatus.pendingSyncs === 0) {
+      syncStatus.isSyncing = false;
+    }
   }
+};
+
+// Enhanced function to update all tab positions after reordering (kept for backward compatibility)
+const updateTabPositions = async () => {
+  await syncTabPositionsToCloud();
 };
 
 // Set tab reference
@@ -724,7 +715,7 @@ const getTabColorIndicator = (colorName: string) => {
 };
 
 // Tab operations
-const newTab = async () => {
+const newTab = () => {
   if (tabs.length >= 5) {
     return;
   }
@@ -741,69 +732,120 @@ const newTab = async () => {
     id: crypto.randomUUID(),
   };
 
+  // Instant UI update
+  tabs.push(newTabData);
+  activeTab.value = tabs.length - 1;
+  
+  console.log('New tab created instantly, syncing to cloud...');
+  
+  // Sync to cloud in background (no await)
+  syncNewTabToCloud(newTabData);
+};
+
+// Background sync function for new tabs
+const syncNewTabToCloud = async (tabData: Tab) => {
+  syncStatus.pendingSyncs++;
+  syncStatus.isSyncing = true;
+  
   try {
     const response: any = await apiRequest('/api/notes', {
       method: 'POST',
       body: JSON.stringify({
-        title: newTabData.title,
-        content: newTabData.content,
-        color: newTabData.color,
-        lock: newTabData.lock,
-        position: newTabData.position,
-        id: newTabData.id,
+        title: tabData.title,
+        content: tabData.content,
+        color: tabData.color,
+        lock: tabData.lock,
+        position: tabData.position,
+        id: tabData.id,
       }),
     });
     
-    newTabData.noteId = response.note.noteId || response.note._id || response.note.id;
-    tabs.push(newTabData);
-    activeTab.value = tabs.length - 1;
+    // Update the tab with the server-assigned noteId
+    tabData.noteId = response.note.noteId || response.note._id || response.note.id;
     
     // Cache is still valid, just added new item
     lastFetchTime.value = Date.now();
-    console.log('New tab created and saved to cloud:', newTabData.noteId);
+    syncStatus.lastSyncTime = Date.now();
+    console.log('New tab synced to cloud:', tabData.noteId);
   } catch (error) {
-    console.error('Failed to create new tab:', error);
-    // Fallback to local tab
-    tabs.push(newTabData);
-    activeTab.value = tabs.length - 1;
+    console.error('Failed to sync new tab to cloud:', error);
+    // Tab remains in local state even if cloud sync fails
+  } finally {
+    syncStatus.pendingSyncs = Math.max(0, syncStatus.pendingSyncs - 1);
+    if (syncStatus.pendingSyncs === 0) {
+      syncStatus.isSyncing = false;
+    }
   }
 };
 
-const closeTab = async (index: number) => {
+const closeTab = (index: number) => {
   const tabToClose = tabs[index];
   
   if (tabs.length > 1) {
-    await deleteTabFromCloud(tabToClose);
-    
-    // Remove the tab from the array
+    // Instant UI update - remove the tab from the array
     tabs.splice(index, 1);
     
-    // Update positions of remaining tabs
+    // Update positions of remaining tabs instantly
     tabs.forEach((tab, i) => {
       tab.position = i + 1;
     });
     
-    // Update active tab index
+    // Update active tab index instantly
     if (activeTab.value >= index && activeTab.value > 0) {
       activeTab.value--;
     }
     
-    // Save position updates to cloud
-    await updateTabPositions();
+    console.log('Tab closed instantly, syncing to cloud...');
+    
+    // Sync deletion to cloud in background (no await)
+    syncTabDeletionToCloud(tabToClose);
+    
+    // Sync position updates to cloud in background (no await)
+    syncTabPositionsToCloud();
     
     // Cache is still valid, just removed item
     lastFetchTime.value = Date.now();
   } else {
-    // If it's the last tab, delete it and create a new one
-    await deleteTabFromCloud(tabToClose);
+    // If it's the last tab, delete it instantly and create a new one
     tabs.splice(index, 1);
-    await newTab();
+    
+    console.log('Last tab closed, creating new tab and syncing to cloud...');
+    
+    // Sync deletion to cloud in background (no await)
+    syncTabDeletionToCloud(tabToClose);
+    
+    // Create new tab instantly
+    newTab();
   }
 };
 
-const updateTabTitle = async (newTitle: string) => {
+// Background sync function for tab deletion
+const syncTabDeletionToCloud = async (tab: Tab) => {
+  if (tab.noteId) {
+    syncStatus.pendingSyncs++;
+    syncStatus.isSyncing = true;
+    
+    try {
+      await apiRequest(`/api/notes/${tab.noteId}`, {
+        method: 'DELETE',
+      });
+      syncStatus.lastSyncTime = Date.now();
+      console.log('Tab deletion synced to cloud:', tab.noteId);
+    } catch (error) {
+      console.error('Failed to sync tab deletion to cloud:', error);
+    } finally {
+      syncStatus.pendingSyncs = Math.max(0, syncStatus.pendingSyncs - 1);
+      if (syncStatus.pendingSyncs === 0) {
+        syncStatus.isSyncing = false;
+      }
+    }
+  }
+};
+
+const updateTabTitle = (newTitle: string) => {
   const currentTab = tabs[activeTab.value];
   if (currentTab && isInitialized.value) {
+    // Instant UI update
     currentTab.title = newTitle;
     
     // Use debounced save for title changes (user might be typing)
@@ -811,10 +853,10 @@ const updateTabTitle = async (newTitle: string) => {
   }
 };
 
-const updateTabContent = async (content: any) => {
+const updateTabContent = (content: any) => {
   const currentTab = tabs[activeTab.value];
   if (currentTab && isInitialized.value) {
-    // Handle different content types - serialize objects to JSON
+    // Instant UI update - Handle different content types - serialize objects to JSON
     if (typeof content === 'object' && content !== null) {
       currentTab.content = JSON.stringify(content);
     } else {
@@ -826,24 +868,45 @@ const updateTabContent = async (content: any) => {
   }
 };
 
-const changeTabColor = async (tabIndex: number, color: { name: string }) => {
+const changeTabColor = (tabIndex: number, color: { name: string }) => {
   if (tabs[tabIndex]) {
+    // Instant UI update
     tabs[tabIndex].color = color.name;
     
-    // Immediately save this specific tab to cloud
-    await saveTabToCloud(tabs[tabIndex]);
-    console.log(`Tab color changed to ${color.name} and saved to cloud`);
+    console.log(`Tab color changed to ${color.name} instantly, syncing to cloud...`);
+    
+    // Sync to cloud in background (no await)
+    syncTabToCloud(tabs[tabIndex]);
   }
 };
 
-const duplicateTab = async (tabIndex: number) => {
+// Background sync function for individual tab updates
+const syncTabToCloud = async (tab: Tab) => {
+  syncStatus.pendingSyncs++;
+  syncStatus.isSyncing = true;
+  
+  try {
+    await saveTabToCloud(tab);
+    syncStatus.lastSyncTime = Date.now();
+    console.log(`Tab synced to cloud: ${tab.noteId}`);
+  } catch (error) {
+    console.error('Failed to sync tab to cloud:', error);
+  } finally {
+    syncStatus.pendingSyncs = Math.max(0, syncStatus.pendingSyncs - 1);
+    if (syncStatus.pendingSyncs === 0) {
+      syncStatus.isSyncing = false;
+    }
+  }
+};
+
+const duplicateTab = (tabIndex: number) => {
   if (tabs[tabIndex]) {
     const originalTab = tabs[tabIndex];
     
     // Calculate next position after the original tab
     const nextPosition = originalTab.position + 1;
     
-    // Shift positions of all tabs after the original
+    // Shift positions of all tabs after the original instantly
     tabs.forEach(tab => {
       if (tab.position >= nextPosition) {
         tab.position++;
@@ -859,48 +922,71 @@ const duplicateTab = async (tabIndex: number) => {
       id: crypto.randomUUID(),
     };
 
-    try {
-      // Ensure content is properly serialized for API
-      let contentToSave = newTabData.content;
-      if (typeof contentToSave === 'object' && contentToSave !== null) {
-        contentToSave = JSON.stringify(contentToSave);
-      }
+    // Instant UI update
+    tabs.splice(tabIndex + 1, 0, newTabData);
+    activeTab.value = tabIndex + 1;
+    
+    console.log('Tab duplicated instantly, syncing to cloud...');
+    
+    // Sync to cloud in background (no await)
+    syncDuplicatedTabToCloud(newTabData);
+    
+    // Cache is still valid, just added new item
+    lastFetchTime.value = Date.now();
+  }
+};
 
-      const response: any = await apiRequest('/api/notes', {
-        method: 'POST',
-        body: JSON.stringify({
-          title: newTabData.title,
-          content: contentToSave,
-          color: newTabData.color,
-          lock: newTabData.lock,
-          position: newTabData.position,
-          id: newTabData.id,
-        }),
-      });
-      
-      newTabData.noteId = response.note.noteId || response.note._id || response.note.id;
-      tabs.splice(tabIndex + 1, 0, newTabData);
-      activeTab.value = tabIndex + 1;
-      
-      // Update positions in the database
-      await updateTabPositions();
-      
-      // Cache is still valid, just added new item
-      lastFetchTime.value = Date.now();
-      console.log('Tab duplicated and saved to cloud:', newTabData.noteId);
-    } catch (error) {
-      console.error('Failed to duplicate tab:', error);
+// Background sync function for duplicated tabs
+const syncDuplicatedTabToCloud = async (tabData: Tab) => {
+  syncStatus.pendingSyncs++;
+  syncStatus.isSyncing = true;
+  
+  try {
+    // Ensure content is properly serialized for API
+    let contentToSave = tabData.content;
+    if (typeof contentToSave === 'object' && contentToSave !== null) {
+      contentToSave = JSON.stringify(contentToSave);
+    }
+
+    const response: any = await apiRequest('/api/notes', {
+      method: 'POST',
+      body: JSON.stringify({
+        title: tabData.title,
+        content: contentToSave,
+        color: tabData.color,
+        lock: tabData.lock,
+        position: tabData.position,
+        id: tabData.id,
+      }),
+    });
+    
+    // Update the tab with the server-assigned noteId
+    tabData.noteId = response.note.noteId || response.note._id || response.note.id;
+    
+    // Update positions in the database
+    await syncTabPositionsToCloud();
+    
+    syncStatus.lastSyncTime = Date.now();
+    console.log('Duplicated tab synced to cloud:', tabData.noteId);
+  } catch (error) {
+    console.error('Failed to sync duplicated tab to cloud:', error);
+  } finally {
+    syncStatus.pendingSyncs = Math.max(0, syncStatus.pendingSyncs - 1);
+    if (syncStatus.pendingSyncs === 0) {
+      syncStatus.isSyncing = false;
     }
   }
 };
 
-const lockTab = async (tabIndex: number) => {
+const lockTab = (tabIndex: number) => {
   if (tabs[tabIndex]) {
+    // Instant UI update
     tabs[tabIndex].lock = !tabs[tabIndex].lock;
     
-    // Immediately save this specific tab to cloud
-    await saveTabToCloud(tabs[tabIndex]);
-    console.log(`Tab lock status changed to ${tabs[tabIndex].lock} and saved to cloud`);
+    console.log(`Tab lock status changed to ${tabs[tabIndex].lock} instantly, syncing to cloud...`);
+    
+    // Sync to cloud in background (no await)
+    syncTabToCloud(tabs[tabIndex]);
   }
 };
 
