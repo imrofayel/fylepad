@@ -4,7 +4,7 @@
   </div>
 
     <NuxtLink href="/signin">
-    <button class="!bg-[#24d86c] dark:!bg-[#0c843c] dark:!border-[#196838] gap-1 !border-[#28c76d] !text-white font-medium border bg-white/80  !px-[9px] py-[3px]  dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool tab-item transition-all duration-200 fixed top-3 right-3 max-w-fit"><span class="flex items-center">Sign In<svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"><path fill="currentColor" d="M10.5 16.3q-.2 0-.35-.137T10 15.8V8.2q0-.225.15-.362t.35-.138q.05 0 .35.15l3.625 3.625q.125.125.175.25t.05.275t-.05.275t-.175.25L10.85 16.15q-.075.075-.162.113t-.188.037"/></svg></span></button>
+    <button class="cl-formButtonPrimary cl-button 🔒️ cl-internal-1o76iuo fixed top-3 right-3 max-w-fit" data-localization-key="formButtonPrimary" data-variant="solid" data-color="primary"><span class="cl-internal-2iusy0">Sign In<svg class="cl-buttonArrowIcon 🔒️ cl-internal-1uq3j8z"><path fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m7.25 5-3.5-2.25v4.5L7.25 5Z"></path></svg></span></button>
   </NuxtLink>
 </template>
 
