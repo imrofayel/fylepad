@@ -25,6 +25,7 @@
     "@nuxt/icon": "^1.5.1",
     "@nuxtjs/color-mode": "^3.5.1",
     "@nuxtjs/tailwindcss": "^6.12.1",
+    "@pinia/nuxt": "^0.11.2",
     "@shopify/draggable": "^1.1.4",
     "@tailwindcss/typography": "^0.5.15",
     "@tanstack/vue-table": "^8.21.3",

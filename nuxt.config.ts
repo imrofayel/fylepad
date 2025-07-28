@@ -85,7 +85,7 @@ export default defineNuxtConfig({
 //   },
 
 // '@vite-pwa/nuxt'
-  modules: ['@clerk/nuxt', '@nuxt/icon', '@nuxtjs/tailwindcss', '@nuxtjs/color-mode'],
+  modules: ['@clerk/nuxt', '@pinia/nuxt', '@nuxt/icon', '@nuxtjs/tailwindcss', '@nuxtjs/color-mode'],
 
 
 // runtimeConfig: {

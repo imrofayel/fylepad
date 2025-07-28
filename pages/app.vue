@@ -46,12 +46,19 @@
     </div>
 
     <div class="flex-grow" :class="focusMode.focused ? 'mt-1' : 'mt-7'">
-      <Editor v-if="tabs.length > 0" :key="activeTab" :title="tabs[activeTab].title" :content="tabs[activeTab].content"
+      <Editor v-if="tabs.length > 0 && tabs[activeTab]" :key="activeTab" :title="tabs[activeTab].title || 'Untitled'" :content="parseContent(tabs[activeTab].content)"
         @update:title="updateTabTitle" @update:content="updateTabContent" />
+      <div v-else-if="isLoading" class="flex items-center justify-center h-full">
+        <div class="text-center">
+          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto mb-4"></div>
+          <p class="text-gray-600 dark:text-gray-400">Loading your notes...</p>
+        </div>
+      </div>
     </div>
 
     <!-- Tab Context Menu -->
     <TabContextMenu
+      v-if="tabs.length > 0 && tabs[activeTab]"
       :visible="contextMenu.visible"
       :targetElement="contextMenu.targetElement"
       :tabIndex="contextMenu.tabIndex"
@@ -61,9 +68,13 @@
       @colorChanged="changeTabColor"
       @duplicateTab="duplicateTab"
       @lock-tab="lockTab"
-      :status="tabs[activeTab].lock"
-
+      :status="tabs[activeTab]?.lock || false"
     />
+
+    <!-- Loading indicator -->
+    <div v-if="isLoading" class="fixed top-0 left-0 right-0 h-1">
+      <div class="h-full bg-green-500 animate-pulse"></div>
+    </div>
 
   </div>
 </template>
@@ -133,33 +144,42 @@
 
 <script lang="ts" setup>
 import { ref, reactive, onMounted, watch, onBeforeUnmount, computed } from 'vue';
-import { fs, path } from '@tauri-apps/api';
 import { isNumber } from '@tiptap/core';
 
 import { useFocusStore } from '../stores/focus'
 import TabContextMenu from '../components/ui/tabContextMenu.vue'
 
 const focusMode = useFocusStore()
-
 const colorMode = useColorMode()
 
 interface Tab {
   title: string;
   content: any;
   color?: string;
-  lock: boolean
-  id: string; // Add unique ID for tabs
+  lock: boolean;
+  id: string;
+  noteId?: string; // Database ID
 }
 
-const tabs = reactive<Tab[]>([{ 
-  title: 'Untitled', 
-  content: '', 
-  color: 'Default',
-  lock: false,
-  id: crypto.randomUUID() // Generate unique ID
-}]);
+// State
+const tabs = reactive<Tab[]>([]);
 const activeTab = ref(0);
 const tabRefs = ref<Record<number, HTMLElement>>({});
+const isLoading = ref(false);
+const isInitialized = ref(false);
+const isCached = ref(false); // Track if data is already cached
+const lastFetchTime = ref(0); // Track last fetch time for cache invalidation
+
+// Debounced save function - now saves the current active tab specifically
+const debouncedSave = debounce(async () => {
+  if (!isInitialized.value || tabs.length === 0) return;
+  
+  const currentTab = tabs[activeTab.value];
+  if (currentTab) {
+    await saveTabToCloud(currentTab);
+    console.log('Tab auto-saved to cloud');
+  }
+}, 1000);
 
 // Enhanced drag-and-drop state
 const dragState = reactive({
@@ -171,6 +191,226 @@ const dragState = reactive({
   startY: 0
 });
 
+// Context menu state
+const contextMenu = reactive({
+  visible: false,
+  targetElement: null as HTMLElement | null,
+  tabIndex: -1
+});
+
+// API Functions
+const apiRequest = async (url: string, options: RequestInit = {}) => {
+  const response = await $fetch(url, {
+    ...options,
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
+  return response;
+};
+
+const loadNotesFromCloud = async (forceRefresh = false) => {
+  // Skip loading if already cached and not forcing refresh
+  if (isCached.value && !forceRefresh) {
+    console.log('Using cached tabs, skipping API call');
+    return;
+  }
+
+  // Skip if already loading to prevent duplicate requests
+  if (isLoading.value) {
+    console.log('Already loading, skipping duplicate request');
+    return;
+  }
+
+  try {
+    isLoading.value = true;
+    console.log('Fetching notes from cloud...');
+    
+    const response = await apiRequest('/api/notes');
+    
+    if (response.notes && response.notes.length > 0) {
+      const cloudTabs = response.notes.map((note: any) => ({
+        title: note.title || 'Untitled',
+        content: note.content || '', // Keep as string, will be parsed when needed
+        color: note.color || 'Default',
+        lock: note.lock || false,
+        id: note.id || crypto.randomUUID(),
+        noteId: note.noteId || note._id || note.id, // Handle different ID fields
+      }));
+      
+      tabs.splice(0, tabs.length, ...cloudTabs);
+      activeTab.value = Math.min(0, cloudTabs.length - 1);
+      
+      // Mark as cached
+      isCached.value = true;
+      lastFetchTime.value = Date.now();
+      
+      console.log(`Loaded ${cloudTabs.length} tabs from cloud`);
+    } else {
+      // No notes in cloud, create initial tab
+      console.log('No notes found, creating initial tab');
+      await createInitialTab();
+      isCached.value = true; // Mark as cached even with initial tab
+    }
+  } catch (error) {
+    console.error('Failed to load notes from cloud:', error);
+    // Only create initial tab if we have no cached data
+    if (!isCached.value) {
+      await createInitialTab();
+      isCached.value = true;
+    }
+  } finally {
+    isLoading.value = false;
+    isInitialized.value = true;
+  }
+};
+
+const createInitialTab = async () => {
+  const newTabData = {
+    title: 'Untitled',
+    content: '',
+    color: 'Default',
+    lock: false,
+    id: crypto.randomUUID(),
+  };
+  
+  try {
+    const response = await apiRequest('/api/notes', {
+      method: 'POST',
+      body: JSON.stringify(newTabData),
+    });
+    
+    tabs.push({
+      ...newTabData,
+      noteId: response.note.noteId || response.note._id || response.note.id,
+    });
+    activeTab.value = 0;
+    
+    // Update cache status
+    isCached.value = true;
+    lastFetchTime.value = Date.now();
+  } catch (error) {
+    console.error('Failed to create initial tab:', error);
+    // Fallback to local tab
+    tabs.push(newTabData);
+    activeTab.value = 0;
+    isCached.value = true; // Still mark as cached to prevent refetching
+  }
+};
+
+const saveTabToCloud = async (tab: Tab) => {
+  if (!tab.noteId) {
+    // Create new note
+    try {
+      // Ensure content is properly serialized
+      let contentToSave = tab.content;
+      if (typeof contentToSave === 'object' && contentToSave !== null) {
+        contentToSave = JSON.stringify(contentToSave);
+      }
+
+      const response = await apiRequest('/api/notes', {
+        method: 'POST',
+        body: JSON.stringify({
+          title: tab.title || 'Untitled',
+          content: contentToSave || '',
+          color: tab.color || 'Default',
+          lock: tab.lock || false,
+          id: tab.id,
+        }),
+      });
+      tab.noteId = response.note.noteId || response.note._id || response.note.id;
+      console.log('New note created in cloud:', tab.noteId);
+    } catch (error) {
+      console.error('Failed to create note:', error);
+    }
+  } else {
+    // Update existing note
+    try {
+      // Ensure content is properly serialized
+      let contentToSave = tab.content;
+      if (typeof contentToSave === 'object' && contentToSave !== null) {
+        contentToSave = JSON.stringify(contentToSave);
+      }
+
+      await apiRequest(`/api/notes/${tab.noteId}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+          title: tab.title || 'Untitled',
+          content: contentToSave || '',
+          color: tab.color || 'Default',
+          lock: tab.lock || false,
+        }),
+      });
+      console.log('Note updated in cloud:', tab.noteId);
+    } catch (error) {
+      console.error('Failed to update note:', error);
+    }
+  }
+};
+
+// Cache management functions
+const refreshCache = async () => {
+  console.log('Refreshing cache...');
+  isCached.value = false;
+  await loadNotesFromCloud(true);
+};
+
+const invalidateCache = () => {
+  console.log('Cache invalidated');
+  isCached.value = false;
+  lastFetchTime.value = 0;
+};
+
+// Check if cache is stale (optional: implement cache expiration)
+const isCacheStale = (maxAgeMs = 5 * 60 * 1000) => { // 5 minutes default
+  return Date.now() - lastFetchTime.value > maxAgeMs;
+};
+
+const deleteTabFromCloud = async (tab: Tab) => {
+  if (tab.noteId) {
+    try {
+      await apiRequest(`/api/notes/${tab.noteId}`, {
+        method: 'DELETE',
+      });
+    } catch (error) {
+      console.error('Failed to delete note:', error);
+    }
+  }
+};
+
+// Utility function for content parsing
+const parseContent = (content: any) => {
+  if (!content) return '';
+  
+  // If it's already a string, try to parse it as JSON
+  if (typeof content === 'string') {
+    try {
+      return JSON.parse(content);
+    } catch {
+      // If parsing fails, return as string
+      return content;
+    }
+  }
+  
+  // If it's already an object, return as is
+  return content;
+};
+
+// Utility function for debouncing
+function debounce(func: Function, wait: number) {
+  let timeout: NodeJS.Timeout;
+  return function executedFunction(...args: any[]) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
+// Drag and drop handlers (unchanged)
 const onTabDragStart = (index: number, event: DragEvent) => {
   dragState.dragging = true;
   dragState.draggedTabIndex = index;
@@ -204,8 +444,6 @@ const onTabDragStart = (index: number, event: DragEvent) => {
   }
 };
 
-
-// Enhanced drag over handler
 const onTabDragOver = (event: DragEvent, targetIndex: number) => {
   event.preventDefault();
   
@@ -223,20 +461,16 @@ const onTabDragOver = (event: DragEvent, targetIndex: number) => {
   dragState.dragOverTabIndex = targetIndex;
   dragState.dragOverSide = isLeftSide ? 'left' : 'right';
   
-  // Set drop effect
   if (event.dataTransfer) {
     event.dataTransfer.dropEffect = 'move';
   }
 };
 
-// Drag enter handler
 const onTabDragEnter = (event: DragEvent, targetIndex: number) => {
   event.preventDefault();
 };
 
-// Drag leave handler
 const onTabDragLeave = (event: DragEvent) => {
-  // Only clear drag over state if we're actually leaving the tab area
   const relatedTarget = event.relatedTarget as HTMLElement;
   if (!relatedTarget || !relatedTarget.closest('.tab-item')) {
     dragState.dragOverTabIndex = -1;
@@ -244,7 +478,6 @@ const onTabDragLeave = (event: DragEvent) => {
   }
 };
 
-// Enhanced drop handler
 const onTabDrop = (event: DragEvent, targetIndex: number) => {
   event.preventDefault();
   
@@ -259,29 +492,23 @@ const onTabDrop = (event: DragEvent, targetIndex: number) => {
     return;
   }
   
-  // Calculate the new position based on drop side
   let newIndex = targetIndex;
   if (dragState.dragOverSide === 'right') {
     newIndex = targetIndex + 1;
   }
   
-  // Adjust for the fact that we're removing the source tab first
   if (sourceIndex < newIndex) {
     newIndex--;
   }
   
-  // Perform the move
   moveTabToPosition(sourceIndex, newIndex);
-  
   resetDragState();
 };
 
-// Drag end handler
 const onTabDragEnd = () => {
   resetDragState();
 };
 
-// Reset drag state
 const resetDragState = () => {
   dragState.dragging = false;
   dragState.draggedTabIndex = -1;
@@ -291,20 +518,15 @@ const resetDragState = () => {
   dragState.startY = 0;
 };
 
-// Move tab to a specific position
-const moveTabToPosition = (sourceIndex: number, targetIndex: number) => {
+const moveTabToPosition = async (sourceIndex: number, targetIndex: number) => {
   if (sourceIndex === targetIndex || sourceIndex < 0 || targetIndex < 0 || 
       sourceIndex >= tabs.length || targetIndex > tabs.length) {
     return;
   }
   
-  // Extract the tab to move
   const [movedTab] = tabs.splice(sourceIndex, 1);
-  
-  // Insert at new position
   tabs.splice(targetIndex, 0, movedTab);
   
-  // Update active tab index
   if (activeTab.value === sourceIndex) {
     activeTab.value = targetIndex;
   } else if (activeTab.value > sourceIndex && activeTab.value <= targetIndex) {
@@ -313,15 +535,10 @@ const moveTabToPosition = (sourceIndex: number, targetIndex: number) => {
     activeTab.value++;
   }
   
-  saveAppState();
+  // Save all tabs to maintain order in cloud
+  await saveAllTabsToCloud();
+  console.log('Tab order changed and saved to cloud');
 };
-
-// Context menu state
-const contextMenu = reactive({
-  visible: false,
-  targetElement: null as HTMLElement | null,
-  tabIndex: -1
-});
 
 // Set tab reference
 const setTabRef = (index: number, el: Element | ComponentPublicInstance | null) => {
@@ -355,12 +572,10 @@ const getTabClasses = (tabIndex: number) => {
   
   let classes = '';
   
-  // Dragging state
   if (isDragging) {
     classes += ' dragging';
   }
   
-  // Drag over states
   if (isDragOver && !isDragging) {
     if (dragState.dragOverSide === 'left') {
       classes += ' drag-over-left';
@@ -369,9 +584,7 @@ const getTabClasses = (tabIndex: number) => {
     }
   }
   
-  // Active state with colors
   if (isActive) {
-    // Apply color-specific active styles
     switch (tab.color) {
       case 'Blue':
         classes += ' !bg-blue-500 dark:!bg-blue-600 !border-blue-600 dark:!border-blue-500 !text-white font-medium';
@@ -402,9 +615,6 @@ const getTabClasses = (tabIndex: number) => {
   return classes;
 };
 
-
-
-// Get tab style for drag effects
 const getTabStyle = (tabIndex: number) => {
   const isDragging = dragState.dragging && dragState.draggedTabIndex === tabIndex;
   
@@ -418,7 +628,6 @@ const getTabStyle = (tabIndex: number) => {
   return {};
 };
 
-// Get tab color indicator
 const getTabColorIndicator = (colorName: string) => {
   const colorMap: Record<string, string> = {
     'Blue': 'bg-blue-400',
@@ -432,39 +641,152 @@ const getTabColorIndicator = (colorName: string) => {
   return colorMap[colorName] || '';
 };
 
-// Change tab color
-const changeTabColor = (tabIndex: number, color: { name: string }) => {
-  if (tabs[tabIndex]) {
-    tabs[tabIndex].color = color.name;
-    saveAppState();
+// Tab operations
+const newTab = async () => {
+  if (tabs.length >= 5) {
+    return;
+  }
+
+  const newTabData: Tab = {
+    title: 'Untitled',
+    content: '',
+    color: 'Default',
+    lock: false,
+    id: crypto.randomUUID(),
+  };
+
+  try {
+    const response = await apiRequest('/api/notes', {
+      method: 'POST',
+      body: JSON.stringify({
+        title: newTabData.title,
+        content: newTabData.content,
+        color: newTabData.color,
+        lock: newTabData.lock,
+        id: newTabData.id,
+      }),
+    });
+    
+    newTabData.noteId = response.note.noteId || response.note._id || response.note.id;
+    tabs.push(newTabData);
+    activeTab.value = tabs.length - 1;
+    
+    // Cache is still valid, just added new item
+    lastFetchTime.value = Date.now();
+    console.log('New tab created and saved to cloud:', newTabData.noteId);
+  } catch (error) {
+    console.error('Failed to create new tab:', error);
+    // Fallback to local tab
+    tabs.push(newTabData);
+    activeTab.value = tabs.length - 1;
   }
 };
 
-// Duplicate tab
-const duplicateTab = (tabIndex: number) => {
+const closeTab = async (index: number) => {
+  const tabToClose = tabs[index];
+  
+  if (tabs.length > 1) {
+    await deleteTabFromCloud(tabToClose);
+    tabs.splice(index, 1);
+    if (activeTab.value >= index && activeTab.value > 0) {
+      activeTab.value--;
+    }
+    // Cache is still valid, just removed item
+    lastFetchTime.value = Date.now();
+  } else {
+    await deleteTabFromCloud(tabToClose);
+    tabs.splice(index, 1);
+    await newTab();
+  }
+};
+
+const updateTabTitle = async (newTitle: string) => {
+  const currentTab = tabs[activeTab.value];
+  if (currentTab && isInitialized.value) {
+    currentTab.title = newTitle;
+    
+    // Use debounced save for title changes (user might be typing)
+    debouncedSave();
+  }
+};
+
+const updateTabContent = async (content: any) => {
+  const currentTab = tabs[activeTab.value];
+  if (currentTab && isInitialized.value) {
+    // Handle different content types - serialize objects to JSON
+    if (typeof content === 'object' && content !== null) {
+      currentTab.content = JSON.stringify(content);
+    } else {
+      currentTab.content = content;
+    }
+    
+    // Use debounced save for content changes (user might be typing)
+    debouncedSave();
+  }
+};
+
+const changeTabColor = async (tabIndex: number, color: { name: string }) => {
+  if (tabs[tabIndex]) {
+    tabs[tabIndex].color = color.name;
+    
+    // Immediately save this specific tab to cloud
+    await saveTabToCloud(tabs[tabIndex]);
+    console.log(`Tab color changed to ${color.name} and saved to cloud`);
+  }
+};
+
+const duplicateTab = async (tabIndex: number) => {
   if (tabs[tabIndex]) {
     const originalTab = tabs[tabIndex];
-    const newTab: Tab = {
+    const newTabData: Tab = {
       title: `${originalTab.title} (Copy)`,
       content: originalTab.content,
       color: originalTab.color,
-      lock: false,
-      id: crypto.randomUUID()
+      lock: false, // Always unlock duplicated tabs
+      id: crypto.randomUUID(),
     };
-    tabs.splice(tabIndex + 1, 0, newTab);
-    activeTab.value = tabIndex + 1;
-    saveAppState();
+
+    try {
+      // Ensure content is properly serialized for API
+      let contentToSave = newTabData.content;
+      if (typeof contentToSave === 'object' && contentToSave !== null) {
+        contentToSave = JSON.stringify(contentToSave);
+      }
+
+      const response = await apiRequest('/api/notes', {
+        method: 'POST',
+        body: JSON.stringify({
+          title: newTabData.title,
+          content: contentToSave,
+          color: newTabData.color,
+          lock: newTabData.lock,
+          id: newTabData.id,
+        }),
+      });
+      
+      newTabData.noteId = response.note.noteId || response.note._id || response.note.id;
+      tabs.splice(tabIndex + 1, 0, newTabData);
+      activeTab.value = tabIndex + 1;
+      
+      // Cache is still valid, just added new item
+      lastFetchTime.value = Date.now();
+      console.log('Tab duplicated and saved to cloud:', newTabData.noteId);
+    } catch (error) {
+      console.error('Failed to duplicate tab:', error);
+    }
   }
 };
 
-const lockTab = (tabIndex: number) => {
-    if (tabs[tabIndex]) {
+const lockTab = async (tabIndex: number) => {
+  if (tabs[tabIndex]) {
     tabs[tabIndex].lock = !tabs[tabIndex].lock;
-    saveAppState();
+    
+    // Immediately save this specific tab to cloud
+    await saveTabToCloud(tabs[tabIndex]);
+    console.log(`Tab lock status changed to ${tabs[tabIndex].lock} and saved to cloud`);
   }
 };
 
-// Move tab left or right (for keyboard shortcuts and context menu)
 const moveTab = (tabIndex: number, direction: 'left' | 'right') => {
   if (direction === 'left' && tabIndex > 0) {
     moveTabToPosition(tabIndex, tabIndex - 1);
@@ -473,127 +795,25 @@ const moveTab = (tabIndex: number, direction: 'left' | 'right') => {
   }
 };
 
-// Function to save the app state
-async function saveAppState() {
-  const appState = {
-    tabs: tabs,
-    activeTab: activeTab.value,
-    colorMode: colorMode.preference
-  };
-
-  // Try to save using Tauri's fs API
-  try {
-    const appDir = await path.appDataDir();
-    const filePath = await path.join(appDir, 'app_state.json');
-    await fs.writeTextFile(filePath, JSON.stringify(appState));
-  } catch (error) {
-    // If Tauri's fs API fails, fall back to localStorage
-    localStorage.setItem('appState', JSON.stringify(appState));
-  }
-}
-
-// Function to load the app state
-async function loadAppState() {
-  let appState;
-
-  // Try to load using Tauri's fs API
-  try {
-    const appDir = await path.appDataDir();
-    const filePath = await path.join(appDir, 'app_state.json');
-    const contents = await fs.readTextFile(filePath);
-    appState = JSON.parse(contents);
-  } catch (error) {
-    // If Tauri's fs API fails, try localStorage
-    const storedState = localStorage.getItem('appState');
-    if (storedState) {
-      appState = JSON.parse(storedState);
-    }
-  }
-
-  // If we successfully loaded a state, apply it
-  if (appState) {
-    // Ensure all tabs have IDs (for backward compatibility)
-    const migratedTabs = appState.tabs.map((tab: any) => ({
-      ...tab,
-      id: tab.id || crypto.randomUUID()
-    }));
-    
-    tabs.splice(0, tabs.length, ...migratedTabs);
-    activeTab.value = appState.activeTab;
-    colorMode.preference = appState.colorMode;
-  }
-}
-
-// Load the app state when the component mounts
-onMounted(async () => {
-  await loadAppState();
-});
-
-// Clean up on unmount
-onBeforeUnmount(() => {
-  document.removeEventListener('keydown', handleShortcut);
-});
-
-// Watch for changes and save the state
-watch([tabs, activeTab, () => colorMode.preference], async () => {
-  await saveAppState();
-}, { deep: true });
-
-const newTab = () => {
-  // TODO: Adjust the UI later. Add pricing thing into it just for fun.
-  if (tabs.length >= 5) {
-    return
-  }
-
-  tabs.push({ 
-    title: 'Untitled', 
-    content: '', 
-    color: 'Default',
-    lock: false,
-    id: crypto.randomUUID()
-  });
-  activeTab.value = tabs.length - 1;
-};
-
-const closeTab = (index: number) => {
-  if (tabs.length > 1) {
-    tabs.splice(index, 1);
-    if (activeTab.value >= index && activeTab.value > 0) {
-      activeTab.value--;
-    }
-  } else {
-    tabs.splice(index, 1);
-    newTab()
-  }
-};
-
-const updateTabTitle = (newTitle: string) => {
-  const currentTab = tabs[activeTab.value];
-  if (currentTab) {
-    currentTab.title = newTitle;
-  }
-};
-
-const updateTabContent = (content: any) => {
-  const currentTab = tabs[activeTab.value];
-  if (currentTab) {
-    currentTab.content = content;
-  }
-};
-
+// Keyboard shortcuts
 function handleShortcut(event: KeyboardEvent) {
-  // CTRL + N -> New tab
   if (event.ctrlKey && event.key === 'n') {
     event.preventDefault();
     newTab();
   }
   
-  // CTRL + G + [number] -> Switch to tab
+  // CTRL + R -> Refresh cache (manual refresh)
+  if (event.ctrlKey && event.key === 'r' && event.shiftKey) {
+    event.preventDefault();
+    refreshCache();
+    return;
+  }
+  
   if (event.altKey) {
     event.preventDefault();
     const numberListener = (e: KeyboardEvent) => {
       if (isNumber(parseInt(e.key)) && parseInt(e.key) <= tabs.length) {
-        const tabNumber = parseInt(e.key) - 1; // Convert to 0-based index
+        const tabNumber = parseInt(e.key) - 1;
         if (tabNumber < tabs.length) {
           activeTab.value = tabNumber;
         }
@@ -603,32 +823,31 @@ function handleShortcut(event: KeyboardEvent) {
     document.addEventListener('keydown', numberListener);
   }
   
-  // CTRL + SHIFT + Left Arrow -> Move tab left
   if (event.ctrlKey && event.shiftKey && event.key === 'ArrowLeft') {
     event.preventDefault();
     moveTab(activeTab.value, 'left');
   }
   
-  // CTRL + SHIFT + Right Arrow -> Move tab right
   if (event.ctrlKey && event.shiftKey && event.key === 'ArrowRight') {
     event.preventDefault();
     moveTab(activeTab.value, 'right');
   }
 }
 
-onMounted(() => {
-  // Add the event listener when the component is mounted
+// Lifecycle
+onMounted(async () => {
   document.addEventListener('keydown', handleShortcut);
+  await loadNotesFromCloud();
 });
 
 onBeforeUnmount(() => {
-  // Clean up the event listener to prevent memory leaks
   document.removeEventListener('keydown', handleShortcut);
 });
 
+// SEO
 const fallbackTitle = 'Untitled';
-const currentTab = computed(() => tabs[activeTab.value as any]);
-const currentTabTitle = computed(() => currentTab.value?.title ?? fallbackTitle);
+const currentTab = computed(() => tabs[activeTab.value]);
+const currentTabTitle = computed(() => currentTab.value?.title || fallbackTitle);
 
 useHead({
   title: currentTabTitle,

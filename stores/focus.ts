@@ -1,6 +1,3 @@
-// stores/focus.ts
-import { defineStore } from 'pinia'
-
 export const useFocusStore = defineStore('focus', {
   state: () => ({
     focused: false,
