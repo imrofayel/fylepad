@@ -1,6 +1,6 @@
 <template>
   <div class="h-full w-full gap-0 flex flex-col">
-    <div class="flex justify-between items-center w-full p-3 py-2 fixed bg-white z-10 pr-[7.5rem] dark:bg-[#171717]" v-if="!focusMode.focused">
+    <div class="flex justify-between items-center w-full p-3 py-2 fixed bg-white z-10 pr-[7.5rem] dark:bg-[#171717]" v-if="!focusMode.focused && !isLoading">
       <div class="flex space-x-2 overflow-auto justify-center items-center">
         <button @click="newTab"
           class="hover:!scale-100 drop-shadow-sm" title="New Tab">
@@ -9,8 +9,26 @@
 
         </button>
 
+        <!-- Offline indicator - positioned before tabs -->
+        <button
+          v-if="offlineStatus.isOffline"
+          @click="handleOfflineRefresh"
+          class="!bg-[#fa6732d8] scale-90 gap-1 !border-[#cc3412] !text-white font-medium border !px-[9px] !text-[17px] !py-[3px] dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool tab-item relative transition-all duration-200"
+          title="You're working offline. Click to retry connection and sync pending changes."
+          :disabled="offlineStatus.isRetrying"
+        >
+          <div class="flex items-center space-x-1">
+			<svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M20.5 5.5h-11C5.787 5.5 3 8.185 3 12m.5 6.5h11c3.713 0 6.5-2.685 6.5-6.5"/><path d="M18.5 3S21 4.841 21 5.5S18.5 8 18.5 8m-13 8S3 17.841 3 18.5S5.5 21 5.5 21"/></g></svg>
+            <span>
+              {{ offlineStatus.isRetrying ? 'Retrying' : 
+                 offlineStatus.pendingChanges > 0 ? `Offline (${offlineStatus.pendingChanges})` : 'Offline' }}
+            </span>
+          </div>
+        </button>
+
         <div class="dropdown-menu overflow-auto flex space-x-2" ref="tabContainer">
           <div class="flex space-x-2">
+
             <div
               v-for="(tab, tabIndex) in tabs"
               :key="tab.id"
@@ -48,11 +66,9 @@
     <div class="flex-grow" :class="focusMode.focused ? 'mt-1' : 'mt-7'">
       <Editor v-if="tabs.length > 0 && tabs[activeTab]" :key="activeTab" :title="tabs[activeTab].title || 'Untitled'" :content="parseContent(tabs[activeTab].content)"
         @update:title="updateTabTitle" @update:content="updateTabContent" />
-      <div v-else-if="isLoading" class="flex items-center justify-center h-full">
+      <div v-else-if="isLoading" class="flex z-[10000] items-center justify-center h-screen">
         <div class="text-center">
-          <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto mb-4"></div>
-          <p class="text-gray-600 dark:text-gray-400">Loading your notes...</p>
-        </div>
+          <div class="animate-spin rounded-full h-10 w-10 border-b-[3.5px] border-green-500 mx-auto mb-4"></div></div>
       </div>
     </div>
 
@@ -77,10 +93,18 @@
     </div>
 
     <!-- Background sync indicator -->
-    <div v-if="syncStatus.isSyncing && !isLoading" class="fixed top-0 right-4 mt-2 z-20">
-      <div class="flex items-center space-x-2 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-3 py-1 rounded-full text-xs">
-        <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-        <span>Syncing...</span>
+    <div v-if="syncStatus.isSyncing && !isLoading && !offlineStatus.isOffline" class="fixed top-0 left-1/2 transform -translate-x-1/2 mt-2 z-20">
+      <div class="!bg-[#24d86c] dark:!bg-[#0c843c] dark:!border-[#196838] gap-1 !border-[#28c76d] !text-white font-medium border bg-white/80  !px-[9px] py-[3px]  dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool tab-item relative transition-all duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24"><path fill="currentColor" d="M12,23a9.63,9.63,0,0,1-8-9.5,9.51,9.51,0,0,1,6.79-9.1A1.66,1.66,0,0,0,12,2.81h0a1.67,1.67,0,0,0-1.94-1.64A11,11,0,0,0,12,23Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></svg>
+        <span>Syncing</span>
+      </div>
+    </div>
+
+    <!-- Offline notification -->
+    <div class="fixed top-0 left-1/2 transform -translate-x-1/2 mt-2 z-20" v-if="offlineStatus.isOffline && !isLoading" >
+      <div class="!bg-[#fa6732d8] scale-90 gap-1 !border-[#cc3412] !text-white font-medium border !px-[9px] !text-[17px] !py-[4px] dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool tab-item relative transition-all duration-200">
+        <div class="w-2 h-2 bg-orange-200 rounded-full"></div>
+        <span>Working Offline{{ offlineStatus.pendingChanges > 0 ? ` (${offlineStatus.pendingChanges} pending)` : '' }}</span>
       </div>
     </div>
 
@@ -186,6 +210,16 @@ const syncStatus = reactive({
   lastSyncTime: 0
 });
 
+// Offline status
+const offlineStatus = reactive({
+  isOffline: false,
+  lastFailedSync: 0,
+  failedSyncs: 0,
+  isRetrying: false,
+  dismissTimeout: null as NodeJS.Timeout | null,
+  pendingChanges: 0 // Track number of changes made while offline
+});
+
 // Debounced save function - now saves the current active tab specifically in background
 const debouncedSave = debounce(() => {
   if (!isInitialized.value || tabs.length === 0) return;
@@ -225,6 +259,148 @@ const apiRequest = async (url: string, options: any = {}) => {
     },
   });
   return response;
+};
+
+// Check if error is due to network issues
+const isNetworkError = (error: any) => {
+  if (!error) return false;
+  
+  // Check for common network error indicators
+  const networkErrorMessages = [
+    'network error',
+    'fetch failed',
+    'network request failed',
+    'no internet connection',
+    'connection refused',
+    'timeout',
+    'offline'
+  ];
+  
+  const errorMessage = (error.message || error.toString() || '').toLowerCase();
+  return networkErrorMessages.some(msg => errorMessage.includes(msg)) || 
+         !navigator.onLine ||
+         error.code === 'NETWORK_ERROR' ||
+         error.status === 0;
+};
+
+// Handle sync errors and update offline status
+const handleSyncError = (error: any, operation: string) => {
+  if (isNetworkError(error)) {
+    offlineStatus.isOffline = true;
+    offlineStatus.lastFailedSync = Date.now();
+    offlineStatus.failedSyncs++;
+    offlineStatus.pendingChanges++;
+    
+    // Clear any existing dismiss timeout - stay offline until database operation succeeds
+    if (offlineStatus.dismissTimeout) {
+      clearTimeout(offlineStatus.dismissTimeout);
+      offlineStatus.dismissTimeout = null;
+    }
+    
+    console.warn(`${operation} failed due to network issues - working offline (${offlineStatus.pendingChanges} pending changes)`);
+  } else {
+    console.error(`${operation} failed:`, error);
+  }
+};
+
+// Reset offline status on successful sync
+const handleSyncSuccess = () => {
+  if (offlineStatus.isOffline) {
+    // Any successful database operation means we're back online
+    offlineStatus.isRetrying = false;
+    
+    // Decrement pending changes counter
+    if (offlineStatus.pendingChanges > 0) {
+      offlineStatus.pendingChanges--;
+    }
+    
+    // Clear any existing dismiss timeout
+    if (offlineStatus.dismissTimeout) {
+      clearTimeout(offlineStatus.dismissTimeout);
+    }
+    
+    // Hide offline indicator after brief delay to show success
+    offlineStatus.dismissTimeout = setTimeout(() => {
+      offlineStatus.isOffline = false;
+      offlineStatus.failedSyncs = 0;
+      offlineStatus.pendingChanges = 0; // Reset counter when going back online
+      console.log('Database operation successful - back online');
+    }, 1000); // Brief 1 second delay to show success
+  }
+};
+
+// Handle manual offline refresh
+const handleOfflineRefresh = async () => {
+  if (offlineStatus.isRetrying) return;
+  
+  offlineStatus.isRetrying = true;
+  console.log('Manual refresh requested - checking connection...');
+  
+  try {
+    // First check if navigator says we're online
+    if (!navigator.onLine) {
+      throw new Error('No internet connection detected');
+    }
+    
+    // Try to fetch notes to test actual connectivity
+    const response: any = await apiRequest('/api/notes');
+    
+    // If we get here, connection is working
+    console.log('Connection test successful - refreshing data...');
+    
+    // Clear offline status and refresh data
+    offlineStatus.isRetrying = false;
+    
+    // Force refresh the cache
+    await loadNotesFromCloud(true);
+    
+    // Reset pending changes since we've refreshed everything
+    offlineStatus.pendingChanges = 0;
+    
+    // Hide offline indicator after successful refresh
+    offlineStatus.dismissTimeout = setTimeout(() => {
+      offlineStatus.isOffline = false;
+      offlineStatus.failedSyncs = 0;
+      console.log('Manual refresh successful - back online');
+    }, 1000);
+    
+  } catch (error) {
+    console.warn('Manual refresh failed - still offline:', error);
+    offlineStatus.isRetrying = false;
+    
+    // Update failed sync counter
+    offlineStatus.lastFailedSync = Date.now();
+    offlineStatus.failedSyncs++;
+  }
+};
+
+// Handle browser online/offline events
+const handleOnlineStatus = () => {
+  if (navigator.onLine) {
+    // Connection restored - but we stay offline until a successful DB operation
+    if (offlineStatus.isOffline) {
+      console.log('Network connection restored - will go online after successful DB operation...');
+      
+      // Clear retry state
+      offlineStatus.isRetrying = false;
+      
+      // Don't automatically hide offline indicator - wait for actual DB success
+      // The offline indicator will hide when handleSyncSuccess() is called after a successful operation
+    }
+  } else {
+    // Connection lost
+    offlineStatus.isOffline = true;
+    offlineStatus.isRetrying = false;
+    offlineStatus.lastFailedSync = Date.now();
+    
+    // Clear any existing dismiss timeout
+    if (offlineStatus.dismissTimeout) {
+      clearTimeout(offlineStatus.dismissTimeout);
+      offlineStatus.dismissTimeout = null;
+    }
+    
+    console.log('Network connection lost - working offline');
+  }
 };
 
 const loadNotesFromCloud = async (forceRefresh = false) => {
@@ -276,6 +452,8 @@ const loadNotesFromCloud = async (forceRefresh = false) => {
     }
   } catch (error) {
     console.error('Failed to load notes from cloud:', error);
+    handleSyncError(error, 'Initial load');
+    
     // Only create initial tab if we have no cached data
     if (!isCached.value) {
       await createInitialTab();
@@ -314,6 +492,8 @@ const createInitialTab = async () => {
     lastFetchTime.value = Date.now();
   } catch (error) {
     console.error('Failed to create initial tab:', error);
+    handleSyncError(error, 'Initial tab creation');
+    
     // Fallback to local tab
     tabs.push(newTabData);
     activeTab.value = 0;
@@ -345,7 +525,8 @@ const saveTabToCloud = async (tab: Tab) => {
       tab.noteId = response.note.noteId || response.note._id || response.note.id;
       console.log('New note created in cloud:', tab.noteId);
     } catch (error) {
-      console.error('Failed to create note:', error);
+      handleSyncError(error, 'Create note');
+      throw error; // Re-throw to be handled by calling function
     }
   } else {
     // Update existing note
@@ -368,7 +549,8 @@ const saveTabToCloud = async (tab: Tab) => {
       });
       console.log('Note updated in cloud:', tab.noteId);
     } catch (error) {
-      console.error('Failed to update note:', error);
+      handleSyncError(error, 'Update note');
+      throw error; // Re-throw to be handled by calling function
     }
   }
 };
@@ -596,10 +778,10 @@ const syncTabPositionsToCloud = async () => {
     });
 
     syncStatus.lastSyncTime = Date.now();
+    handleSyncSuccess();
     console.log('Tab positions synced to cloud successfully');
   } catch (error) {
-    console.error('Failed to sync tab positions to cloud:', error);
-    // Could implement retry logic here if needed
+    handleSyncError(error, 'Tab position sync');
   } finally {
     syncStatus.pendingSyncs = Math.max(0, syncStatus.pendingSyncs - 1);
     if (syncStatus.pendingSyncs === 0) {
@@ -766,9 +948,10 @@ const syncNewTabToCloud = async (tabData: Tab) => {
     // Cache is still valid, just added new item
     lastFetchTime.value = Date.now();
     syncStatus.lastSyncTime = Date.now();
+    handleSyncSuccess();
     console.log('New tab synced to cloud:', tabData.noteId);
   } catch (error) {
-    console.error('Failed to sync new tab to cloud:', error);
+    handleSyncError(error, 'New tab sync');
     // Tab remains in local state even if cloud sync fails
   } finally {
     syncStatus.pendingSyncs = Math.max(0, syncStatus.pendingSyncs - 1);
@@ -830,9 +1013,10 @@ const syncTabDeletionToCloud = async (tab: Tab) => {
         method: 'DELETE',
       });
       syncStatus.lastSyncTime = Date.now();
+      handleSyncSuccess();
       console.log('Tab deletion synced to cloud:', tab.noteId);
     } catch (error) {
-      console.error('Failed to sync tab deletion to cloud:', error);
+      handleSyncError(error, 'Tab deletion sync');
     } finally {
       syncStatus.pendingSyncs = Math.max(0, syncStatus.pendingSyncs - 1);
       if (syncStatus.pendingSyncs === 0) {
@@ -888,9 +1072,10 @@ const syncTabToCloud = async (tab: Tab) => {
   try {
     await saveTabToCloud(tab);
     syncStatus.lastSyncTime = Date.now();
+    handleSyncSuccess();
     console.log(`Tab synced to cloud: ${tab.noteId}`);
   } catch (error) {
-    console.error('Failed to sync tab to cloud:', error);
+    handleSyncError(error, 'Tab sync');
   } finally {
     syncStatus.pendingSyncs = Math.max(0, syncStatus.pendingSyncs - 1);
     if (syncStatus.pendingSyncs === 0) {
@@ -967,9 +1152,10 @@ const syncDuplicatedTabToCloud = async (tabData: Tab) => {
     await syncTabPositionsToCloud();
     
     syncStatus.lastSyncTime = Date.now();
+    handleSyncSuccess();
     console.log('Duplicated tab synced to cloud:', tabData.noteId);
   } catch (error) {
-    console.error('Failed to sync duplicated tab to cloud:', error);
+    handleSyncError(error, 'Duplicated tab sync');
   } finally {
     syncStatus.pendingSyncs = Math.max(0, syncStatus.pendingSyncs - 1);
     if (syncStatus.pendingSyncs === 0) {
@@ -1040,11 +1226,28 @@ function handleShortcut(event: KeyboardEvent) {
 // Lifecycle
 onMounted(async () => {
   document.addEventListener('keydown', handleShortcut);
+  
+  // Add online/offline event listeners
+  window.addEventListener('online', handleOnlineStatus);
+  window.addEventListener('offline', handleOnlineStatus);
+  
+  // Check initial online status
+  handleOnlineStatus();
+  
   await loadNotesFromCloud();
 });
 
 onBeforeUnmount(() => {
   document.removeEventListener('keydown', handleShortcut);
+  
+  // Remove online/offline event listeners
+  window.removeEventListener('online', handleOnlineStatus);
+  window.removeEventListener('offline', handleOnlineStatus);
+  
+  // Clear any pending dismiss timeout
+  if (offlineStatus.dismissTimeout) {
+    clearTimeout(offlineStatus.dismissTimeout);
+  }
 });
 
 // SEO
