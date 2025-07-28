@@ -279,3 +279,30 @@ iframe {
 ::-webkit-scrollbar-corner {
   background: transparent !important;
 }
+
+.cl-footer {
+  display: none !important;
+}
+
+.cl-cardBox{
+  box-shadow: none !important;
+}
+
+.cl-headerTitle{
+  font-size: 2.3rem !important;
+  font-weight: 400 !important;
+    font-family: "Instrument Serif Italic";
+    color: #36363d;
+}
+
+.cl-headerSubtitle{
+  display: none !important;
+}
+
+.cl-userButtonPopoverFooter{
+  display: none !important;
+}
+
+.cl-internal-pe6vm4{
+  display: none !important;
+}
