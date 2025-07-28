@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen w-full flex flex-col items-center justify-center m-auto">
+  <div class="h-screen bg-white w-full flex flex-col items-center justify-center m-auto">
     <SignIn/>
   </div>
 
@@ -12,6 +12,10 @@
 
 </script>
 
-<style>
+<style scoped>
+
+body {
+  background-color: white !important;
+}
 
 </style>

@@ -14,7 +14,7 @@ export default defineNuxtRouteMiddleware((to) => {
   }
   
   // If user is signed in and trying to access sign-in page, redirect to notes
-  // if (isSignedIn.value && to.path === '/') {
-  //   return navigateTo('/app')
-  // }
+  if (isSignedIn.value && (to.path === '/signin' || to.path === '/signup')) {
+    return navigateTo('/app')
+  }
 })
