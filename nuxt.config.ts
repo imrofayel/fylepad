@@ -1,4 +1,17 @@
 export default defineNuxtConfig({
+
+  app: {
+    head: {
+      script: [
+        {
+          src: "https://cloud.umami.is/script.js",
+          defer: true,
+          "data-website-id": "b86fcaf0-d3d9-4dca-b850-88de1e77f49e"
+        }
+      ]
+    }
+  },
+    
   // (optional) Enable the Nuxt devtools
   devtools: { enabled: false },
 
