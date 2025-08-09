@@ -13,7 +13,7 @@
           <div>
             <div
               class="bg-white/70 backdrop-blur-lg p-2 pl-3 border  border-gray-200 rounded-3xl dark:bg-[#404040] dark:border-[#484747]   text-black dark:text-white/90 flex justify-center">
-              <input v-model="searchTerm" @keydown.enter.prevent="updateSearchReplace" type="text" placeholder="Search"
+              <input v-model="searchTerm" @keydown.enter.prevent="onSearchEnter" type="text" placeholder="Search"
                 autofocus="true"
                 class="placeholder:text-gray-400 dark:placeholder:text-gray-200/80 bg-transparent outline-none" />
 
@@ -238,8 +238,6 @@
 
     <div class="flex-grow " :class="focusMode.focused ? 'mt-2 mx-2' : 'mt-10'">
 
-      <UiFloatingMenu :editor="editor as any"/>
-
       <UiBubbleMenu :editor="editor as any"/>
 
       <EditorContent :editor="editor as any" class="h-full overflow-auto mb-4 px-4" />
@@ -449,7 +447,6 @@ import FontFamily from '@tiptap/extension-font-family'
 import Image from '@tiptap/extension-image'
 import { Mathematics } from '@tiptap-pro/extension-mathematics'
 import Emoji, { gitHubEmojis } from '@tiptap-pro/extension-emoji'
-import { useBase64 } from '@vueuse/core'
 import { SearchAndReplace } from "../extensions/search&replace.ts";
 import { type Range as EditorRange } from '@tiptap/core'
 
@@ -487,6 +484,8 @@ import FileHandler from '@tiptap-pro/extension-file-handler'
 
 import { useFocusStore } from '~/stores/focus'
 import { ImageResize } from '~/extensions/ImageResize.ts';
+import { BlockMenu } from "~/extensions/block-menu/menu";
+import BlockMenuItems from "~/extensions/block-menu/items";
 
 var open = ref(false);
 
@@ -557,8 +556,6 @@ const emit = defineEmits(['update:title', 'update:content']);
 
 const file = shallowRef<File>()
 
-const { base64: fileBase64 } = useBase64(file)
-
 const localTitle = ref(props.title);
 
 onMounted(() => {
@@ -573,6 +570,28 @@ onMounted(() => {
       },
     },
     extensions: [
+      BlockMenu.configure({
+        items: [
+          "heading1",
+          "heading2",
+          "heading3",
+          "orderedList",
+          "bulletList",
+          "taskList",
+          "blockquote",
+          "codeBlock",
+          "horizontalRule",
+          "table",
+          "code-mermaid",
+          "code-plantuml",
+        ],
+        dictionary: {
+          lineEmpty: "Write / for commands...",
+          lineSlash: "/ Filter...",
+          queryEmpty: "No results",
+        },
+      }),
+      BlockMenuItems,
       ImageResize,
       Mermaid,
       MathBlock,
@@ -799,6 +818,11 @@ function toggleCase() {
   }
 }
 
+function onSearchEnter(e: KeyboardEvent) {
+  e.preventDefault();
+  updateSearchReplace();
+}
+
 const updateSearchReplace = (clearIndex: boolean = false) => {
   if (!editor.value) return;
 
@@ -916,6 +940,67 @@ function handleShortcut(event: KeyboardEvent) {
 </script>
 
 <style>
+  /* Slash command Block Menu styles */
+  .ProseMirror-bm {
+    @apply dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 bg-white/90 text-black border border-gray-200 rounded-2xl shadow-sm backdrop-blur-xl px-1.5 py-1.5;
+    display: grid;
+    grid-auto-rows: minmax(40px, auto);
+    row-gap: 4px;
+    max-height: 320px;
+    overflow: auto;
+    width: 320px;
+  }
+
+  .ProseMirror-bm-divider {
+    height: 1px;
+    @apply bg-gray-200 dark:bg-[#525252];
+    margin: 4px 4px;
+    border-radius: 9999px;
+  }
+
+  .ProseMirror-bm-button {
+    @apply dark:hover:bg-[#333333] hover:bg-gray-100/70 transition-colors;
+    display: grid;
+    grid-template-columns: 24px 1fr auto;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+    padding: 8px 10px;
+    border-radius: 12px;
+  }
+
+  .ProseMirror-bm-button[data-active="true"] {
+    @apply dark:bg-[#303030] bg-gray-100;
+  }
+
+  .ProseMirror-bm-button-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+  }
+
+  .ProseMirror-bm-button-name {
+    font-size: 14px;
+  }
+
+  .ProseMirror-bm-button-shortcut {
+    @apply text-gray-400 dark:text-gray-300;
+    font-size: 12px;
+  }
+
+  .ProseMirror-bm-empty {
+    @apply text-gray-500 dark:text-gray-300;
+    padding: 6px 8px;
+  }
+
+  .ProseMirror-bm-placeholder[data-empty]::before {
+    content: attr(data-empty);
+    @apply text-gray-400 dark:text-gray-400;
+    font-size: 14px;
+    margin-left: 4px;
+  }
 
   .tippy-box {
     .hyperlink-preview-modal,
