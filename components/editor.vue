@@ -50,7 +50,7 @@
   <div class="h-full flex flex-col tiptap dark:bg-[#171717]">
 
     <UiDropdownMenu v-if="!focusMode.focused">
-      <UiDropdownMenuTrigger class="fixed !opacity-100 right-0 p-1.5 px-2.5 top-1 z-[12] block sm:hidden">
+      <UiDropdownMenuTrigger class="fixed !opacity-100 right-0 p-1.5 px-2.5 top-1 z-50 block sm:hidden">
         <button :class="[
         'border dark:bg-[#404040] !py-[6px] dark:border-[#525252] dark:text-white opacity-100 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block  '
       ]" title="Menu">
@@ -142,7 +142,7 @@
       </UiDropdownMenuContent>
     </UiDropdownMenu>
 
-    <div class="space-x-2 fixed right-2 top-1 z-[12] py-2 hidden sm:flex"
+    <div class="space-x-2 fixed right-2 top-1 !z-50 py-2 hidden sm:flex"
       :class="focusMode.focused ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'" v-if="!focusMode.focused">
 
       <button
@@ -587,7 +587,7 @@ onMounted(() => {
         ],
         dictionary: {
           lineEmpty: "Write / for commands...",
-          lineSlash: "/ Filter...",
+          lineSlash: "",
           queryEmpty: "No results",
         },
       }),

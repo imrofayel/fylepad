@@ -284,11 +284,6 @@ ul[data-type="taskList"] li[data-checked="true"] div {
   @apply hover:bg-[#f3f3f3] !rounded-[10px] 
 }
 
-.ProseMirror-bm-button-name{
-   @apply !text-[16.5px] text-[#32302c];
-   font-family: 'Inter', sans-serif;
-}
-
 .ProseMirror-bm{
     border-radius: 14px !important;
     background: white !important;
@@ -299,9 +294,17 @@ ul[data-type="taskList"] li[data-checked="true"] div {
     box-shadow: rgba(0, 0, 0, 0.1) 2px 2px 10px -3px, rgba(0, 0, 0, 0.06) 0px 0px 0px 0px, rgba(84, 72, 49, 0.08) 0px 0px 0px 0px !important;
 }
 
+.ProseMirror-bm-button-name{
+   @apply !text-[16.5px] text-[#32302c];
+   font-family: 'Inter', sans-serif;
+     -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  @apply !antialiased;
+}
+
 * {
     box-sizing: border-box;
-    isolation: isolate;
 }
 
 .ProseMirror-bm-button-shortcut{
