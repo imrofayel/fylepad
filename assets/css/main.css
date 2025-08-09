@@ -243,7 +243,7 @@ iframe {
 }
 
 * {
-  font-family: "Geist";
+  font-family: "Inter";
 }
 
 .drop-shadow-cool {
@@ -278,4 +278,16 @@ iframe {
 
 ::-webkit-scrollbar-corner {
   background: transparent !important;
+}
+
+/* Default color for everything */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  @apply !antialiased;
+}
+
+ul[data-type="taskList"] li[data-checked="true"] div {
+  opacity: 0.7;
 }

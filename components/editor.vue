@@ -569,7 +569,7 @@ onMounted(() => {
 
     editorProps: {
       attributes: {
-        class: 'dark:text-white/90 p-6 leading-loose py-2 text-[19px] min-h-[150px] w-full h-full overflow-auto border-none bg-transparent placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 !opacity-100 geist',
+        class: 'dark:text-white/90 text-[#32302c] p-6 leading-loose py-2 text-[18px] min-h-[150px] w-full h-full overflow-auto border-none bg-transparent placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 geist',
       },
     },
     extensions: [
@@ -1071,14 +1071,11 @@ function handleShortcut(event: KeyboardEvent) {
   }
 
   pre {
-    border-radius: 1.1rem;
+    border-radius: 12px;
     font-family: 'Roboto Mono', monospace;
-    margin: 1.5rem 0;
-    padding: 0.6rem 1rem;
-    @apply bg-[#fafcfb] dark:text-white/50 border dark:border-white/10 border-gray-200 dark:bg-[#1e1e1e] inline-block px-8 pl-5;
-
-    filter: drop-shadow(0px 2px 5px rgba(0, 0, 0, 0.04));
-
+    margin: 1rem 0;
+    padding: 0.5rem;
+    @apply bg-none dark:text-white/50 border dark:border-white/10 border-[#c6c6c4] dark:bg-[#1e1e1e] inline-block px-4;
 
     ::spelling-error {
       text-decoration: none;
@@ -1091,7 +1088,7 @@ function handleShortcut(event: KeyboardEvent) {
     code {
       background: none;
       color: inherit;
-      font-size: 1.1rem;
+      font-size: 16.8px;
       padding: 0;
       font-family: 'Roboto Mono', monospace;
     }
@@ -1257,20 +1254,15 @@ h4 {
 
 ul,
 ol {
-  margin-left: 1.5rem;
-  padding-left: 1rem;
-}
+  margin-left: 1.3rem;
+  }
 
 ul {
   list-style-type: disc;
 }
 
 ol {
-  list-style-type: decimal;
-}
-
-li {
-  margin: 0.5rem 0;
+  list-style-type: lower-alpha;
 }
 
 .task-list-item {
@@ -1336,15 +1328,14 @@ code {
 /* Task list specific styles */
 ul[data-type="taskList"] {
   list-style: none;
-  margin-left: 14px;
+  margin-left: 6px;
   padding: 0;
 }
 
 ul[data-type="taskList"] li {
   align-items: center;
   display: flex;
-  margin-bottom: 0.5rem;
-  /* Optional: Add space between tasks */
+  margin-bottom: 0.2rem;
 }
 
 ul[data-type="taskList"] li>label {
@@ -1353,33 +1344,36 @@ ul[data-type="taskList"] li>label {
   user-select: none;
 }
 
+ul[data-type="taskList"] li[data-checked="true"] div {
+  text-decoration: line-through;
+  text-decoration-color: #b7b6b4;
+  @apply decoration-[1.5px]
+}
+
+
 ul[data-type="taskList"] label>input[type="checkbox"] {
   cursor: pointer;
   appearance: none;
-  /* Remove default appearance */
   width: 20px;
   height: 20px;
-  border: 1px solid #eaeaea;
-  /* Border to match background */
+  border: 1.5px solid #c6c6c4;
   border-radius: 8px;
-  /* Rounded corners */
-  margin-right: 0.5rem;
-  /* Space between checkbox and text */
+  margin-right: 0.6rem;
   position: relative;
 }
 
 ul[data-type="taskList"] label>input[type="checkbox"]:checked {
-  @apply bg-[#24d86c] border-[#28c76d]
+  @apply bg-[#2383e2] border-[#2383e2];
 }
 
 a {
-  @apply text-blue-700 underline dark:text-blue-200
+  @apply text-[#6f6e6b] underline decoration-[#c6c6c4]
 }
 
 ul[data-type="taskList"] label>input[type="checkbox"]:checked::after {
   content: '✔';
-  /* Checkmark symbol */
   color: white;
+  opacity: 0.95;
   font-size: 14px;
   display: block;
   text-align: center;

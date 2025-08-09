@@ -74,14 +74,6 @@ export default defineNuxtConfig({
 
 },
 
-    workbox: {
-      navigateFallback: "/"
-    },
-
-    devOptions: {
-      enabled: true,
-      type: "module"
-    },
   },
 
   modules: ['@nuxt/icon', '@nuxtjs/tailwindcss', '@nuxtjs/color-mode', '@vite-pwa/nuxt'  ],
