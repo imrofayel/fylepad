@@ -60,6 +60,17 @@
       <UiDropdownMenuContent class="flex flex-wrap gap-1.5 px-1.5 py-1 border dark:bg-[#404040] dark:border-[#525252] dark:text-white opacity-100 border-gray-200 bg-white text-black rounded-2xl justify-center items-center cursor-pointer    mr-2">
 
         <UiDropdownMenuItem>
+          <button
+            class="border border-gray-200 bg-white text-black !px-[7px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer !py-[6px] inline-block  "
+            @click="$emit('openCommand')" title="Command Palette (Ctrl+K)">
+            <svg width="21" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="drop-shadow-sm">
+              <path d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="1.5"/>
+              <path d="m7 9 3 3-3 3m5 0h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </UiDropdownMenuItem>
+
+        <UiDropdownMenuItem>
      <button
         class="border border-gray-200 bg-white text-black !px-[7px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer !py-[6px] inline-block  "
         @click="toggleSearch"><svg width="21" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -144,6 +155,14 @@
 
     <div class="space-x-2 fixed right-2 top-1 !z-50 py-2 hidden sm:flex items-center gap-1.5 px-2"
       :class="focusMode.focused ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'" v-if="!focusMode.focused">
+
+      <button
+        title="Command Palette (Ctrl+K)"
+        @click="$emit('openCommand')"><svg width="22.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+          class="drop-shadow-sm">
+          <path d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="1.5"/>
+          <path d="m7 9 3 3-3 3m5 0h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg></button>
 
       <button
         
@@ -517,7 +536,7 @@ const props = defineProps<{
   content: any;
 }>();
 
-const emit = defineEmits(['update:title', 'update:content']);
+const emit = defineEmits(['update:title', 'update:content', 'openCommand']);
 
 const file = shallowRef<File>()
 

@@ -1,5 +1,16 @@
 <template>
   <div class="h-full w-full gap-0 flex flex-col">
+    <!-- Command Dialog -->
+    <UiCommand
+      :isOpen="commandOpen"
+      :tabs="tabs"
+      :activeTabIndex="activeTab"
+      @close="commandOpen = false"
+      @selectTab="handleTabSelect"
+      @selectResult="handleSearchResultSelect"
+      @newTab="newTab"
+    />
+
     <div class="flex justify-between items-center w-full p-3 py-2 fixed bg-white z-10 pr-[7.5rem] dark:bg-[#171717]" v-if="!focusMode.focused">
       <div class="flex space-x-2 overflow-auto justify-center items-center">
         <button @click="newTab"
@@ -47,7 +58,7 @@
 
     <div class="flex-grow" :class="focusMode.focused ? 'mt-1' : 'mt-7'">
       <Editor v-if="tabs.length > 0" :key="activeTab" :title="tabs[activeTab].title" :content="tabs[activeTab].content"
-        @update:title="updateTabTitle" @update:content="updateTabContent" />
+        @update:title="updateTabTitle" @update:content="updateTabContent" @openCommand="commandOpen = true" />
     </div>
 
     <!-- Tab Context Menu -->
@@ -132,7 +143,7 @@
 </style>
 
 <script lang="ts" setup>
-import { ref, reactive, onMounted, watch, onBeforeUnmount, computed } from 'vue';
+import { ref, reactive, onMounted, watch, onBeforeUnmount, computed, nextTick } from 'vue';
 import { fs, path } from '@tauri-apps/api';
 import { isNumber } from '@tiptap/core';
 
@@ -142,6 +153,9 @@ import TabContextMenu from '../components/ui/tabContextMenu.vue'
 const focusMode = useFocusStore()
 
 const colorMode = useColorMode()
+
+// Command dialog state
+const commandOpen = ref(false)
 
 interface Tab {
   title: string;
@@ -473,6 +487,71 @@ const moveTab = (tabIndex: number, direction: 'left' | 'right') => {
   }
 };
 
+// Handle tab selection from command dialog
+const handleTabSelect = (tabIndex: number) => {
+  activeTab.value = tabIndex;
+};
+
+// Handle search result selection from command dialog
+const handleSearchResultSelect = (result: any) => {
+  // Switch to the tab
+  activeTab.value = result.tabIndex;
+  
+  // Wait for the tab to be active and editor to be ready
+  nextTick(() => {
+    // Try to find the text in the editor and scroll to it
+    setTimeout(() => {
+      const editorElement = document.querySelector('.ProseMirror');
+      if (editorElement && result.text) {
+        // Search for the text in the editor
+        const walker = document.createTreeWalker(
+          editorElement,
+          NodeFilter.SHOW_TEXT,
+          null
+        );
+        
+        let node;
+        while (node = walker.nextNode()) {
+          const textContent = node.textContent?.toLowerCase() || '';
+          const searchTerm = result.text.toLowerCase().substring(0, 50); // Use first 50 chars for matching
+          
+          if (textContent.includes(searchTerm)) {
+            // Found the text, scroll to it
+            const element = node.parentElement;
+            if (element) {
+              element.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'center' 
+              });
+              
+              // Create a selection to highlight the found text
+              const selection = window.getSelection();
+              const range = document.createRange();
+              
+              try {
+                const textNode = node as Text;
+                const startIndex = textContent.indexOf(searchTerm);
+                const endIndex = startIndex + searchTerm.length;
+                
+                range.setStart(textNode, Math.max(0, startIndex));
+                range.setEnd(textNode, Math.min(textNode.textContent?.length || 0, endIndex));
+                
+                selection?.removeAllRanges();
+                selection?.addRange(range);
+              } catch (e) {
+                // If selection fails, just scroll to the element
+                console.log('Could not create selection, but scrolled to element');
+              }
+              
+              break;
+            }
+          }
+        }
+      }
+    }, 100); // Small delay to ensure editor is ready
+  });
+};
+
 // Function to save the app state
 async function saveAppState() {
   const appState = {
@@ -582,6 +661,13 @@ const updateTabContent = (content: any) => {
 };
 
 function handleShortcut(event: KeyboardEvent) {
+  // CTRL + K -> Open command palette
+  if (event.ctrlKey && event.key === 'k') {
+    event.preventDefault();
+    commandOpen.value = true;
+    return;
+  }
+
   // CTRL + N -> New tab
   if (event.ctrlKey && event.key === 'n') {
     event.preventDefault();
