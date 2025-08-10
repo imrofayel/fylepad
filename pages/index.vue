@@ -1,5 +1,5 @@
 <template>
-  <div class="h-full w-full gap-0 flex flex-col">
+  <div class="h-full w-full gap-0 flex" :class="isVerticalTabs ? 'flex-row' : 'flex-col'">
     <!-- Command Dialog -->
     <UiCommand
       :isOpen="commandOpen"
@@ -11,13 +11,21 @@
       @newTab="newTab"
     />
 
-    <div class="flex justify-between items-center w-full p-3 py-2 fixed bg-white z-10 pr-[7.5rem] dark:bg-[#171717]" v-if="!focusMode.focused">
+    <!-- Top Bar for Horizontal Tabs -->
+    <div v-if="!isVerticalTabs" class="flex justify-between items-center w-full p-3 py-2 fixed bg-white z-10 pr-[7.5rem] dark:bg-[#171717]" v-show="!focusMode.focused">
       <div class="flex space-x-2 overflow-auto justify-center items-center">
+        <!-- Tab Layout Toggle -->
+        <button @click="isVerticalTabs = !isVerticalTabs"
+          class="hover:!scale-100 drop-shadow-sm" :title="isVerticalTabs ? 'Switch to Horizontal Tabs' : 'Switch to Vertical Tabs'">
+          <svg xmlns="http://www.w3.org/2000/svg" class="dark:text-white" width="22.5" viewBox="0 0 24 24">
+            <!-- Horizontal tabs icon -->
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 6h18M3 12h18M3 18h18"/>
+          </svg>
+        </button>
+
         <button @click="newTab"
           class="hover:!scale-100 drop-shadow-sm" title="New Tab">
-
           <svg xmlns="http://www.w3.org/2000/svg" class="dark:text-white" width="22.5" viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 7h6c3.3 0 4.95 0 5.975 1.025S22 10.7 22 14v1c0 3.3 0 4.95-1.025 5.975S18.3 22 15 22h-1c-3.3 0-4.95 0-5.975-1.025S7 18.3 7 15V9M2 7h3m2-2V2" color="currentColor"/></svg>
-
         </button>
 
         <div class="dropdown-menu overflow-auto flex space-x-2" ref="tabContainer">
@@ -49,14 +57,84 @@
               <span class="tab-title">{{ tab.title || 'Untitled' }}</span>
               <button @click.stop="closeTab(tabIndex)"
                 v-if="!tab.lock" class="ml-2 text-onPrimaryContainer/30 hover:text-onPrimaryContainer dark:text-gray-50/50 dark:hover:text-gray-100"
-                :class="{ 'text-white font-normal': activeTab === tabIndex }">&times;</button>
+                title="Close tab">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 24 24"><path fill="currentColor" d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12z"/></svg>
+              </button>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="flex-grow" :class="focusMode.focused ? 'mt-1' : 'mt-7'">
+    <!-- Sidebar for Vertical Tabs -->
+    <div v-if="isVerticalTabs" class="flex flex-col w-64 h-full border-r border-gray-200 dark:border-[#525252] bg-white/50 dark:bg-[#171717] backdrop-blur-sm" v-show="!focusMode.focused">
+      <!-- Sidebar Header -->
+      <div class="flex items-center justify-between p-3 py-4 border-b border-gray-200 dark:border-[#525252]">
+        <!-- Tab Layout Toggle -->
+        <button @click="isVerticalTabs = !isVerticalTabs"
+          class="hover:!scale-100 drop-shadow-sm" :title="isVerticalTabs ? 'Switch to Horizontal Tabs' : 'Switch to Vertical Tabs'">
+          <svg xmlns="http://www.w3.org/2000/svg" class="dark:text-white" width="22.5" viewBox="0 0 24 24">
+            <!-- Vertical tabs icon -->
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 3v18M12 3v18M18 3v18"/>
+          </svg>
+        </button>
+
+        <button @click="newTab"
+          class="hover:!scale-100 drop-shadow-sm" title="New Tab">
+          <svg xmlns="http://www.w3.org/2000/svg" class="dark:text-white" width="22.5" viewBox="0 0 24 24">
+            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 7h6c3.3 0 4.95 0 5.975 1.025S22 10.7 22 14v1c0 3.3 0 4.95-1.025 5.975S18.3 22 15 22h-1c-3.3 0-4.95 0-5.975-1.025S7 18.3 7 15V9M2 7h3m2-2V2" color="currentColor"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Vertical Tabs List -->
+      <div class="flex-1 overflow-y-auto p-2 space-y-1" ref="tabContainer">
+        <div
+          v-for="(tab, tabIndex) in tabs"
+          :key="tab.id"
+          draggable="true"
+          @dragstart="onTabDragStart(tabIndex, $event)"
+          @dragover="onTabDragOver($event, tabIndex)"
+          @dragenter="onTabDragEnter($event, tabIndex)"
+          @dragleave="onTabDragLeave($event)"
+          @drop="onTabDrop($event, tabIndex)"
+          @dragend="onTabDragEnd"
+          :ref="el => setTabRef(tabIndex, el)"
+          @click="activeTab = tabIndex"
+          @contextmenu.prevent="showContextMenu(tabIndex, $event)"
+          class="group relative w-full p-3 py-2 border border-gray-200 bg-white/80 text-black dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-xl cursor-pointer flex items-center drop-shadow-sm tab-item transition-all duration-200 hover:bg-gray-50 dark:hover:bg-[#333333]"
+          :class="activeTab === tabIndex ? 'bg-blue-50 border-blue-200 dark:bg-[#2a2a2a] dark:border-blue-500/50' : ''"
+          :style="getTabStyle(tabIndex)"
+        >
+          <!-- Color indicator -->
+          <div 
+            v-if="tab.color && tab.color !== 'Default'"
+            class="w-3 h-3 rounded-full mr-3 flex-shrink-0"
+            :class="getTabColorIndicator(tab.color)"
+          />
+          
+          <!-- Tab content -->
+          <div class="flex-1 min-w-0">
+            <div class="font-medium truncate text-sm">{{ tab.title || 'Untitled' }}</div>
+          </div>
+
+          <!-- Close button -->
+          <button @click.stop="closeTab(tabIndex)"
+            v-if="!tab.lock" 
+            class="opacity-0 group-hover:opacity-100 ml-2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-opacity flex-shrink-0"
+            title="Close tab">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 24 24">
+              <path fill="currentColor" d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12z"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex-grow" :class="[
+      focusMode.focused ? 'mt-1' : (isVerticalTabs ? 'mt-0' : 'mt-7'),
+      isVerticalTabs && !focusMode.focused ? 'ml-0' : ''
+    ]">
       <Editor ref="editorRef" v-if="tabs.length > 0" :key="activeTab" :title="tabs[activeTab].title" :content="tabs[activeTab].content"
         @update:title="updateTabTitle" @update:content="updateTabContent" @openCommand="commandOpen = true" />
     </div>
@@ -157,6 +235,9 @@ const colorMode = useColorMode()
 // Command dialog state
 const commandOpen = ref(false)
 const editorRef = ref<{ editor: any } | null>(null)
+
+// Vertical tabs state
+const isVerticalTabs = ref(false)
 
 interface Tab {
   title: string;
@@ -648,7 +729,8 @@ async function saveAppState() {
   const appState = {
     tabs: tabs,
     activeTab: activeTab.value,
-    colorMode: colorMode.preference
+    colorMode: colorMode.preference,
+    isVerticalTabs: isVerticalTabs.value
   };
 
   // Try to save using Tauri's fs API
@@ -691,6 +773,9 @@ async function loadAppState() {
     tabs.splice(0, tabs.length, ...migratedTabs);
     activeTab.value = appState.activeTab;
     colorMode.preference = appState.colorMode;
+    if (appState.isVerticalTabs !== undefined) {
+      isVerticalTabs.value = appState.isVerticalTabs;
+    }
   }
 }
 
@@ -705,7 +790,7 @@ onBeforeUnmount(() => {
 });
 
 // Watch for changes and save the state
-watch([tabs, activeTab, () => colorMode.preference], async () => {
+watch([tabs, activeTab, () => colorMode.preference, isVerticalTabs], async () => {
   await saveAppState();
 }, { deep: true });
 
