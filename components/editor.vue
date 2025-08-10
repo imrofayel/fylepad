@@ -153,27 +153,18 @@
       </UiDropdownMenuContent>
     </UiDropdownMenu>
 
-    <div class="space-x-2 fixed right-2 top-1 !z-50 py-2 hidden sm:flex items-center gap-1.5 px-2"
+    <div class="space-x-2 fixed right-2 top-1 !z-50 py-2 hidden sm:flex !items-center gap-x-1.5 px-2"
       :class="focusMode.focused ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'" v-if="!focusMode.focused">
 
       <button
         title="Command Palette (Ctrl+K)"
-        @click="$emit('openCommand')"><svg width="22.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-          class="drop-shadow-sm">
-          <path d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="1.5"/>
-          <path d="m7 9 3 3-3 3m5 0h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg></button>
+        @click="$emit('openCommand')"><svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="lightning" style="width: 25.5px; display: block; flex-shrink: 0;"><path d="M11.633 1.812c.263.096.43.354.41.632l-.392 5.51h3.099a.625.625 0 0 1 .506.992l-6.18 8.54a.625.625 0 0 1-1.13-.412l.402-5.5H5.25a.625.625 0 0 1-.507-.99l6.17-8.55a.625.625 0 0 1 .72-.222m-5.161 8.513H9.02a.625.625 0 0 1 .623.67l-.29 3.976 4.173-5.766H10.98a.625.625 0 0 1-.623-.67l.284-3.987z"></path></svg></button>
 
       <button
         
-        @click="toggleSearch"><svg width="22.5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-          class="drop-shadow-sm">
-          <path d="M17 17L21 21" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"
-            vector-effect="non-scaling-stroke"></path>
-          <path
-            d="M19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19C15.4183 19 19 15.4183 19 11Z"
-            stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" vector-effect="non-scaling-stroke"></path>
-        </svg></button>
+        @click="toggleSearch">
+        <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="magnifyingGlass" style="width: 25px; display: block; flex-shrink: 0;"><path d="M8.875 2.625a6.25 6.25 0 1 0 3.955 11.09l3.983 3.982a.625.625 0 1 0 .884-.884l-3.983-3.982a6.25 6.25 0 0 0-4.84-10.205m-5 6.25a5 5 0 1 1 10 0 5 5 0 0 1-10 0"></path></svg>
+      </button>
 
 
       <!-- <button @click="exportMarkdown" title="Export Markdown">

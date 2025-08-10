@@ -17,15 +17,16 @@
         <!-- Tab Layout Toggle -->
         <button @click="isVerticalTabs = !isVerticalTabs"
           class="hover:!scale-100 drop-shadow-sm" :title="isVerticalTabs ? 'Switch to Horizontal Tabs' : 'Switch to Vertical Tabs'">
-          <svg xmlns="http://www.w3.org/2000/svg" class="dark:text-white" width="22.5" viewBox="0 0 24 24">
-            <!-- Horizontal tabs icon -->
-            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 6h18M3 12h18M3 18h18"/>
-          </svg>
+          
+          <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="peekSide directional-icon" style="width: 25px; display: block; flex-shrink: 0;"><path d="M10.392 6.125a.5.5 0 0 0-.5.5v6.75a.5.5 0 0 0 .5.5h4.683a.5.5 0 0 0 .5-.5v-6.75a.5.5 0 0 0-.5-.5z"></path><path d="M4.5 4.125A2.125 2.125 0 0 0 2.375 6.25v7.5c0 1.174.951 2.125 2.125 2.125h11a2.125 2.125 0 0 0 2.125-2.125v-7.5A2.125 2.125 0 0 0 15.5 4.125zM3.625 6.25c0-.483.392-.875.875-.875h11c.483 0 .875.392.875.875v7.5a.875.875 0 0 1-.875.875h-11a.875.875 0 0 1-.875-.875z"></path></svg>
+
         </button>
 
         <button @click="newTab"
           class="hover:!scale-100 drop-shadow-sm" title="New Tab">
-          <svg xmlns="http://www.w3.org/2000/svg" class="dark:text-white" width="22.5" viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 7h6c3.3 0 4.95 0 5.975 1.025S22 10.7 22 14v1c0 3.3 0 4.95-1.025 5.975S18.3 22 15 22h-1c-3.3 0-4.95 0-5.975-1.025S7 18.3 7 15V9M2 7h3m2-2V2" color="currentColor"/></svg>
+          
+          <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 16 16" class="plus mx-1" style="width: 17px; display: block; flex-shrink: 0; margin-inline-end: 6px; margin-top: 1px;"><path d="M7.977 14.963c.407 0 .747-.324.747-.723V8.72h5.362c.399 0 .74-.34.74-.747a.746.746 0 00-.74-.738H8.724V1.706c0-.398-.34-.722-.747-.722a.732.732 0 00-.739.722v5.529h-5.37a.746.746 0 00-.74.738c0 .407.341.747.74.747h5.37v5.52c0 .399.332.723.739.723z"></path></svg>
+
         </button>
 
         <div class="dropdown-menu overflow-auto flex space-x-2" ref="tabContainer">
@@ -43,20 +44,20 @@
               :ref="el => setTabRef(tabIndex, el)"
               @click="activeTab = tabIndex"
               @contextmenu.prevent="showContextMenu(tabIndex, $event)"
-              class="border border-gray-200 bg-white/80 text-black !px-[9px] py-[3px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer flex drop-shadow-cool tab-item relative transition-all duration-200"
+              class="border border-[#c6c6c4] bg-white/80 text-black !px-[9px] py-[3px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-xl justify-center items-center cursor-pointer flex drop-shadow-cool tab-item relative transition-all duration-200"
               :class="getTabClasses(tabIndex)"
               :style="getTabStyle(tabIndex)"
             >
               <!-- Color indicator -->
               <div 
                 v-if="tab.color && tab.color !== 'Default'"
-                class="w-2 h-2 rounded-full mr-2"
+                class="w-[4.5px] relative right-0.5 h-[16px] rounded-full mr-[4px]"
                 :class="getTabColorIndicator(tab.color)"
               />
               
               <span class="tab-title">{{ tab.title || 'Untitled' }}</span>
               <button @click.stop="closeTab(tabIndex)"
-                v-if="!tab.lock" class="ml-2 text-onPrimaryContainer/30 hover:text-onPrimaryContainer dark:text-gray-50/50 dark:hover:text-gray-100"
+                v-if="!tab.lock" class="ml-2 hover:text-red-600 dark:text-gray-50/50 dark:hover:text-gray-100"
                 title="Close tab">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 24 24"><path fill="currentColor" d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12z"/></svg>
               </button>
