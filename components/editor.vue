@@ -405,7 +405,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, onMounted, onBeforeUnmount, computed } from 'vue';
+import { ref, watch, onMounted, onBeforeUnmount, computed, readonly } from 'vue';
 import { Editor, EditorContent } from '@tiptap/vue-3';
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
@@ -920,6 +920,10 @@ function handleShortcut(event: KeyboardEvent) {
   }
 }
 
+// Expose the editor instance to parent components
+defineExpose({
+  editor: readonly(editor)
+})
 
 </script>
 

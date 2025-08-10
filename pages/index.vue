@@ -57,7 +57,7 @@
     </div>
 
     <div class="flex-grow" :class="focusMode.focused ? 'mt-1' : 'mt-7'">
-      <Editor v-if="tabs.length > 0" :key="activeTab" :title="tabs[activeTab].title" :content="tabs[activeTab].content"
+      <Editor ref="editorRef" v-if="tabs.length > 0" :key="activeTab" :title="tabs[activeTab].title" :content="tabs[activeTab].content"
         @update:title="updateTabTitle" @update:content="updateTabContent" @openCommand="commandOpen = true" />
     </div>
 
@@ -156,6 +156,7 @@ const colorMode = useColorMode()
 
 // Command dialog state
 const commandOpen = ref(false)
+const editorRef = ref<{ editor: any } | null>(null)
 
 interface Tab {
   title: string;
@@ -493,63 +494,153 @@ const handleTabSelect = (tabIndex: number) => {
 };
 
 // Handle search result selection from command dialog
-const handleSearchResultSelect = (result: any) => {
+const handleSearchResultSelect = async (result: any) => {
   // Switch to the tab
   activeTab.value = result.tabIndex;
   
   // Wait for the tab to be active and editor to be ready
-  nextTick(() => {
-    // Try to find the text in the editor and scroll to it
-    setTimeout(() => {
-      const editorElement = document.querySelector('.ProseMirror');
-      if (editorElement && result.text) {
-        // Search for the text in the editor
-        const walker = document.createTreeWalker(
-          editorElement,
-          NodeFilter.SHOW_TEXT,
-          null
-        );
+  await nextTick();
+  
+  // Small delay to ensure editor is fully ready
+  setTimeout(() => {
+    // Try to get the editor instance from the ref
+    const editor = editorRef.value?.editor;
+    
+    if (editor) {
+      console.log('Using editor from ref');
+      // Use the search & replace extension to highlight and navigate to the result
+      const searchTerm = result.searchTerm || result.text.substring(0, 50);
+      editor.commands.setSearchTerm(searchTerm);
+      editor.commands.resetIndex();
+      
+      // Wait a bit for search to process
+      setTimeout(() => {
+        const { results } = editor.storage.searchAndReplace;
         
-        let node;
-        while (node = walker.nextNode()) {
-          const textContent = node.textContent?.toLowerCase() || '';
-          const searchTerm = result.text.toLowerCase().substring(0, 50); // Use first 50 chars for matching
+        if (results && results.length > 0) {
+          // Find the closest match to our result position
+          let bestMatchIndex = 0;
+          if (result.from !== undefined) {
+            bestMatchIndex = results.findIndex((r: any) => 
+              Math.abs(r.from - result.from) < 10
+            );
+            if (bestMatchIndex === -1) bestMatchIndex = 0;
+          }
           
-          if (textContent.includes(searchTerm)) {
-            // Found the text, scroll to it
-            const element = node.parentElement;
-            if (element) {
-              element.scrollIntoView({ 
-                behavior: 'smooth', 
-                block: 'center' 
-              });
-              
-              // Create a selection to highlight the found text
-              const selection = window.getSelection();
-              const range = document.createRange();
-              
+          // Set the result index to highlight the correct match
+          editor.storage.searchAndReplace.resultIndex = bestMatchIndex;
+          
+          // Set text selection and scroll to position
+          const targetResult = results[bestMatchIndex];
+          if (targetResult) {
+            editor.commands.setTextSelection({ 
+              from: targetResult.from, 
+              to: targetResult.to 
+            });
+            
+            // Wait for selection to be set
+            setTimeout(() => {
+              // Scroll to position
               try {
-                const textNode = node as Text;
-                const startIndex = textContent.indexOf(searchTerm);
-                const endIndex = startIndex + searchTerm.length;
-                
-                range.setStart(textNode, Math.max(0, startIndex));
-                range.setEnd(textNode, Math.min(textNode.textContent?.length || 0, endIndex));
-                
-                selection?.removeAllRanges();
-                selection?.addRange(range);
+                const { node } = editor.view.domAtPos(editor.state.selection.anchor);
+                if (node instanceof HTMLElement) {
+                  node.scrollIntoView({ behavior: "smooth", block: "center" });
+                }
               } catch (e) {
-                // If selection fails, just scroll to the element
-                console.log('Could not create selection, but scrolled to element');
+                console.log('Could not scroll to position:', e);
               }
               
-              break;
+              // Focus the editor
+              editor.chain().focus().run();
+              
+              // Clear the search after a delay
+              setTimeout(() => {
+                editor.commands.setSearchTerm('');
+              }, 3000);
+            }, 100);
+          }
+        }
+      }, 100);
+    } else {
+      // Fallback to DOM method
+      console.log('Using DOM fallback method');
+      const proseMirrorElement = document.querySelector('.ProseMirror');
+      
+      if (proseMirrorElement) {
+        // Try to get the TipTap editor instance through the Vue component
+        const vueComponent = (proseMirrorElement as any)?.__vueParentComponent;
+        const fallbackEditor = vueComponent?.parent?.setupState?.editor || vueComponent?.ctx?.editor;
+        
+        if (fallbackEditor) {
+          const searchTerm = result.searchTerm || result.text.substring(0, 50);
+          fallbackEditor.commands.setSearchTerm(searchTerm);
+          fallbackEditor.commands.resetIndex();
+          
+          setTimeout(() => {
+            const { results } = fallbackEditor.storage.searchAndReplace;
+            if (results && results.length > 0) {
+              let bestMatchIndex = 0;
+              if (result.from !== undefined) {
+                bestMatchIndex = results.findIndex((r: any) => 
+                  Math.abs(r.from - result.from) < 10
+                );
+                if (bestMatchIndex === -1) bestMatchIndex = 0;
+              }
+              
+              fallbackEditor.storage.searchAndReplace.resultIndex = bestMatchIndex;
+              const targetResult = results[bestMatchIndex];
+              if (targetResult) {
+                fallbackEditor.commands.setTextSelection({ 
+                  from: targetResult.from, 
+                  to: targetResult.to 
+                });
+                
+                setTimeout(() => {
+                  try {
+                    const { node } = fallbackEditor.view.domAtPos(fallbackEditor.state.selection.anchor);
+                    if (node instanceof HTMLElement) {
+                      node.scrollIntoView({ behavior: "smooth", block: "center" });
+                    }
+                  } catch (e) {
+                    console.log('Could not scroll to position:', e);
+                  }
+                  
+                  fallbackEditor.chain().focus().run();
+                  setTimeout(() => {
+                    fallbackEditor.commands.setSearchTerm('');
+                  }, 3000);
+                }, 100);
+              }
+            }
+          }, 100);
+        } else {
+          // Final fallback to simple scrolling
+          console.log('Using simple text search fallback');
+          const walker = document.createTreeWalker(
+            proseMirrorElement,
+            NodeFilter.SHOW_TEXT,
+            null
+          );
+          
+          let node;
+          const searchTerm = result.text.toLowerCase().substring(0, 50);
+          while (node = walker.nextNode()) {
+            const textContent = node.textContent?.toLowerCase() || '';
+            if (textContent.includes(searchTerm)) {
+              const element = node.parentElement;
+              if (element) {
+                element.scrollIntoView({ 
+                  behavior: 'smooth', 
+                  block: 'center' 
+                });
+                break;
+              }
             }
           }
         }
       }
-    }, 100); // Small delay to ensure editor is ready
-  });
+    }
+  }, 200);
 };
 
 // Function to save the app state

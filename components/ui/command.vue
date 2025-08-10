@@ -188,9 +188,12 @@ interface SearchResult {
   tabTitle: string
   tabColor?: string
   position: number
+  from: number
+  to: number
   text: string
   highlightedText: string
   context: string
+  searchTerm: string
 }
 
 interface QuickAction {
@@ -320,58 +323,63 @@ const performSearch = (query: string) => {
     
     // Search in title
     if (title.toLowerCase().includes(searchTerm)) {
+      const titleIndex = title.toLowerCase().indexOf(searchTerm)
       const highlightedTitle = highlightText(title, searchTerm)
       results.push({
         tabIndex,
         tabTitle: title,
         tabColor: tab.color,
         position: 0,
+        from: titleIndex,
+        to: titleIndex + searchTerm.length,
         text: title,
         highlightedText: highlightedTitle,
-        context: 'Title'
+        context: 'Title',
+        searchTerm: query
       })
     }
     
-    // Search in content
-    const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0)
-    sentences.forEach((sentence, sentenceIndex) => {
-      if (sentence.toLowerCase().includes(searchTerm)) {
-        const highlightedText = highlightText(sentence.trim(), searchTerm)
-        results.push({
-          tabIndex,
-          tabTitle: title,
-          tabColor: tab.color,
-          position: sentenceIndex,
-          text: sentence.trim(),
-          highlightedText,
-          context: getContext(sentences, sentenceIndex)
-        })
-      }
-    })
+    // Search in content - get actual character positions
+    let searchIndex = 0
+    let match
+    const lowerText = text.toLowerCase()
     
-    // If no sentence-based matches, search for direct matches
-    if (results.filter(r => r.tabIndex === tabIndex && r.context !== 'Title').length === 0) {
-      const index = text.toLowerCase().indexOf(searchTerm)
-      if (index !== -1) {
-        const start = Math.max(0, index - 50)
-        const end = Math.min(text.length, index + searchTerm.length + 50)
-        const context = text.substring(start, end)
-        const highlightedText = highlightText(context, searchTerm)
-        
-        results.push({
-          tabIndex,
-          tabTitle: title,
-          tabColor: tab.color,
-          position: index,
-          text: context,
-          highlightedText,
-          context: 'Content'
-        })
-      }
+    while ((match = lowerText.indexOf(searchTerm, searchIndex)) !== -1) {
+      // Get context around the match
+      const start = Math.max(0, match - 50)
+      const end = Math.min(text.length, match + searchTerm.length + 50)
+      const context = text.substring(start, end)
+      const highlightedText = highlightText(context, searchTerm)
+      
+      // Extract the sentence containing this match
+      const sentenceStart = text.lastIndexOf('.', match)
+      const sentenceEnd = text.indexOf('.', match)
+      const sentence = text.substring(
+        sentenceStart === -1 ? 0 : sentenceStart + 1,
+        sentenceEnd === -1 ? text.length : sentenceEnd
+      ).trim()
+      
+      results.push({
+        tabIndex,
+        tabTitle: title,
+        tabColor: tab.color,
+        position: match,
+        from: match,
+        to: match + searchTerm.length,
+        text: sentence || context,
+        highlightedText,
+        context: sentence ? getContextFromPosition(text, match) : 'Content',
+        searchTerm: query
+      })
+      
+      searchIndex = match + 1
+      
+      // Limit matches per tab to avoid too many results
+      if (results.filter(r => r.tabIndex === tabIndex).length >= 5) break
     }
   })
   
-  searchResults.value = results.slice(0, 20) // Limit results
+  searchResults.value = results.slice(0, 20) // Limit total results
   selectedIndex.value = 0
 }
 
@@ -393,6 +401,26 @@ const getContext = (sentences: string[], index: number): string => {
   const start = Math.max(0, index - 1)
   const end = Math.min(sentences.length, index + 2)
   return sentences.slice(start, end).join('. ')
+}
+
+// Get context description from text position
+const getContextFromPosition = (text: string, position: number): string => {
+  // Find the paragraph or heading that contains this position
+  const textBefore = text.substring(0, position)
+  const lines = textBefore.split('\n')
+  
+  // Look for headings (lines starting with #)
+  for (let i = lines.length - 1; i >= 0; i--) {
+    const line = lines[i].trim()
+    if (line.startsWith('#')) {
+      return line.replace(/#+\s*/, '').trim() || 'Content'
+    }
+  }
+  
+  // If no heading found, return a generic context
+  const sentences = textBefore.split(/[.!?]+/)
+  const lastSentence = sentences[sentences.length - 2] || sentences[sentences.length - 1]
+  return lastSentence?.trim().substring(0, 30) + '...' || 'Content'
 }
 
 // Get filtered results (combines search results and quick actions)
