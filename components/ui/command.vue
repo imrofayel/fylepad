@@ -11,7 +11,7 @@
         :animate="{ opacity: 1 }"
         :exit="{ opacity: 0 }"
         :transition="{ duration: 0.15 }"
-        class="fixed inset-0 bg-black/50 backdrop-blur-sm"
+        class="fixed inset-0"
       />
       
       <!-- Command Dialog -->
@@ -23,63 +23,39 @@
         class="relative w-full max-w-2xl mx-4"
         @click.stop
       >
-        <div class="bg-white dark:bg-[#404040] rounded-2xl border border-gray-200 dark:border-[#525252] shadow-2xl overflow-hidden">
-          <!-- Search Input -->
-          <div class="flex items-center px-4 py-3 border-b border-gray-200 dark:border-[#525252]">
-            <svg
-              class="w-5 h-5 text-gray-400 dark:text-gray-300 mr-3"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
+        <div class="bg-white/90 border border-[#c6c6c4] backdrop-blur-lg  rounded-2xl shadow-notion overflow-hidden">
+          <div class="flex items-center pl-3 pr-2 py-2 ">
             <input
               ref="searchInputRef"
               v-model="searchQuery"
               type="text"
-              placeholder="Search across all tabs..."
-              class="flex-1 bg-transparent outline-none text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 text-lg"
+              placeholder="Type to find across tabs"
+              class="flex-1 bg-transparent outline-none placeholder-[#32302c] !text-[#32302c] placeholder:antialiased antialiased font-normal text-[18px]"
               @keydown="handleKeyDown"
             />
-            <div class="text-xs text-gray-400 dark:text-gray-500 ml-2">
-              {{ filteredResults.length }} results
+            <div class="shadow-notion text-[18px] p-0.5 rounded-xl px-1.5 !text-[#32302c]">
+              {{ String(filteredResults.length).padStart(2, '0') }}
             </div>
           </div>
 
           <!-- Results -->
           <div class="max-h-96 overflow-y-auto">
             <div v-if="loading" class="p-4 text-center text-gray-500 dark:text-gray-400">
-              <svg class="animate-spin w-5 h-5 mx-auto mb-2" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"/>
-              </svg>
-              Searching...
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" class="mx-auto" viewBox="0 0 24 24"><path fill="#32302c" d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></svg>
             </div>
 
-            <div v-else-if="searchQuery && filteredResults.length === 0" class="p-4 text-center text-gray-500 dark:text-gray-400">
-              <svg class="w-8 h-8 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0120 12a8 8 0 10-2.209 5.291c-.312.312-.38.606-.58.88a8.005 8.005 0 01-1.238 1.137C15.311 19.64 13.78 20 12 20s-3.311-.36-3.973-.692A8.005 8.005 0 017.79 18.17c-.2-.274-.268-.568-.58-.88A7.962 7.962 0 015 12a8 8 0 0112.001-.001z"/>
-              </svg>
+            <div v-else-if="searchQuery && filteredResults.length === 0" class="p-4 pt-3 text-center text-[#32302c] text-lg">
               No results found
             </div>
 
-            <div v-else-if="!searchQuery" class="p-4">
-              <div class="text-sm text-gray-600 dark:text-gray-300 mb-3 font-medium">Quick Actions</div>
+            <div v-else-if="!searchQuery" class="p-2">
               <div class="space-y-1">
                 <div
-                  v-for="(action, index) in quickActions"
+                  v-for="(action) in quickActions"
                   :key="action.id"
                   :class="[
                     'flex items-center px-3 py-2 rounded-lg cursor-pointer transition-colors',
-                    selectedIndex === index
-                      ? 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300'
-                      : 'hover:bg-gray-100 dark:hover:bg-[#333333] text-gray-700 dark:text-gray-300'
+                    
                   ]"
                   @click="executeAction(action)"
                 >
@@ -92,10 +68,9 @@
                     </svg>
                   </div>
                   <div class="flex-1">
-                    <div class="font-medium">{{ action.title }}</div>
-                    <div class="text-xs text-gray-500 dark:text-gray-400">{{ action.description }}</div>
+                    <div class="mb-0.5">{{ action.title }}</div>
+                    <div class="text-[16px] ">{{ action.description }}</div>
                   </div>
-                  <div class="text-xs text-gray-400 dark:text-gray-500">{{ action.shortcut }}</div>
                 </div>
               </div>
             </div>
@@ -108,61 +83,48 @@
                 :animate="{ opacity: 1, y: 0 }"
                 :transition="{ duration: 0.1, delay: index * 0.02 }"
                 :class="[
-                  'flex items-start px-4 py-3 cursor-pointer border-b border-gray-100 dark:border-[#333333] last:border-b-0 transition-colors',
-                  selectedIndex === index
-                    ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-200 dark:border-blue-800'
-                    : 'hover:bg-gray-50 dark:hover:bg-[#333333]'
+                  'flex items-start m-2 px-4 py-3 cursor-pointer last:border-b-0 transition-colors',
+                  selectedIndex === index && ''
                 ]"
                 @click="selectResult(result)"
               >
                 <!-- Tab indicator -->
                 <div class="flex items-center mr-3 mt-1">
-                  <div 
-                    class="w-3 h-3 rounded-full mr-2"
-                    :class="getTabColorClass(result.tabColor || 'Default')"
-                  />
-                  <div class="text-xs text-gray-500 dark:text-gray-400 font-medium">
-                    Tab {{ result.tabIndex + 1 }}
-                  </div>
+<svg aria-hidden="true" :class="selectedIndex === index && '!fill-[#24d86c]'" role="graphics-symbol" viewBox="0 0 16 16" class="page" style="width: 23px; display: block; fill: rgba(71, 70, 68, 0.6); flex-shrink: 0;"><path d="M4.35645 15.4678H11.6367C13.0996 15.4678 13.8584 14.6953 13.8584 13.2256V7.02539C13.8584 6.0752 13.7354 5.6377 13.1406 5.03613L9.55176 1.38574C8.97754 0.804688 8.50586 0.667969 7.65137 0.667969H4.35645C2.89355 0.667969 2.13477 1.44043 2.13477 2.91016V13.2256C2.13477 14.7021 2.89355 15.4678 4.35645 15.4678ZM4.46582 14.1279C3.80273 14.1279 3.47461 13.7793 3.47461 13.1436V2.99219C3.47461 2.36328 3.80273 2.00781 4.46582 2.00781H7.37793V5.75391C7.37793 6.73145 7.86328 7.20312 8.83398 7.20312H12.5186V13.1436C12.5186 13.7793 12.1836 14.1279 11.5205 14.1279H4.46582ZM8.95703 6.02734C8.67676 6.02734 8.56055 5.9043 8.56055 5.62402V2.19238L12.334 6.02734H8.95703ZM10.4336 9.00098H5.42969C5.16992 9.00098 4.98535 9.19238 4.98535 9.43164C4.98535 9.67773 5.16992 9.86914 5.42969 9.86914H10.4336C10.6797 9.86914 10.8643 9.67773 10.8643 9.43164C10.8643 9.19238 10.6797 9.00098 10.4336 9.00098ZM10.4336 11.2979H5.42969C5.16992 11.2979 4.98535 11.4893 4.98535 11.7354C4.98535 11.9746 5.16992 12.1592 5.42969 12.1592H10.4336C10.6797 12.1592 10.8643 11.9746 10.8643 11.7354C10.8643 11.4893 10.6797 11.2979 10.4336 11.2979Z"></path></svg>
                 </div>
 
                 <!-- Content -->
                 <div class="flex-1 min-w-0">
-                  <div class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1 truncate">
+                  <div class="text-base font-medium text-[#32302c] dark:text-gray-100 mb-1 truncate">
                     {{ result.tabTitle || 'Untitled' }}
                   </div>
                   <div 
-                    class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed"
+                    class="text-[15px] text-[#6f6e6b] leading-relaxed"
                     v-html="result.highlightedText"
                   />
-                  <div class="flex items-center mt-2 text-xs text-gray-400 dark:text-gray-500">
-                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536M9 11l3 3-6 6 2-4 1-2z"/>
-                    </svg>
-                    Position {{ result.position + 1 }}
-                  </div>
                 </div>
+
+                                  <kbd class="px-0.5 py-0.5" :class="selectedIndex !== index && 'hidden'">
+                    <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 16 16" class="enter" style="width: 17px; display: inline; fill: rgba(71, 70, 68, 0.6); flex-shrink: 0;"><path d="M5.38965 14.1667C5.81812 14.1667 6.10156 13.8767 6.10156 13.468C6.10156 13.2571 6.01587 13.0989 5.89062 12.967L4.18994 11.3125L3.02979 10.3369L4.55908 10.4028H12.7922C14.4402 10.4028 15.1389 9.65796 15.1389 8.04297V4.13403C15.1389 2.48608 14.4402 1.78735 12.7922 1.78735H9.13379C8.70532 1.78735 8.4021 2.11035 8.4021 2.50586C8.4021 2.90137 8.69873 3.22437 9.13379 3.22437H12.7593C13.4316 3.22437 13.7151 3.50781 13.7151 4.17358V7.99683C13.7151 8.67578 13.425 8.95923 12.7593 8.95923H4.55908L3.02979 9.03174L4.18994 8.04956L5.89062 6.39502C6.01587 6.26978 6.10156 6.11157 6.10156 5.89404C6.10156 5.48535 5.81812 5.19531 5.38965 5.19531C5.21167 5.19531 5.01392 5.27441 4.8689 5.41943L1.08521 9.1438C0.933594 9.28882 0.854492 9.48657 0.854492 9.68433C0.854492 9.87549 0.933594 10.0732 1.08521 10.2183L4.8689 13.9492C5.01392 14.0876 5.21167 14.1667 5.38965 14.1667Z"></path></svg>
+                  </kbd>
               </Motion>
             </div>
           </div>
 
-          <!-- Footer -->
-          <div class="px-4 py-2 border-t border-gray-200 dark:border-[#525252] bg-gray-50 dark:bg-[#333333] text-xs text-gray-500 dark:text-gray-400">
+          <div class="px-2.5 py-2 border-[#c6c6c4]  text-[16.5px] text-[#32302c]">
             <div class="flex items-center justify-between">
               <div class="flex items-center space-x-4">
-                <span class="flex items-center">
-                  <kbd class="px-1.5 py-0.5 bg-white dark:bg-[#404040] border border-gray-200 dark:border-[#525252] rounded">↑↓</kbd>
+                 <span class="flex items-center">
+                  <kbd class="px-0.5 py-0.5"><svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="arrowUpDown directional-icon" fill="currentColor" style="width: 20px; display: block; flex-shrink: 0;"><path d="M14.075 3.45a.625.625 0 0 0-.884 0l-3.497 3.5a.625.625 0 0 0 .883.884l2.431-2.431v10.705a.625.625 0 0 0 1.25 0V5.402l2.431 2.43a.625.625 0 1 0 .884-.883zM2.427 12.167a.625.625 0 0 1 .884 0l2.43 2.431V3.893a.625.625 0 0 1 1.25 0v10.705l2.431-2.43a.625.625 0 0 1 .884.883L6.81 16.55a.625.625 0 0 1-.884 0l-3.498-3.498a.625.625 0 0 1 0-.884"></path></svg></kbd>
                   <span class="ml-1">to navigate</span>
                 </span>
                 <span class="flex items-center">
-                  <kbd class="px-1.5 py-0.5 bg-white dark:bg-[#404040] border border-gray-200 dark:border-[#525252] rounded">↵</kbd>
+                  <kbd class="px-0.5 py-0.5">
+                    <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 16 16" class="enter" fill="currentColor" style="width: 16px; display: inline; flex-shrink: 0;"><path d="M5.38965 14.1667C5.81812 14.1667 6.10156 13.8767 6.10156 13.468C6.10156 13.2571 6.01587 13.0989 5.89062 12.967L4.18994 11.3125L3.02979 10.3369L4.55908 10.4028H12.7922C14.4402 10.4028 15.1389 9.65796 15.1389 8.04297V4.13403C15.1389 2.48608 14.4402 1.78735 12.7922 1.78735H9.13379C8.70532 1.78735 8.4021 2.11035 8.4021 2.50586C8.4021 2.90137 8.69873 3.22437 9.13379 3.22437H12.7593C13.4316 3.22437 13.7151 3.50781 13.7151 4.17358V7.99683C13.7151 8.67578 13.425 8.95923 12.7593 8.95923H4.55908L3.02979 9.03174L4.18994 8.04956L5.89062 6.39502C6.01587 6.26978 6.10156 6.11157 6.10156 5.89404C6.10156 5.48535 5.81812 5.19531 5.38965 5.19531C5.21167 5.19531 5.01392 5.27441 4.8689 5.41943L1.08521 9.1438C0.933594 9.28882 0.854492 9.48657 0.854492 9.68433C0.854492 9.87549 0.933594 10.0732 1.08521 10.2183L4.8689 13.9492C5.01392 14.0876 5.21167 14.1667 5.38965 14.1667Z"></path></svg>
+                  </kbd>
                   <span class="ml-1">to select</span>
                 </span>
               </div>
-              <span class="flex items-center">
-                <kbd class="px-1.5 py-0.5 bg-white dark:bg-[#404040] border border-gray-200 dark:border-[#525252] rounded">Esc</kbd>
-                <span class="ml-1">to close</span>
-              </span>
             </div>
           </div>
         </div>
@@ -229,27 +191,17 @@ const searchResults = ref<SearchResult[]>([])
 
 // Quick actions when no search query
 const quickActions = computed((): QuickAction[] => [
-  {
-    id: 'new-tab',
-    title: 'New Tab',
-    description: 'Create a new tab',
-    shortcut: 'Ctrl+N',
-    icon: 'plus',
-    action: () => {
-      emit('newTab')
-      emit('close')
-    }
-  },
-  {
-    id: 'switch-tab',
-    title: 'Switch Tab',
-    description: `Switch to tab ${props.activeTabIndex + 1} of ${props.tabs.length}`,
-    shortcut: 'Alt+[1-9]',
-    icon: 'tab',
-    action: () => {
-      // This is just informational
-    }
-  }
+  // {
+  //   id: 'new-tab',
+  //   title: 'New Tab',
+  //   description: 'Create a new tab',
+  //   shortcut: 'Ctrl+N',
+  //   icon: 'plus',
+  //   action: () => {
+  //     emit('newTab')
+  //     emit('close')
+  //   }
+  // },
 ])
 
 // Focus search input when dialog opens

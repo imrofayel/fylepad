@@ -310,3 +310,21 @@ ul[data-type="taskList"] li[data-checked="true"] div {
 .ProseMirror-bm-button-shortcut{
   @apply !text-[17px] text-[#32302c];
 }
+
+.command-input{
+  ::placeholder{
+    font-family: 'Roboto Mono', monospace !important;
+  }
+}
+
+.shadow-notion{
+  box-shadow: rgba(0, 0, 0, 0.15) 0px 10px 30px -10px, rgba(0, 0, 0, 0.12) 0px 0px 1px -1px;
+}
+
+.shadow-notion2{
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 10px 10px -10px, rgba(0, 0, 0, 0.12) 0px 0px 1px -1px;
+}
+
+.font-mono{
+  font-family: 'Geist Mono';
+}
