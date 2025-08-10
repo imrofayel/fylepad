@@ -18,7 +18,7 @@
         <button @click="isVerticalTabs = !isVerticalTabs"
           class="hover:!scale-100 drop-shadow-sm" :title="isVerticalTabs ? 'Switch to Horizontal Tabs' : 'Switch to Vertical Tabs'">
           
-          <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="peekSide directional-icon" style="width: 25px; display: block; flex-shrink: 0;"><path d="M10.392 6.125a.5.5 0 0 0-.5.5v6.75a.5.5 0 0 0 .5.5h4.683a.5.5 0 0 0 .5-.5v-6.75a.5.5 0 0 0-.5-.5z"></path><path d="M4.5 4.125A2.125 2.125 0 0 0 2.375 6.25v7.5c0 1.174.951 2.125 2.125 2.125h11a2.125 2.125 0 0 0 2.125-2.125v-7.5A2.125 2.125 0 0 0 15.5 4.125zM3.625 6.25c0-.483.392-.875.875-.875h11c.483 0 .875.392.875.875v7.5a.875.875 0 0 1-.875.875h-11a.875.875 0 0 1-.875-.875z"></path></svg>
+          <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="peekSide directional-icon rotate-180" style="width: 25px; display: block; flex-shrink: 0;"><path d="M10.392 6.125a.5.5 0 0 0-.5.5v6.75a.5.5 0 0 0 .5.5h4.683a.5.5 0 0 0 .5-.5v-6.75a.5.5 0 0 0-.5-.5z"></path><path d="M4.5 4.125A2.125 2.125 0 0 0 2.375 6.25v7.5c0 1.174.951 2.125 2.125 2.125h11a2.125 2.125 0 0 0 2.125-2.125v-7.5A2.125 2.125 0 0 0 15.5 4.125zM3.625 6.25c0-.483.392-.875.875-.875h11c.483 0 .875.392.875.875v7.5a.875.875 0 0 1-.875.875h-11a.875.875 0 0 1-.875-.875z"></path></svg>
 
         </button>
 
@@ -68,23 +68,18 @@
     </div>
 
     <!-- Sidebar for Vertical Tabs -->
-    <div v-if="isVerticalTabs" class="flex flex-col w-64 h-full border-r border-gray-200 dark:border-[#525252] bg-white/50 dark:bg-[#171717] backdrop-blur-sm" v-show="!focusMode.focused">
+    <div v-if="isVerticalTabs" class="flex flex-col min-w-60 border-[#c6c6c4] min-h-screen sticky border-r" v-show="!focusMode.focused">
       <!-- Sidebar Header -->
-      <div class="flex items-center justify-between p-3 py-4 border-b border-gray-200 dark:border-[#525252]">
+      <div class="flex items-center justify-between p-2.5 pr-1.5 py-2">
         <!-- Tab Layout Toggle -->
         <button @click="isVerticalTabs = !isVerticalTabs"
           class="hover:!scale-100 drop-shadow-sm" :title="isVerticalTabs ? 'Switch to Horizontal Tabs' : 'Switch to Vertical Tabs'">
-          <svg xmlns="http://www.w3.org/2000/svg" class="dark:text-white" width="22.5" viewBox="0 0 24 24">
-            <!-- Vertical tabs icon -->
-            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 3v18M12 3v18M18 3v18"/>
-          </svg>
+          <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="peekSide directional-icon" style="width: 25px; display: block; flex-shrink: 0;"><path d="M10.392 6.125a.5.5 0 0 0-.5.5v6.75a.5.5 0 0 0 .5.5h4.683a.5.5 0 0 0 .5-.5v-6.75a.5.5 0 0 0-.5-.5z"></path><path d="M4.5 4.125A2.125 2.125 0 0 0 2.375 6.25v7.5c0 1.174.951 2.125 2.125 2.125h11a2.125 2.125 0 0 0 2.125-2.125v-7.5A2.125 2.125 0 0 0 15.5 4.125zM3.625 6.25c0-.483.392-.875.875-.875h11c.483 0 .875.392.875.875v7.5a.875.875 0 0 1-.875.875h-11a.875.875 0 0 1-.875-.875z"></path></svg>
         </button>
 
         <button @click="newTab"
           class="hover:!scale-100 drop-shadow-sm" title="New Tab">
-          <svg xmlns="http://www.w3.org/2000/svg" class="dark:text-white" width="22.5" viewBox="0 0 24 24">
-            <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 7h6c3.3 0 4.95 0 5.975 1.025S22 10.7 22 14v1c0 3.3 0 4.95-1.025 5.975S18.3 22 15 22h-1c-3.3 0-4.95 0-5.975-1.025S7 18.3 7 15V9M2 7h3m2-2V2" color="currentColor"/>
-          </svg>
+          <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 16 16" class="plus" style="width: 16px; display: block; flex-shrink: 0; margin-inline-end: 6px; margin-top: 1px;"><path d="M7.977 14.963c.407 0 .747-.324.747-.723V8.72h5.362c.399 0 .74-.34.74-.747a.746.746 0 00-.74-.738H8.724V1.706c0-.398-.34-.722-.747-.722a.732.732 0 00-.739.722v5.529h-5.37a.746.746 0 00-.74.738c0 .407.341.747.74.747h5.37v5.52c0 .399.332.723.739.723z"></path></svg>
         </button>
       </div>
 
@@ -103,26 +98,28 @@
           :ref="el => setTabRef(tabIndex, el)"
           @click="activeTab = tabIndex"
           @contextmenu.prevent="showContextMenu(tabIndex, $event)"
-          class="group relative w-full p-3 py-2 border border-gray-200 bg-white/80 text-black dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-xl cursor-pointer flex items-center drop-shadow-sm tab-item transition-all duration-200 hover:bg-gray-50 dark:hover:bg-[#333333]"
-          :class="activeTab === tabIndex ? 'bg-blue-50 border-blue-200 dark:bg-[#2a2a2a] dark:border-blue-500/50' : ''"
-          :style="getTabStyle(tabIndex)"
+          class="group relative w-full p-2 py-1.5 border border-[#c6c6c4] bg-white/80 text-black dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-lg cursor-pointer flex items-center drop-shadow-sm tab-item transition-all duration-200 hover:bg-white"
+          
+            :class="getTabClasses(tabIndex)"
+              :style="getTabStyle(tabIndex)"
+          
         >
           <!-- Color indicator -->
           <div 
-            v-if="tab.color && tab.color !== 'Default'"
-            class="w-3 h-3 rounded-full mr-3 flex-shrink-0"
-            :class="getTabColorIndicator(tab.color)"
-          />
+                v-if="tab.color && tab.color !== 'Default'"
+                class="w-[4.5px] relative right-0.5 h-[18px] rounded-full mr-[4px]"
+                :class="getTabColorIndicator(tab.color)"
+              />
           
           <!-- Tab content -->
           <div class="flex-1 min-w-0">
-            <div class="font-medium truncate text-sm">{{ tab.title || 'Untitled' }}</div>
+            <div class=" truncate text-[17px]">{{ tab.title || 'Untitled' }}</div>
           </div>
 
           <!-- Close button -->
           <button @click.stop="closeTab(tabIndex)"
             v-if="!tab.lock" 
-            class="opacity-0 group-hover:opacity-100 ml-2 text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300 transition-opacity flex-shrink-0"
+            class="ml-2 hover:text-red-600 flex-shrink-0"
             title="Close tab">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 24 24">
               <path fill="currentColor" d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12z"/>
@@ -133,11 +130,12 @@
     </div>
 
     <div class="flex-grow" :class="[
-      focusMode.focused ? 'mt-1' : (isVerticalTabs ? 'mt-0' : 'mt-7'),
+      focusMode.focused ? 'mt-1' : (isVerticalTabs ? '!containermt-0' : 'mt-7'),
       isVerticalTabs && !focusMode.focused ? 'ml-0' : ''
     ]">
       <Editor ref="editorRef" v-if="tabs.length > 0" :key="activeTab" :title="tabs[activeTab].title" :content="tabs[activeTab].content"
-        @update:title="updateTabTitle" @update:content="updateTabContent" @openCommand="commandOpen = true" />
+        @update:title="updateTabTitle" @update:content="updateTabContent" @openCommand="commandOpen = true"
+        :isVertical="isVerticalTabs" />
     </div>
 
     <!-- Tab Context Menu -->

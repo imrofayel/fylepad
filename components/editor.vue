@@ -196,7 +196,7 @@
 
     </div>
 
-    <div class="flex fixed justify-between w-full p-2 py-0  bg-white dark:bg-[#171717] z-10" :class="focusMode.focused ? '!pt-0' : '!pt-3'">
+    <div class="flex fixed justify-between w-full p-2 py-0  bg-white dark:bg-[#171717] z-10" :class="focusMode.focused && isVertical ? '!pt-0' : '!pt-3'">
 
       <div class="flex w-full justify-between items-center space-x-2">
         <input v-model="localTitle" @input="$emit('update:title', localTitle)" @keydown="handleTitleKeydown" placeholder="Untitled"
@@ -525,6 +525,7 @@ const CustomTaskItem = TaskItem.extend({
 const props = defineProps<{
   title: string;
   content: any;
+  isVertical: boolean;
 }>();
 
 const emit = defineEmits(['update:title', 'update:content', 'openCommand']);
