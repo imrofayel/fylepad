@@ -13,9 +13,9 @@
 
     <!-- Top Bar for Horizontal Tabs -->
     <div v-if="!isVerticalTabs" class="flex justify-between items-center w-full p-3 py-2 fixed bg-white z-10 pr-[7.5rem] dark:bg-[#171717]" v-show="!focusMode.focused">
-      <div class="flex space-x-2 overflow-auto justify-center items-center">
+      <div class="flex space-x-2 overflow-visible justify-center items-center">
         <!-- Tab Layout Toggle -->
-        <button @click="isVerticalTabs = !isVerticalTabs"
+        <button @click="toggleTabLayout"
           class="hover:!scale-100 drop-shadow-sm" :title="isVerticalTabs ? 'Switch to Horizontal Tabs' : 'Switch to Vertical Tabs'">
           
           <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="peekSide directional-icon rotate-180" style="width: 25px; display: block; flex-shrink: 0;"><path d="M10.392 6.125a.5.5 0 0 0-.5.5v6.75a.5.5 0 0 0 .5.5h4.683a.5.5 0 0 0 .5-.5v-6.75a.5.5 0 0 0-.5-.5z"></path><path d="M4.5 4.125A2.125 2.125 0 0 0 2.375 6.25v7.5c0 1.174.951 2.125 2.125 2.125h11a2.125 2.125 0 0 0 2.125-2.125v-7.5A2.125 2.125 0 0 0 15.5 4.125zM3.625 6.25c0-.483.392-.875.875-.875h11c.483 0 .875.392.875.875v7.5a.875.875 0 0 1-.875.875h-11a.875.875 0 0 1-.875-.875z"></path></svg>
@@ -68,19 +68,27 @@
     </div>
 
     <!-- Sidebar for Vertical Tabs -->
-    <div v-if="isVerticalTabs" class="flex flex-col min-w-60 border-[#c6c6c4] min-h-screen sticky border-r" v-show="!focusMode.focused">
+    <div v-if="isVerticalTabs && sidebarVisible" class="flex flex-col min-w-60 max-w-60 border-[#c6c6c4] m-3 dark:border-[#525252] h-full sticky top-3 border rounded-xl !overflow-visible  dark:bg-[#171717] z-20" v-show="!focusMode.focused">
       <!-- Sidebar Header -->
-      <div class="flex items-center justify-between p-2.5 pr-1.5 py-2">
+      <div class="flex items-center justify-between p-2.5 pr-1.5 py-2 dark:border-[#525252] dark:bg-[#171717]">
         <!-- Tab Layout Toggle -->
-        <button @click="isVerticalTabs = !isVerticalTabs"
+        <button @click="toggleTabLayout"
           class="hover:!scale-100 drop-shadow-sm" :title="isVerticalTabs ? 'Switch to Horizontal Tabs' : 'Switch to Vertical Tabs'">
           <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="peekSide directional-icon" style="width: 25px; display: block; flex-shrink: 0;"><path d="M10.392 6.125a.5.5 0 0 0-.5.5v6.75a.5.5 0 0 0 .5.5h4.683a.5.5 0 0 0 .5-.5v-6.75a.5.5 0 0 0-.5-.5z"></path><path d="M4.5 4.125A2.125 2.125 0 0 0 2.375 6.25v7.5c0 1.174.951 2.125 2.125 2.125h11a2.125 2.125 0 0 0 2.125-2.125v-7.5A2.125 2.125 0 0 0 15.5 4.125zM3.625 6.25c0-.483.392-.875.875-.875h11c.483 0 .875.392.875.875v7.5a.875.875 0 0 1-.875.875h-11a.875.875 0 0 1-.875-.875z"></path></svg>
         </button>
 
-        <button @click="newTab"
-          class="hover:!scale-100 drop-shadow-sm" title="New Tab">
-          <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 16 16" class="plus" style="width: 16px; display: block; flex-shrink: 0; margin-inline-end: 6px; margin-top: 1px;"><path d="M7.977 14.963c.407 0 .747-.324.747-.723V8.72h5.362c.399 0 .74-.34.74-.747a.746.746 0 00-.74-.738H8.724V1.706c0-.398-.34-.722-.747-.722a.732.732 0 00-.739.722v5.529h-5.37a.746.746 0 00-.74.738c0 .407.341.747.74.747h5.37v5.52c0 .399.332.723.739.723z"></path></svg>
-        </button>
+        <div class="flex items-center space-x-2">
+          <button @click="newTab"
+            class="hover:!scale-100 drop-shadow-sm" title="New Tab">
+            <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 16 16" class="plus" style="width: 16px; display: block; flex-shrink: 0; margin-inline-end: 6px; margin-top: 1px;"><path d="M7.977 14.963c.407 0 .747-.324.747-.723V8.72h5.362c.399 0 .74-.34.74-.747a.746.746 0 00-.74-.738H8.724V1.706c0-.398-.34-.722-.747-.722a.732.732 0 00-.739.722v5.529h-5.37a.746.746 0 00-.74.738c0 .407.341.747.74.747h5.37v5.52c0 .399.332.723.739.723z"></path></svg>
+          </button>
+          
+          <!-- Close Sidebar Button -->
+          <button @click="sidebarVisible = false"
+            class="hover:!scale-100 drop-shadow-sm" title="Hide Sidebar">
+            <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 16 16" class="doubleChevronRight directional-icon rotate-180 fill-[#32302c]" style="width: 17px; display: block; flex-shrink: 0;"><path d="M2.25781 14.1211C2.47656 14.1211 2.66797 14.0391 2.81836 13.8887L8.14355 8.67969C8.32812 8.49512 8.41699 8.29688 8.41699 8.06445C8.41699 7.8252 8.32812 7.62012 8.14355 7.44922L2.81836 2.24023C2.66797 2.08984 2.4834 2.00781 2.25781 2.00781C1.81348 2.00781 1.46484 2.35645 1.46484 2.80078C1.46484 3.0127 1.55371 3.21777 1.7041 3.375L6.50977 8.05762L1.7041 12.7539C1.55371 12.9043 1.46484 13.1094 1.46484 13.3281C1.46484 13.7725 1.81348 14.1211 2.25781 14.1211ZM8.36914 14.1211C8.58789 14.1211 8.77246 14.0391 8.92285 13.8887L14.2549 8.67969C14.4395 8.49512 14.5283 8.29688 14.5283 8.06445C14.5283 7.8252 14.4326 7.62012 14.2549 7.44922L8.92285 2.24023C8.77246 2.08984 8.58789 2.00781 8.36914 2.00781C7.9248 2.00781 7.56934 2.35645 7.56934 2.80078C7.56934 3.0127 7.66504 3.21777 7.81543 3.375L12.6211 8.05762L7.81543 12.7539C7.66504 12.9043 7.56934 13.1094 7.56934 13.3281C7.56934 13.7725 7.9248 14.1211 8.36914 14.1211Z"></path></svg>
+          </button>
+        </div>
       </div>
 
       <!-- Vertical Tabs List -->
@@ -98,28 +106,23 @@
           :ref="el => setTabRef(tabIndex, el)"
           @click="activeTab = tabIndex"
           @contextmenu.prevent="showContextMenu(tabIndex, $event)"
-          class="group relative w-full p-2 py-1.5 border border-[#c6c6c4] bg-white/80 text-black dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-lg cursor-pointer flex items-center drop-shadow-sm tab-item transition-all duration-200 hover:bg-white"
+          class="group relative w-full p-1 pr-0.5 py-1.5 text-[#32302c] cursor-pointer flex items-center  tab-item"
+          :class="tabIndex === activeTab && ' !bg-gray-100/80 rounded-lg !px-2'"
           
-            :class="getTabClasses(tabIndex)"
-              :style="getTabStyle(tabIndex)"
-          
+          :style="getTabStyle(tabIndex)"
         >
-          <!-- Color indicator -->
-          <div 
-                v-if="tab.color && tab.color !== 'Default'"
-                class="w-[4.5px] relative right-0.5 h-[18px] rounded-full mr-[4px]"
-                :class="getTabColorIndicator(tab.color)"
-              />
+          <svg aria-hidden="true" class="mr-1.5 fill-white" :class="(tabIndex !== activeTab) && getTabIconColorIndicator(tab.color as any)"  role="graphics-symbol" viewBox="0 0 16 16" style="width: 19px; fill: rgba(71, 70, 68, 0.6); display: block; flex-shrink: 0;"><path data-v-2474b7ad="" d="M4.35645 15.4678H11.6367C13.0996 15.4678 13.8584 14.6953 13.8584 13.2256V7.02539C13.8584 6.0752 13.7354 5.6377 13.1406 5.03613L9.55176 1.38574C8.97754 0.804688 8.50586 0.667969 7.65137 0.667969H4.35645C2.89355 0.667969 2.13477 1.44043 2.13477 2.91016V13.2256C2.13477 14.7021 2.89355 15.4678 4.35645 15.4678ZM4.46582 14.1279C3.80273 14.1279 3.47461 13.7793 3.47461 13.1436V2.99219C3.47461 2.36328 3.80273 2.00781 4.46582 2.00781H7.37793V5.75391C7.37793 6.73145 7.86328 7.20312 8.83398 7.20312H12.5186V13.1436C12.5186 13.7793 12.1836 14.1279 11.5205 14.1279H4.46582ZM8.95703 6.02734C8.67676 6.02734 8.56055 5.9043 8.56055 5.62402V2.19238L12.334 6.02734H8.95703ZM10.4336 9.00098H5.42969C5.16992 9.00098 4.98535 9.19238 4.98535 9.43164C4.98535 9.67773 5.16992 9.86914 5.42969 9.86914H10.4336C10.6797 9.86914 10.8643 9.67773 10.8643 9.43164C10.8643 9.19238 10.6797 9.00098 10.4336 9.00098ZM10.4336 11.2979H5.42969C5.16992 11.2979 4.98535 11.4893 4.98535 11.7354C4.98535 11.9746 5.16992 12.1592 5.42969 12.1592H10.4336C10.6797 12.1592 10.8643 11.9746 10.8643 11.7354C10.8643 11.4893 10.6797 11.2979 10.4336 11.2979Z"></path></svg>
           
           <!-- Tab content -->
           <div class="flex-1 min-w-0">
-            <div class=" truncate text-[17px]">{{ tab.title || 'Untitled' }}</div>
+            <div class=" truncate text-[18px]">{{ tab.title || 'Untitled' }}</div>
           </div>
 
           <!-- Close button -->
           <button @click.stop="closeTab(tabIndex)"
             v-if="!tab.lock" 
-            class="ml-2 hover:text-red-600 flex-shrink-0"
+            class="ml-2 hover:text-red-600 flex-shrink-0 opacity-0 group-hover:opacity-100"
+            :class="tabIndex === activeTab && '!opacity-100'"
             title="Close tab">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" viewBox="0 0 24 24">
               <path fill="currentColor" d="M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12z"/>
@@ -130,12 +133,21 @@
     </div>
 
     <div class="flex-grow" :class="[
-      focusMode.focused ? 'mt-1' : (isVerticalTabs ? '!containermt-0' : 'mt-7'),
+      focusMode.focused ? 'mt-1' : (isVerticalTabs ? '!mt-0' : 'mt-7'),
       isVerticalTabs && !focusMode.focused ? 'ml-0' : ''
     ]">
+      <button 
+        v-if="isVerticalTabs && !sidebarVisible && !focusMode.focused" 
+        @click="sidebarVisible = true"
+        class="fixed top-4 left-4 z-30 "
+        title="Show Sidebar">
+        <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 16 16" class="doubleChevronRight directional-icon fill-[#32302c]" style="width: 19px; display: block; flex-shrink: 0;"><path d="M2.25781 14.1211C2.47656 14.1211 2.66797 14.0391 2.81836 13.8887L8.14355 8.67969C8.32812 8.49512 8.41699 8.29688 8.41699 8.06445C8.41699 7.8252 8.32812 7.62012 8.14355 7.44922L2.81836 2.24023C2.66797 2.08984 2.4834 2.00781 2.25781 2.00781C1.81348 2.00781 1.46484 2.35645 1.46484 2.80078C1.46484 3.0127 1.55371 3.21777 1.7041 3.375L6.50977 8.05762L1.7041 12.7539C1.55371 12.9043 1.46484 13.1094 1.46484 13.3281C1.46484 13.7725 1.81348 14.1211 2.25781 14.1211ZM8.36914 14.1211C8.58789 14.1211 8.77246 14.0391 8.92285 13.8887L14.2549 8.67969C14.4395 8.49512 14.5283 8.29688 14.5283 8.06445C14.5283 7.8252 14.4326 7.62012 14.2549 7.44922L8.92285 2.24023C8.77246 2.08984 8.58789 2.00781 8.36914 2.00781C7.9248 2.00781 7.56934 2.35645 7.56934 2.80078C7.56934 3.0127 7.66504 3.21777 7.81543 3.375L12.6211 8.05762L7.81543 12.7539C7.66504 12.9043 7.56934 13.1094 7.56934 13.3281C7.56934 13.7725 7.9248 14.1211 8.36914 14.1211Z"></path></svg>
+      </button>
+
       <Editor ref="editorRef" v-if="tabs.length > 0" :key="activeTab" :title="tabs[activeTab].title" :content="tabs[activeTab].content"
         @update:title="updateTabTitle" @update:content="updateTabContent" @openCommand="commandOpen = true"
-        :isVertical="isVerticalTabs" />
+        :isVertical="isVerticalTabs" 
+        :is-sidebar-open="sidebarVisible"/>
     </div>
 
     <!-- Tab Context Menu -->
@@ -237,6 +249,7 @@ const editorRef = ref<{ editor: any } | null>(null)
 
 // Vertical tabs state
 const isVerticalTabs = ref(false)
+const sidebarVisible = ref(true)
 
 interface Tab {
   title: string;
@@ -527,6 +540,20 @@ const getTabColorIndicator = (colorName: string) => {
   return colorMap[colorName] || '';
 };
 
+const getTabIconColorIndicator = (colorName: string) => {
+  const colorMap: Record<string, string> = {
+    'Blue': '!fill-blue-500',
+    'Red': '!fill-red-500',
+    'Purple': '!fill-purple-500',
+    'Orange': '!fill-orange-500',
+    'Pink': '!fill-pink-500',
+    'Teal': '!fill-teal-500',
+    'Yellow': '!fill-yellow-500',
+    'default': '!fill-white'
+  };
+  return colorMap[colorName] || '';
+};
+
 // Change tab color
 const changeTabColor = (tabIndex: number, color: { name: string }) => {
   if (tabs[tabIndex]) {
@@ -565,6 +592,15 @@ const moveTab = (tabIndex: number, direction: 'left' | 'right') => {
     moveTabToPosition(tabIndex, tabIndex - 1);
   } else if (direction === 'right' && tabIndex < tabs.length - 1) {
     moveTabToPosition(tabIndex, tabIndex + 1);
+  }
+};
+
+// Toggle tab layout and manage sidebar visibility
+const toggleTabLayout = () => {
+  isVerticalTabs.value = !isVerticalTabs.value;
+  if (isVerticalTabs.value) {
+    // When switching to vertical tabs, show sidebar by default
+    sidebarVisible.value = true;
   }
 };
 
@@ -729,7 +765,8 @@ async function saveAppState() {
     tabs: tabs,
     activeTab: activeTab.value,
     colorMode: colorMode.preference,
-    isVerticalTabs: isVerticalTabs.value
+    isVerticalTabs: isVerticalTabs.value,
+    sidebarVisible: sidebarVisible.value
   };
 
   // Try to save using Tauri's fs API
@@ -775,6 +812,9 @@ async function loadAppState() {
     if (appState.isVerticalTabs !== undefined) {
       isVerticalTabs.value = appState.isVerticalTabs;
     }
+    if (appState.sidebarVisible !== undefined) {
+      sidebarVisible.value = appState.sidebarVisible;
+    }
   }
 }
 
@@ -789,7 +829,7 @@ onBeforeUnmount(() => {
 });
 
 // Watch for changes and save the state
-watch([tabs, activeTab, () => colorMode.preference, isVerticalTabs], async () => {
+watch([tabs, activeTab, () => colorMode.preference, isVerticalTabs, sidebarVisible], async () => {
   await saveAppState();
 }, { deep: true });
 
