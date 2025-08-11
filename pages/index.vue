@@ -146,6 +146,9 @@
 
       <Editor ref="editorRef" v-if="tabs.length > 0" :key="activeTab" :title="tabs[activeTab].title" :content="tabs[activeTab].content"
         @update:title="updateTabTitle" @update:content="updateTabContent" @openCommand="commandOpen = true"
+        @switchToTab="switchToTab"
+        :tabs="tabs"
+        :activeTabIndex="activeTab"
         :isVertical="isVerticalTabs" 
         :is-sidebar-open="sidebarVisible"/>
     </div>
@@ -872,6 +875,12 @@ const updateTabContent = (content: any) => {
   const currentTab = tabs[activeTab.value];
   if (currentTab) {
     currentTab.content = content;
+  }
+};
+
+const switchToTab = (tabIndex: number) => {
+  if (tabIndex >= 0 && tabIndex < tabs.length) {
+    activeTab.value = tabIndex;
   }
 };
 

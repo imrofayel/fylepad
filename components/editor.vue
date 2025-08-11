@@ -466,6 +466,8 @@ import { useFocusStore } from '~/stores/focus'
 import { ImageResize } from '~/extensions/ImageResize.ts';
 import { BlockMenu } from "~/extensions/block-menu/menu";
 import BlockMenuItems from "~/extensions/block-menu/items";
+import { TabLink } from '~/extensions/nodes/tabLink';
+import { TabLinkSuggestion } from '~/extensions/tab-link/suggestion';
 
 var open = ref(false);
 
@@ -528,13 +530,15 @@ const CustomTaskItem = TaskItem.extend({
 })
 
 const props = defineProps<{
-  title: string;
-  content: any;
-  isVertical: boolean;
-  isSidebarOpen: boolean;
-}>();
+  title: string
+  content: any
+  isVertical: boolean
+  isSidebarOpen: boolean
+  tabs?: any[]
+  activeTabIndex?: number
+}>()
 
-const emit = defineEmits(['update:title', 'update:content', 'openCommand']);
+const emit = defineEmits(['update:title', 'update:content', 'openCommand', 'switchToTab'])
 
 const file = shallowRef<File>()
 
@@ -550,6 +554,21 @@ onMounted(() => {
       attributes: {
         class: 'dark:text-white/90 text-[#32302c] p-6 leading-loose py-2 text-[18px] min-h-[150px] w-full h-full overflow-auto border-none bg-transparent placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 geist',
       },
+      handleClickOn: (view, pos, node, nodePos, event, direct) => {
+        // Handle tab link clicks
+        if (node.type.name === 'tabLink') {
+          event.preventDefault()
+          const tabId = node.attrs.id
+          const tabs = props.tabs || []
+          const targetTab = tabs.find((tab, index) => tab.id === tabId || index.toString() === tabId)
+          if (targetTab) {
+            const tabIndex = tabs.indexOf(targetTab)
+            emit('switchToTab', tabIndex)
+          }
+          return true
+        }
+        return false
+      }
     },
     extensions: [
       BlockMenu.configure({
@@ -581,6 +600,15 @@ onMounted(() => {
       Embed,
       CustomTaskItem,
       Underline,
+      TabLink,
+      TabLinkSuggestion.configure({
+        tabData: (props.tabs || []).map(tab => ({
+          id: tab.id,
+          name: tab.title || 'Untitled',
+          color: tab.color,
+          group: tab.group,
+        }))
+      }),
       Color.configure({ types: [TextStyle.name, ListItem.name] }),
       TextStyle,
       Table.configure({ resizable: true }),
@@ -1481,5 +1509,32 @@ ul[data-type="taskList"] label>div {
 
 .tiptap .ProseMirror .search-result-current {
   background-color: rgba(13, 255, 0, 0.5);
+}
+
+/* Tab Link Styles */
+.tab-link {
+  @apply inline-flex items-center gap-1 px-2 py-1 mx-1 text-sm bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-700 rounded-md cursor-pointer transition-colors hover:bg-blue-100 dark:hover:bg-blue-900/50;
+}
+
+.tab-link-icon {
+  @apply text-xs;
+}
+
+.tab-link-label {
+  @apply font-medium;
+}
+
+.tab-link:hover {
+  @apply bg-blue-100 dark:bg-blue-900/50 border-blue-300 dark:border-blue-600;
+}
+
+/* Tab Link Menu Tippy Theme */
+.tippy-box[data-theme~="tab-link-menu"] {
+  @apply bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg shadow-lg;
+  padding: 0;
+}
+
+.tippy-box[data-theme~="tab-link-menu"] .tippy-content {
+  padding: 0;
 }
 </style>
