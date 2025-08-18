@@ -3,7 +3,7 @@ import type { EditorView } from "@tiptap/pm/view";
 import type { Range } from "@tiptap/core";
 import { VueRenderer } from "@tiptap/vue-3";
 import tippy, { type Instance } from "tippy.js";
-import TabLinkMenuComponent from "../../components/tabLinkMenu.vue";
+import TabLinkMenu from "~/components/tabLinkMenu.vue";
 
 export interface TabLinkItem {
   id: string;
@@ -31,7 +31,7 @@ export class TabLinkView {
     this.range = range;
     this.query = query;
 
-    this.component = new VueRenderer(TabLinkMenuComponent, {
+    this.component = new VueRenderer(TabLinkMenu, {
       props: {
         items: this.getFilteredItems(),
         query: this.query,
