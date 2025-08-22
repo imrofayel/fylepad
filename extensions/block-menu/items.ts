@@ -1,10 +1,5 @@
-import { Extension, Editor } from "@tiptap/core";
+import { Extension } from "@tiptap/core";
 import type { BlockMenuItemStorage } from "./menu";
-
-const svg = (path: string, size = 20) => `
-<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24">
-  <path fill="#32302c" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="0" d="${path}"/>
-</svg>`;
 
 const icons = {
   h1: `<svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="textH1" style="width: 25px; height: 25px; display: block; fill: rgb(50, 48, 44); flex-shrink: 0;"><path d="M4.1 4.825a.625.625 0 1 0-1.25 0v10.35a.625.625 0 0 0 1.25 0V10.4h6.4v4.775a.625.625 0 0 0 1.25 0V4.825a.625.625 0 1 0-1.25 0V9.15H4.1zM17.074 8.45a.6.6 0 0 1 .073.362q.003.03.003.063v6.3a.625.625 0 1 1-1.25 0V9.802l-1.55.846a.625.625 0 1 1-.6-1.098l2.476-1.35a.625.625 0 0 1 .848.25"></path></svg>`,
@@ -28,30 +23,6 @@ export const BlockMenuItems = Extension.create({
       blockMenu: {
         items: [
           {
-            id: "heading1",
-            name: "Heading 1",
-            icon: icons.h1,
-            keywords: "h1 heading title",
-            shortcut: "#",
-            action: (editor) => editor.chain().focus().setHeading({ level: 1 }).run(),
-          },
-          {
-            id: "heading2",
-            name: "Heading 2",
-            icon: icons.h2,
-            keywords: "h2 heading",
-            shortcut: "##",
-            action: (editor) => editor.chain().focus().setHeading({ level: 2 }).run(),
-          },
-          {
-            id: "heading3",
-            name: "Heading 3",
-            icon: icons.h3,
-            keywords: "h3 heading",
-            shortcut: "###",
-            action: (editor) => editor.chain().focus().setHeading({ level: 3 }).run(),
-          },
-          {
             id: "orderedList",
             name: "Numbered List",
             icon: icons.ol,
@@ -71,6 +42,27 @@ export const BlockMenuItems = Extension.create({
             icon: icons.task,
             keywords: "list task todo checkbox",
             action: (editor) => editor.chain().focus().toggleTaskList().run(),
+          },
+                    {
+            id: "heading1",
+            name: "Heading 1",
+            icon: icons.h1,
+            keywords: "h1 heading title",
+            action: (editor) => editor.chain().focus().setHeading({ level: 1 }).run(),
+          },
+          {
+            id: "heading2",
+            name: "Heading 2",
+            icon: icons.h2,
+            keywords: "h2 heading",
+            action: (editor) => editor.chain().focus().setHeading({ level: 2 }).run(),
+          },
+          {
+            id: "heading3",
+            name: "Heading 3",
+            icon: icons.h3,
+            keywords: "h3 heading",
+            action: (editor) => editor.chain().focus().setHeading({ level: 3 }).run(),
           },
           {
             id: "blockquote",
@@ -108,7 +100,7 @@ export const BlockMenuItems = Extension.create({
             action: (editor) => editor.commands.setMermaid('graph TD;\n  A-->B;  A-->C;\n  B-->D;\n  C-->D;'),
           },
 
-                  {
+          {
             id: "code-plantuml",
             name: "Code — PlantUML",
             icon: icons.plantUML,

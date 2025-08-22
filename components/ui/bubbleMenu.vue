@@ -1,7 +1,7 @@
 <template>
       <bubble-menu :editor="editor as any" :tippy-options="{ duration: 100, offset: [10, -70] }" v-if="editor">
         <div
-          class="flex overflow-hidden dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50  bg-white border border-gray-200 rounded-xl text-black drop-shadow-cool dark:text-white/85">
+          class="flex overflow-hidden dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50  bg-white border border-[#c6c6c4] rounded-xl text-black drop-shadow-cool dark:text-white/85">
           <button @click="editor.chain().focus().toggleBold().run()"
             :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('bold') }"
             class="rounded-l-lg hover:dark:bg-[#171717] hover:bg-gray-100 p-2 px-2">
@@ -73,7 +73,7 @@
 </button> -->
 
           <button @click="readSelectedText"
-            :class="{ 'is-reading': isReading, 'hover:dark:bg-[#171717] hover:bg-gray-100': true, 'p-2 px-2 border-l border-gray-200 dark:border-[#525252]': true }"
+            :class="{ 'is-reading': isReading, 'hover:dark:bg-[#171717] hover:bg-gray-100': true, 'p-2 px-2 border-l border-[#c6c6c4] dark:border-[#525252]': true }"
             aria-label="Read selected text aloud"
             :aria-pressed="isReading"
             role="button">

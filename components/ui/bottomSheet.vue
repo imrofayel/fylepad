@@ -2,11 +2,11 @@
   <div>
     <transition name="slide-up">
       <div v-if="isOpen"
-        class="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border border-b-0 drop-shadow-cooltop border-gray-200 rounded-t-3xl"
+        class="fixed bottom-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-2xl dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border border-b-0 drop-shadow-cooltop rounded-xl border-[#c6c6c4] rounded-t-xl"
         :style="{ maxHeight: '70%', overflowY: 'auto' }">
         <div class="flex justify-end items-center px-4 py-3 dark:border-[#2a3828]">
           <button @click="closeSheet"
-            class="bg-white dark:bg-[#171717] dark:border-[#484747] dark:text-gray-50 border border-gray-200 text-black backdrop-blur-xl flex px-2 p-2 rounded-2xl justify-center items-center cursor-pointer drop-shadow-cool tab-item">
+            class="bg-white dark:bg-[#171717] dark:border-[#484747] dark:text-gray-50 border rounded-xl border-[#c6c6c4] text-black backdrop-blur-xl flex px-2 p-2  justify-center items-center cursor-pointer tab-item">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24" class="drop-shadow-sm">
               <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                 d="M19 5L5 19M5 5l14 14" color="currentColor" />
@@ -17,7 +17,7 @@
           <Menu as="div" class="relative text-left">
             <div>
               <MenuButton
-                class="bg-white dark:bg-[#171717] dark:border-[#484747] dark:text-gray-50 border border-gray-200 text-black backdrop-blur-xl flex px-3 p-2 rounded-2xl justify-center items-center cursor-pointer drop-shadow-cool">
+                class="bg-white dark:bg-[#171717] dark:border-[#484747] dark:text-gray-50 border rounded-xl border-[#c6c6c4] text-black backdrop-blur-xl flex px-3 p-2 justify-center items-center cursor-pointer ">
                 <span class="mr-2 text-[18px]" :style="{ fontFamily: selectedFont }">{{ selectedFont || 'Select Font'
                   }}</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" viewBox="0 0 24 24">
@@ -32,12 +32,12 @@
               leave-active-class="transition duration-75 ease-in" leave-from-class="transform scale-100 opacity-100"
               leave-to-class="transform scale-95 opacity-0">
               <MenuItems
-                class="z-10 right-0 mt-4 origin-top-right divide-y rounded-2xl text-black overflow-hidden max-h-60 overflow-y-auto inline-block dark:bg-[#171717] dark:!border-[#484747] bg-white border !border-gray-200 backdrop-blur-xl justify-center items-center cursor-pointer drop-shadow-cool">
+                class="z-10 right-0 mt-4 origin-top-right divide-y text-black overflow-hidden max-h-60 overflow-y-auto inline-block dark:bg-[#171717] dark:!border-[#484747] bg-white border rounded-xl border-[#c6c6c4] backdrop-blur-xl justify-center items-center cursor-pointer">
                 <div class="p-2 inline-flex space-x-2">
                   <input v-model="searchQuery" placeholder="Search"
-                    class="placeholder:text-gray-400 dark:placeholder:text-gray-200/80 bg-transparent outline-none mt-1 p-2 px-3 bg-white border dark:border-none border-gray-200 rounded-xl  drop-shadow-cool text-black dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 flex justify-center" />
+                    class=" dark:placeholder:text-gray-200/80 bg-transparent outline-none mt-1 p-2 px-3 bg-white border dark:border-none rounded-lg !border-[#c6c6c4]  drop-shadow-cool text-black dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 flex justify-center" />
                   <button title="Reset Font" @click="resetFont"
-                    class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white/80 text-gray-800/90 !px-[8px]  rounded-xl justify-center items-center cursor-pointer inline-block drop-shadow-cool">
+                    class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-xl border-[#c6c6c4] bg-white/80 text-black !px-[8px]   justify-center items-center cursor-pointer inline-block ">
                     <svg xmlns="http://www.w3.org/2000/svg" width="23" viewBox="0 0 24 24" class="drop-shadow-sm">
                       <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                         stroke-width="1.5"
@@ -64,12 +64,12 @@
 
           <div class="flex my-3 space-x-4 items-center">
             <div
-              class="bg-white dark:bg-[#171717] dark:border-[#484747] dark:text-gray-50 border border-gray-200 text-black backdrop-blur-xl flex px-3 p-2 rounded-2xl justify-center items-center cursor-pointer drop-shadow-cool space-x-2 text-[18px]">
+              class="bg-white dark:bg-[#171717] dark:border-[#484747] dark:text-gray-50 border  rounded-xl border-[#c6c6c4] text-black backdrop-blur-xl flex px-3 p-2 justify-center items-center cursor-pointer  space-x-2 text-[18px]">
               <span>Color</span>
               <input ref="colorPicker" type="color" :value="currentColor" @input="updateColor"
                 class="color-picker hidden" />
               <button @click="$refs.colorPicker.click()" class="ml-2 p-1 rounded-full hover:bg-gray-100">
-                <div class="h-5 w-5 rounded-full border" :style="{ backgroundColor: currentColor }" />
+                <div class="h-5 w-5 rounded-full border border-[#c6c6c4]" :style="{ backgroundColor: currentColor }" />
               </button>
 
               <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24" class="drop-shadow-sm"
@@ -85,8 +85,8 @@
           <div class="flex space-x-4">
             <div class="flex space-x-4 dark:text-white/40 text-black/30">
               <div
-                class="bg-white dark:bg-[#171717] dark:border-[#484747] dark:text-gray-50 border border-gray-200 text-black backdrop-blur-xl flex px-3 p-2 rounded-2xl justify-center items-center cursor-pointer drop-shadow-cool space-x-1 text-[18px]">
-                <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24" class="drop-shadow-sm">
+                class="bg-white dark:bg-[#171717] dark:border-[#484747] dark:text-gray-50 border  rounded-xl border-[#c6c6c4] text-black backdrop-blur-xl flex px-3 p-2 justify-center items-center cursor-pointer  space-x-2 text-[18px]">
+                <svg xmlns="http://www.w3.org/2000/svg" width="23" viewBox="0 0 24 24" class="drop-shadow-sm">
                   <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                     stroke-width="1.5"
                     d="M10.855 8.891C11.383 8.297 11.648 8 12 8s.617.297 1.145.891l1.3 1.461c.704.79 1.055 1.185 1.055 1.648s-.351.858-1.055 1.648l-1.3 1.46c-.528.595-.793.892-1.145.892s-.617-.297-1.145-.891l-1.3-1.461C8.852 12.858 8.5 12.463 8.5 12s.351-.858 1.055-1.648zM5 12H2m20 0h-3m-7 7v3m0-20v3"

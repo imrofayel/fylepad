@@ -12,11 +12,11 @@
     />
 
     <!-- Top Bar for Horizontal Tabs -->
-    <div v-if="!isVerticalTabs" class="flex justify-between items-center w-full p-3 py-2 fixed bg-white z-10 pr-[7.5rem] dark:bg-[#171717]" v-show="!focusMode.focused">
+    <div v-if="!isVerticalTabs" class="flex justify-between items-center w-full p-0 py-2 fixed bg-white z-10 pr-[7.5rem] dark:bg-[#171717]" v-show="!focusMode.focused">
       <div class="flex space-x-2 overflow-visible justify-center items-center">
         <!-- Tab Layout Toggle @click="toggleTabLayout" -->
         <button 
-          class="hover:!scale-100 drop-shadow-sm" :title="isVerticalTabs ? 'Switch to Horizontal Tabs' : 'Switch to Vertical Tabs'">
+          class="hover:!scale-100 drop-shadow-sm hidden" :title="isVerticalTabs ? 'Switch to Horizontal Tabs' : 'Switch to Vertical Tabs'">
           
           <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="peekSide directional-icon rotate-180" style="width: 25px; display: block; flex-shrink: 0;"><path d="M10.392 6.125a.5.5 0 0 0-.5.5v6.75a.5.5 0 0 0 .5.5h4.683a.5.5 0 0 0 .5-.5v-6.75a.5.5 0 0 0-.5-.5z"></path><path d="M4.5 4.125A2.125 2.125 0 0 0 2.375 6.25v7.5c0 1.174.951 2.125 2.125 2.125h11a2.125 2.125 0 0 0 2.125-2.125v-7.5A2.125 2.125 0 0 0 15.5 4.125zM3.625 6.25c0-.483.392-.875.875-.875h11c.483 0 .875.392.875.875v7.5a.875.875 0 0 1-.875.875h-11a.875.875 0 0 1-.875-.875z"></path></svg>
 
