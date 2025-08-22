@@ -166,33 +166,17 @@
         <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="magnifyingGlass" style="width: 25px; display: block; flex-shrink: 0;"><path d="M8.875 2.625a6.25 6.25 0 1 0 3.955 11.09l3.983 3.982a.625.625 0 1 0 .884-.884l-3.983-3.982a6.25 6.25 0 0 0-4.84-10.205m-5 6.25a5 5 0 1 1 10 0 5 5 0 0 1-10 0"></path></svg>
       </button>
 
-
-      <!-- <button @click="exportMarkdown" title="Export Markdown">
-        <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="arrowLineDown" style="width: 24px; display: block; flex-shrink: 0;"><path d="M10 2.4c.345 0 .625.28.625.625v9.966l3.333-3.333a.625.625 0 1 1 .884.884l-4.4 4.4a.625.625 0 0 1-.884 0l-4.4-4.4a.625.625 0 0 1 .884-.884l3.333 3.333V3.025c0-.345.28-.625.625-.625M4.15 16.35a.625.625 0 1 0 0 1.25h11.7a.625.625 0 0 0 0-1.25z"></path></svg>
-      </button>
-
-      <button @click="importMarkdownOrText" title="Import Markdown">
-        <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="arrowLineUp" style="width: 24px; display: block; flex-shrink: 0;"><path d="M15.85 3.65a.625.625 0 1 0 0-1.25H4.15a.625.625 0 1 0 0 1.25zm-1.008 6.692a.625.625 0 0 1-.884 0l-3.333-3.333v9.966a.625.625 0 1 1-1.25 0V7.009l-3.333 3.333a.625.625 0 1 1-.884-.884l4.4-4.4a.625.625 0 0 1 .884 0l4.4 4.4a.625.625 0 0 1 0 .884"></path></svg>
-      </button>
-
-      <button @click="onClick('light')" v-if="colorMode.value == 'dark'" title="Light Mode">
-        <svg xmlns="http://www.w3.org/2000/svg" width="23" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4"><circle cx="12" cy="12" r="4"/><path d="M12 3v1m0 16v1m-9-9h1m16 0h1m-2.636-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m11.314 11.314l.707.707"/></g></svg>
-
-      </button>
-
-      <button @click="onClick('dark')" v-if="colorMode.value == 'light'" title="Dark Mode">
-       <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.4" d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
-      </button> -->
-
       <button @click="isBottomSheetOpen = true" title="Styling">
         <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="compose" style="width: 24px; display: block; flex-shrink: 0;"><path d="m16.774 4.341-.59.589-1.109-1.11.596-.594a.784.784 0 0 1 1.103 0c.302.302.302.8 0 1.102zM8.65 12.462l6.816-6.813-1.11-1.11-6.822 6.808a1.1 1.1 0 0 0-.236.393l-.289.932c-.052.196.131.38.315.314l.932-.288a.9.9 0 0 0 .394-.236"></path><path d="M4.375 6.25c0-1.036.84-1.875 1.875-1.875H11a.625.625 0 1 0 0-1.25H6.25A3.125 3.125 0 0 0 3.125 6.25v7.5c0 1.726 1.4 3.125 3.125 3.125h7.5c1.726 0 3.125-1.4 3.125-3.125V9a.625.625 0 1 0-1.25 0v4.75c0 1.036-.84 1.875-1.875 1.875h-7.5a1.875 1.875 0 0 1-1.875-1.875z"></path></svg>
       </button>
 
-      <!-- <NuxtLink to="/about">
-       <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="questionMarkCircle" style="width: 24.5px; display: block;  flex-shrink: 0;"><path d="M9.978 7.154c-.804 0-1.333.456-1.438.874a.625.625 0 0 1-1.213-.303c.28-1.121 1.44-1.82 2.65-1.82 1.365 0 2.714.905 2.714 2.298 0 .812-.49 1.477-1.13 1.872l-.755.516a.84.84 0 0 0-.381.677.625.625 0 1 1-1.25 0c0-.688.36-1.318.921-1.706l.003-.002.784-.535.014-.008c.374-.228.544-.537.544-.814 0-.459-.517-1.049-1.463-1.049m.662 6.336a.8.8 0 1 1-1.6 0 .8.8 0 0 1 1.6 0"></path><path d="M2.375 10a7.625 7.625 0 1 1 15.25 0 7.625 7.625 0 0 1-15.25 0M10 3.625a6.375 6.375 0 1 0 0 12.75 6.375 6.375 0 0 0 0-12.75"></path></svg>
-    </NuxtLink> -->
-
-      <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="ellipsis" style="width: 22px; display: block; flex-shrink: 0;"><path d="M4 11.375a1.375 1.375 0 1 0 0-2.75 1.375 1.375 0 0 0 0 2.75m6 0a1.375 1.375 0 1 0 0-2.75 1.375 1.375 0 0 0 0 2.75m6 0a1.375 1.375 0 1 0 0-2.75 1.375 1.375 0 0 0 0 2.75"></path></svg>
+      <UiMoreOptionsDropdown 
+        :colorMode="colorMode as any" 
+        @exportMarkdown="exportMarkdown"
+        @importMarkdown="importMarkdownOrText"
+        @toggleTheme="onClick"
+        @openAbout="open = true"
+      />
 
     </div>
 
