@@ -236,11 +236,12 @@
 
 <script lang="ts" setup>
 import { ref, reactive, onMounted, watch, onBeforeUnmount, computed, nextTick } from 'vue';
-import { fs, path } from '@tauri-apps/api';
+import {  path } from '@tauri-apps/api';
 import { isNumber } from '@tiptap/core';
 
 import { useFocusStore } from '../stores/focus'
 import TabContextMenu from '../components/ui/tabContextMenu.vue'
+import * as fs from "@tauri-apps/plugin-fs"
 
 const focusMode = useFocusStore()
 

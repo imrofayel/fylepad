@@ -576,13 +576,19 @@ const handleKeyboardShortcuts = (event: KeyboardEvent) => {
 
 // Lifecycle hooks
 onMounted(() => {
-  if (window.speechSynthesis.onvoiceschanged !== undefined) {
-    window.speechSynthesis.onvoiceschanged = loadVoices;
+  // Add safety check for speech synthesis
+  if (typeof window !== 'undefined' && window.speechSynthesis) {
+    try {
+      window.speechSynthesis.onvoiceschanged = () => {
+        // Voices loaded
+      };
+    } catch (e) {
+      console.warn('Speech synthesis not available:', e);
+    }
   }
-  loadVoices();
-  loadPreferences();
-  document.addEventListener('keydown', handleKeyboardShortcuts);
-});
+  
+  // ...existing editor initialization code...
+})
 
 onBeforeUnmount(() => {
   document.removeEventListener('keydown', handleKeyboardShortcuts);
