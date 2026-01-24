@@ -409,8 +409,8 @@ import TextAlign from '@tiptap/extension-text-align'
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import FontFamily from '@tiptap/extension-font-family'
 import Image from '@tiptap/extension-image'
-import { Mathematics } from '@tiptap-pro/extension-mathematics'
-import Emoji, { gitHubEmojis } from '@tiptap-pro/extension-emoji'
+import { Mathematics } from '@tiptap/extension-mathematics'
+import Emoji, { gitHubEmojis } from '@tiptap/extension-emoji'
 import { SearchAndReplace } from "../extensions/search&replace.ts";
 import { type Range as EditorRange } from '@tiptap/core'
 
@@ -444,7 +444,7 @@ import { Mermaid } from '~/extensions/nodes/mermaid.ts';
 import { MathBlock } from '~/extensions/nodes/math.ts';
 import { Plantuml } from '~/extensions/nodes/plantuml.ts';
 import { Embed } from '~/extensions/nodes/embed.ts';
-import FileHandler from '@tiptap-pro/extension-file-handler'
+import FileHandler from '@tiptap/extension-file-handler'
 
 import { useFocusStore } from '~/stores/focus'
 import { ImageResize } from '~/extensions/ImageResize.ts';
