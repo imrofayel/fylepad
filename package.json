@@ -1,8 +1,8 @@
 {
-  "name": "fylepadtest",
+  "name": "fylepad",
   "private": true,
   "type": "module",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "scripts": {
     "nuxt": "nuxt",
     "build": "nuxt build",
