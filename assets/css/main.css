@@ -332,3 +332,7 @@ ul[data-type="taskList"] li[data-checked="true"] div {
 .ProseMirror-bm{
   @apply scale-[0.98] !max-w-fit !bg-white/90 !backdrop-blur-xl;
 }
+
+* {
+  corner-shape: squircle;
+}
