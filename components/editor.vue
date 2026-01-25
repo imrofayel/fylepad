@@ -153,12 +153,13 @@
       </UiDropdownMenuContent>
     </UiDropdownMenu>
 
-    <div class="space-x-2 fixed right-2 top-1 !z-50 py-2 hidden sm:flex !items-center gap-x-1.5 px-2"
+    <div class="space-x-2 dark:text-gray-50  fixed right-2 top-1 !z-50 py-2 hidden sm:flex !items-center gap-x-1.5 px-2"
       :class="focusMode.focused ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'" v-if="!focusMode.focused">
 
       <button
         title="Command Palette (Ctrl+K)"
-        @click="$emit('openCommand')"><svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="lightning" style="width: 25.5px; display: block; flex-shrink: 0;"><path d="M11.633 1.812c.263.096.43.354.41.632l-.392 5.51h3.099a.625.625 0 0 1 .506.992l-6.18 8.54a.625.625 0 0 1-1.13-.412l.402-5.5H5.25a.625.625 0 0 1-.507-.99l6.17-8.55a.625.625 0 0 1 .72-.222m-5.161 8.513H9.02a.625.625 0 0 1 .623.67l-.29 3.976 4.173-5.766H10.98a.625.625 0 0 1-.623-.67l.284-3.987z"></path></svg></button>
+        class="dark:text-gray-50"
+        @click="$emit('openCommand')"><svg aria-hidden="true" fill="currentColor" role="graphics-symbol" viewBox="0 0 20 20" class="lightning" style="width: 25.5px; display: block; flex-shrink: 0;"><path d="M11.633 1.812c.263.096.43.354.41.632l-.392 5.51h3.099a.625.625 0 0 1 .506.992l-6.18 8.54a.625.625 0 0 1-1.13-.412l.402-5.5H5.25a.625.625 0 0 1-.507-.99l6.17-8.55a.625.625 0 0 1 .72-.222m-5.161 8.513H9.02a.625.625 0 0 1 .623.67l-.29 3.976 4.173-5.766H10.98a.625.625 0 0 1-.623-.67l.284-3.987z"></path></svg></button>
 
       <button
         
@@ -370,8 +371,9 @@
       </div>
 
       <button
-        class="mx-2 right-0 backdrop-blur-xl  !px-[6px] py-[5px] justify-center items-center space-x-1 cursor-pointer flex border border-[#c6c6c4] bg-white/80 text-black dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-xl drop-shadow-cool tab-item transition-all duration-200 gap-1" :class="focusMode.focused ? 'absolute top-3 right-3' : 'fixed bottom-3'"
-        title="Focus Mode" @click="focus"><svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="newspaper" style="width: 25px; display: block; fill: rgb(50, 48, 44); flex-shrink: 0;"><path d="M13.88 5.703H8.63a.55.55 0 1 0 0 1.1h5.25a.55.55 0 0 0 0-1.1M8.63 8.199h5.25a.55.55 0 0 1 0 1.1H8.63a.55.55 0 0 1 0-1.1m0 2.498a.55.55 0 0 0-.55.55v2.5c0 .303.246.55.55.55h5.25a.55.55 0 0 0 .55-.55v-2.5a.55.55 0 0 0-.55-.55zm.55 2.5v-1.4h4.15v1.4z"></path><path d="M4.63 16.875h10.25a2.125 2.125 0 0 0 2.125-2.125v-10c0-.897-.728-1.625-1.625-1.625H7.13c-.898 0-1.625.728-1.625 1.625v4.633H3.13a.625.625 0 0 0-.625.625v4.671c0 1.187.923 2.196 2.125 2.196m.875-2.197c0 .552-.417.947-.875.947s-.875-.394-.875-.946v-4.046h1.75zm1.25-4.67V4.75c0-.207.168-.375.375-.375h8.25c.207 0 .375.168.375.375v10a.875.875 0 0 1-.875.875H6.592a2 2 0 0 0 .163-.79z"></path></svg></button>
+        class="border border-[#c6c6c4] bg-white/80 text-black dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-xl cursor-pointer flex drop-shadow-cool tab-item transition-all duration-200 gap-1
+        mx-2 right-0 backdrop-blur-xl !px-[6px] py-[5px] justify-center items-center space-x-1 cursor-pointer flex" :class="focusMode.focused ? 'absolute top-3 right-3' : 'fixed bottom-3'"
+        title="Focus Mode" @click="focus"><svg aria-hidden="true" role="graphics-symbol" fill="currentColor" viewBox="0 0 20 20" class="newspaper" style="width: 25px; display: block; flex-shrink: 0;"><path d="M13.88 5.703H8.63a.55.55 0 1 0 0 1.1h5.25a.55.55 0 0 0 0-1.1M8.63 8.199h5.25a.55.55 0 0 1 0 1.1H8.63a.55.55 0 0 1 0-1.1m0 2.498a.55.55 0 0 0-.55.55v2.5c0 .303.246.55.55.55h5.25a.55.55 0 0 0 .55-.55v-2.5a.55.55 0 0 0-.55-.55zm.55 2.5v-1.4h4.15v1.4z"></path><path d="M4.63 16.875h10.25a2.125 2.125 0 0 0 2.125-2.125v-10c0-.897-.728-1.625-1.625-1.625H7.13c-.898 0-1.625.728-1.625 1.625v4.633H3.13a.625.625 0 0 0-.625.625v4.671c0 1.187.923 2.196 2.125 2.196m.875-2.197c0 .552-.417.947-.875.947s-.875-.394-.875-.946v-4.046h1.75zm1.25-4.67V4.75c0-.207.168-.375.375-.375h8.25c.207 0 .375.168.375.375v10a.875.875 0 0 1-.875.875H6.592a2 2 0 0 0 .163-.79z"></path></svg></button>
 
       <button class="absolute top-3 border border-gray-200 bg-white/80 backdrop-blur-xl dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 text-black !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex right-[70px]"
         title="Print" v-if="focusMode.focused" @click="printPDF"><svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M12.5 2h.273c3.26 0 4.892 0 6.024.798c.324.228.612.5.855.805c.848 1.066.848 2.6.848 5.67v2.545c0 2.963 0 4.445-.469 5.628c-.754 1.903-2.348 3.403-4.37 4.113c-1.257.441-2.83.441-5.98.441c-1.798 0-2.698 0-3.416-.252c-1.155-.406-2.066-1.263-2.497-2.35c-.268-.676-.268-1.523-.268-3.216V12"/><path d="M20.5 12a3.333 3.333 0 0 1-3.333 3.333c-.666 0-1.451-.116-2.098.057a1.67 1.67 0 0 0-1.179 1.179c-.173.647-.057 1.432-.057 2.098A3.333 3.333 0 0 1 10.5 22m-6-14.5C4.992 8.006 6.3 10 7 10m2.5-2.5C9.008 8.006 7.7 10 7 10m0 0V2"/></g></svg>
