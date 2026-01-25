@@ -23,7 +23,10 @@
         class="relative w-full max-w-2xl mx-4"
         @click.stop
       >
-        <div class="bg-white/90 dark:bg-[#404040]/90 border border-[#c6c6c4] dark:border-[#525252] backdrop-blur-lg  rounded-2xl shadow-notion overflow-hidden">
+        <div class="relative bg-white/90 dark:bg-[#404040]/90 border border-[#c6c6c4] dark:border-[#525252] backdrop-blur-lg  rounded-2xl shadow-notion overflow-hidden">
+          <div
+            class="absolute -right-[4px] -top-2 z-10 bg-[#fd5050] hover:bg-[#f21616] border-[#cf1515] border w-5 h-5 flex items-center justify-center text-lg text-white rounded-full cursor-pointer"
+            @click="emit('close')">&times;</div>
           <div class="flex items-center pl-3 pr-2 py-2 ">
             <input
               ref="searchInputRef"
