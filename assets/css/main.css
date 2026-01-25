@@ -273,7 +273,7 @@ ul[data-type="taskList"] li[data-checked="true"] div {
 }
 
 .ProseMirror-bm-placeholder::before {
-  @apply !text-[18px] !text-[#acaba9] font-normal relative right-1 border-[#c6c6c4] rounded-lg  py-1 opacity-70;
+  @apply !text-[18px] !text-[#acaba9] dark:!text-[#7a7a7a] font-normal relative right-1 border-[#c6c6c4] rounded-lg  py-1 opacity-70;
 }
 
 .ProseMirror-bm{
@@ -281,7 +281,7 @@ ul[data-type="taskList"] li[data-checked="true"] div {
 }
 
 .ProseMirror-bm-button{
-  @apply hover:bg-[#f3f3f3] !rounded-[10px] 
+  @apply hover:bg-[#f3f3f3] dark:hover:bg-[#333333] !rounded-[10px] 
 }
 
 .ProseMirror-bm{
@@ -294,8 +294,13 @@ ul[data-type="taskList"] li[data-checked="true"] div {
     box-shadow: rgba(0, 0, 0, 0.1) 2px 2px 10px -3px, rgba(0, 0, 0, 0.06) 0px 0px 0px 0px, rgba(84, 72, 49, 0.08) 0px 0px 0px 0px !important;
 }
 
+.dark .ProseMirror-bm{
+    background: #404040 !important;
+    border: 1px solid #525252 !important;
+}
+
 .ProseMirror-bm-button-name{
-   @apply !text-[16.5px] text-[#32302c];
+   @apply !text-[16.5px] text-[#32302c] dark:text-gray-50;
    font-family: 'Inter', sans-serif;
      -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -308,7 +313,7 @@ ul[data-type="taskList"] li[data-checked="true"] div {
 }
 
 .ProseMirror-bm-button-shortcut{
-  @apply !text-[17px] text-[#32302c];
+  @apply !text-[17px] text-[#32302c] dark:text-gray-300;
 }
 
 .command-input{
@@ -330,7 +335,7 @@ ul[data-type="taskList"] li[data-checked="true"] div {
 }
 
 .ProseMirror-bm{
-  @apply scale-[0.98] !max-w-fit !bg-white/90 !backdrop-blur-xl;
+  @apply scale-[0.98] !max-w-fit !bg-white/90 dark:!bg-[#404040]/90 !backdrop-blur-xl;
 }
 
 * {
