@@ -186,11 +186,12 @@
         'bg-white dark:bg-[#171717]',
         focusMode.focused && isVertical ? '!pt-0' : '!pt-3',
         isVertical ? 'z-0' : 'z-10'
-      ]">
+      ]"
+      v-if="!focusMode.focused">
 
       <div class="flex w-full justify-between items-center space-x-2 pb-2" :class="isVertical && 'relative -top-6 !pt-3 !pb-0 bg-white', !isSidebarOpen && 'relative -right-7 -top-8'">
         <input v-model="localTitle" @input="$emit('update:title', localTitle)" @keydown="handleTitleKeydown" placeholder="Untitled"
-          class="w-full border border-none ring-0 focus:border-none px-3 dark:text-white text-[#32302c] outline-none bg-transparent rounded flex text-[24px]" v-if="!focusMode.focused"/>
+          class="w-full border border-none ring-0 focus:border-none px-3 dark:text-white text-[#32302c] outline-none bg-transparent rounded flex text-[24px]"/>
 
         <!-- <button
           class="border border-gray-200 bg-white text-black !px-[8px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex  "
@@ -201,7 +202,12 @@
 
     <UiBottomSheet :isOpen="isBottomSheetOpen" @close="isBottomSheetOpen = false" :editor="editor as any" />
 
-    <div class="flex-grow " :class="focusMode.focused ? 'mt-2 mx-2' : (isVertical ? '!mt-8' : '!mt-10')">
+    <!-- Focus mode title -->
+    <div v-if="focusMode.focused" class="fixed top-3 left-1 z-10 px-3 py-1 pb-2 text-[24px] dark:text-white text-[#32302c]">
+      {{ localTitle || 'Untitled' }}
+    </div>
+
+    <div class="flex-grow " :class="focusMode.focused ? 'mt-6 mx-0' : (isVertical ? '!mt-8' : '!mt-10')">
 
       <UiBubbleMenu :editor="editor as any"/>
 
@@ -489,14 +495,7 @@ function toggleSearch() {
 const focusMode = useFocusStore()
 
 function focus() {
-  if (focusMode.focused == true) {
-    focusMode.toggleFocus();
-    editor.value?.setEditable(true)
-  }
-  else {
-    focusMode.toggleFocus();
-    editor.value?.setEditable(false)
-  }
+  focusMode.toggleFocus();
 }
 
 const handleTitleKeydown = (event: KeyboardEvent) => {
@@ -574,7 +573,7 @@ onMounted(() => {
           "code-plantuml",
         ],
         dictionary: {
-          lineEmpty: "Write / for commands...",
+          lineEmpty: focusMode.focused ? "" : "Write / for commands...",
           lineSlash: "",
           queryEmpty: "No results",
         },
