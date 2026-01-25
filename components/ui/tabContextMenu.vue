@@ -2,7 +2,7 @@
   <div
     v-if="visible"
     ref="popoverRef"
-    class="fixed z-50 bg-white/90 backdrop-blur-2xl dark:bg-[#2a2a2a] border border-gray-200 dark:border-gray-600 rounded-2xl drop-shadow-cool drop-shadow-xs p-3 min-w-[250px]"
+    class="fixed z-50 bg-white/90 backdrop-blur-2xl dark:bg-[#2a2a2a] border border-gray-200 dark:border-[#525252] rounded-2xl drop-shadow-cool drop-shadow-xs p-3 min-w-[250px]"
     :style="popoverStyle"
   >
     <div class="space-y-3">
@@ -28,14 +28,14 @@
           @click="duplicateTab"
           class="flex gap-1 border border-gray-200 bg-white/90 text-black !px-[9px] py-[3px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-xl justify-center items-center cursor-pointer drop-shadow-cool tab-item relative transition-all duration-200 scale-90 max-w-fit"
         >
-          <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="duplicate" style="width: 22px; display: block; fill: rgb(50, 48, 44); flex-shrink: 0;"><path d="M4.5 2.375A2.125 2.125 0 0 0 2.375 4.5V12c0 1.174.951 2.125 2.125 2.125h1.625v1.625c0 1.174.951 2.125 2.125 2.125h7.5a2.125 2.125 0 0 0 2.125-2.125v-7.5a2.125 2.125 0 0 0-2.125-2.125h-1.625V4.5A2.125 2.125 0 0 0 12 2.375zm8.375 3.75H8.25A2.125 2.125 0 0 0 6.125 8.25v4.625H4.5A.875.875 0 0 1 3.625 12V4.5c0-.483.392-.875.875-.875H12c.483 0 .875.392.875.875zm-5.5 2.125c0-.483.392-.875.875-.875h7.5c.483 0 .875.392.875.875v7.5a.875.875 0 0 1-.875.875h-7.5a.875.875 0 0 1-.875-.875z"></path></svg>Duplicate
+          <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="duplicate" fill="currentColor" style="width: 22px; display: block; flex-shrink: 0;"><path d="M4.5 2.375A2.125 2.125 0 0 0 2.375 4.5V12c0 1.174.951 2.125 2.125 2.125h1.625v1.625c0 1.174.951 2.125 2.125 2.125h7.5a2.125 2.125 0 0 0 2.125-2.125v-7.5a2.125 2.125 0 0 0-2.125-2.125h-1.625V4.5A2.125 2.125 0 0 0 12 2.375zm8.375 3.75H8.25A2.125 2.125 0 0 0 6.125 8.25v4.625H4.5A.875.875 0 0 1 3.625 12V4.5c0-.483.392-.875.875-.875H12c.483 0 .875.392.875.875zm-5.5 2.125c0-.483.392-.875.875-.875h7.5c.483 0 .875.392.875.875v7.5a.875.875 0 0 1-.875.875h-7.5a.875.875 0 0 1-.875-.875z"></path></svg>Duplicate
         </button>
 
                 <button
           @click="lockTab"
           class="flex gap-1 border border-gray-200 bg-white/90 text-black !px-[9px] py-[3px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-xl justify-center items-center cursor-pointer drop-shadow-cool tab-item relative transition-all duration-200 right-1 scale-90 max-w-fit"
         >
-          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 23px;stroke: rgb(50, 48, 44); fill: none;"><rect x="4.5" y="8" width="11" height="9" rx="2" stroke-width="1.25"></rect><circle cx="10" cy="11.5" r="0.5" stroke-width="1.25"></circle><path d="M10 14V11.5" stroke-width="1.25" stroke-linecap="round"></path><path class="" d="M19 6V4C19 2.34315 17.6569 1 16 1V1C14.3431 1 13 2.34315 13 4V8" stroke-width="1.25" stroke-linecap="round"></path></svg>{{ status ? 'Locked' : 'Lock' }}
+          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 23px; stroke: currentColor; fill: none;"><rect x="4.5" y="8" width="11" height="9" rx="2" stroke-width="1.25"></rect><circle cx="10" cy="11.5" r="0.5" stroke-width="1.25"></circle><path d="M10 14V11.5" stroke-width="1.25" stroke-linecap="round"></path><path class="" d="M19 6V4C19 2.34315 17.6569 1 16 1V1C14.3431 1 13 2.34315 13 4V8" stroke-width="1.25" stroke-linecap="round"></path></svg>{{ status ? 'Locked' : 'Lock' }}
         </button>
       </div>
     </div>

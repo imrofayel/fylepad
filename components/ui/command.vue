@@ -23,17 +23,17 @@
         class="relative w-full max-w-2xl mx-4"
         @click.stop
       >
-        <div class="bg-white/90 border border-[#c6c6c4] backdrop-blur-lg  rounded-2xl shadow-notion overflow-hidden">
+        <div class="bg-white/90 dark:bg-[#404040]/90 border border-[#c6c6c4] dark:border-[#525252] backdrop-blur-lg  rounded-2xl shadow-notion overflow-hidden">
           <div class="flex items-center pl-3 pr-2 py-2 ">
             <input
               ref="searchInputRef"
               v-model="searchQuery"
               type="text"
               placeholder="Type to find across tabs"
-              class="flex-1 bg-transparent outline-none placeholder-[#32302c] !text-[#32302c] placeholder:antialiased antialiased font-normal text-[18px]"
+              class="flex-1 bg-transparent outline-none placeholder-[#32302c] dark:placeholder-gray-300 !text-[#32302c] dark:!text-gray-50 placeholder:antialiased antialiased font-normal text-[18px]"
               @keydown="handleKeyDown"
             />
-            <div class="shadow-notion text-[18px] p-0.5 rounded-xl px-1.5 !text-[#32302c]">
+            <div class="shadow-notion text-[18px] p-0.5 rounded-xl px-1.5 !text-[#32302c] dark:!text-gray-50">
               {{ String(filteredResults.length).padStart(2, '0') }}
             </div>
           </div>
@@ -41,10 +41,10 @@
           <!-- Results -->
           <div class="max-h-96 overflow-y-auto">
             <div v-if="loading" class="p-4 text-center text-gray-500 dark:text-gray-400">
-              <svg xmlns="http://www.w3.org/2000/svg" width="28" class="mx-auto" viewBox="0 0 24 24"><path fill="#32302c" d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="28" class="mx-auto" viewBox="0 0 24 24"><path fill="currentColor" d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z"><animateTransform attributeName="transform" dur="0.75s" repeatCount="indefinite" type="rotate" values="0 12 12;360 12 12"/></path></svg>
             </div>
 
-            <div v-else-if="searchQuery && filteredResults.length === 0" class="p-4 pt-3 text-center text-[#32302c] text-lg">
+            <div v-else-if="searchQuery && filteredResults.length === 0" class="p-4 pt-3 text-center text-[#32302c] dark:text-gray-50 text-lg">
               No results found
             </div>
 
@@ -95,23 +95,23 @@
 
                 <!-- Content -->
                 <div class="flex-1 min-w-0">
-                  <div class="text-base font-medium text-[#32302c] dark:text-gray-100 mb-1 truncate">
+                  <div class="text-base font-medium text-[#32302c] dark:text-gray-50 mb-1 truncate">
                     {{ result.tabTitle || 'Untitled' }}
                   </div>
                   <div 
-                    class="text-[15px] text-[#6f6e6b] leading-relaxed"
+                    class="text-[15px] text-[#6f6e6b] dark:text-gray-300 leading-relaxed"
                     v-html="result.highlightedText"
                   />
                 </div>
 
-                                  <kbd class="px-0.5 py-0.5" :class="selectedIndex !== index && 'hidden'">
-                    <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 16 16" class="enter" style="width: 17px; display: inline; fill: rgba(71, 70, 68, 0.6); flex-shrink: 0;"><path d="M5.38965 14.1667C5.81812 14.1667 6.10156 13.8767 6.10156 13.468C6.10156 13.2571 6.01587 13.0989 5.89062 12.967L4.18994 11.3125L3.02979 10.3369L4.55908 10.4028H12.7922C14.4402 10.4028 15.1389 9.65796 15.1389 8.04297V4.13403C15.1389 2.48608 14.4402 1.78735 12.7922 1.78735H9.13379C8.70532 1.78735 8.4021 2.11035 8.4021 2.50586C8.4021 2.90137 8.69873 3.22437 9.13379 3.22437H12.7593C13.4316 3.22437 13.7151 3.50781 13.7151 4.17358V7.99683C13.7151 8.67578 13.425 8.95923 12.7593 8.95923H4.55908L3.02979 9.03174L4.18994 8.04956L5.89062 6.39502C6.01587 6.26978 6.10156 6.11157 6.10156 5.89404C6.10156 5.48535 5.81812 5.19531 5.38965 5.19531C5.21167 5.19531 5.01392 5.27441 4.8689 5.41943L1.08521 9.1438C0.933594 9.28882 0.854492 9.48657 0.854492 9.68433C0.854492 9.87549 0.933594 10.0732 1.08521 10.2183L4.8689 13.9492C5.01392 14.0876 5.21167 14.1667 5.38965 14.1667Z"></path></svg>
+                                  <kbd class="px-0.5 py-0.5 dark:text-gray-50" :class="selectedIndex !== index && 'hidden'">
+                    <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 16 16" class="enter" style="width: 17px; display: inline; flex-shrink: 0;"><path fill="currentColor" d="M5.38965 14.1667C5.81812 14.1667 6.10156 13.8767 6.10156 13.468C6.10156 13.2571 6.01587 13.0989 5.89062 12.967L4.18994 11.3125L3.02979 10.3369L4.55908 10.4028H12.7922C14.4402 10.4028 15.1389 9.65796 15.1389 8.04297V4.13403C15.1389 2.48608 14.4402 1.78735 12.7922 1.78735H9.13379C8.70532 1.78735 8.4021 2.11035 8.4021 2.50586C8.4021 2.90137 8.69873 3.22437 9.13379 3.22437H12.7593C13.4316 3.22437 13.7151 3.50781 13.7151 4.17358V7.99683C13.7151 8.67578 13.425 8.95923 12.7593 8.95923H4.55908L3.02979 9.03174L4.18994 8.04956L5.89062 6.39502C6.01587 6.26978 6.10156 6.11157 6.10156 5.89404C6.10156 5.48535 5.81812 5.19531 5.38965 5.19531C5.21167 5.19531 5.01392 5.27441 4.8689 5.41943L1.08521 9.1438C0.933594 9.28882 0.854492 9.48657 0.854492 9.68433C0.854492 9.87549 0.933594 10.0732 1.08521 10.2183L4.8689 13.9492C5.01392 14.0876 5.21167 14.1667 5.38965 14.1667Z"></path></svg>
                   </kbd>
               </Motion>
             </div>
           </div>
 
-          <div class="px-2.5 py-2 border-[#c6c6c4]  text-[16.5px] text-[#32302c]">
+          <div class="px-2.5 py-2 border-[#c6c6c4] dark:border-[#525252] text-[16.5px] text-[#32302c] dark:text-gray-50">
             <div class="flex items-center justify-between">
               <div class="flex items-center space-x-4">
                  <span class="flex items-center">
