@@ -2,11 +2,12 @@
   <UiDropdownMenu>
     <UiDropdownMenuTrigger>
       <button 
-        class=" p-1 transition-colors"
+        class="p-1 transition-colors dark:text-gray-50"
         title="More Options"
       >
         <svg 
           aria-hidden="true" 
+          fill="currentColor"
           role="graphics-symbol" 
           viewBox="0 0 20 20" 
           class="ellipsis" 
@@ -25,7 +26,7 @@
           @click="$emit('exportMarkdown')" 
           class="w-full flex items-center gap-3 p-2 pr-6 rounded-xl hover:bg-gray-100 dark:hover:bg-[#333333] transition-colors text-[16px] text-left"
         >
-          <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="arrowLineDown" style="width: 23px; display: block; flex-shrink: 0;">
+          <svg aria-hidden="true" fill="currentColor" role="graphics-symbol" viewBox="0 0 20 20" class="arrowLineDown" style="width: 23px; display: block; flex-shrink: 0;">
             <path d="M10 2.4c.345 0 .625.28.625.625v9.966l3.333-3.333a.625.625 0 1 1 .884.884l-4.4 4.4a.625.625 0 0 1-.884 0l-4.4-4.4a.625.625 0 0 1 .884-.884l3.333 3.333V3.025c0-.345.28-.625.625-.625M4.15 16.35a.625.625 0 1 0 0 1.25h11.7a.625.625 0 0 0 0-1.25z"></path>
           </svg>
           <span>Export Markdown</span>
@@ -38,7 +39,7 @@
           @click="$emit('importMarkdown')" 
           class="w-full flex items-center gap-3 p-2 pr-6 rounded-xl hover:bg-gray-100 dark:hover:bg-[#333333] transition-colors text-[16px] text-left"
         >
-          <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="arrowLineUp" style="width: 23px; display: block; flex-shrink: 0;">
+          <svg aria-hidden="true" fill="currentColor" role="graphics-symbol" viewBox="0 0 20 20" class="arrowLineUp" style="width: 23px; display: block; flex-shrink: 0;">
             <path d="M15.85 3.65a.625.625 0 1 0 0-1.25H4.15a.625.625 0 1 0 0 1.25zm-1.008 6.692a.625.625 0 0 1-.884 0l-3.333-3.333v9.966a.625.625 0 1 1-1.25 0V7.009l-3.333 3.333a.625.625 0 1 1-.884-.884l4.4-4.4a.625.625 0 0 1 .884 0l4.4 4.4a.625.625 0 0 1 0 .884"></path>
           </svg>
           <span>Import Markdown</span>
@@ -80,7 +81,7 @@
           @click="$emit('openAbout')" 
           class="w-full flex items-center gap-3 p-2 pr-6 rounded-xl hover:bg-gray-100 dark:hover:bg-[#333333] transition-colors text-[16px] text-left"
         >
-          <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="questionMarkCircle" style="width: 23px; display: block; flex-shrink: 0;">
+          <svg aria-hidden="true" fill="currentColor" role="graphics-symbol" viewBox="0 0 20 20" class="questionMarkCircle" style="width: 23px; display: block; flex-shrink: 0;">
             <path d="M9.978 7.154c-.804 0-1.333.456-1.438.874a.625.625 0 0 1-1.213-.303c.28-1.121 1.44-1.82 2.65-1.82 1.365 0 2.714.905 2.714 2.298 0 .812-.49 1.477-1.13 1.872l-.755.516a.84.84 0 0 0-.381.677.625.625 0 1 1-1.25 0c0-.688.36-1.318.921-1.706l.003-.002.784-.535.014-.008c.374-.228.544-.537.544-.814 0-.459-.517-1.049-1.463-1.049m.662 6.336a.8.8 0 1 1-1.6 0 .8.8 0 0 1 1.6 0"></path>
             <path d="M2.375 10a7.625 7.625 0 1 1 15.25 0 7.625 7.625 0 0 1-15.25 0M10 3.625a6.375 6.375 0 1 0 0 12.75 6.375 6.375 0 0 0 0-12.75"></path>
           </svg>
