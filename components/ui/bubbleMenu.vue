@@ -1,7 +1,7 @@
 <template>
       <bubble-menu :editor="editor as any" :tippy-options="{ duration: 100, offset: [10, -70] }" v-if="editor">
         <div
-          class="flex overflow-hidden dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50  bg-white border border-gray-200 rounded-xl text-black drop-shadow-cool dark:text-white/85">
+          class="flex overflow-hidden dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50  bg-white border border-[#c6c6c4] rounded-xl text-black drop-shadow-cool dark:text-white/85">
           <button @click="editor.chain().focus().toggleBold().run()"
             :class="{ 'bg-gray-100 dark:bg-[#171717]': editor.isActive('bold') }"
             class="rounded-l-lg hover:dark:bg-[#171717] hover:bg-gray-100 p-2 px-2">
@@ -72,8 +72,8 @@
 
 </button> -->
 
-          <button @click="readSelectedText"
-            :class="{ 'is-reading': isReading, 'hover:dark:bg-[#171717] hover:bg-gray-100': true, 'p-2 px-2 border-l border-gray-200 dark:border-[#525252]': true }"
+          <button v-if="isSpeechSynthesisAvailable" @click="readSelectedText"
+            :class="{ 'is-reading': isReading, 'hover:dark:bg-[#171717] hover:bg-gray-100': true, 'p-2 px-2 border-l border-[#c6c6c4] dark:border-[#525252]': true }"
             aria-label="Read selected text aloud"
             :aria-pressed="isReading"
             role="button">
@@ -81,7 +81,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24"><!-- Icon from Lucide by Lucide Contributors - https://github.com/lucide-icons/lucide/blob/main/LICENSE --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2m7 9v3"/></g></svg>
           </button>
 
-          <button @click="toggleVoiceSettings" 
+          <button v-if="isSpeechSynthesisAvailable" @click="toggleVoiceSettings" 
             :class="{ 'is-active': showVoiceSettings, 'hover:dark:bg-[#171717] hover:bg-gray-100': true, 'p-2 px-2 border-gray-200 dark:border-[#525252]': true }"
             aria-label="Voice settings"
             :aria-expanded="showVoiceSettings"
@@ -133,7 +133,7 @@
 
 
       <!-- Mini Controls -->
-      <div v-if="isReading" class="mini-controls rainbow-border-effect-2 dark:bg-[#404040] bg-white/80 backdrop-blur-xl text-black !rounded-2xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out">
+      <div v-if="isSpeechSynthesisAvailable && isReading" class="mini-controls rainbow-border-effect-2 dark:bg-[#404040] bg-white/80 backdrop-blur-xl text-black !rounded-2xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out">
                   
           <div class="p-4">
             <div class="flex items-center justify-between">
@@ -160,7 +160,7 @@
         </div>
 
       <!-- Voice Settings Panel -->
-      <div v-if="showVoiceSettings" 
+      <div v-if="isSpeechSynthesisAvailable && showVoiceSettings" 
            class="voice-settings-panel dark:!bg-[#404040] rounded-3xl border bg-white dark:text-white dark:border-[#525252] text-black !z-[1100000]" 
            role="dialog" 
            aria-label="Voice settings">
@@ -353,6 +353,7 @@ const currentTextRange = ref<{from: number, to: number} | null>(null);
 const audioVisualizerHeight = ref<number[]>([4, 8, 12, 16, 20, 16, 12, 8, 4]);
 const currentWordDisplay = ref('');
 const isMinimized = ref(false);
+const isSpeechSynthesisAvailable = ref(false);
 
 // Computed properties
 const readingProgressPercent = computed(() => {
@@ -576,13 +577,28 @@ const handleKeyboardShortcuts = (event: KeyboardEvent) => {
 
 // Lifecycle hooks
 onMounted(() => {
-  if (window.speechSynthesis.onvoiceschanged !== undefined) {
-    window.speechSynthesis.onvoiceschanged = loadVoices;
+  // Add safety check for speech synthesis
+  if (typeof window !== 'undefined' && window.speechSynthesis) {
+    try {
+      isSpeechSynthesisAvailable.value = true;
+      window.speechSynthesis.onvoiceschanged = () => {
+        loadVoices();
+        loadPreferences();
+      };
+      // Load voices immediately if already available
+      loadVoices();
+      loadPreferences();
+      
+      // Add keyboard shortcuts
+      document.addEventListener('keydown', handleKeyboardShortcuts);
+    } catch (e) {
+      console.warn('Speech synthesis not available:', e);
+      isSpeechSynthesisAvailable.value = false;
+    }
+  } else {
+    isSpeechSynthesisAvailable.value = false;
   }
-  loadVoices();
-  loadPreferences();
-  document.addEventListener('keydown', handleKeyboardShortcuts);
-});
+})
 
 onBeforeUnmount(() => {
   document.removeEventListener('keydown', handleKeyboardShortcuts);

@@ -12,8 +12,8 @@
             @click="toggleSearch">&times;</div>
           <div>
             <div
-              class="bg-white/70 backdrop-blur-lg p-2 pl-3 border  border-gray-200 rounded-3xl dark:bg-[#404040] dark:border-[#484747]   text-black dark:text-white/90 flex justify-center">
-              <input v-model="searchTerm" @keydown.enter.prevent="updateSearchReplace" type="text" placeholder="Search"
+              class="bg-white/70 backdrop-blur-lg p-2 pl-3 border rounded-xl border-[#c6c6c4] dark:bg-[#404040] dark:border-[#484747]   text-black dark:text-white/90 flex justify-center">
+              <input v-model="searchTerm" @keydown.enter.prevent="onSearchEnter" type="text" placeholder="Search"
                 autofocus="true"
                 class="placeholder:text-gray-400 dark:placeholder:text-gray-200/80 bg-transparent outline-none" />
 
@@ -39,7 +39,7 @@
           </div>
         </section>
         
-        <div class="bg-white/80 backdrop-blur-lg p-0.5 px-2.5 border border-gray-200 rounded-3xl dark:bg-[#404040] dark:border-[#484747]   text-black dark:text-white/90 max-w-fit">
+        <div class="bg-white/80 backdrop-blur-lg p-0.5 px-2.5 border  rounded-xl border-[#c6c6c4] dark:bg-[#404040] dark:border-[#484747]   text-black dark:text-white/90 max-w-fit">
           {{ editor?.storage?.searchAndReplace?.resultIndex + 1 }} / {{
               editor?.storage?.searchAndReplace?.results.length }}
         </div>
@@ -50,7 +50,7 @@
   <div class="h-full flex flex-col tiptap dark:bg-[#171717]">
 
     <UiDropdownMenu v-if="!focusMode.focused">
-      <UiDropdownMenuTrigger class="fixed !opacity-100 right-0 p-1.5 px-2.5 top-1 z-[12] block sm:hidden">
+      <UiDropdownMenuTrigger class="fixed !opacity-100 right-0 p-1.5 px-2.5 top-1 z-50 block sm:hidden">
         <button :class="[
         'border dark:bg-[#404040] !py-[6px] dark:border-[#525252] dark:text-white opacity-100 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block  '
       ]" title="Menu">
@@ -58,6 +58,17 @@
       </button>
       </UiDropdownMenuTrigger>
       <UiDropdownMenuContent class="flex flex-wrap gap-1.5 px-1.5 py-1 border dark:bg-[#404040] dark:border-[#525252] dark:text-white opacity-100 border-gray-200 bg-white text-black rounded-2xl justify-center items-center cursor-pointer    mr-2">
+
+        <UiDropdownMenuItem>
+          <button
+            class="border border-gray-200 bg-white text-black !px-[7px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer !py-[6px] inline-block  "
+            @click="$emit('openCommand')" title="Command Palette (Ctrl+K)">
+            <svg width="21" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="drop-shadow-sm">
+              <path d="M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z" stroke="currentColor" stroke-width="1.5"/>
+              <path d="m7 9 3 3-3 3m5 0h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </UiDropdownMenuItem>
 
         <UiDropdownMenuItem>
      <button
@@ -142,107 +153,65 @@
       </UiDropdownMenuContent>
     </UiDropdownMenu>
 
-    <div class="space-x-2 fixed right-2 top-1 z-[12] py-2 hidden sm:flex"
+    <div class="space-x-2 dark:text-gray-50  fixed right-2 top-1 !z-50 py-2 hidden sm:flex !items-center gap-x-1.5 px-2"
       :class="focusMode.focused ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'" v-if="!focusMode.focused">
 
       <button
-        class="border border-gray-200 bg-white text-black !px-[7px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer !py-[6px] inline-block  "
-        @click="toggleSearch"><svg width="21" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-          class="drop-shadow-sm">
-          <path d="M17 17L21 21" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-            vector-effect="non-scaling-stroke"></path>
-          <path
-            d="M19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19C15.4183 19 19 15.4183 19 11Z"
-            stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" vector-effect="non-scaling-stroke"></path>
-        </svg></button>
+        title="Command Palette (Ctrl+K)"
+        class="dark:text-gray-50"
+        @click="$emit('openCommand')"><svg aria-hidden="true" fill="currentColor" role="graphics-symbol" viewBox="0 0 20 20" class="lightning" style="width: 25.5px; display: block; flex-shrink: 0;"><path d="M11.633 1.812c.263.096.43.354.41.632l-.392 5.51h3.099a.625.625 0 0 1 .506.992l-6.18 8.54a.625.625 0 0 1-1.13-.412l.402-5.5H5.25a.625.625 0 0 1-.507-.99l6.17-8.55a.625.625 0 0 1 .72-.222m-5.161 8.513H9.02a.625.625 0 0 1 .623.67l-.29 3.976 4.173-5.766H10.98a.625.625 0 0 1-.623-.67l.284-3.987z"></path></svg></button>
 
-
-      <button @click="exportMarkdown" :class="[
-        'border dark:bg-[#404040] !py-[6px] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block  '
-      ]" title="Export Markdown">
-        <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24" class="drop-shadow-sm">
-          <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-            color="currentColor">
-            <path d="M3.095 10Q3 10.687 3 11.4c0 5.302 4.03 9.6 9 9.6s9-4.298 9-9.6q0-.714-.095-1.4" />
-            <path d="M12 13V3m0 10c-.7 0-2.008-1.994-2.5-2.5M12 13c.7 0 2.008-1.994 2.5-2.5" />
-          </g>
-        </svg>
+      <button
+        class="dark:text-gray-50"
+        @click="toggleSearch">
+        <svg aria-hidden="true" fill="currentColor" role="graphics-symbol" viewBox="0 0 20 20" class="magnifyingGlass" style="width: 25px; display: block; flex-shrink: 0;"><path d="M8.875 2.625a6.25 6.25 0 1 0 3.955 11.09l3.983 3.982a.625.625 0 1 0 .884-.884l-3.983-3.982a6.25 6.25 0 0 0-4.84-10.205m-5 6.25a5 5 0 1 1 10 0 5 5 0 0 1-10 0"></path></svg>
       </button>
 
-      <button @click="importMarkdownOrText" :class="[
-        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block  '
-      ]" title="Import Markdown">
-        <svg xmlns="http://www.w3.org/2000/svg" width="21.5" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.5 12v1.5a7.5 7.5 0 0 1-15 0V8a5 5 0 0 1 10 0v5.5a2.5 2.5 0 0 1-5 0v-4" color="currentColor"/></svg>
+      <button @click="isBottomSheetOpen = true" title="Styling" class="dark:text-gray-50">
+        <svg aria-hidden="true" fill="currentColor" role="graphics-symbol" viewBox="0 0 20 20" class="compose" style="width: 24px; display: block; flex-shrink: 0;"><path d="m16.774 4.341-.59.589-1.109-1.11.596-.594a.784.784 0 0 1 1.103 0c.302.302.302.8 0 1.102zM8.65 12.462l6.816-6.813-1.11-1.11-6.822 6.808a1.1 1.1 0 0 0-.236.393l-.289.932c-.052.196.131.38.315.314l.932-.288a.9.9 0 0 0 .394-.236"></path><path d="M4.375 6.25c0-1.036.84-1.875 1.875-1.875H11a.625.625 0 1 0 0-1.25H6.25A3.125 3.125 0 0 0 3.125 6.25v7.5c0 1.726 1.4 3.125 3.125 3.125h7.5c1.726 0 3.125-1.4 3.125-3.125V9a.625.625 0 1 0-1.25 0v4.75c0 1.036-.84 1.875-1.875 1.875h-7.5a1.875 1.875 0 0 1-1.875-1.875z"></path></svg>
       </button>
 
-      <button @click="onClick('light')" v-if="colorMode.value == 'dark'" :class="[
-        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block  '
-      ]" title="Light Mode">
-        <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24" class="drop-shadow-sm">
-          <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-            d="M21.5 14.078A8.557 8.557 0 0 1 9.922 2.5C5.668 3.497 2.5 7.315 2.5 11.873a9.627 9.627 0 0 0 9.627 9.627c4.558 0 8.376-3.168 9.373-7.422"
-            color="currentColor" />
-        </svg>
-
-      </button>
-
-      <button @click="onClick('dark')" v-if="colorMode.value == 'light'" :class="[
-        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px]  rounded-2xl justify-center items-center cursor-pointer inline-block  '
-      ]" title="Dark Mode">
-        <svg width="21" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="drop-shadow-sm">
-          <path d="M17 12a5 5 0 11-10 0 5 5 0 0110 0z" stroke="currentColor" stroke-width="1.5"
-            vector-effect="non-scaling-stroke"></path>
-          <path
-            d="M12 2c-.377.333-.905 1.2 0 2m0 16c.377.333.905 1.2 0 2m7.5-17.497c-.532-.033-1.575.22-1.496 1.495M5.496 17.5c.033.532-.22 1.575-1.496 1.496M5.003 4.5c-.033.532.22 1.576 1.497 1.497M18 17.503c.532-.032 1.575.208 1.496 1.414M22 12c-.333-.377-1.2-.905-2 0m-16-.5c-.333.377-1.2.905-2 0"
-            stroke="currentColor" stroke-width="1.5" stroke-linecap="round" vector-effect="non-scaling-stroke"></path>
-        </svg>
-      </button>
-
-      <button @click="isBottomSheetOpen = true" :class="[
-        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer inline-block  '
-      ]" title="Styling">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24" class="drop-shadow-sm">
-          <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-            color="currentColor">
-            <path
-              d="M6 22v-8.306c0-1.565 0-2.348.215-3.086c.214-.739.63-1.39 1.465-2.693l2.656-4.15C11.088 2.587 11.465 2 12 2s.912.588 1.664 1.764l2.656 4.151c.834 1.303 1.25 1.954 1.465 2.693c.215.738.215 1.52.215 3.086V22" />
-            <path
-              d="M7 11c.632.323 1.489.973 2.28 1c1.019.032 1.707-.863 2.72-.863s1.701.895 2.72.862c.791-.026 1.649-.676 2.28-.999m-5 1v10M10 5h4" />
-          </g>
-        </svg>
-      </button>
-
-      <!-- @click="open = true" -->
-      <NuxtLink :class="[
-        'border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white text-black !px-[7px] rounded-2xl justify-center items-center cursor-pointer flex'
-      ]" to="/about">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22.5" viewBox="0 0 24 24" class="drop-shadow-sm"><!-- Icon from Huge Icons by Hugeicons - undefined --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M10.456 2.64a2.18 2.18 0 0 1 3.088 0l1.009 1.011c.41.41.966.64 1.545.64h1.429a2.18 2.18 0 0 1 2.183 2.182l-.001 1.429c0 .58.23 1.135.64 1.545l1.01 1.01a2.18 2.18 0 0 1 0 3.087l-1.01 1.009c-.41.41-.64.966-.64 1.545v1.429a2.18 2.18 0 0 1-2.182 2.183l-1.429-.001c-.58 0-1.135.23-1.545.64l-1.01 1.01a2.18 2.18 0 0 1-3.087 0l-1.009-1.01a2.18 2.18 0 0 0-1.545-.64H6.473a2.18 2.18 0 0 1-2.183-2.182l.001-1.429c0-.58-.23-1.135-.64-1.545l-1.01-1.01a2.18 2.18 0 0 1 0-3.087l1.01-1.009c.41-.41.64-.966.64-1.545V6.473A2.18 2.18 0 0 1 6.472 4.29l1.429.001c.58 0 1.135-.23 1.545-.64z"/><path d="M10 9a2 2 0 1 1 3.683 1.08C13.085 11.01 12 11.896 12 13v.5m-.008 3.5h.009"/></g></svg>
-    </NuxtLink>
+      <UiMoreOptionsDropdown 
+        :colorMode="colorMode as any" 
+        @exportMarkdown="exportMarkdown"
+        @importMarkdown="importMarkdownOrText"
+        @toggleTheme="onClick"
+        @openAbout="open = true"
+      />
 
     </div>
 
-    <div class="flex fixed justify-between w-full p-2 py-0  bg-white dark:bg-[#171717] z-10" :class="focusMode.focused ? '!pt-0' : '!pt-3'">
+    <div class="flex fixed justify-between w-full p-2 py-0 z-10" 
+      :class="[
+        'bg-white dark:bg-[#171717]',
+        focusMode.focused && isVertical ? '!pt-0' : '!pt-3',
+        isVertical ? 'z-0' : 'z-10'
+      ]"
+      v-if="!focusMode.focused">
 
-      <div class="flex w-full justify-between items-center space-x-2">
+      <div class="flex w-full justify-between items-center space-x-2 pb-2" :class="isVertical && 'relative -top-6 !pt-3 !pb-0 bg-white', !isSidebarOpen && 'relative -right-7 -top-8'">
         <input v-model="localTitle" @input="$emit('update:title', localTitle)" @keydown="handleTitleKeydown" placeholder="Untitled"
-          class="w-full border border-none ring-0 focus:border-none px-3 dark:text-white text-black/90 outline-none bg-transparent rounded flex text-[24px]" v-if="!focusMode.focused"/>
+          class="w-full border border-none ring-0 focus:border-none px-3 dark:text-white text-[#32302c] outline-none bg-transparent rounded flex text-[24px]"/>
 
-        <button
+        <!-- <button
           class="border border-gray-200 bg-white text-black !px-[8px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex  "
-          title="Print" @click="focus" v-if="!focusMode.focused"><svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M12.5 2h.273c3.26 0 4.892 0 6.024.798c.324.228.612.5.855.805c.848 1.066.848 2.6.848 5.67v2.545c0 2.963 0 4.445-.469 5.628c-.754 1.903-2.348 3.403-4.37 4.113c-1.257.441-2.83.441-5.98.441c-1.798 0-2.698 0-3.416-.252c-1.155-.406-2.066-1.263-2.497-2.35c-.268-.676-.268-1.523-.268-3.216V12"/><path d="M20.5 12a3.333 3.333 0 0 1-3.333 3.333c-.666 0-1.451-.116-2.098.057a1.67 1.67 0 0 0-1.179 1.179c-.173.647-.057 1.432-.057 2.098A3.333 3.333 0 0 1 10.5 22m-6-14.5C4.992 8.006 6.3 10 7 10m2.5-2.5C9.008 8.006 7.7 10 7 10m0 0V2"/></g></svg></button>
+          title="Print" @click="focus" v-if="!focusMode.focused"><svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M12.5 2h.273c3.26 0 4.892 0 6.024.798c.324.228.612.5.855.805c.848 1.066.848 2.6.848 5.67v2.545c0 2.963 0 4.445-.469 5.628c-.754 1.903-2.348 3.403-4.37 4.113c-1.257.441-2.83.441-5.98.441c-1.798 0-2.698 0-3.416-.252c-1.155-.406-2.066-1.263-2.497-2.35c-.268-.676-.268-1.523-.268-3.216V12"/><path d="M20.5 12a3.333 3.333 0 0 1-3.333 3.333c-.666 0-1.451-.116-2.098.057a1.67 1.67 0 0 0-1.179 1.179c-.173.647-.057 1.432-.057 2.098A3.333 3.333 0 0 1 10.5 22m-6-14.5C4.992 8.006 6.3 10 7 10m2.5-2.5C9.008 8.006 7.7 10 7 10m0 0V2"/></g></svg></button> -->
 
       </div>
     </div>
 
     <UiBottomSheet :isOpen="isBottomSheetOpen" @close="isBottomSheetOpen = false" :editor="editor as any" />
 
-    <div class="flex-grow " :class="focusMode.focused ? 'mt-2 mx-2' : 'mt-10'">
+    <!-- Focus mode title -->
+    <div v-if="focusMode.focused" class="fixed top-3 left-1 z-10 px-3 py-1 pb-2 text-[24px] dark:text-white text-[#32302c]">
+      {{ localTitle || 'Untitled' }}
+    </div>
 
-      <UiFloatingMenu :editor="editor as any"/>
+    <div class="flex-grow " :class="focusMode.focused ? 'mt-6 mx-0' : (isVertical ? '!mt-8' : '!mt-10')">
 
       <UiBubbleMenu :editor="editor as any"/>
 
-      <EditorContent :editor="editor as any" class="h-full overflow-auto mb-4 px-4" />
+      <EditorContent :editor="editor as any" class="h-full mb-4 px-4" />
 
       <div class="p-3 flex justify-between items-center fixed bottom-0 w-full select-none" v-if="editor"
         :class="focusMode.focused ? 'opacity-0 duration-500 transition-all ease-in-out' : 'opacity-100 duration-500 transition-all ease-in-out'">
@@ -286,20 +255,20 @@
           <div class="space-x-2 hidden sm:flex" v-if="!editor.can().deleteTable()">
 
             <div @click="editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()"
-              class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white/80 backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex  ">
-              <svg xmlns="http://www.w3.org/2000/svg" width="19" viewBox="0 0 16 16" class="drop-shadow-sm"><path fill="currentColor" fill-rule="evenodd" d="M12 3.5H4A1.5 1.5 0 0 0 2.5 5v.5h11V5A1.5 1.5 0 0 0 12 3.5M2.5 11V7h2v5.5H4A1.5 1.5 0 0 1 2.5 11M6 12.5h6a1.5 1.5 0 0 0 1.5-1.5V7H6zM4 2a3 3 0 0 0-3 3v6a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V5a3 3 0 0 0-3-3z" clip-rule="evenodd"/></svg><span class="drop-shadow-sm">Table</span>
+              class="border border-[#c6c6c4] bg-white/80 text-black !px-[9px] py-[3px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-xl justify-center items-center cursor-pointer flex drop-shadow-cool tab-item relative transition-all duration-200 gap-1">
+              <svg xmlns="http://www.w3.org/2000/svg" width="19" viewBox="0 0 16 16"><path fill="currentColor" fill-rule="evenodd" d="M12 3.5H4A1.5 1.5 0 0 0 2.5 5v.5h11V5A1.5 1.5 0 0 0 12 3.5M2.5 11V7h2v5.5H4A1.5 1.5 0 0 1 2.5 11M6 12.5h6a1.5 1.5 0 0 0 1.5-1.5V7H6zM4 2a3 3 0 0 0-3 3v6a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V5a3 3 0 0 0-3-3z" clip-rule="evenodd"/></svg><span>Table</span>
             </div>
 
             <div @click="editor.commands.setMermaid('graph TD;\n  A-->B;  A-->C;\n  B-->D;\n  C-->D;')"
             
-            class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white/80 backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex  ">
-            <svg xmlns="http://www.w3.org/2000/svg" width="19" viewBox="0 0 16 16" class="drop-shadow-sm"><path fill="currentColor" fill-rule="evenodd" d="M11.5 12.5A1.5 1.5 0 0 1 10 14H6a1.5 1.5 0 0 1-1.5-1.5v-.823a3.11 3.11 0 0 0-1.35-2.566A6.11 6.11 0 0 1 .5 4.073V3A1.5 1.5 0 0 1 2 1.5h.666A6.43 6.43 0 0 1 8 4.343A6.43 6.43 0 0 1 13.334 1.5H14A1.5 1.5 0 0 1 15.5 3v1.073a6.11 6.11 0 0 1-2.65 5.038a3.11 3.11 0 0 0-1.35 2.566zm-8-9.43a4.92 4.92 0 0 1 3.738 3.025c.275.688 1.249.688 1.524 0A4.92 4.92 0 0 1 13.334 3H14v1.073q0 .215-.02.427A4.61 4.61 0 0 1 12 7.875c-1.252.86-2 2.283-2 3.802v.823H6v-.823c0-1.52-.748-2.941-2-3.802a4.61 4.61 0 0 1-2-3.802V3h.666q.425 0 .834.07" clip-rule="evenodd"/></svg><span class="drop-shadow-sm">Mermaid</span>
+            class="border border-[#c6c6c4] bg-white/80 text-black !px-[9px] py-[3px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-xl justify-center items-center cursor-pointer flex drop-shadow-cool tab-item relative transition-all duration-200 gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="19" viewBox="0 0 16 16"><path fill="currentColor" fill-rule="evenodd" d="M11.5 12.5A1.5 1.5 0 0 1 10 14H6a1.5 1.5 0 0 1-1.5-1.5v-.823a3.11 3.11 0 0 0-1.35-2.566A6.11 6.11 0 0 1 .5 4.073V3A1.5 1.5 0 0 1 2 1.5h.666A6.43 6.43 0 0 1 8 4.343A6.43 6.43 0 0 1 13.334 1.5H14A1.5 1.5 0 0 1 15.5 3v1.073a6.11 6.11 0 0 1-2.65 5.038a3.11 3.11 0 0 0-1.35 2.566zm-8-9.43a4.92 4.92 0 0 1 3.738 3.025c.275.688 1.249.688 1.524 0A4.92 4.92 0 0 1 13.334 3H14v1.073q0 .215-.02.427A4.61 4.61 0 0 1 12 7.875c-1.252.86-2 2.283-2 3.802v.823H6v-.823c0-1.52-.748-2.941-2-3.802a4.61 4.61 0 0 1-2-3.802V3h.666q.425 0 .834.07" clip-rule="evenodd"/></svg><span>Mermaid</span>
             </div>
 
             <div @click="editor.commands.setPlantuml('@startuml\nBob -> Alice : hello\n@enduml')"
             
-            class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white/80 backdrop-blur-xl text-black !px-[10px] py-[5px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex  ">
-            <svg xmlns="http://www.w3.org/2000/svg" width="19" viewBox="0 0 16 16" class="drop-shadow-sm"><path fill="currentColor" fill-rule="evenodd" d="M5.731 4H4.5A1.5 1.5 0 0 0 3 5.5v.377a2.72 2.72 0 0 1 0 5.246v.377A1.5 1.5 0 0 0 4.5 13h.377a2.72 2.72 0 0 1 5.246 0h.377a1.5 1.5 0 0 0 1.5-1.5v-1.232l1-.353a1.501 1.501 0 0 0 0-2.83l-1-.354V5.5A1.5 1.5 0 0 0 10.5 4H9.269l-.354-1a1.501 1.501 0 0 0-2.83 0zM8.9 14.5l-.204-1.02a1.22 1.22 0 0 0-2.392 0L6.1 14.5H4.5a3 3 0 0 1-3-3V9.9l1.02-.204a1.22 1.22 0 0 0 0-2.392L1.5 7.1V5.5a3 3 0 0 1 3-3h.17a3.001 3.001 0 0 1 5.66 0h.17a3 3 0 0 1 3 3v.17a3.001 3.001 0 0 1 0 5.66v.17a3 3 0 0 1-3 3z" clip-rule="evenodd"/></svg><span class="drop-shadow-sm">Plant UML</span>
+            class="border border-[#c6c6c4] bg-white/80 text-black !px-[9px] py-[3px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-xl justify-center items-center cursor-pointer flex drop-shadow-cool tab-item relative transition-all duration-200 gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="19" viewBox="0 0 16 16"><path fill="currentColor" fill-rule="evenodd" d="M5.731 4H4.5A1.5 1.5 0 0 0 3 5.5v.377a2.72 2.72 0 0 1 0 5.246v.377A1.5 1.5 0 0 0 4.5 13h.377a2.72 2.72 0 0 1 5.246 0h.377a1.5 1.5 0 0 0 1.5-1.5v-1.232l1-.353a1.501 1.501 0 0 0 0-2.83l-1-.354V5.5A1.5 1.5 0 0 0 10.5 4H9.269l-.354-1a1.501 1.501 0 0 0-2.83 0zM8.9 14.5l-.204-1.02a1.22 1.22 0 0 0-2.392 0L6.1 14.5H4.5a3 3 0 0 1-3-3V9.9l1.02-.204a1.22 1.22 0 0 0 0-2.392L1.5 7.1V5.5a3 3 0 0 1 3-3h.17a3.001 3.001 0 0 1 5.66 0h.17a3 3 0 0 1 3 3v.17a3.001 3.001 0 0 1 0 5.66v.17a3 3 0 0 1-3 3z" clip-rule="evenodd"/></svg><span>Plant UML</span>
             </div>
 
           </div>
@@ -399,21 +368,23 @@
         <div class="sm:hidden md:flex items-center space-x-2 hidden fixed bottom-0 py-3 right-14">
 
           <div
-            class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 bg-white/80 backdrop-blur-xl text-black !px-[10px] py-[4px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex   max-h-fit">
+            class="border border-[#c6c6c4] bg-white/80 text-black !px-[9px] py-[3px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-xl justify-center items-center cursor-pointer flex drop-shadow-cool tab-item relative transition-all duration-200 gap-1   max-h-fit">
             {{ characterCount }} characters</div>
           <div
-            class="border dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 border-gray-200 max-h-fit bg-white/80 backdrop-blur-xl text-black !px-[10px] py-[4px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex  ">
+            class="border border-[#c6c6c4] bg-white/80 text-black !px-[9px] py-[3px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-xl justify-center items-center cursor-pointer flex drop-shadow-cool tab-item relative transition-all duration-200 gap-1  ">
             {{ wordCount }} words</div>
         </div>
       </div>
 
       <button
-        class="mx-2 right-0 border border-gray-200 bg-white/80 dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 backdrop-blur-xl text-black !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex" :class="focusMode.focused ? 'absolute top-3 right-3' : 'fixed bottom-3'"
-        title="Focus Mode" @click="focus"><svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined --><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v14M5.98 3.285c3.342.637 5.333 1.967 6.02 2.731c.687-.764 2.678-2.094 6.02-2.73c1.692-.323 2.538-.484 3.26.134c.72.617.72 1.62.72 3.626v7.209c0 1.834 0 2.751-.463 3.324c-.462.572-1.48.766-3.518 1.154c-1.815.346-3.232.896-4.258 1.45c-1.01.545-1.514.817-1.761.817s-.752-.272-1.76-.817c-1.027-.553-2.444-1.104-4.26-1.45c-2.036-.388-3.055-.582-3.517-1.154C2 17.006 2 16.089 2 14.255V7.046c0-2.006 0-3.009.72-3.626c.722-.618 1.568-.457 3.26-.135" color="currentColor"/></svg></button>
+        class="border border-[#c6c6c4] bg-white/80 text-black dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-xl cursor-pointer flex drop-shadow-cool tab-item transition-all duration-200 gap-1
+        mx-2 right-0 backdrop-blur-xl !px-[6px] py-[5px] justify-center items-center space-x-1 cursor-pointer flex" :class="focusMode.focused ? 'absolute top-3 right-3' : 'fixed bottom-3'"
+        title="Focus Mode" @click="focus">
+       <svg xmlns="http://www.w3.org/2000/svg" width="26" viewBox="0 0 32 32"><path fill="currentColor" d="M25.905 23.615h-1.52v1.53h-1.53v1.52h-1.52v1.53h-1.53v1.52h4.58v-1.52h1.52v-1.53h1.52v-4.57h-1.52zm-1.52-10.66h1.52V.765h-3.05v1.52h1.53zm-1.53 0h1.53v1.52h-1.53Zm-1.52-10.67h1.52v1.53h-1.52Z"/><path fill="currentColor" d="M21.335 26.665v-1.52h1.52v-1.53h1.53v-1.52h1.52v-1.52h-4.57v1.52h-1.53v1.52h-1.52v4.58h1.52v-1.53zm-1.53-12.19h3.05v1.53h-3.05Zm0-10.66h1.53v1.52h-1.53Z"/><path fill="currentColor" d="M19.805 16.005h-7.61v1.52h3.04v13.71h1.53v-13.71h3.04zm-1.52-13.72h1.52v1.53h-1.52Zm-4.57-1.52h4.57v1.52h-4.57Zm-1.52 1.52h1.52v1.53h-1.52Z"/><path fill="currentColor" d="M12.195 22.095h-1.53v-1.52h-4.57v1.52h1.52v1.52h1.53v1.53h1.52v1.52h1.53v1.53h1.52v-4.58h-1.52zm-3.05-7.62h3.05v1.53h-3.05Zm1.52-10.66h1.53v1.52h-1.53Zm0 22.85h-1.52v-1.52h-1.53v-1.53h-1.52v-1.52h-1.52v4.57h1.52v1.53h1.52v1.52h4.58v-1.52h-1.53zm-1.52-24.38h1.52v1.53h-1.52Zm-1.53 10.67h1.53v1.52h-1.53Zm0-10.67h1.53V.765h-3.05v12.19h1.52z"/></svg></button>
 
-      <button
-        class="absolute top-3 border border-gray-200 bg-white/80 backdrop-blur-xl dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 text-black !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex right-[70px]"
-        title="Print" v-if="focusMode.focused" @click="printPDF"><svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><!-- Icon from Huge Icons by Hugeicons - undefined --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M12.5 2h.273c3.26 0 4.892 0 6.024.798c.324.228.612.5.855.805c.848 1.066.848 2.6.848 5.67v2.545c0 2.963 0 4.445-.469 5.628c-.754 1.903-2.348 3.403-4.37 4.113c-1.257.441-2.83.441-5.98.441c-1.798 0-2.698 0-3.416-.252c-1.155-.406-2.066-1.263-2.497-2.35c-.268-.676-.268-1.523-.268-3.216V12"/><path d="M20.5 12a3.333 3.333 0 0 1-3.333 3.333c-.666 0-1.451-.116-2.098.057a1.67 1.67 0 0 0-1.179 1.179c-.173.647-.057 1.432-.057 2.098A3.333 3.333 0 0 1 10.5 22m-6-14.5C4.992 8.006 6.3 10 7 10m2.5-2.5C9.008 8.006 7.7 10 7 10m0 0V2"/></g></svg></button>
+      <button class="absolute top-3 border border-gray-200 bg-white/80 backdrop-blur-xl dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 text-black !px-[8px] py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex right-[70px]"
+        title="Print" v-if="focusMode.focused" @click="printPDF"><svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24" class="dark:text-gray-50"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M12.5 2h.273c3.26 0 4.892 0 6.024.798c.324.228.612.5.855.805c.848 1.066.848 2.6.848 5.67v2.545c0 2.963 0 4.445-.469 5.628c-.754 1.903-2.348 3.403-4.37 4.113c-1.257.441-2.83.441-5.98.441c-1.798 0-2.698 0-3.416-.252c-1.155-.406-2.066-1.263-2.497-2.35c-.268-.676-.268-1.523-.268-3.216V12"/><path d="M20.5 12a3.333 3.333 0 0 1-3.333 3.333c-.666 0-1.451-.116-2.098.057a1.67 1.67 0 0 0-1.179 1.179c-.173.647-.057 1.432-.057 2.098A3.333 3.333 0 0 1 10.5 22m-6-14.5C4.992 8.006 6.3 10 7 10m2.5-2.5C9.008 8.006 7.7 10 7 10m0 0V2"/></g></svg>
+      </button>
 
     </div>
 
@@ -423,7 +394,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch, onMounted, onBeforeUnmount, computed } from 'vue';
+import { ref, watch, onMounted, onBeforeUnmount, computed, readonly } from 'vue';
 import { Editor, EditorContent } from '@tiptap/vue-3';
 import StarterKit from "@tiptap/starter-kit";
 import Highlight from "@tiptap/extension-highlight";
@@ -447,9 +418,8 @@ import TextAlign from '@tiptap/extension-text-align'
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight'
 import FontFamily from '@tiptap/extension-font-family'
 import Image from '@tiptap/extension-image'
-import { Mathematics } from '@tiptap-pro/extension-mathematics'
-import Emoji, { gitHubEmojis } from '@tiptap-pro/extension-emoji'
-import { useBase64 } from '@vueuse/core'
+import { Mathematics } from '@tiptap/extension-mathematics'
+import Emoji, { gitHubEmojis } from '@tiptap/extension-emoji'
 import { SearchAndReplace } from "../extensions/search&replace.ts";
 import { type Range as EditorRange } from '@tiptap/core'
 
@@ -483,10 +453,14 @@ import { Mermaid } from '~/extensions/nodes/mermaid.ts';
 import { MathBlock } from '~/extensions/nodes/math.ts';
 import { Plantuml } from '~/extensions/nodes/plantuml.ts';
 import { Embed } from '~/extensions/nodes/embed.ts';
-import FileHandler from '@tiptap-pro/extension-file-handler'
+import FileHandler from '@tiptap/extension-file-handler'
 
 import { useFocusStore } from '~/stores/focus'
 import { ImageResize } from '~/extensions/ImageResize.ts';
+import { BlockMenu } from "~/extensions/block-menu/menu";
+import BlockMenuItems from "~/extensions/block-menu/items";
+import { TabLink } from '~/extensions/nodes/tabLink';
+import { TabLinkSuggestion } from '~/extensions/tab-link/suggestion';
 
 var open = ref(false);
 
@@ -521,14 +495,7 @@ function toggleSearch() {
 const focusMode = useFocusStore()
 
 function focus() {
-  if (focusMode.focused == true) {
-    focusMode.toggleFocus();
-    editor.value?.setEditable(true)
-  }
-  else {
-    focusMode.toggleFocus();
-    editor.value?.setEditable(false)
-  }
+  focusMode.toggleFocus();
 }
 
 const handleTitleKeydown = (event: KeyboardEvent) => {
@@ -549,15 +516,17 @@ const CustomTaskItem = TaskItem.extend({
 })
 
 const props = defineProps<{
-  title: string;
-  content: any;
-}>();
+  title: string
+  content: any
+  isVertical: boolean
+  isSidebarOpen: boolean
+  tabs?: any[]
+  activeTabIndex?: number
+}>()
 
-const emit = defineEmits(['update:title', 'update:content']);
+const emit = defineEmits(['update:title', 'update:content', 'openCommand', 'switchToTab'])
 
 const file = shallowRef<File>()
-
-const { base64: fileBase64 } = useBase64(file)
 
 const localTitle = ref(props.title);
 
@@ -569,10 +538,47 @@ onMounted(() => {
 
     editorProps: {
       attributes: {
-        class: 'dark:text-white/90 p-6 leading-loose py-2 text-[19px] min-h-[150px] w-full h-full overflow-auto border-none bg-transparent placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 !opacity-100 geist',
+        class: 'dark:text-white/90 text-[#32302c] p-6 leading-loose py-2 text-[18px] min-h-[150px] w-full h-full overflow-auto border-none bg-transparent placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 geist',
       },
+      handleClickOn: (view, pos, node, nodePos, event, direct) => {
+        // Handle tab link clicks
+        if (node.type.name === 'tabLink') {
+          event.preventDefault()
+          const tabId = node.attrs.id
+          const tabs = props.tabs || []
+          const targetTab = tabs.find((tab, index) => tab.id === tabId || index.toString() === tabId)
+          if (targetTab) {
+            const tabIndex = tabs.indexOf(targetTab)
+            emit('switchToTab', tabIndex)
+          }
+          return true
+        }
+        return false
+      }
     },
     extensions: [
+      BlockMenu.configure({
+        items: [
+          "heading1",
+          "heading2",
+          "heading3",
+          "orderedList",
+          "bulletList",
+          "taskList",
+          "blockquote",
+          "codeBlock",
+          "horizontalRule",
+          "table",
+          "code-mermaid",
+          "code-plantuml",
+        ],
+        dictionary: {
+          lineEmpty: focusMode.focused ? "" : "Write / for commands...",
+          lineSlash: "",
+          queryEmpty: "No results",
+        },
+      }),
+      BlockMenuItems,
       ImageResize,
       Mermaid,
       MathBlock,
@@ -580,6 +586,15 @@ onMounted(() => {
       Embed,
       CustomTaskItem,
       Underline,
+      TabLink,
+      TabLinkSuggestion.configure({
+        tabData: (props.tabs || []).map(tab => ({
+          id: tab.id,
+          name: tab.title || 'Untitled',
+          color: tab.color,
+          group: tab.group,
+        }))
+      }),
       Color.configure({ types: [TextStyle.name, ListItem.name] }),
       TextStyle,
       Table.configure({ resizable: true }),
@@ -799,6 +814,11 @@ function toggleCase() {
   }
 }
 
+function onSearchEnter(e: KeyboardEvent) {
+  e.preventDefault();
+  updateSearchReplace();
+}
+
 const updateSearchReplace = (clearIndex: boolean = false) => {
   if (!editor.value) return;
 
@@ -912,10 +932,75 @@ function handleShortcut(event: KeyboardEvent) {
   }
 }
 
+// Expose the editor instance to parent components
+defineExpose({
+  editor: readonly(editor)
+})
 
 </script>
 
 <style>
+  /* Slash command Block Menu styles */
+  .ProseMirror-bm {
+    @apply dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 bg-white/90 text-black border border-gray-200 rounded-2xl shadow-sm backdrop-blur-xl px-1.5 py-1.5;
+    display: grid;
+    grid-auto-rows: minmax(40px, auto);
+    row-gap: 4px;
+    max-height: 320px;
+    overflow: auto;
+    width: 320px;
+  }
+
+  .ProseMirror-bm-divider {
+    height: 1px;
+    @apply bg-gray-200 dark:bg-[#525252];
+    margin: 4px 4px;
+    border-radius: 9999px;
+  }
+
+  .ProseMirror-bm-button {
+    @apply dark:hover:bg-[#333333] hover:bg-gray-100/70 transition-colors;
+    display: grid;
+    grid-template-columns: 24px 1fr auto;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+    padding: 8px 10px;
+    border-radius: 12px;
+  }
+
+  .ProseMirror-bm-button[data-active="true"] {
+    @apply dark:bg-[#303030] bg-gray-100;
+  }
+
+  .ProseMirror-bm-button-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+  }
+
+  .ProseMirror-bm-button-name {
+    font-size: 14px;
+  }
+
+  .ProseMirror-bm-button-shortcut {
+    @apply text-gray-400 dark:text-gray-300;
+    font-size: 12px;
+  }
+
+  .ProseMirror-bm-empty {
+    @apply text-gray-500 dark:text-gray-300;
+    padding: 6px 8px;
+  }
+
+  .ProseMirror-bm-placeholder[data-empty]::before {
+    content: attr(data-empty);
+    @apply text-gray-400 dark:text-gray-400;
+    font-size: 14px;
+    margin-left: 4px;
+  }
 
   .tippy-box {
     .hyperlink-preview-modal,
@@ -1071,14 +1156,11 @@ function handleShortcut(event: KeyboardEvent) {
   }
 
   pre {
-    border-radius: 1.1rem;
+    border-radius: 12px;
     font-family: 'Roboto Mono', monospace;
-    margin: 1.5rem 0;
-    padding: 0.6rem 1rem;
-    @apply bg-[#fafcfb] dark:text-white/50 border dark:border-white/10 border-gray-200 dark:bg-[#1e1e1e] inline-block px-8 pl-5;
-
-    filter: drop-shadow(0px 2px 5px rgba(0, 0, 0, 0.04));
-
+    margin: 1rem 0;
+    padding: 0.5rem;
+    @apply bg-none dark:text-white/50 border dark:border-white/10 border-[#c6c6c4] dark:bg-[#1e1e1e] inline-block px-4;
 
     ::spelling-error {
       text-decoration: none;
@@ -1091,7 +1173,7 @@ function handleShortcut(event: KeyboardEvent) {
     code {
       background: none;
       color: inherit;
-      font-size: 1.1rem;
+      font-size: 16.8px;
       padding: 0;
       font-family: 'Roboto Mono', monospace;
     }
@@ -1257,20 +1339,15 @@ h4 {
 
 ul,
 ol {
-  margin-left: 1.5rem;
-  padding-left: 1rem;
-}
+  margin-left: 1.3rem;
+  }
 
 ul {
   list-style-type: disc;
 }
 
 ol {
-  list-style-type: decimal;
-}
-
-li {
-  margin: 0.5rem 0;
+  list-style-type: lower-alpha;
 }
 
 .task-list-item {
@@ -1336,15 +1413,14 @@ code {
 /* Task list specific styles */
 ul[data-type="taskList"] {
   list-style: none;
-  margin-left: 14px;
+  margin-left: 6px;
   padding: 0;
 }
 
 ul[data-type="taskList"] li {
   align-items: center;
   display: flex;
-  margin-bottom: 0.5rem;
-  /* Optional: Add space between tasks */
+  margin-bottom: 0.2rem;
 }
 
 ul[data-type="taskList"] li>label {
@@ -1353,33 +1429,36 @@ ul[data-type="taskList"] li>label {
   user-select: none;
 }
 
+ul[data-type="taskList"] li[data-checked="true"] div {
+  text-decoration: line-through;
+  text-decoration-color: #b7b6b4;
+  @apply decoration-[1.5px]
+}
+
+
 ul[data-type="taskList"] label>input[type="checkbox"] {
   cursor: pointer;
   appearance: none;
-  /* Remove default appearance */
   width: 20px;
   height: 20px;
-  border: 1px solid #eaeaea;
-  /* Border to match background */
+  border: 1.5px solid #c6c6c4;
   border-radius: 8px;
-  /* Rounded corners */
-  margin-right: 0.5rem;
-  /* Space between checkbox and text */
+  margin-right: 0.6rem;
   position: relative;
 }
 
 ul[data-type="taskList"] label>input[type="checkbox"]:checked {
-  @apply bg-[#24d86c] border-[#28c76d]
+  @apply bg-[#2383e2] border-[#2383e2];
 }
 
 a {
-  @apply text-blue-700 underline dark:text-blue-200
+  @apply text-[#6f6e6b] underline decoration-[#c6c6c4]
 }
 
 ul[data-type="taskList"] label>input[type="checkbox"]:checked::after {
   content: '✔';
-  /* Checkmark symbol */
   color: white;
+  opacity: 0.95;
   font-size: 14px;
   display: block;
   text-align: center;
@@ -1416,5 +1495,32 @@ ul[data-type="taskList"] label>div {
 
 .tiptap .ProseMirror .search-result-current {
   background-color: rgba(13, 255, 0, 0.5);
+}
+
+/* Tab Link Styles */
+.tab-link {
+  @apply inline-flex items-center gap-1 px-2 py-1 mx-1 text-sm bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-700 rounded-md cursor-pointer transition-colors hover:bg-blue-100 dark:hover:bg-blue-900/50;
+}
+
+.tab-link-icon {
+  @apply text-xs;
+}
+
+.tab-link-label {
+  @apply font-medium;
+}
+
+.tab-link:hover {
+  @apply bg-blue-100 dark:bg-blue-900/50 border-blue-300 dark:border-blue-600;
+}
+
+/* Tab Link Menu Tippy Theme */
+.tippy-box[data-theme~="tab-link-menu"] {
+  @apply bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg shadow-lg;
+  padding: 0;
+}
+
+.tippy-box[data-theme~="tab-link-menu"] .tippy-content {
+  padding: 0;
 }
 </style>

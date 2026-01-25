@@ -2,7 +2,7 @@
   <div
     v-if="visible"
     ref="popoverRef"
-    class="fixed z-50 bg-white dark:bg-[#2a2a2a] border border-gray-200 dark:border-gray-600 rounded-2xl drop-shadow-xs p-3 min-w-[250px]"
+    class="fixed z-50 bg-white/90 backdrop-blur-2xl dark:bg-[#2a2a2a] border border-gray-200 dark:border-[#525252] rounded-2xl drop-shadow-cool drop-shadow-xs p-3 min-w-[250px]"
     :style="popoverStyle"
   >
     <div class="space-y-3">
@@ -26,16 +26,16 @@
       <div class="flex relative right-3 top-1.5">
         <button
           @click="duplicateTab"
-          class="flex gap-1 border border-gray-200 bg-white/80 text-black !px-[9px] py-[3px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer drop-shadow-cool tab-item relative transition-all duration-200 scale-90 max-w-fit"
+          class="flex gap-1 border border-gray-200 bg-white/90 text-black !px-[9px] py-[3px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-xl justify-center items-center cursor-pointer drop-shadow-cool tab-item relative transition-all duration-200 scale-90 max-w-fit"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="23" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="m12.442 14.553l-2.306 2.7C9.14 18.418 8.644 19 8 19s-1.141-.582-2.136-1.747l-2.306-2.7C2.52 13.337 2 12.728 2 12s.52-1.337 1.558-2.553l2.306-2.7C6.86 5.582 7.356 5 8 5s1.141.582 2.136 1.747l2.306 2.7C13.48 10.663 14 11.272 14 12s-.52 1.337-1.558 2.553"/><path d="m13 19l3.512-4.397C17.504 13.361 18 12.74 18 12s-.496-1.361-1.488-2.603L13 5"/><path d="m17 19l3.512-4.397C21.504 13.361 22 12.74 22 12s-.496-1.361-1.488-2.603L17 5"/></g></svg>Duplicate
+          <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="duplicate" fill="currentColor" style="width: 22px; display: block; flex-shrink: 0;"><path d="M4.5 2.375A2.125 2.125 0 0 0 2.375 4.5V12c0 1.174.951 2.125 2.125 2.125h1.625v1.625c0 1.174.951 2.125 2.125 2.125h7.5a2.125 2.125 0 0 0 2.125-2.125v-7.5a2.125 2.125 0 0 0-2.125-2.125h-1.625V4.5A2.125 2.125 0 0 0 12 2.375zm8.375 3.75H8.25A2.125 2.125 0 0 0 6.125 8.25v4.625H4.5A.875.875 0 0 1 3.625 12V4.5c0-.483.392-.875.875-.875H12c.483 0 .875.392.875.875zm-5.5 2.125c0-.483.392-.875.875-.875h7.5c.483 0 .875.392.875.875v7.5a.875.875 0 0 1-.875.875h-7.5a.875.875 0 0 1-.875-.875z"></path></svg>Duplicate
         </button>
 
                 <button
           @click="lockTab"
-          class="flex gap-1 border border-gray-200 bg-white/80 text-black !px-[9px] py-[3px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-2xl justify-center items-center cursor-pointer drop-shadow-cool tab-item relative transition-all duration-200 right-1 scale-90 max-w-fit"
+          class="flex gap-1 border border-gray-200 bg-white/90 text-black !px-[9px] py-[3px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 rounded-xl justify-center items-center cursor-pointer drop-shadow-cool tab-item relative transition-all duration-200 right-1 scale-90 max-w-fit"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11.998 2C8.99 2 7.04 4.019 4.734 4.755c-.938.3-1.407.449-1.597.66c-.19.21-.245.519-.356 1.135c-1.19 6.596 1.41 12.694 7.61 15.068c.665.255.998.382 1.61.382s.946-.128 1.612-.383c6.199-2.373 8.796-8.471 7.606-15.067c-.111-.616-.167-.925-.357-1.136s-.658-.36-1.596-.659C16.959 4.019 15.006 2 11.998 2M12 7v2" color="currentColor"/></svg>{{ status ? 'Locked' : 'Lock' }}
+          <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 23px; stroke: currentColor; fill: none;"><rect x="4.5" y="8" width="11" height="9" rx="2" stroke-width="1.25"></rect><circle cx="10" cy="11.5" r="0.5" stroke-width="1.25"></circle><path d="M10 14V11.5" stroke-width="1.25" stroke-linecap="round"></path><path class="" d="M19 6V4C19 2.34315 17.6569 1 16 1V1C14.3431 1 13 2.34315 13 4V8" stroke-width="1.25" stroke-linecap="round"></path></svg>{{ status ? 'Locked' : 'Lock' }}
         </button>
       </div>
     </div>
