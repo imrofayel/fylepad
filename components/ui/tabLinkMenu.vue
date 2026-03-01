@@ -1,6 +1,6 @@
 <template>
-  <div 
-    v-if="items.length"
+  <div
+    v-if="items?.length"
     class="tab-link-menu"
     ref="menuRef"
   >
@@ -8,7 +8,7 @@
       <span class="tab-link-menu-icon">🔗</span>
       <span>Link to tab</span>
     </div>
-    
+
     <div class="tab-link-menu-items">
       <button
         v-for="(item, index) in items"
@@ -23,7 +23,7 @@
       >
         <div class="tab-link-item-content">
           <div class="tab-link-item-header">
-            <div 
+            <div
               v-if="item.color && item.color !== 'Default'"
               class="tab-link-item-color"
               :class="getTabColorClass(item.color)"
@@ -40,7 +40,7 @@
         </div>
       </button>
     </div>
-    
+
     <div class="tab-link-menu-footer">
       <span class="tab-link-menu-hint">
         ↑↓ to navigate • Enter to select • Esc to cancel
@@ -50,7 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 
 export interface TabLinkItem {
   id: string
@@ -133,7 +133,7 @@ onMounted(() => {
       selectedElement.scrollIntoView({ block: 'nearest' })
     }
   }
-  
+
   // Watch for selectedIndex changes and scroll
   watch(() => selectedIndex.value, scrollToSelected)
 })

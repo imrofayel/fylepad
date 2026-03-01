@@ -12,19 +12,19 @@
     />
 
     <!-- Top Bar for Horizontal Tabs -->
-    <div v-if="!isVerticalTabs" class="flex justify-between items-center w-full p-0 py-2 fixed bg-white z-10 pr-[7.5rem] dark:bg-[#171717]" v-show="!focusMode.focused">
+    <div v-if="!isVerticalTabs" class="flex justify-between items-center w-full p-0 py-2 fixed bg-white z-10 pr-[7.5rem] dark:bg-[#171717]" v-show="!focusMode?.focused">
       <div class="flex space-x-2 overflow-visible justify-center items-center">
         <!-- Tab Layout Toggle @click="toggleTabLayout" -->
-        <button 
+        <button
           class="hover:!scale-100 drop-shadow-sm hidden" :title="isVerticalTabs ? 'Switch to Horizontal Tabs' : 'Switch to Vertical Tabs'">
-          
+
           <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="peekSide directional-icon rotate-180" style="width: 25px; display: block; flex-shrink: 0;"><path d="M10.392 6.125a.5.5 0 0 0-.5.5v6.75a.5.5 0 0 0 .5.5h4.683a.5.5 0 0 0 .5-.5v-6.75a.5.5 0 0 0-.5-.5z"></path><path d="M4.5 4.125A2.125 2.125 0 0 0 2.375 6.25v7.5c0 1.174.951 2.125 2.125 2.125h11a2.125 2.125 0 0 0 2.125-2.125v-7.5A2.125 2.125 0 0 0 15.5 4.125zM3.625 6.25c0-.483.392-.875.875-.875h11c.483 0 .875.392.875.875v7.5a.875.875 0 0 1-.875.875h-11a.875.875 0 0 1-.875-.875z"></path></svg>
 
         </button>
 
         <button @click="newTab"
           class="hover:!scale-100 dark:text-gray-50  drop-shadow-sm" title="New Tab">
-          
+
           <svg aria-hidden="true" fill="currentColor" role="graphics-symbol" viewBox="0 0 16 16" class="plus mx-1" style="width: 17px; display: block; flex-shrink: 0; margin-inline-end: 6px; margin-top: 1px;"><path d="M7.977 14.963c.407 0 .747-.324.747-.723V8.72h5.362c.399 0 .74-.34.74-.747a.746.746 0 00-.74-.738H8.724V1.706c0-.398-.34-.722-.747-.722a.732.732 0 00-.739.722v5.529h-5.37a.746.746 0 00-.74.738c0 .407.341.747.74.747h5.37v5.52c0 .399.332.723.739.723z"></path></svg>
 
         </button>
@@ -49,12 +49,12 @@
               :style="getTabStyle(tabIndex)"
             >
               <!-- Color indicator -->
-              <div 
+              <div
                 v-if="tab.color && tab.color !== 'Default'"
                 class="w-[4.5px] relative right-0.5 h-[16px] rounded-full mr-[4px]"
                 :class="getTabColorIndicator(tab.color)"
               />
-              
+
               <span class="tab-title">{{ tab.title || 'Untitled' }}</span>
               <button @click.stop="closeTab(tabIndex)"
                 v-if="!tab.lock" class="ml-2 hover:text-red-600 dark:text-gray-50/50 dark:hover:text-gray-100"
@@ -82,7 +82,7 @@
             class="hover:!scale-100 drop-shadow-sm" title="New Tab">
             <svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 16 16" class="plus" style="width: 16px; display: block; flex-shrink: 0; margin-inline-end: 6px; margin-top: 1px;"><path d="M7.977 14.963c.407 0 .747-.324.747-.723V8.72h5.362c.399 0 .74-.34.74-.747a.746.746 0 00-.74-.738H8.724V1.706c0-.398-.34-.722-.747-.722a.732.732 0 00-.739.722v5.529h-5.37a.746.746 0 00-.74.738c0 .407.341.747.74.747h5.37v5.52c0 .399.332.723.739.723z"></path></svg>
           </button>
-          
+
           <!-- Close Sidebar Button -->
           <button @click="sidebarVisible = false"
             class="hover:!scale-100 drop-shadow-sm dark:text-gray-50" title="Hide Sidebar">
@@ -108,11 +108,11 @@
           @contextmenu.prevent="showContextMenu(tabIndex, $event)"
           class="group relative w-full p-1 pr-0.5 py-1.5 text-[#32302c] cursor-pointer flex items-center  tab-item"
           :class="tabIndex === activeTab && ' !bg-gray-100/80 rounded-lg !px-2'"
-          
+
           :style="getTabStyle(tabIndex)"
         >
           <svg aria-hidden="true" class="mr-1.5 fill-white" :class="(tabIndex !== activeTab) && getTabIconColorIndicator(tab.color as any)"  role="graphics-symbol" viewBox="0 0 16 16" style="width: 19px; fill: rgba(71, 70, 68, 0.6); display: block; flex-shrink: 0;"><path data-v-2474b7ad="" d="M4.35645 15.4678H11.6367C13.0996 15.4678 13.8584 14.6953 13.8584 13.2256V7.02539C13.8584 6.0752 13.7354 5.6377 13.1406 5.03613L9.55176 1.38574C8.97754 0.804688 8.50586 0.667969 7.65137 0.667969H4.35645C2.89355 0.667969 2.13477 1.44043 2.13477 2.91016V13.2256C2.13477 14.7021 2.89355 15.4678 4.35645 15.4678ZM4.46582 14.1279C3.80273 14.1279 3.47461 13.7793 3.47461 13.1436V2.99219C3.47461 2.36328 3.80273 2.00781 4.46582 2.00781H7.37793V5.75391C7.37793 6.73145 7.86328 7.20312 8.83398 7.20312H12.5186V13.1436C12.5186 13.7793 12.1836 14.1279 11.5205 14.1279H4.46582ZM8.95703 6.02734C8.67676 6.02734 8.56055 5.9043 8.56055 5.62402V2.19238L12.334 6.02734H8.95703ZM10.4336 9.00098H5.42969C5.16992 9.00098 4.98535 9.19238 4.98535 9.43164C4.98535 9.67773 5.16992 9.86914 5.42969 9.86914H10.4336C10.6797 9.86914 10.8643 9.67773 10.8643 9.43164C10.8643 9.19238 10.6797 9.00098 10.4336 9.00098ZM10.4336 11.2979H5.42969C5.16992 11.2979 4.98535 11.4893 4.98535 11.7354C4.98535 11.9746 5.16992 12.1592 5.42969 12.1592H10.4336C10.6797 12.1592 10.8643 11.9746 10.8643 11.7354C10.8643 11.4893 10.6797 11.2979 10.4336 11.2979Z"></path></svg>
-          
+
           <!-- Tab content -->
           <div class="flex-1 min-w-0">
             <div class=" truncate text-[18px]">{{ tab.title || 'Untitled' }}</div>
@@ -120,7 +120,7 @@
 
           <!-- Close button -->
           <button @click.stop="closeTab(tabIndex)"
-            v-if="!tab.lock" 
+            v-if="!tab.lock"
             class="ml-2 hover:text-red-600 flex-shrink-0 opacity-0 group-hover:opacity-100"
             :class="tabIndex === activeTab && '!opacity-100'"
             title="Close tab">
@@ -133,11 +133,11 @@
     </div>
 
     <div class="flex-grow" :class="[
-      focusMode.focused ? 'mt-1' : (isVerticalTabs ? '!mt-0' : 'mt-7'),
-      isVerticalTabs && !focusMode.focused ? 'ml-0' : ''
+      focusMode?.focused ? 'mt-1' : (isVerticalTabs ? '!mt-0' : 'mt-7'),
+      isVerticalTabs && !focusMode?.focused ? 'ml-0' : ''
     ]">
-      <button 
-        v-if="isVerticalTabs && !sidebarVisible && !focusMode.focused" 
+      <button
+        v-if="isVerticalTabs && !sidebarVisible && !focusMode?.focused"
         @click="sidebarVisible = true"
         class="fixed top-4 left-4 z-30 dark:text-gray-50"
         title="Show Sidebar">
@@ -149,7 +149,7 @@
         @switchToTab="switchToTab"
         :tabs="tabs"
         :activeTabIndex="activeTab"
-        :isVertical="isVerticalTabs" 
+        :isVertical="isVerticalTabs"
         :is-sidebar-open="sidebarVisible"/>
     </div>
 
@@ -159,14 +159,12 @@
       :targetElement="contextMenu.targetElement"
       :tabIndex="contextMenu.tabIndex"
       :tabColor="contextMenu.tabIndex >= 0 ? tabs[contextMenu.tabIndex]?.color || 'Default' : 'Default'"
-      :totalTabs="tabs.length"
+      :totalTabs="tabs?.length"
       @close="closeContextMenu"
       @colorChanged="changeTabColor"
       @duplicateTab="duplicateTab"
       @lock-tab="lockTab"
-      :status="tabs[activeTab].lock"
-
-    />
+      :status="tabs[activeTab].lock"></TabContextMenu>
 
   </div>
 </template>
@@ -235,13 +233,13 @@
 </style>
 
 <script lang="ts" setup>
-import { ref, reactive, onMounted, watch, onBeforeUnmount, computed, nextTick } from 'vue';
-import {  path } from '@tauri-apps/api';
+import { path } from '@tauri-apps/api';
 import { isNumber } from '@tiptap/core';
+import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
 
-import { useFocusStore } from '../stores/focus'
-import TabContextMenu from '../components/ui/tabContextMenu.vue'
-import * as fs from "@tauri-apps/plugin-fs"
+import * as fs from "@tauri-apps/plugin-fs";
+import TabContextMenu from '../components/ui/tabContextMenu.vue';
+import { useFocusStore } from '../stores/focus';
 
 const focusMode = useFocusStore()
 
@@ -263,9 +261,9 @@ interface Tab {
   id: string; // Add unique ID for tabs
 }
 
-const tabs = reactive<Tab[]>([{ 
-  title: 'Untitled', 
-  content: '', 
+const tabs = reactive<Tab[]>([{
+  title: 'Untitled',
+  content: '',
   color: 'Default',
   lock: false,
   id: crypto.randomUUID() // Generate unique ID
@@ -320,21 +318,21 @@ const onTabDragStart = (index: number, event: DragEvent) => {
 // Enhanced drag over handler
 const onTabDragOver = (event: DragEvent, targetIndex: number) => {
   event.preventDefault();
-  
+
   if (!dragState.dragging || dragState.draggedTabIndex === targetIndex) {
     return;
   }
-  
+
   const targetElement = tabRefs.value[targetIndex];
   if (!targetElement) return;
-  
+
   const rect = targetElement.getBoundingClientRect();
   const midPoint = rect.left + rect.width / 2;
   const isLeftSide = event.clientX < midPoint;
-  
+
   dragState.dragOverTabIndex = targetIndex;
   dragState.dragOverSide = isLeftSide ? 'left' : 'right';
-  
+
   // Set drop effect
   if (event.dataTransfer) {
     event.dataTransfer.dropEffect = 'move';
@@ -359,32 +357,32 @@ const onTabDragLeave = (event: DragEvent) => {
 // Enhanced drop handler
 const onTabDrop = (event: DragEvent, targetIndex: number) => {
   event.preventDefault();
-  
+
   if (!dragState.dragging || dragState.draggedTabIndex === -1) {
     return;
   }
-  
+
   const sourceIndex = dragState.draggedTabIndex;
-  
+
   if (sourceIndex === targetIndex) {
     resetDragState();
     return;
   }
-  
+
   // Calculate the new position based on drop side
   let newIndex = targetIndex;
   if (dragState.dragOverSide === 'right') {
     newIndex = targetIndex + 1;
   }
-  
+
   // Adjust for the fact that we're removing the source tab first
   if (sourceIndex < newIndex) {
     newIndex--;
   }
-  
+
   // Perform the move
   moveTabToPosition(sourceIndex, newIndex);
-  
+
   resetDragState();
 };
 
@@ -405,17 +403,17 @@ const resetDragState = () => {
 
 // Move tab to a specific position
 const moveTabToPosition = (sourceIndex: number, targetIndex: number) => {
-  if (sourceIndex === targetIndex || sourceIndex < 0 || targetIndex < 0 || 
+  if (sourceIndex === targetIndex || sourceIndex < 0 || targetIndex < 0 ||
       sourceIndex >= tabs.length || targetIndex > tabs.length) {
     return;
   }
-  
+
   // Extract the tab to move
   const [movedTab] = tabs.splice(sourceIndex, 1);
-  
+
   // Insert at new position
   tabs.splice(targetIndex, 0, movedTab);
-  
+
   // Update active tab index
   if (activeTab.value === sourceIndex) {
     activeTab.value = targetIndex;
@@ -424,7 +422,7 @@ const moveTabToPosition = (sourceIndex: number, targetIndex: number) => {
   } else if (activeTab.value < sourceIndex && activeTab.value >= targetIndex) {
     activeTab.value++;
   }
-  
+
   saveAppState();
 };
 
@@ -460,18 +458,18 @@ const closeContextMenu = () => {
 const getTabClasses = (tabIndex: number) => {
   const tab = tabs[tabIndex];
   if (!tab) return '';
-  
+
   const isActive = activeTab.value === tabIndex;
   const isDragging = dragState.dragging && dragState.draggedTabIndex === tabIndex;
   const isDragOver = dragState.dragOverTabIndex === tabIndex;
-  
+
   let classes = '';
-  
+
   // Dragging state
   if (isDragging) {
     classes += ' dragging';
   }
-  
+
   // Drag over states
   if (isDragOver && !isDragging) {
     if (dragState.dragOverSide === 'left') {
@@ -480,7 +478,7 @@ const getTabClasses = (tabIndex: number) => {
       classes += ' drag-over-right';
     }
   }
-  
+
   // Active state with colors
   if (isActive) {
     // Apply color-specific active styles
@@ -510,7 +508,7 @@ const getTabClasses = (tabIndex: number) => {
         classes += ' !bg-[#24d86c] dark:!bg-[#0c843c] dark:!border-[#196838] !border-[#28c76d] !text-white font-medium';
     }
   }
-  
+
   return classes;
 };
 
@@ -519,14 +517,14 @@ const getTabClasses = (tabIndex: number) => {
 // Get tab style for drag effects
 const getTabStyle = (tabIndex: number) => {
   const isDragging = dragState.dragging && dragState.draggedTabIndex === tabIndex;
-  
+
   if (isDragging) {
     return {
       transform: 'scale(0.92)',
       zIndex: '1000',
     };
   }
-  
+
   return {};
 };
 
@@ -617,47 +615,47 @@ const handleTabSelect = (tabIndex: number) => {
 const handleSearchResultSelect = async (result: any) => {
   // Switch to the tab
   activeTab.value = result.tabIndex;
-  
+
   // Wait for the tab to be active and editor to be ready
   await nextTick();
-  
+
   // Small delay to ensure editor is fully ready
   setTimeout(() => {
     // Try to get the editor instance from the ref
     const editor = editorRef.value?.editor;
-    
+
     if (editor) {
       console.log('Using editor from ref');
       // Use the search & replace extension to highlight and navigate to the result
       const searchTerm = result.searchTerm || result.text.substring(0, 50);
       editor.commands.setSearchTerm(searchTerm);
       editor.commands.resetIndex();
-      
+
       // Wait a bit for search to process
       setTimeout(() => {
         const { results } = editor.storage.searchAndReplace;
-        
+
         if (results && results.length > 0) {
           // Find the closest match to our result position
           let bestMatchIndex = 0;
           if (result.from !== undefined) {
-            bestMatchIndex = results.findIndex((r: any) => 
+            bestMatchIndex = results.findIndex((r: any) =>
               Math.abs(r.from - result.from) < 10
             );
             if (bestMatchIndex === -1) bestMatchIndex = 0;
           }
-          
+
           // Set the result index to highlight the correct match
           editor.storage.searchAndReplace.resultIndex = bestMatchIndex;
-          
+
           // Set text selection and scroll to position
           const targetResult = results[bestMatchIndex];
           if (targetResult) {
-            editor.commands.setTextSelection({ 
-              from: targetResult.from, 
-              to: targetResult.to 
+            editor.commands.setTextSelection({
+              from: targetResult.from,
+              to: targetResult.to
             });
-            
+
             // Wait for selection to be set
             setTimeout(() => {
               // Scroll to position
@@ -669,10 +667,10 @@ const handleSearchResultSelect = async (result: any) => {
               } catch (e) {
                 console.log('Could not scroll to position:', e);
               }
-              
+
               // Focus the editor
               editor.chain().focus().run();
-              
+
               // Clear the search after a delay
               setTimeout(() => {
                 editor.commands.setSearchTerm('');
@@ -685,36 +683,36 @@ const handleSearchResultSelect = async (result: any) => {
       // Fallback to DOM method
       console.log('Using DOM fallback method');
       const proseMirrorElement = document.querySelector('.ProseMirror');
-      
+
       if (proseMirrorElement) {
         // Try to get the TipTap editor instance through the Vue component
         const vueComponent = (proseMirrorElement as any)?.__vueParentComponent;
         const fallbackEditor = vueComponent?.parent?.setupState?.editor || vueComponent?.ctx?.editor;
-        
+
         if (fallbackEditor) {
           const searchTerm = result.searchTerm || result.text.substring(0, 50);
           fallbackEditor.commands.setSearchTerm(searchTerm);
           fallbackEditor.commands.resetIndex();
-          
+
           setTimeout(() => {
             const { results } = fallbackEditor.storage.searchAndReplace;
-            if (results && results.length > 0) {
+            if (results && results?.length > 0) {
               let bestMatchIndex = 0;
               if (result.from !== undefined) {
-                bestMatchIndex = results.findIndex((r: any) => 
+                bestMatchIndex = results.findIndex((r: any) =>
                   Math.abs(r.from - result.from) < 10
                 );
                 if (bestMatchIndex === -1) bestMatchIndex = 0;
               }
-              
+
               fallbackEditor.storage.searchAndReplace.resultIndex = bestMatchIndex;
               const targetResult = results[bestMatchIndex];
               if (targetResult) {
-                fallbackEditor.commands.setTextSelection({ 
-                  from: targetResult.from, 
-                  to: targetResult.to 
+                fallbackEditor.commands.setTextSelection({
+                  from: targetResult.from,
+                  to: targetResult.to
                 });
-                
+
                 setTimeout(() => {
                   try {
                     const { node } = fallbackEditor.view.domAtPos(fallbackEditor.state.selection.anchor);
@@ -724,7 +722,7 @@ const handleSearchResultSelect = async (result: any) => {
                   } catch (e) {
                     console.log('Could not scroll to position:', e);
                   }
-                  
+
                   fallbackEditor.chain().focus().run();
                   setTimeout(() => {
                     fallbackEditor.commands.setSearchTerm('');
@@ -741,7 +739,7 @@ const handleSearchResultSelect = async (result: any) => {
             NodeFilter.SHOW_TEXT,
             null
           );
-          
+
           let node;
           const searchTerm = result.text.toLowerCase().substring(0, 50);
           while (node = walker.nextNode()) {
@@ -749,9 +747,9 @@ const handleSearchResultSelect = async (result: any) => {
             if (textContent.includes(searchTerm)) {
               const element = node.parentElement;
               if (element) {
-                element.scrollIntoView({ 
-                  behavior: 'smooth', 
-                  block: 'center' 
+                element.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'center'
                 });
                 break;
               }
@@ -809,7 +807,7 @@ async function loadAppState() {
       ...tab,
       id: tab.id || crypto.randomUUID()
     }));
-    
+
     tabs.splice(0, tabs.length, ...migratedTabs);
     activeTab.value = appState.activeTab;
     colorMode.preference = appState.colorMode;
@@ -839,13 +837,13 @@ watch([tabs, activeTab, () => colorMode.preference, isVerticalTabs, sidebarVisib
 
 const newTab = () => {
   // TODO: Adjust the UI later. Add pricing thing into it just for fun.
-  if (tabs.length >= 5) {
+  if (tabs?.length >= 5) {
     return
   }
 
-  tabs.push({ 
-    title: 'Untitled', 
-    content: '', 
+  tabs.push({
+    title: 'Untitled',
+    content: '',
     color: 'Default',
     lock: false,
     id: crypto.randomUUID()
@@ -898,14 +896,14 @@ function handleShortcut(event: KeyboardEvent) {
     event.preventDefault();
     newTab();
   }
-  
+
   // CTRL + G + [number] -> Switch to tab
   if (event.altKey) {
     event.preventDefault();
     const numberListener = (e: KeyboardEvent) => {
-      if (isNumber(parseInt(e.key)) && parseInt(e.key) <= tabs.length) {
+      if (isNumber(parseInt(e.key)) && parseInt(e.key) <= tabs?.length) {
         const tabNumber = parseInt(e.key) - 1; // Convert to 0-based index
-        if (tabNumber < tabs.length) {
+        if (tabNumber < tabs?.length) {
           activeTab.value = tabNumber;
         }
         document.removeEventListener('keydown', numberListener);
@@ -913,13 +911,13 @@ function handleShortcut(event: KeyboardEvent) {
     };
     document.addEventListener('keydown', numberListener);
   }
-  
+
   // CTRL + SHIFT + Left Arrow -> Move tab left
   if (event.ctrlKey && event.shiftKey && event.key === 'ArrowLeft') {
     event.preventDefault();
     moveTab(activeTab.value, 'left');
   }
-  
+
   // CTRL + SHIFT + Right Arrow -> Move tab right
   if (event.ctrlKey && event.shiftKey && event.key === 'ArrowRight') {
     event.preventDefault();

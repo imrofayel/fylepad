@@ -46,7 +46,7 @@
                     </svg>
                   </button>
                 </div>
-                <div v-if="filteredFonts.length === 0" class="p-4 text-black drop-shadow-sm">
+                <div v-if="filteredFonts?.length === 0" class="p-4 text-black drop-shadow-sm">
                   No fonts found.
                 </div>
                 <div v-else class="p-2 flex flex-col space-y-2 text-black">
@@ -140,8 +140,8 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/vue'
+import { computed, ref } from 'vue'
 
 const props = defineProps({
   isOpen: {

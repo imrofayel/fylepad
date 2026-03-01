@@ -67,7 +67,7 @@
 
                     <!-- AI Button -->
                     <!-- <button @click="openAIBar" class=" hover:dark:bg-[#171717] hover:bg-gray-100 p-2 px-2" aria-label="AI Edit" title="Write with AI.">
-  
+
                       <svg xmlns="http://www.w3.org/2000/svg" width="23" viewBox="0 0 24 24"><path fill="currentColor" d="M5.838 10.184c.19.49.64.81 1.17.81s.99-.32 1.17-.81l.71-1.92c.02-.07.07-.12.14-.14l1.92-.71c.49-.19.81-.64.81-1.17s-.32-.99-.81-1.17l-1.92-.71a.24.24 0 0 1-.14-.14l-.71-1.92c-.19-.49-.64-.81-1.17-.81s-.99.32-1.17.81l-.71 1.92c-.02.07-.07.12-.14.14l-1.92.71c-.49.19-.81.64-.81 1.17s.32.99.81 1.17l1.92.71c.07.03.12.08.14.14zm-.33-3.47l-1.27-.47l1.27-.47c.48-.18.85-.55 1.03-1.03l.47-1.27l.47 1.27c.18.47.56.85 1.03 1.02l1.27.47l-1.27.47c-.48.18-.85.55-1.03 1.03l-.47 1.27l-.47-1.27c-.18-.47-.56-.85-1.03-1.02m-.25 15.53c0 .41.34.75.75.75h1.5l-.01.01c1.27 0 1.97 0 2.65-.28s1.17-.77 2.07-1.67l8.15-8.15l.046-.046c.541-.55.85-.864 1.044-1.253c.38-.76.38-1.66 0-2.42c-.182-.393-.483-.694-1.018-1.228l-.072-.072l-.047-.046c-.55-.542-.864-.85-1.253-1.044c-.76-.38-1.66-.38-2.42 0c-.393.182-.694.483-1.228 1.017l-.072.073l-1.48 1.48l-6.66 6.66c-.89.89-1.39 1.39-1.67 2.07s-.28 1.38-.28 2.65zm1.51-.75v-.74c0-1.12 0-1.67.17-2.08s.56-.8 1.35-1.59l6.14-6.14l.95.95c.29.29.77.29 1.06 0s.29-.77 0-1.06l-.95-.95l.95-.95c.45-.45.72-.72.9-.81c.34-.17.75-.17 1.09 0c.18.09.45.36.9.81s.72.72.81.9c.17.34.17.75 0 1.09c-.09.18-.36.45-.81.9l-8.15 8.15c-.84.84-1.2 1.19-1.59 1.35c-.41.17-.97.17-2.08.17z" color="currentColor"/></svg>
 
 </button> -->
@@ -77,11 +77,11 @@
             aria-label="Read selected text aloud"
             :aria-pressed="isReading"
             role="button">
-            
+
             <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24"><!-- Icon from Lucide by Lucide Contributors - https://github.com/lucide-icons/lucide/blob/main/LICENSE --><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2m7 9v3"/></g></svg>
           </button>
 
-          <button v-if="isSpeechSynthesisAvailable" @click="toggleVoiceSettings" 
+          <button v-if="isSpeechSynthesisAvailable" @click="toggleVoiceSettings"
             :class="{ 'is-active': showVoiceSettings, 'hover:dark:bg-[#171717] hover:bg-gray-100': true, 'p-2 px-2 border-gray-200 dark:border-[#525252]': true }"
             aria-label="Voice settings"
             :aria-expanded="showVoiceSettings"
@@ -127,14 +127,14 @@
             </span>
           </div>
 
-          
+
         </div>
       </transition>
 
 
       <!-- Mini Controls -->
       <div v-if="isSpeechSynthesisAvailable && isReading" class="mini-controls rainbow-border-effect-2 dark:bg-[#404040] bg-white/80 backdrop-blur-xl text-black !rounded-2xl shadow-lg overflow-hidden transition-all duration-300 ease-in-out">
-                  
+
           <div class="p-4">
             <div class="flex items-center justify-between">
               <div class="flex items-center w-full justify-between gap-1">
@@ -149,8 +149,8 @@
                 </button>
 
                 <div class="audio-visualizer">
-              <div v-for="i in 30" :key="i" class="visualizer-bar" 
-                  :style="{ height: `${audioVisualizerHeight[i % audioVisualizerHeight.length] + 4}px` }"></div>
+              <div v-for="i in 30" :key="i" class="visualizer-bar"
+                  :style="{ height: `${audioVisualizerHeight[i % audioVisualizerHeight?.length] + 4}px` }"></div>
             </div>
 
             <div class="font-medium dark:text-white/95">{{ voiceRate }}x</div>
@@ -160,9 +160,9 @@
         </div>
 
       <!-- Voice Settings Panel -->
-      <div v-if="isSpeechSynthesisAvailable && showVoiceSettings" 
-           class="voice-settings-panel dark:!bg-[#404040] rounded-3xl border bg-white dark:text-white dark:border-[#525252] text-black !z-[1100000]" 
-           role="dialog" 
+      <div v-if="isSpeechSynthesisAvailable && showVoiceSettings"
+           class="voice-settings-panel dark:!bg-[#404040] rounded-3xl border bg-white dark:text-white dark:border-[#525252] text-black !z-[1100000]"
+           role="dialog"
            aria-label="Voice settings">
         <div class="flex items-center justify-between">
           <h3 class="text-lg opacity-95 font-medium">Voice Settings</h3>
@@ -178,13 +178,13 @@
               </option>
             </select>
           </div>
-          
+
           <div class="form-group">
             <label class="text-md opacity-95">Speed:</label>
             <div class="speed-controls flex flex-wrap gap-2 mt-2">
-              <button 
-                v-for="rate in [0.5, 0.9, 1.0, 1.25, 1.5, 2]" 
-                :key="rate" 
+              <button
+                v-for="rate in [0.5, 0.9, 1.0, 1.25, 1.5, 2]"
+                :key="rate"
                 @click="setVoiceRate(rate)"
                 :class="{'border bg-[#24d86c] text-white !text-opacity-100 !drop-shadow-sm dark:border-none dark:!bg-black/20': Math.abs(voiceRate - rate) < 0.01}"
                 class="border dark:border-none dark:bg-white/5 !px-2 rounded-2xl py-1 text-opacity-90">
@@ -192,7 +192,7 @@
               </button>
             </div>
           </div>
-          
+
           <div class="flex flex-col border-t mt-2 pt-4 !gap-2">
             <div class="text-sm roboto-mono">Alt + S: Start / Stop reading</div>
             <div class="text-sm roboto-mono">Alt + P: Pause / Resume</div>
@@ -203,7 +203,7 @@
 
 <script lang="ts" setup>
 import { BubbleMenu } from '@tiptap/vue-3';
-import { ref, computed, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 
 // --- AI Bubble Menu State ---
 const showAIBtn = ref(false);
@@ -383,11 +383,11 @@ const loadVoices = () => {
 const loadPreferences = () => {
   const savedVoice = localStorage.getItem('selectedVoice');
   const savedRate = localStorage.getItem('voiceRate');
-  
+
   if (savedRate) {
     voiceRate.value = parseFloat(savedRate);
   }
-  
+
   if (savedVoice && availableVoices.value.length > 0) {
     const voiceIndex = availableVoices.value.findIndex(v => v.name === savedVoice);
     if (voiceIndex >= 0) {
@@ -407,7 +407,7 @@ const toggleVoiceSettings = (event?: Event) => {
 // Remove current highlights
 const removeHighlights = () => {
   if (!props.editor || !currentTextRange.value) return;
-  
+
   try {
     // Clear any previous highlighting
     props.editor.commands.unsetHighlight();
@@ -433,7 +433,7 @@ const stopReading = () => {
   readingProgress.value = 0;
   isMinimized.value = false;
   removeHighlights();
-  
+
   // Reset current selection
   if (currentTextRange.value && props.editor) {
     try {
@@ -447,12 +447,12 @@ const stopReading = () => {
 // Text reading
 const readSelectedText = () => {
   if (!props.editor) return;
-  
+
   try {
     // Save the current selection range
     const { from, to } = props.editor.state.selection;
     currentTextRange.value = { from, to };
-    
+
     const selectedText = props.editor.state.selection.content().content.firstChild?.textContent;
     if (!selectedText) return;
 
@@ -468,22 +468,22 @@ const readSelectedText = () => {
     isPaused.value = false;
     isMinimized.value = false;
     readingStartTime.value = Date.now();
-    
+
     // Estimate reading duration
     const wordCount = words.value.length;
     readingDuration.value = (wordCount / 150) * 60 * 1000; // in milliseconds
-    
+
     // Start visualizer animation
     startVisualizerAnimation();
-    
+
     const utterance = new SpeechSynthesisUtterance(selectedText);
-    
+
     // Apply voice settings
     if (selectedVoice.value) {
       utterance.voice = selectedVoice.value;
     }
     utterance.rate = voiceRate.value;
-    
+
     // Try to detect language
     try {
       const langCode = selectedVoice.value?.lang || navigator.language || 'en-US';
@@ -491,36 +491,36 @@ const readSelectedText = () => {
     } catch (e) {
       console.log('Language detection failed:', e);
     }
-    
+
     // Word boundary tracking for highlighting
     utterance.onboundary = (event: SpeechSynthesisEvent) => {
       if (event.name === 'word' && currentTextRange.value) {
         // Update current word index
         currentWord.value = Math.min(
-          words.value.length - 1, 
+          words.value.length - 1,
           Math.floor(event.charIndex / 5) // Rough approximation
         );
-        
+
         // Update progress
         const elapsed = Date.now() - readingStartTime.value;
         readingProgress.value = Math.min(100, (elapsed / readingDuration.value) * 100);
-        
+
         // Highlighting the current word (approximate)
         try {
           const wordLength = words.value[currentWord.value].length;
           const charOffset = event.charIndex;
-          
+
           // Use the editor's selection to highlight the current word
           if (props.editor && !isMinimized.value) { // Only highlight when not minimized
             const from = currentTextRange.value.from + charOffset;
             const to = from + wordLength;
-            
+
             props.editor.commands.setTextSelection({ from, to });
-            
+
             // Auto-scroll only if not minimized
             const view = props.editor.view;
             const domPos = view.coordsAtPos(from);
-            
+
             if (domPos) {
               window.scrollTo({
                 top: domPos.top - 100,
@@ -533,13 +533,13 @@ const readSelectedText = () => {
         }
       }
     };
-    
+
     utterance.onend = () => {
       isReading.value = false;
       isPaused.value = false;
       isMinimized.value = false;
       readingProgress.value = 0;
-      
+
       // Restore original selection
       if (currentTextRange.value && props.editor) {
         try {
@@ -567,7 +567,7 @@ const handleKeyboardShortcuts = (event: KeyboardEvent) => {
     event.preventDefault();
     readSelectedText();
   }
-  
+
   // Alt+P to pause/resume reading
   if (event.altKey && event.key === 'p' && isReading.value) {
     event.preventDefault();
@@ -588,7 +588,7 @@ onMounted(() => {
       // Load voices immediately if already available
       loadVoices();
       loadPreferences();
-      
+
       // Add keyboard shortcuts
       document.addEventListener('keydown', handleKeyboardShortcuts);
     } catch (e) {
@@ -646,40 +646,40 @@ const startVisualizerAnimation = () => {
   let animationFrameId: number;
   const updateVisualizer = () => {
     if (!isReading.value) return;
-    
+
     // Create a random equalizer effect
     audioVisualizerHeight.value = audioVisualizerHeight.value.map(() => {
-      return isPaused.value 
+      return isPaused.value
         ? 5 // Lower static height when paused
         : Math.floor(Math.random() * 20) + 5; // Random height between 5-25px when playing
     });
-    
+
     // Update current word for display
     if (words.value.length > 0 && currentWord.value < words.value.length) {
       // Show current word and a few surrounding words for context
       const startIdx = Math.max(0, currentWord.value - 1);
       const endIdx = Math.min(words.value.length, currentWord.value + 4);
       const snippet = words.value.slice(startIdx, endIdx).join(' ');
-      currentWordDisplay.value = snippet.length > 40 
-        ? snippet.substring(0, 37) + '...' 
+      currentWordDisplay.value = snippet.length > 40
+        ? snippet.substring(0, 37) + '...'
         : snippet;
     }
-    
+
     // Continue animation
     if (isReading.value) {
       animationFrameId = requestAnimationFrame(updateVisualizer);
     }
   };
-  
+
   animationFrameId = requestAnimationFrame(updateVisualizer);
-  
+
   // Cleanup function to cancel animation when stopped
   const cleanupAnimation = () => {
     if (animationFrameId) {
       cancelAnimationFrame(animationFrameId);
     }
   };
-  
+
   // Properly clean up the animation when component is unmounted
   onBeforeUnmount(cleanupAnimation);
 };
@@ -687,18 +687,18 @@ const startVisualizerAnimation = () => {
 // Speed controls
 const setVoiceRate = (rate: number) => {
   voiceRate.value = rate;
-  
+
   if (window.speechSynthesis.speaking) {
     // Cancel and restart with new rate
     const wasPaused = isPaused.value;
-    
+
     // Store current position and restart
-    const currentPos = window.speechSynthesis.speaking 
+    const currentPos = window.speechSynthesis.speaking
       ? Math.floor((Date.now() - readingStartTime.value) / readingDuration.value * words.value.length)
       : currentWord.value;
-    
+
     window.speechSynthesis.cancel();
-    
+
     // Only restart if we were actually speaking
     if (currentTextRange.value && words.value.length > 0) {
       // Get text from current position to end
@@ -709,7 +709,7 @@ const setVoiceRate = (rate: number) => {
           newUtterance.voice = selectedVoice.value;
         }
         newUtterance.rate = voiceRate.value;
-        
+
         // Set the language
         try {
           const langCode = selectedVoice.value?.lang || navigator.language || 'en-US';
@@ -717,10 +717,10 @@ const setVoiceRate = (rate: number) => {
         } catch (e) {
           console.log('Language detection failed:', e);
         }
-        
+
         // Update current position
         currentWord.value = currentPos;
-        
+
         // Speak and pause if needed
         window.speechSynthesis.speak(newUtterance);
         if (wasPaused) {
@@ -730,7 +730,7 @@ const setVoiceRate = (rate: number) => {
       }
     }
   }
-  
+
   // Save to localStorage
   localStorage.setItem('voiceRate', voiceRate.value.toString());
 };
@@ -781,25 +781,25 @@ button.is-active {
   border-radius: 1px;
 }
 
-.speech-wave .bar:nth-child(1) { 
-  height: 8px; 
-  animation: wave 0.8s ease-in-out infinite; 
+.speech-wave .bar:nth-child(1) {
+  height: 8px;
+  animation: wave 0.8s ease-in-out infinite;
 }
-.speech-wave .bar:nth-child(2) { 
-  height: 16px; 
-  animation: wave 0.8s ease-in-out 0.1s infinite; 
+.speech-wave .bar:nth-child(2) {
+  height: 16px;
+  animation: wave 0.8s ease-in-out 0.1s infinite;
 }
-.speech-wave .bar:nth-child(3) { 
-  height: 24px; 
-  animation: wave 0.8s ease-in-out 0.2s infinite; 
+.speech-wave .bar:nth-child(3) {
+  height: 24px;
+  animation: wave 0.8s ease-in-out 0.2s infinite;
 }
-.speech-wave .bar:nth-child(4) { 
-  height: 16px; 
-  animation: wave 0.8s ease-in-out 0.3s infinite; 
+.speech-wave .bar:nth-child(4) {
+  height: 16px;
+  animation: wave 0.8s ease-in-out 0.3s infinite;
 }
-.speech-wave .bar:nth-child(5) { 
-  height: 8px; 
-  animation: wave 0.8s ease-in-out 0.4s infinite; 
+.speech-wave .bar:nth-child(5) {
+  height: 8px;
+  animation: wave 0.8s ease-in-out 0.4s infinite;
 }
 
 @keyframes wave {
@@ -816,12 +816,12 @@ button.is-active {
 }
 
 @keyframes draw {
-  0% { 
-    opacity: 0; 
+  0% {
+    opacity: 0;
     stroke-dashoffset: 30;
   }
-  100% { 
-    opacity: 0.7; 
+  100% {
+    opacity: 0.7;
     stroke-dashoffset: 0;
   }
 }
@@ -998,29 +998,29 @@ button.is-active {
 
 /* Rainbow border animation */
 @keyframes rainbowBorder {
-  0%, 100% { 
-    border-color: hsl(0, 80%, 70%); 
-    box-shadow: 0 0 10px 2px hsla(0, 80%, 70%, 0.7); 
+  0%, 100% {
+    border-color: hsl(0, 80%, 70%);
+    box-shadow: 0 0 10px 2px hsla(0, 80%, 70%, 0.7);
   }
-  16% { 
-    border-color: hsl(60, 80%, 70%); 
-    box-shadow: 0 0 10px 2px hsla(60, 80%, 70%, 0.7); 
+  16% {
+    border-color: hsl(60, 80%, 70%);
+    box-shadow: 0 0 10px 2px hsla(60, 80%, 70%, 0.7);
   }
-  33% { 
-    border-color: hsl(120, 80%, 70%); 
-    box-shadow: 0 0 10px 2px hsla(120, 80%, 70%, 0.7); 
+  33% {
+    border-color: hsl(120, 80%, 70%);
+    box-shadow: 0 0 10px 2px hsla(120, 80%, 70%, 0.7);
   }
-  50% { 
-    border-color: hsl(180, 80%, 70%); 
-    box-shadow: 0 0 10px 2px hsla(180, 80%, 70%, 0.7); 
+  50% {
+    border-color: hsl(180, 80%, 70%);
+    box-shadow: 0 0 10px 2px hsla(180, 80%, 70%, 0.7);
   }
-  66% { 
-    border-color: hsl(240, 80%, 70%); 
-    box-shadow: 0 0 10px 2px hsla(240, 80%, 70%, 0.7); 
+  66% {
+    border-color: hsl(240, 80%, 70%);
+    box-shadow: 0 0 10px 2px hsla(240, 80%, 70%, 0.7);
   }
-  83% { 
-    border-color: hsl(300, 80%, 70%); 
-    box-shadow: 0 0 10px 2px hsla(300, 80%, 70%, 0.7); 
+  83% {
+    border-color: hsl(300, 80%, 70%);
+    box-shadow: 0 0 10px 2px hsla(300, 80%, 70%, 0.7);
   }
 }
 
@@ -1032,29 +1032,29 @@ button.is-active {
 }
 
 @keyframes rainbowBorder2 {
-  0%, 100% { 
-    border-color: hsl(140, 80%, 70%); 
-    box-shadow: 0 0 5px 1px hsla(140, 80%, 70%, 0.7); 
+  0%, 100% {
+    border-color: hsl(140, 80%, 70%);
+    box-shadow: 0 0 5px 1px hsla(140, 80%, 70%, 0.7);
   }
-  16% { 
-    border-color: hsl(120, 80%, 70%); 
-    box-shadow: 0 0 5px 0px hsla(120, 80%, 70%, 0.7); 
+  16% {
+    border-color: hsl(120, 80%, 70%);
+    box-shadow: 0 0 5px 0px hsla(120, 80%, 70%, 0.7);
   }
-  33% { 
-    border-color: hsl(100, 80%, 70%); 
-    box-shadow: 0 0 5px 0px hsla(100, 80%, 70%, 0.7); 
+  33% {
+    border-color: hsl(100, 80%, 70%);
+    box-shadow: 0 0 5px 0px hsla(100, 80%, 70%, 0.7);
   }
-  50% { 
-    border-color: hsl(120, 80%, 70%); 
-    box-shadow: 0 0 5px 0px hsla(120, 80%, 70%, 0.7); 
+  50% {
+    border-color: hsl(120, 80%, 70%);
+    box-shadow: 0 0 5px 0px hsla(120, 80%, 70%, 0.7);
   }
-  66% { 
-    border-color: hsl(100, 80%, 70%); 
-    box-shadow: 0 0 5px 0px hsla(100, 80%, 70%, 0.7); 
+  66% {
+    border-color: hsl(100, 80%, 70%);
+    box-shadow: 0 0 5px 0px hsla(100, 80%, 70%, 0.7);
   }
-  83% { 
-    border-color: hsl(100, 80%, 70%); 
-    box-shadow: 0 0 5px 0px hsla(100, 80%, 70%, 0.7); 
+  83% {
+    border-color: hsl(100, 80%, 70%);
+    box-shadow: 0 0 5px 0px hsla(100, 80%, 70%, 0.7);
   }
 }
 

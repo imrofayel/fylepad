@@ -13,7 +13,7 @@
         :transition="{ duration: 0.15 }"
         class="fixed inset-0"
       />
-      
+
       <!-- Command Dialog -->
       <Motion
         :initial="{ opacity: 0, scale: 0.95, y: -20 }"
@@ -58,7 +58,7 @@
                   :key="action.id"
                   :class="[
                     'flex items-center px-3 py-2 rounded-lg cursor-pointer transition-colors',
-                    
+
                   ]"
                   @click="executeAction(action)"
                 >
@@ -101,7 +101,7 @@
                   <div class="text-base font-medium text-[#32302c] dark:text-gray-50 mb-1 truncate">
                     {{ result.tabTitle || 'Untitled' }}
                   </div>
-                  <div 
+                  <div
                     class="text-[15px] text-[#6f6e6b] dark:text-gray-300 leading-relaxed"
                     v-html="result.highlightedText"
                   />
@@ -137,8 +137,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue'
 import { Motion } from 'motion-v'
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 
 interface Tab {
   title: string
@@ -222,7 +222,7 @@ watch(() => props.isOpen, async (isOpen) => {
 const searchTimeout = ref<NodeJS.Timeout>()
 watch(searchQuery, (newQuery) => {
   clearTimeout(searchTimeout.value)
-  
+
   if (!newQuery.trim()) {
     searchResults.value = []
     selectedIndex.value = 0
@@ -239,31 +239,31 @@ watch(searchQuery, (newQuery) => {
 // Extract text content from editor JSON
 const extractTextFromContent = (content: any): string => {
   if (!content) return ''
-  
+
   const extractText = (node: any): string => {
     let text = ''
-    
+
     if (node.text) {
       text += node.text
     }
-    
+
     if (node.content && Array.isArray(node.content)) {
       for (const child of node.content) {
         text += extractText(child)
       }
     }
-    
+
     return text
   }
-  
+
   if (typeof content === 'string') {
     return content
   }
-  
+
   if (content.content && Array.isArray(content.content)) {
     return extractText(content)
   }
-  
+
   return ''
 }
 
@@ -271,11 +271,11 @@ const extractTextFromContent = (content: any): string => {
 const performSearch = (query: string) => {
   const results: SearchResult[] = []
   const searchTerm = query.toLowerCase()
-  
+
   props.tabs.forEach((tab, tabIndex) => {
     const text = extractTextFromContent(tab.content)
     const title = tab.title || 'Untitled'
-    
+
     // Search in title
     if (title.toLowerCase().includes(searchTerm)) {
       const titleIndex = title.toLowerCase().indexOf(searchTerm)
@@ -293,19 +293,19 @@ const performSearch = (query: string) => {
         searchTerm: query
       })
     }
-    
+
     // Search in content - get actual character positions
     let searchIndex = 0
     let match
     const lowerText = text.toLowerCase()
-    
+
     while ((match = lowerText.indexOf(searchTerm, searchIndex)) !== -1) {
       // Get context around the match
       const start = Math.max(0, match - 50)
       const end = Math.min(text.length, match + searchTerm.length + 50)
       const context = text.substring(start, end)
       const highlightedText = highlightText(context, searchTerm)
-      
+
       // Extract the sentence containing this match
       const sentenceStart = text.lastIndexOf('.', match)
       const sentenceEnd = text.indexOf('.', match)
@@ -313,7 +313,7 @@ const performSearch = (query: string) => {
         sentenceStart === -1 ? 0 : sentenceStart + 1,
         sentenceEnd === -1 ? text.length : sentenceEnd
       ).trim()
-      
+
       results.push({
         tabIndex,
         tabTitle: title,
@@ -326,14 +326,14 @@ const performSearch = (query: string) => {
         context: sentence ? getContextFromPosition(text, match) : 'Content',
         searchTerm: query
       })
-      
+
       searchIndex = match + 1
-      
+
       // Limit matches per tab to avoid too many results
       if (results.filter(r => r.tabIndex === tabIndex).length >= 5) break
     }
   })
-  
+
   searchResults.value = results.slice(0, 20) // Limit total results
   selectedIndex.value = 0
 }
@@ -341,7 +341,7 @@ const performSearch = (query: string) => {
 // Highlight search terms in text
 const highlightText = (text: string, searchTerm: string): string => {
   if (!searchTerm) return text
-  
+
   const regex = new RegExp(`(${escapeRegExp(searchTerm)})`, 'gi')
   return text.replace(regex, '<mark class="bg-yellow-200 dark:bg-yellow-600/50 px-1 py-0.5 rounded">$1</mark>')
 }
@@ -363,7 +363,7 @@ const getContextFromPosition = (text: string, position: number): string => {
   // Find the paragraph or heading that contains this position
   const textBefore = text.substring(0, position)
   const lines = textBefore.split('\n')
-  
+
   // Look for headings (lines starting with #)
   for (let i = lines.length - 1; i >= 0; i--) {
     const line = lines[i].trim()
@@ -371,7 +371,7 @@ const getContextFromPosition = (text: string, position: number): string => {
       return line.replace(/#+\s*/, '').trim() || 'Content'
     }
   }
-  
+
   // If no heading found, return a generic context
   const sentences = textBefore.split(/[.!?]+/)
   const lastSentence = sentences[sentences.length - 2] || sentences[sentences.length - 1]
@@ -404,18 +404,18 @@ const getTabColorClass = (colorName: string) => {
 // Handle keyboard navigation
 const handleKeyDown = (event: KeyboardEvent) => {
   const items = searchQuery.value.trim() ? filteredResults.value : quickActions.value
-  
+
   switch (event.key) {
     case 'ArrowDown':
       event.preventDefault()
       selectedIndex.value = (selectedIndex.value + 1) % items.length
       break
-    
+
     case 'ArrowUp':
       event.preventDefault()
       selectedIndex.value = selectedIndex.value === 0 ? items.length - 1 : selectedIndex.value - 1
       break
-    
+
     case 'Enter':
       event.preventDefault()
       if (searchQuery.value.trim()) {
@@ -430,7 +430,7 @@ const handleKeyDown = (event: KeyboardEvent) => {
         }
       }
       break
-    
+
     case 'Escape':
       event.preventDefault()
       emit('close')

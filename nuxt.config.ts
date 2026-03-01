@@ -1,17 +1,16 @@
 export default defineNuxtConfig({
-
   app: {
     head: {
       script: [
         {
           src: "https://cloud.umami.is/script.js",
           defer: true,
-          "data-website-id": "b86fcaf0-d3d9-4dca-b850-88de1e77f49e"
-        }
-      ]
-    }
+          "data-website-id": "b86fcaf0-d3d9-4dca-b850-88de1e77f49e",
+        },
+      ],
+    },
   },
-    
+
   // (optional) Enable the Nuxt devtools
   devtools: { enabled: false },
 
@@ -29,7 +28,7 @@ export default defineNuxtConfig({
     },
   },
 
-  devServer: { host: '0.0.0.0' },
+  devServer: { host: "0.0.0.0" },
 
   vite: {
     // Better support for Tauri CLI output
@@ -37,15 +36,15 @@ export default defineNuxtConfig({
     // Enable environment variables
     // Additional environment variables can be found at
     // https://v2.tauri.app/reference/environment-variables/
-    envPrefix: ['VITE_', 'TAURI_'],
+    envPrefix: ["VITE_", "TAURI_"],
     server: {
       // Tauri requires a consistent port
       strictPort: true,
       hmr: {
         // Use websocket for mobile hot reloading
-        protocol: 'ws',
+        protocol: "ws",
         // Make sure it's available on the network
-        host: '0.0.0.0',
+        host: "0.0.0.0",
         // Use a specific port for hmr
         port: 5183,
       },
@@ -54,42 +53,57 @@ export default defineNuxtConfig({
 
   pwa: {
     manifest: {
-  name: 'fylepad - a notepad of your dreams!',
-  short_name: 'fylepad',
-  description: 'a minimal notepad with everything you\'d need',
-  start_url: '/',
-  display: 'standalone',
-  background_color: '#ffffff',
-  theme_color: '#ffffff',
-  icons: [
-    { src: "icons/32x32.png", sizes: "32x32", type: "image/png" },
-    { src: "icons/64x64.png", sizes: "64x64", type: "image/png" },
-    { src: "icons/128x128.png", sizes: "128x128", type: "image/png" },
-    { src: "icons/144x144.png", sizes: "144x144", type: "image/png" },
-    { src: "icons/192x192.png", sizes: "192x192", type: "image/png" },
-    { src: "icons/512x512.png", sizes: "512x512", type: "image/png" }
+      name: "fylepad - a notepad of your dreams!",
+      short_name: "fylepad",
+      description: "a minimal notepad with everything you'd need",
+      start_url: "/",
+      display: "standalone",
+      background_color: "#ffffff",
+      theme_color: "#ffffff",
+      icons: [
+        { src: "icons/32x32.png", sizes: "32x32", type: "image/png" },
+        { src: "icons/64x64.png", sizes: "64x64", type: "image/png" },
+        { src: "icons/128x128.png", sizes: "128x128", type: "image/png" },
+        { src: "icons/144x144.png", sizes: "144x144", type: "image/png" },
+        { src: "icons/192x192.png", sizes: "192x192", type: "image/png" },
+        { src: "icons/512x512.png", sizes: "512x512", type: "image/png" },
+      ],
+      note_taking: {
+        new_note_url: "/new_note.html",
+      },
+
+      file_handlers: [
+        {
+          action: "/",
+          accept: {
+            "text/plain": [".txt", ".md"],
+          },
+        },
+      ],
+
+      screenshots: [
+        {
+          src: "screenshots/main.png",
+          sizes: "1413x870",
+          type: "image/png",
+          form_factor: "wide",
+        },
+        {
+          src: "screenshots/narrow.png",
+          sizes: "750x1334",
+          type: "image/png",
+          form_factor: "narrow",
+        },
+      ],
+    },
+  },
+
+  modules: [
+    "@nuxt/icon",
+    "@nuxtjs/tailwindcss",
+    "@nuxtjs/color-mode",
+    "@vite-pwa/nuxt",
   ],
-
-  screenshots: [
-  {
-    src: "screenshots/main.png",
-    sizes: "1413x870",
-    type: "image/png",
-    form_factor: "wide"
-  },
-  {
-    src: "screenshots/narrow.png",
-    sizes: "750x1334",
-    type: "image/png",
-    form_factor: "narrow"
-  }
-]
-
-},
-
-  },
-
-  modules: ['@nuxt/icon', '@nuxtjs/tailwindcss', '@nuxtjs/color-mode', '@vite-pwa/nuxt'  ],
-  css: ['assets/css/main.css'],
-  compatibilityDate: '2024-12-23'
+  css: ["assets/css/main.css"],
+  compatibilityDate: "2024-12-23",
 });
