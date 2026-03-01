@@ -4,7 +4,8 @@
   "type": "module",
   "version": "3.0.0",
   "engines": {
-    "node": "v24.0.2"
+    "node": ">=24.0.2",
+    "pnpm": ">=3"
   },
   "scripts": {
     "nuxt": "nuxt",
