@@ -9,7 +9,7 @@
         <div class="flex items-center justify-between">
           <span class="text-xl drop-shadow-sm ">fylepad</span>
 
-          <span class="text-xl drop-shadow-sm  tracking-tight" style="font-family: 'SpaceGrotesk';">v2.2</span>
+          <span class="text-xl drop-shadow-sm  tracking-tight" style="font-family: 'SpaceGrotesk';">v3.0</span>
         </div>
 
         <p class="text-lg mt-3">Your perfect note-taking app!</p>
