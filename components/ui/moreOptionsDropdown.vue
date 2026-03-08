@@ -24,9 +24,9 @@
       <UiDropdownMenuItem>
         <button 
           @click="$emit('exportMarkdown')" 
-          class="w-full flex items-center gap-3 p-2 pr-6 rounded-xl hover:bg-gray-100 dark:hover:bg-[#333333] transition-colors text-[16px] text-left"
+          class="w-full flex items-center gap-2 p-2 pr-6 rounded-xl hover:bg-gray-100 dark:hover:bg-[#333333] transition-colors text-[16px] text-left"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="22"viewBox="0 0 32 32"><!-- Icon from Pixel free icons by Streamline - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="M28.955 22.85h-25.9V7.62h-1.53V25.9h1.53v1.53h9.14v1.52h1.52v-1.52h4.57v1.52h1.53v-1.52h9.14V25.9h1.52V7.62h-1.52zm-7.62-16.76h7.62v1.53h-7.62Zm-9.14 24.38v-1.52h-1.52V32h10.66v-3.05h-1.52v1.52zm1.52-27.42h4.57v1.52h-4.57Zm0-3.05h4.57v1.52h-4.57Z"/><path fill="currentColor" d="M16.765 19.81v-1.53h1.52v-1.52h1.53v-1.52h1.52v-1.53h-3.05V6.09h-4.57v7.62h-3.04v1.53h1.52v1.52h1.52v1.52h1.53v1.53zM3.055 6.09h7.62v1.53h-7.62Z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 16 16"><g fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"><path d="M5 1a2 2 0 0 0-2 2v4h1V3a1 1 0 0 1 1-1h3v2.5A1.5 1.5 0 0 0 9.5 6H12v7a1 1 0 0 1-1 1H9v1h2a2 2 0 0 0 2-2V5.414a1.5 1.5 0 0 0-.44-1.06L9.647 1.439A1.5 1.5 0 0 0 8.586 1zm6.793 4H9.5a.5.5 0 0 1-.5-.5V2.207z"/><path d="M2 8a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2zm0 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-1.793l-2.146 2.147a.5.5 0 0 1-.708-.707L4.293 11H2.5a.5.5 0 0 1-.5-.5"/></g></svg>
           <span>Export Markdown</span>
         </button>
       </UiDropdownMenuItem>
@@ -35,9 +35,9 @@
       <UiDropdownMenuItem>
         <button 
           @click="$emit('importMarkdown')" 
-          class="w-full flex items-center gap-3 p-2 pr-6 rounded-xl hover:bg-gray-100 dark:hover:bg-[#333333] transition-colors text-[16px] text-left"
+          class="w-full flex items-center gap-2 p-2 pr-6 rounded-xl hover:bg-gray-100 dark:hover:bg-[#333333] transition-colors text-[16px] text-left"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 32 32"><path fill="currentColor" d="M30.472 3.045h-1.52v-1.52h-1.52v-1.53H6.092v12.2h-4.57v1.52h7.62v-1.52h-1.52V1.525h16.76v6.09h6.09v15.24h-1.52v3.05h1.52v4.57h1.53v-25.9h-1.53zm-22.85 27.43h22.85v1.52H7.622Z"/><path fill="currentColor" d="M27.432 19.805h1.52v3.05h-1.52Zm-1.53-3.04h1.53v3.04h-1.53Zm-15.23-1.53h15.23v1.53h-15.23Zm9.14-7.62h1.52v1.53h-1.52Zm-4.57 3.05h4.57v1.53h-4.57Zm-1.53-3.05h1.53v1.53h-1.53Zm-4.57 6.1h1.53v1.52h-1.53Zm-3.05 13.71h1.53v3.05h-1.53Zm-1.52-3.04h1.52v3.04h-1.52Zm-1.52-3.05h1.52v3.05h-1.52Zm-1.53-3.05h1.53v3.05h-1.53Zm-1.52-4.57h1.52v4.57H.002Z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 16 16"><!-- Icon from Codicons by Microsoft Corporation - https://github.com/microsoft/vscode-codicons/blob/main/LICENSE --><path fill="currentColor" d="M2 4.5v4.6l.924-1.6A3 3 0 0 1 5.522 6h6.393A1.5 1.5 0 0 0 10.5 5H7a.5.5 0 0 1-.354-.146L4.94 3.146A.5.5 0 0 0 4.586 3H3.5A1.5 1.5 0 0 0 2 4.5m5.069 9.495L7 14H3.5A2.5 2.5 0 0 1 1 11.5v-7A2.5 2.5 0 0 1 3.5 2h1.086a1.5 1.5 0 0 1 1.06.44L7.207 4H10.5a2.5 2.5 0 0 1 2.458 2.041c1.647.3 2.586 2.18 1.704 3.709l-1.585 2.745a3 3 0 0 1-2.598 1.5zM5.522 7A2 2 0 0 0 3.79 8l-1.585 2.745a1.5 1.5 0 0 0 1.299 2.25h6.975a2 2 0 0 0 1.732-1l1.585-2.745a1.5 1.5 0 0 0-1.3-2.25z"/></svg>
           <span>Import Markdown</span>
         </button>
       </UiDropdownMenuItem>
@@ -48,7 +48,7 @@
           @click="$emit('toggleTheme', 'light')" 
           class="w-full flex items-center gap-3 p-2 pr-6 rounded-xl hover:bg-gray-100 dark:hover:bg-[#333333] transition-colors text-[16px] text-left"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" viewBox="0 0 32 32"><!-- Icon from Pixel free icons by Streamline - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="M29.71 11.43h-1.52v1.52h-1.52v1.53h1.52V16h1.52v-1.52h1.53v-1.53h-1.53zM28.19 22.1h1.52v1.52h-1.52ZM26.67.76v1.53h-1.53v1.52h1.53v1.52h1.52V3.81h1.52V2.29h-1.52V.76zm-1.53 7.62h1.53v1.53h-1.53Zm0 18.29h-1.52v1.52h-1.53v1.53h1.53v1.52h1.52v-1.52h1.53v-1.53h-1.53zm-1.52-7.62h1.52v1.52h-1.52Zm-1.53 3.05h-9.14v1.52h7.62v1.52h1.52zM12.95 8.38v1.53h9.14V6.86h-1.52v1.52zm4.57 16.76h3.05v1.53h-3.05Zm1.53-6.09v-1.52h1.52V16h-1.52v-1.52h-1.53V16H16v1.53h1.52v1.52zM17.52 5.33h3.05v1.53h-3.05ZM9.9 26.67h7.62v1.52H9.9Zm1.53-6.1h1.52v1.53h-1.52Zm0-10.66h1.52v1.52h-1.52ZM9.9 3.81h7.62v1.52H9.9Zm0 7.62h1.53v9.14H9.9ZM6.86 25.14H9.9v1.53H6.86Zm0-19.81H9.9v1.53H6.86ZM5.33 23.62h1.53v1.52H5.33Zm0-16.76h1.53v1.52H5.33ZM3.81 20.57h1.52v3.05H3.81Zm0-12.19h1.52v3.05H3.81ZM2.29 29.72h1.52v1.52H2.29Zm0-18.29h1.52v9.14H2.29ZM.76 3.81h1.53v1.52H.76Z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 16 16"><!-- Icon from Codicons by Microsoft Corporation - https://github.com/microsoft/vscode-codicons/blob/main/LICENSE --><path fill="currentColor" d="M8 1.002a7 7 0 1 0 0 14a7 7 0 0 0 0-14m0 13v-12a6 6 0 1 1 0 12"/></svg>
           <span>Light Mode</span>
         </button>
       </UiDropdownMenuItem>
@@ -57,9 +57,9 @@
       <UiDropdownMenuItem v-if="colorMode?.value === 'light'">
         <button 
           @click="$emit('toggleTheme', 'dark')" 
-          class="w-full flex items-center gap-3 p-2 pr-6 rounded-xl hover:bg-gray-100 dark:hover:bg-[#333333] transition-colors text-[16px] text-left"
+          class="w-full flex items-center gap-2 p-2 pr-6 rounded-xl hover:bg-gray-100 dark:hover:bg-[#333333] transition-colors text-[16px] text-left"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="23.5" viewBox="0 0 32 32"><!-- Icon from Pixel free icons by Streamline - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="M30.47 19.055H32v6.09h-1.53Zm-1.52-7.62H32v1.52h-3.05Zm0 13.71h1.52v1.53h-1.52Zm0-7.62h1.52v1.53h-1.52Zm0-13.71h1.52v1.52h-1.52Zm-1.52 22.86h1.52v1.52h-1.52Zm0-10.67h1.52v1.52h-1.52Zm0-10.67h1.52v1.53h-1.52ZM3.05 28.195h24.38v1.52H3.05Zm18.28-12.19h1.52v1.52h-1.52Zm0-13.72h1.52v3.05h-1.52Zm-1.52 15.24h1.52v1.53h-1.52Zm-4.57-12.19h1.52v1.53h-1.52Zm-1.53-1.52h1.53v1.52h-1.53Zm0 6.09h4.57v1.53h3.05v1.52h1.52v3.05h4.58v-6.1H25.9v-1.52h-1.52v-1.52h-4.57v1.52h-7.62v1.52h-1.53v1.53h3.05zm-3.05 9.15h1.53v1.52h-1.53Zm-1.52-1.53h1.52v1.53H9.14Zm0-6.09h1.52v1.52H9.14Zm0 6.09v-4.57H7.62v3.05H3.05v1.52zm-7.62 9.15h1.53v1.52H1.52Zm0-9.15h1.53v1.53H1.52ZM0 19.055h1.52v7.62H0Z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" class="rotate-[180deg]" width="21" viewBox="0 0 16 16"><!-- Icon from Codicons by Microsoft Corporation - https://github.com/microsoft/vscode-codicons/blob/main/LICENSE --><path fill="currentColor" d="M8 1.002a7 7 0 1 0 0 14a7 7 0 0 0 0-14m0 13v-12a6 6 0 1 1 0 12"/></svg>
           <span>Dark Mode</span>
         </button>
       </UiDropdownMenuItem>
@@ -68,9 +68,9 @@
       <UiDropdownMenuItem>
         <button 
           @click="$emit('openAbout')" 
-          class="w-full flex items-center gap-3 p-2 pr-6 rounded-xl hover:bg-gray-100 dark:hover:bg-[#333333] transition-colors text-[16px] text-left"
+          class="w-full flex items-center gap-2 p-2 pr-6 rounded-xl hover:bg-gray-100 dark:hover:bg-[#333333] transition-colors text-[16px] text-left"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="23" viewBox="0 0 32 32"><!-- Icon from Pixel free icons by Streamline - https://creativecommons.org/licenses/by/4.0/ --><path fill="currentColor" d="M.76 22.09v4.58h3.05v-1.53H2.29v-1.52h1.52v1.52h3.05v1.53h3.05v1.52h1.52v1.52H9.91v1.53h4.57v-1.53h-1.52v-1.52h1.52v-1.52h3.05v-1.53h3.04v-1.52h3.05v-1.53h3.05v-1.52h3.05v1.52h1.52v-4.57h-1.52V16h-3.05v-3.05h1.52V6.86h-1.52v1.52h-1.52V9.9h1.52v1.53h-1.52v1.52H22.1v1.53h-3.05V16H16v1.52h-3.04v1.53h-1.53v-1.53H9.91V16H6.86v-1.52H3.81v-1.53H2.29v-1.52h1.52v1.52h3.05v1.53h3.05V16H16v-1.52h3.05v-1.53h3.05v-1.52h3.05V9.9h-4.58v1.53h-3.04v1.52h-3.05v1.53h-3.05v-1.53H8.38v-1.52H5.34V9.9H2.29V8.38H.76v6.1h1.53V16H.76v4.57h1.53v1.52Zm1.53-4.57h1.52V16h1.53v1.52h3.04v1.53h1.53v1.52h4.57v-1.52h3.05v-1.53h3.04V16h3.05v-1.52h1.53v3.04H22.1v1.53h-3.05v1.52H16v1.52h-3.04v1.53H9.91v-1.53H6.86v-1.52H3.81v-1.52H2.29Z"/><path fill="currentColor" d="M26.67 22.09h3.05v1.53h-3.05Zm-3.05 1.53h3.05v1.52h-3.05Zm0-18.29h3.05v1.53h-3.05Zm-3.05 19.81h3.05v1.53h-3.05Zm0-21.33h3.05v1.52h-3.05Zm-3.04 22.86h3.04v1.52h-3.04Zm0-24.39h3.04v1.53h-3.04ZM14.48.76h3.05v1.52h-3.05Zm0 27.43h3.05v1.52h-3.05ZM11.43 2.28h3.05v1.53h-3.05ZM8.38 3.81h3.05v1.52H8.38ZM6.86 28.19h3.05v1.52H6.86Zm3.05-16.76H16V9.9h3.05V8.38h3.05V6.86h-4.57V5.33h-4.57v1.53H9.91v1.52H6.86V9.9h3.05zm-4.57-6.1h3.04v1.53H5.34ZM3.81 26.67h3.05v1.52H3.81ZM2.29 6.86h3.05v1.52H2.29Z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 16 16"><!-- Icon from Codicons by Microsoft Corporation - https://github.com/microsoft/vscode-codicons/blob/main/LICENSE --><path fill="currentColor" d="M8.499 7.5a.5.5 0 1 0-1 0v3a.5.5 0 0 0 1 0zm.25-2a.749.749 0 1 1-1.499 0a.749.749 0 0 1 1.498 0M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1M2 8a6 6 0 1 1 12 0A6 6 0 0 1 2 8"/></svg>
           <span>About</span>
         </button>
       </UiDropdownMenuItem>
