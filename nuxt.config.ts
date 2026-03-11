@@ -4,6 +4,9 @@ export default defineNuxtConfig({
     head: {
       script: [
         {
+src: "https://cdn.jsdelivr.net/npm/show-open-file-picker/polyfill.js"
+        },
+        {
           src: "https://cloud.umami.is/script.js",
           defer: true,
           "data-website-id": "b86fcaf0-d3d9-4dca-b850-88de1e77f49e"
@@ -11,7 +14,7 @@ export default defineNuxtConfig({
       ]
     }
   },
-    
+
   // (optional) Enable the Nuxt devtools
   devtools: { enabled: false },
 

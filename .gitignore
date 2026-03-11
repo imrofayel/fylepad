@@ -5,7 +5,9 @@
 .nitro
 .cache
 dist
-
+.pnpm
+.pnpm*
+pnpm*
 # Node dependencies
 node_modules
 

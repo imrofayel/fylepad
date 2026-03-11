@@ -1,9 +1,9 @@
 <template>
-  <div 
+  <div
     ref="menuRef"
     class="tab-link-menu bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg shadow-lg max-h-64 overflow-y-auto min-w-64"
   >
-    <div v-if="filteredItems.length === 0" class="p-3 text-sm text-zinc-500 dark:text-zinc-400">
+    <div v-if="filteredItems?.length === 0" class="p-3 text-sm text-zinc-500 dark:text-zinc-400">
       No tabs found
     </div>
     <div
@@ -18,13 +18,13 @@
       @mouseenter="selectedIndex = index"
     >
       <!-- Tab color indicator -->
-      <div 
+      <div
         v-if="item.color"
         :style="{ backgroundColor: item.color }"
         class="w-3 h-3 rounded-full mr-3 flex-shrink-0"
       />
       <div v-else class="w-3 h-3 rounded-full mr-3 flex-shrink-0 bg-zinc-300 dark:bg-zinc-600" />
-      
+
       <!-- Tab details -->
       <div class="flex-1 min-w-0">
         <div class="font-medium text-sm text-zinc-900 dark:text-zinc-100 truncate">
@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import type { TabLinkItem } from '../extensions/tab-link';
 
 interface Props {
@@ -57,9 +57,9 @@ const filteredItems = computed(() => {
   if (!props.query) {
     return props.items;
   }
-  
+
   const query = props.query.toLowerCase();
-  return props.items.filter(item => 
+  return props.items.filter(item =>
     item.name.toLowerCase().includes(query) ||
     item.group?.toLowerCase().includes(query)
   );
@@ -77,7 +77,7 @@ const selectCurrentItem = () => {
 };
 
 const nextItem = () => {
-  selectedIndex.value = Math.min(selectedIndex.value + 1, filteredItems.value.length - 1);
+  selectedIndex.value = Math.min(selectedIndex.value + 1, filteredItems.value?.length - 1);
   scrollToSelected();
 };
 
@@ -89,8 +89,8 @@ const previousItem = () => {
 const scrollToSelected = () => {
   const menu = menuRef.value;
   if (!menu) return;
-  
-  const selectedElement = menu.children[selectedIndex.value + (filteredItems.value.length === 0 ? 0 : 1)];
+
+  const selectedElement = menu.children[selectedIndex.value + (filteredItems.value?.length === 0 ? 0 : 1)];
   if (selectedElement) {
     selectedElement.scrollIntoView({ block: 'nearest' });
   }
@@ -110,7 +110,7 @@ defineExpose({
 
 onMounted(() => {
   // Auto-select first item if available
-  if (filteredItems.value.length > 0) {
+  if (filteredItems.value?.length > 0) {
     selectedIndex.value = 0;
   }
 });

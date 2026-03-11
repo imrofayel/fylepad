@@ -37,11 +37,11 @@ export function remarkDecoration(type: string, marker: string, flags?: boolean) 
 
     const matches = Array.from(value.matchAll(GLOBAL_REGEXP));
 
-    for (let index = 0; index < matches.length; index++) {
+    for (let index = 0; index < matches?.length; index++) {
       const match = matches[index];
 
       const mIndex = match.index ?? 0;
-      const mLength = match[0].length; // match[0] is the matched input
+      const mLength = match[0]?.length; // match[0] is the matched input
 
       // could be a text part before each matched part
       const textPartIndex = index === 0 ? 0 : prevMatchIndex + prevMatchLength;
@@ -80,7 +80,7 @@ export function remarkDecoration(type: string, marker: string, flags?: boolean) 
       children.push(textNode);
     }
 
-    if (children.length) {
+    if (children?.length) {
       parent.children.splice(index!, 1, ...children);
     }
   };

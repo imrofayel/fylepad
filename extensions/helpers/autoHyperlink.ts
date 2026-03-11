@@ -1,9 +1,9 @@
 import {
-  combineTransactionSteps,
-  findChildrenInRange,
-  getChangedRanges,
-  getMarksBetween,
-  type NodeWithPos,
+    combineTransactionSteps,
+    findChildrenInRange,
+    getChangedRanges,
+    getMarksBetween,
+    type NodeWithPos,
 } from "@tiptap/core";
 import { MarkType } from "@tiptap/pm/model";
 import { Plugin, PluginKey } from "@tiptap/pm/state";
@@ -49,7 +49,7 @@ export default function autoHyperlink(options: AutoHyperlinkOptions): Plugin {
               newState.doc
             ).filter((item) => item.mark.type === options.type);
 
-            if (!newMarks.length) {
+            if (!newMarks?.length) {
               return;
             }
 
@@ -86,7 +86,7 @@ export default function autoHyperlink(options: AutoHyperlinkOptions): Plugin {
         let textBlock: NodeWithPos | undefined;
         let textBeforeWhitespace: string | undefined;
 
-        if (nodesInChangedRanges.length > 1) {
+        if (nodesInChangedRanges?.length > 1) {
           // Grab the first node within the changed ranges (ex. the first of two paragraphs when hitting enter)
           textBlock = nodesInChangedRanges[0];
           textBeforeWhitespace = newState.doc.textBetween(
@@ -96,7 +96,7 @@ export default function autoHyperlink(options: AutoHyperlinkOptions): Plugin {
             " "
           );
         } else if (
-          nodesInChangedRanges.length &&
+          nodesInChangedRanges?.length &&
           // We want to make sure to include the block seperator argument to treat hard breaks like spaces
           newState.doc
             .textBetween(newRange.from, newRange.to, " ", " ")
@@ -116,12 +116,12 @@ export default function autoHyperlink(options: AutoHyperlinkOptions): Plugin {
             .split(" ")
             .filter((s) => s !== "");
 
-          if (wordsBeforeWhitespace.length <= 0) {
+          if (wordsBeforeWhitespace?.length <= 0) {
             return false;
           }
 
           const lastWordBeforeSpace =
-            wordsBeforeWhitespace[wordsBeforeWhitespace.length - 1];
+            wordsBeforeWhitespace[wordsBeforeWhitespace?.length - 1];
           const lastWordAndBlockOffset =
             textBlock.pos +
             textBeforeWhitespace.lastIndexOf(lastWordBeforeSpace);
@@ -157,7 +157,7 @@ export default function autoHyperlink(options: AutoHyperlinkOptions): Plugin {
         }
       });
 
-      if (!tr.steps.length) {
+      if (!tr.steps?.length) {
         return;
       }
 

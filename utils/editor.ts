@@ -12,7 +12,7 @@ export function isRectSelected(selection: Selection, rect: Rect): selection is C
       selection.$anchorCell.pos - start,
       selection.$headCell.pos - start,
     ));
-    for (let i = 0, count = cells.length; i < count; i++) {
+    for (let i = 0, count = cells?.length; i < count; i++) {
       if (!selectedCells.includes(cells[i])) {
         return false;
       }
@@ -131,7 +131,7 @@ export function getCellInTable(selection: Selection, row: number, col: number) {
       top: col,
       bottom: col + 1,
     });
-    if (cells.length) {
+    if (cells?.length) {
       const node = table.node.nodeAt(cells[0]);
       const pos = table.start + cells[0];
       return { pos, node, start: pos + 1 };
@@ -170,7 +170,7 @@ export function selectRowOrColumn(type: "row" | "column", tr: Transaction, index
         });
 
       const head = table.start + cellsInFirstRow[0];
-      const anchor = table.start + cellsInLastRow[cellsInLastRow.length - 1];
+      const anchor = table.start + cellsInLastRow[cellsInLastRow?.length - 1];
       const $head = tr.doc.resolve(head);
       const $anchor = tr.doc.resolve(anchor);
 
@@ -192,9 +192,9 @@ export function selectTable(tr: Transaction) {
   const table = findTable(tr.selection);
   if (table) {
     const { map } = TableMap.get(table.node);
-    if (map && map.length) {
+    if (map && map?.length) {
       const head = table.start + map[0];
-      const anchor = table.start + map[map.length - 1];
+      const anchor = table.start + map[map?.length - 1];
       const $head = tr.doc.resolve(head);
       const $anchor = tr.doc.resolve(anchor);
       return tr.setSelection(new CellSelection($anchor, $head));

@@ -1,12 +1,12 @@
-import { Extension, type Range, type Dispatch } from "@tiptap/core";
-import { Decoration, DecorationSet } from "@tiptap/pm/view";
-import {
-  Plugin,
-  PluginKey,
-  type EditorState,
-  type Transaction,
-} from "@tiptap/pm/state";
+import { Extension, type Dispatch, type Range } from "@tiptap/core";
 import { Node as PMNode } from "@tiptap/pm/model";
+import {
+    Plugin,
+    PluginKey,
+    type EditorState,
+    type Transaction,
+} from "@tiptap/pm/state";
+import { Decoration, DecorationSet } from "@tiptap/pm/view";
 
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
@@ -119,13 +119,13 @@ function processSearches(
       if (m.index !== undefined) {
         results.push({
           from: pos + m.index,
-          to: pos + m.index + m[0].length,
+          to: pos + m.index + m[0]?.length,
         });
       }
     }
   }
 
-  for (let i = 0; i < results.length; i += 1) {
+  for (let i = 0; i < results?.length; i += 1) {
     const r = results[i];
     const className =
       i === resultIndex
@@ -170,7 +170,7 @@ const rebaseNextResult = (
 
   const { from: currentFrom, to: currentTo } = results[index];
 
-  const offset = currentTo - currentFrom - replaceTerm.length + lastOffset;
+  const offset = currentTo - currentFrom - replaceTerm?.length + lastOffset;
 
   const { from, to } = results[nextIndex];
 
@@ -191,9 +191,9 @@ const replaceAll = (
 
   let resultsCopy = results.slice();
 
-  if (!resultsCopy.length) return;
+  if (!resultsCopy?.length) return;
 
-  for (let i = 0; i < resultsCopy.length; i += 1) {
+  for (let i = 0; i < resultsCopy?.length; i += 1) {
     const { from, to } = resultsCopy[i];
 
     tr.insertText(replaceTerm, from, to);
@@ -317,7 +317,7 @@ export const SearchAndReplace = Extension.create<
           if (results[prevIndex]) {
             editor.storage.searchAndReplace.resultIndex = prevIndex;
           } else {
-            editor.storage.searchAndReplace.resultIndex = results.length - 1;
+            editor.storage.searchAndReplace.resultIndex = results?.length - 1;
           }
 
           return false;

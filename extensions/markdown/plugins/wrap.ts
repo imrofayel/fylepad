@@ -25,12 +25,12 @@ export function unwrap(root: MarkdownNode, match: (node: MarkdownNode) => boolea
       return;
     }
     const items: Array<any> = [];
-    for (let i = 0; i < node.children.length; i++) {
+    for (let i = 0; i < node.children?.length; i++) {
       const child = node.children[i];
       if (match(child)) {
         items.push(child);
       } else {
-        const last = items[items.length - 1];
+        const last = items[items?.length - 1];
         if (Array.isArray(last)) {
           last.push(child);
         } else {
@@ -45,7 +45,7 @@ export function unwrap(root: MarkdownNode, match: (node: MarkdownNode) => boolea
         return i;
       }
     }));
-    return index + items.length;
+    return index + items?.length;
   };
 
   visit(root, "paragraph", visitor);
