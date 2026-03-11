@@ -146,13 +146,13 @@ export class BlockMenuView implements ReturnType<NonNullable<SuggestionOptions["
     if (props.event.key === "ArrowUp") {
       const prev = this._index - 1;
       const index = this._items[prev] && typeof this._items[prev] === "string" ? prev - 1 : prev;
-      this._select(index < 0 ? this._items.length - 1 : index, true);
+      this._select(index < 0 ? this._items?.length - 1 : index, true);
       return true;
     }
     if (props.event.key === "ArrowDown") {
       const next = this._index + 1;
       const index = this._items[next] && typeof this._items[next] === "string" ? next + 1 : next;
-      this._select(index >= this._items.length ? 0 : index, true);
+      this._select(index >= this._items?.length ? 0 : index, true);
       return true;
     }
     return false;
@@ -189,9 +189,9 @@ export class BlockMenuView implements ReturnType<NonNullable<SuggestionOptions["
     // Ensure index available
     this._index = index;
     this._index = Math.max(this._index, 0);
-    this._index = Math.min(this._index, Math.max(0, this._items.length - 1));
+    this._index = Math.min(this._index, Math.max(0, this._items?.length - 1));
 
-    for (let i = 0; i < this._nodes.length; i++) {
+    for (let i = 0; i < this._nodes?.length; i++) {
       if (i === this._index) {
         this._nodes[i].setAttribute("data-active", "true");
       } else {
@@ -221,12 +221,12 @@ export class BlockMenuView implements ReturnType<NonNullable<SuggestionOptions["
 
     // Ensure index available
     this._index = Math.max(this._index, 0);
-    this._index = Math.min(this._index, Math.max(0, this._items.length - 1));
+    this._index = Math.min(this._index, Math.max(0, this._items?.length - 1));
 
     // Make new elements
-    if (this._items.length) {
+    if (this._items?.length) {
       this._nodes = [];
-      for (let i = 0; i < this._items.length; i++) {
+      for (let i = 0; i < this._items?.length; i++) {
         const item = this._items[i];
         if (item === "|") {
           const root = document.createElement("span");

@@ -92,6 +92,7 @@
     "remark-math": "^6.0.0",
     "remark-parse": "^11.0.0",
     "remark-stringify": "^11.0.0",
+    "show-open-file-picker": "^0.4.0",
     "smooth-scroll-into-view-if-needed": "^2.0.2",
     "swapy": "^1.0.5",
     "tailwind-merge": "^3.2.0",

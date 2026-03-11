@@ -209,7 +209,7 @@ export class FloatMenuView implements PluginView {
         if (options.onBoundary && e.key === "ArrowLeft" && pos === 0) {
           options.onBoundary("left", input.value, input, e);
         }
-        if (options.onBoundary && e.key === "ArrowRight" && (pos === -1 || pos === input.value.length)) {
+        if (options.onBoundary && e.key === "ArrowRight" && (pos === -1 || pos === input.value?.length)) {
           options.onBoundary("right", input.value, input, e);
         }
         pos = input.selectionStart;
@@ -289,7 +289,7 @@ export class FloatMenuView implements PluginView {
         if (options.onBoundary && e.key === "ArrowLeft" && pos === 0) {
           options.onBoundary("left", root.value, root, e);
         }
-        if (options.onBoundary && e.key === "ArrowRight" && (pos === -1 || pos === root.value.length)) {
+        if (options.onBoundary && e.key === "ArrowRight" && (pos === -1 || pos === root.value?.length)) {
           options.onBoundary("right", root.value, root, e);
         }
         pos = root.selectionStart;

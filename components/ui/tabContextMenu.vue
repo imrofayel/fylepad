@@ -22,7 +22,7 @@
           />
         </div>
       </div>
-      
+
       <div class="flex relative right-3 top-1.5">
         <button
           @click="duplicateTab"
@@ -43,8 +43,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, nextTick, watch } from 'vue'
-import { computePosition, autoUpdate, offset, flip, shift } from '@floating-ui/vue'
+import { computePosition, flip, offset, shift } from '@floating-ui/vue'
+import { computed, nextTick, ref, watch } from 'vue'
 
 interface TabColor {
   name: string
@@ -92,7 +92,7 @@ const tabColors: TabColor[] = [
   { name: 'Yellow', bg: 'bg-yellow-400', activeStyles: '!bg-yellow-500 dark:!bg-yellow-600 !border-yellow-600 dark:!border-yellow-500' },
 ]
 
-const selectedColor = computed(() => 
+const selectedColor = computed(() =>
   tabColors.find(color => color.name === props.tabColor) || tabColors[0]
 )
 
@@ -116,7 +116,7 @@ const updatePosition = async () => {
   }
 }
 
-watch(() => props.visible, async (visible) => {
+watch(() => props?.visible, async (visible) => {
   if (visible) {
     await nextTick()
     updatePosition()
@@ -156,7 +156,7 @@ const handleClickOutside = (event: MouseEvent) => {
   }
 }
 
-watch(() => props.visible, (visible) => {
+watch(() => props?.visible, (visible) => {
   if (visible) {
     document.addEventListener('click', handleClickOutside)
   } else {

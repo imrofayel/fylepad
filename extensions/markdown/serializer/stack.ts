@@ -36,8 +36,8 @@ export class SerializerStack {
   }
 
   public addNode(node: MarkdownNode): MarkdownNode | null {
-    if (this.nodes.length) {
-      const top = this.nodes[this.nodes.length - 1];
+    if (this.nodes?.length) {
+      const top = this.nodes[this.nodes?.length - 1];
       if (!top.children) {
         top.children = [];
       }
@@ -58,7 +58,7 @@ export class SerializerStack {
     let doc: Root | null = null;
     do {
       doc = this.closeNode() as Root;
-    } while (this.nodes.length);
+    } while (this.nodes?.length);
     return doc;
   }
 }

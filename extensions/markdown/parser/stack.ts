@@ -14,12 +14,12 @@ export class ParserStack {
   }
 
   public addText(value?: string): void {
-    const nodes = this.nodes[this.nodes.length - 1].content;
-    const last = nodes[nodes.length - 1];
+    const nodes = this.nodes[this.nodes?.length - 1].content;
+    const last = nodes[nodes?.length - 1];
     const node = this.editor.schema.text(value ?? "", this.marks);
     const merged = last && this.maybeMerge(last, node);
     if (merged) {
-      nodes[nodes.length - 1] = merged;
+      nodes[nodes?.length - 1] = merged;
     } else {
       nodes.push(node);
     }
@@ -47,8 +47,8 @@ export class ParserStack {
     if (!node) {
       return null;
     }
-    if (this.nodes.length) {
-      this.nodes[this.nodes.length - 1].content.push(node);
+    if (this.nodes?.length) {
+      this.nodes[this.nodes?.length - 1].content.push(node);
     }
     return node;
   }
@@ -66,7 +66,7 @@ export class ParserStack {
     let doc: Node | null = null;
     do {
       doc = this.closeNode();
-    } while (this.nodes.length);
+    } while (this.nodes?.length);
     return doc;
   }
 

@@ -1,23 +1,23 @@
 <template>
-  <div class="mb-2" v-if="groups.length > 0">
+  <div class="mb-2" v-if="groups?.length > 0">
     <div v-for="group in groups" :key="group.name" class="mb-1">
-      <div 
+      <div
         class="flex items-center justify-between px-2 py-1 text-xs font-medium text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-[#2a2a2a] rounded cursor-pointer"
         @click="toggleGroup(group.name)"
       >
-        <span>{{ group.name }} ({{ group.tabs.length }})</span>
-        <svg 
-          class="w-4 h-4 transition-transform" 
+        <span>{{ group.name }} ({{ group.tabs?.length }})</span>
+        <svg
+          class="w-4 h-4 transition-transform"
           :class="{ 'rotate-90': expandedGroups.has(group.name) }"
-          fill="none" 
-          stroke="currentColor" 
+          fill="none"
+          stroke="currentColor"
           viewBox="0 0 24 24"
         >
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
         </svg>
       </div>
-      
-      <div 
+
+      <div
         v-show="expandedGroups.has(group.name)"
         class="ml-2 mt-1 space-y-1"
       >
@@ -26,13 +26,13 @@
           :key="tab.index"
           @click="$emit('tabSelected', tab.index)"
           class="flex items-center justify-between px-2 py-1 text-sm rounded cursor-pointer hover:bg-gray-100 dark:hover:bg-[#404040]"
-          :class="{ 
-            'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300': tab.index === activeTab 
+          :class="{
+            'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300': tab.index === activeTab
           }"
         >
           <div class="flex items-center space-x-2">
-            <div 
-              class="w-3 h-3 rounded-full" 
+            <div
+              class="w-3 h-3 rounded-full"
               :class="getTabColorClass(tab.color)"
             />
             <span class="truncate">{{ tab.title }}</span>
@@ -50,7 +50,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 interface TabInfo {
   index: number
@@ -80,7 +80,7 @@ const expandedGroups = ref(new Set<string>())
 
 const groups = computed((): GroupInfo[] => {
   const groupMap = new Map<string, TabInfo[]>()
-  
+
   props.tabs.forEach((tab, index) => {
     if (tab.group) {
       if (!groupMap.has(tab.group)) {
@@ -93,7 +93,7 @@ const groups = computed((): GroupInfo[] => {
       })
     }
   })
-  
+
   return Array.from(groupMap.entries()).map(([name, tabs]) => ({
     name,
     tabs

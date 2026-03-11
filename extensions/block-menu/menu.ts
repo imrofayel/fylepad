@@ -76,7 +76,7 @@ export const BlockMenu = Extension.create<BlockMenuOptions>({
         }
       }
     }
-    if (!mappings.size || !this.options.items.length) {
+    if (!mappings.size || !this.options.items?.length) {
       return [];
     }
     return [
@@ -120,19 +120,19 @@ export const BlockMenu = Extension.create<BlockMenuOptions>({
             });
           }
           const items: Array<BlockMenuViewItem> = [];
-          for (let i = 0; i < filtered.length; i++) {
+          for (let i = 0; i < filtered?.length; i++) {
             const item = filtered[i];
             if (item === "|") {
-              if (i === 0 || i === filtered.length - 1) {
+              if (i === 0 || i === filtered?.length - 1) {
                 continue;
               }
               if (filtered[i + 1] === "|") {
                 continue;
               }
-              if (items.length === 0) {
+              if (items?.length === 0) {
                 continue;
               }
-              if (items[items.length - 1] === "|") {
+              if (items[items?.length - 1] === "|") {
                 continue;
               }
             }
