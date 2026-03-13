@@ -176,7 +176,7 @@ onMounted(() => {
 }
 
 .tab-link-item-meta {
-  @apply ml-3 flex-shrink-0;
+  @apply ml-3 shrink-0;
 }
 
 .tab-link-item-index {
