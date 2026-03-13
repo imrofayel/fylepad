@@ -134,7 +134,7 @@
       "oxfmt"
     ],
     "*.{json,md,css,scss,html,yml}": [
-      "oxfmt --check"
+      "oxfmt"
     ]
   },
   "pnpm": {

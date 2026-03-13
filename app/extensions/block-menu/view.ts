@@ -1,12 +1,12 @@
-import { Editor } from "@tiptap/core";
-import type { Range } from "@tiptap/core";
+import type { Editor, Range } from "@tiptap/core";
 import type {
   SuggestionKeyDownProps,
   SuggestionOptions,
   SuggestionProps,
 } from "@tiptap/suggestion";
 import scrollIntoView from "smooth-scroll-into-view-if-needed";
-import tippy, { type Instance, type Props } from "tippy.js";
+import tippy from "tippy.js";
+import type { Instance, Props } from "tippy.js";
 
 export type BlockMenuViewItem =
   | "|"

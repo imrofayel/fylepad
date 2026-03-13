@@ -86,7 +86,7 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ["@nuxt/icon", "@nuxtjs/color-mode", "@vite-pwa/nuxt", "@nuxt/ui"],
+  modules: ["@nuxt/icon", "@nuxtjs/color-mode", "@vite-pwa/nuxt", "@nuxt/ui", "@nuxt/eslint"],
   css: ["assets/css/main.css"],
   compatibilityDate: "2024-12-23",
 });

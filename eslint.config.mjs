@@ -9,5 +9,6 @@ export default withNuxt({
         ignores: ["editor", "command", "info", "default", "about", "index"],
       },
     ],
+    "vue/html-self-closing": "off"
   },
 });
