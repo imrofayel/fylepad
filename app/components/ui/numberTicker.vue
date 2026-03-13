@@ -1,7 +1,7 @@
 <template>
   <span
     ref="spanRef"
-    :class="cn('inline-block tabular-nums text-black dark:text-white tracking-wider', props.class)"
+    :class="cn('inline-block tracking-wider text-black tabular-nums dark:text-white', props.class)"
   >
     {{ output }}
   </span>

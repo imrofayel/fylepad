@@ -16,13 +16,17 @@ export class ParserState {
   }
 
   public parse(markdown: string) {
-    for (const storage of Object.values(this.editor.storage as Record<string, NodeMarkdownStorage | MarkMarkdownStorage>)) {
+    for (const storage of Object.values(
+      this.editor.storage as Record<string, NodeMarkdownStorage | MarkMarkdownStorage>,
+    )) {
       if (storage?.markdown?.hooks?.beforeParse) {
         markdown = storage.markdown.hooks.beforeParse(markdown);
       }
     }
     let root = this.processor.runSync(this.processor.parse(markdown));
-    for (const storage of Object.values(this.editor.storage as Record<string, NodeMarkdownStorage | MarkMarkdownStorage>)) {
+    for (const storage of Object.values(
+      this.editor.storage as Record<string, NodeMarkdownStorage | MarkMarkdownStorage>,
+    )) {
       if (storage?.markdown?.hooks?.afterParse) {
         root = storage.markdown.hooks.afterParse(root);
       }
@@ -72,7 +76,9 @@ export class ParserState {
     const extension = this.matchNode(node);
     if (extension) {
       const name = extension.name;
-      const type = this.editor.schema[extension.type === "node" ? "nodes" : "marks"][name] as MarkType & NodeType;
+      const type = this.editor.schema[extension.type === "node" ? "nodes" : "marks"][
+        name
+      ] as MarkType & NodeType;
       const storage = extension.storage as MarkMarkdownStorage | NodeMarkdownStorage | undefined;
       storage?.markdown?.parser?.apply(this, node, type);
     }

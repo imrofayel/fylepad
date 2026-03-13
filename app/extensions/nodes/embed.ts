@@ -1,4 +1,4 @@
-import type { Editor} from "@tiptap/core";
+import type { Editor } from "@tiptap/core";
 import { mergeAttributes, Node, nodeInputRule } from "@tiptap/core";
 import type { Node as PNode } from "@tiptap/pm/model";
 import { Plugin, PluginKey } from "@tiptap/pm/state";
@@ -20,8 +20,18 @@ declare module "@tiptap/core" {
 
 export interface EmbedItem {
   name: string;
-  match: (props: { editor: Editor; view: InnerResizerView; node: PNode; element: HTMLIFrameElement }) => string | boolean | undefined | null;
-  render: (props: { editor: Editor; view: InnerResizerView; node: PNode; element: HTMLIFrameElement }) => void;
+  match: (props: {
+    editor: Editor;
+    view: InnerResizerView;
+    node: PNode;
+    element: HTMLIFrameElement;
+  }) => string | boolean | undefined | null;
+  render: (props: {
+    editor: Editor;
+    view: InnerResizerView;
+    node: PNode;
+    element: HTMLIFrameElement;
+  }) => void;
 }
 
 export interface EmbedOptions {
@@ -121,13 +131,13 @@ export const Embed = Node.create<EmbedOptions>({
     return {
       markdown: {
         parser: {
-          match: node => node.type === "textDirective" && node.name === this.name,
+          match: (node) => node.type === "textDirective" && node.name === this.name,
           apply: (state, node, type) => {
             state.addNode(type, node.attributes);
           },
         },
         serializer: {
-          match: node => node.type.name === this.name,
+          match: (node) => node.type.name === this.name,
           apply: (state, node) => {
             state.addNode({
               type: "textDirective",
@@ -137,8 +147,14 @@ export const Embed = Node.create<EmbedOptions>({
           },
         },
         hooks: {
-          afterParse: root => this.options.inline ? root : unwrap(root, node => node.type === "textDirective" && node.name === this.name),
-          beforeSerialize: root => this.options.inline ? root : wrap(root, node => node.type === "textDirective" && node.name === this.name),
+          afterParse: (root) =>
+            this.options.inline
+              ? root
+              : unwrap(root, (node) => node.type === "textDirective" && node.name === this.name),
+          beforeSerialize: (root) =>
+            this.options.inline
+              ? root
+              : wrap(root, (node) => node.type === "textDirective" && node.name === this.name),
         },
       },
       blockMenu: {
@@ -148,7 +164,7 @@ export const Embed = Node.create<EmbedOptions>({
             name: this.options.dictionary.name,
             icon: icon("embed"),
             keywords: "embed,iframe,qrk",
-            action: editor => editor.chain().setEmbed({ src: "" }).focus().run(),
+            action: (editor) => editor.chain().setEmbed({ src: "" }).focus().run(),
           },
         ],
       },
@@ -162,10 +178,7 @@ export const Embed = Node.create<EmbedOptions>({
     ];
   },
   renderHTML({ HTMLAttributes }) {
-    return [
-      "iframe",
-      mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
-    ];
+    return ["iframe", mergeAttributes(this.options.HTMLAttributes, HTMLAttributes)];
   },
   addNodeView() {
     return InnerResizerView.create({
@@ -206,10 +219,11 @@ export const Embed = Node.create<EmbedOptions>({
   addCommands() {
     return {
       setEmbed: (options) => {
-        return ({ commands }) => commands.insertContent({
-          type: this.name,
-          attrs: options,
-        });
+        return ({ commands }) =>
+          commands.insertContent({
+            type: this.name,
+            attrs: options,
+          });
       },
     };
   },
@@ -218,7 +232,7 @@ export const Embed = Node.create<EmbedOptions>({
       nodeInputRule({
         find: /(:embed\{([^}]+)\})/,
         type: this.type,
-        getAttributes: match => parseAttributes(match[2]),
+        getAttributes: (match) => parseAttributes(match[2] ?? ""),
       }),
     ];
   },
@@ -239,13 +253,11 @@ export const Embed = Node.create<EmbedOptions>({
               id: "href",
               name: this.options.dictionary.inputEmbed,
               onEnter: (value) => {
-                editor.chain()
-                  .updateAttributes(this.name, { src: value })
-                  .focus()
-                  .run();
+                editor.chain().updateAttributes(this.name, { src: value }).focus().run();
               },
               onBoundary: (value) => {
-                editor.chain()
+                editor
+                  .chain()
                   .updateAttributes(this.name, { value })
                   .setTextSelection(editor.state.selection.from + (value === "left" ? -1 : 1))
                   .focus()

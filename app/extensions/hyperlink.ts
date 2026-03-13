@@ -42,7 +42,9 @@ export interface HyperlinkOptions {
    * @example
    */
   modals: {
-    previewHyperlink?: ((options: THyperlinkPreviewModalOptions) => HTMLElement | undefined | null) | null;
+    previewHyperlink?:
+      | ((options: THyperlinkPreviewModalOptions) => HTMLElement | undefined | null)
+      | null;
     setHyperlink?: ((options: TSetHyperlinkModalOptions) => HTMLElement | undefined | null) | null;
   };
   /**
@@ -248,7 +250,7 @@ export const Hyperlink = Mark.create<HyperlinkOptions>({
         autoHyperlink({
           type: this.type,
           validate: this.options.validate,
-        })
+        }),
       );
     }
 
@@ -259,7 +261,7 @@ export const Hyperlink = Mark.create<HyperlinkOptions>({
           editor: this.editor,
           validate: this.options.validate,
           modal: this.options.modals.previewHyperlink,
-        })
+        }),
       );
     }
 
@@ -268,7 +270,7 @@ export const Hyperlink = Mark.create<HyperlinkOptions>({
         pasteHandler({
           editor: this.editor,
           type: this.type,
-        })
+        }),
       );
     }
 

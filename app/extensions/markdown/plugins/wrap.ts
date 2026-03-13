@@ -38,13 +38,17 @@ export function unwrap(root: MarkdownNode, match: (node: MarkdownNode) => boolea
         }
       }
     }
-    parent.children.splice(index, 1, ...items.map<RootContent>((i) => {
-      if (Array.isArray(i)) {
-        return { type: "paragraph", children: i };
-      } else {
-        return i;
-      }
-    }));
+    parent.children.splice(
+      index,
+      1,
+      ...items.map<RootContent>((i) => {
+        if (Array.isArray(i)) {
+          return { type: "paragraph", children: i };
+        } else {
+          return i;
+        }
+      }),
+    );
     return index + items.length;
   };
 

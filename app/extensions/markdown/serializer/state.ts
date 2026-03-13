@@ -18,13 +18,17 @@ export class SerializerState {
   public serialize(document: Node) {
     this.next(document);
     let root = this.stack.serialize() as MarkdownNode;
-    for (const storage of Object.values(this.editor.storage as Record<string, NodeMarkdownStorage | MarkMarkdownStorage>)) {
+    for (const storage of Object.values(
+      this.editor.storage as Record<string, NodeMarkdownStorage | MarkMarkdownStorage>,
+    )) {
       if (storage?.markdown?.hooks?.beforeSerialize) {
         root = storage.markdown.hooks.beforeSerialize(root);
       }
     }
     let markdown = this.processor.stringify(root) as string;
-    for (const storage of Object.values(this.editor.storage as Record<string, NodeMarkdownStorage | MarkMarkdownStorage>)) {
+    for (const storage of Object.values(
+      this.editor.storage as Record<string, NodeMarkdownStorage | MarkMarkdownStorage>,
+    )) {
       if (storage?.markdown?.hooks?.afterSerialize) {
         markdown = storage.markdown.hooks.afterSerialize(markdown);
       }
@@ -34,7 +38,7 @@ export class SerializerState {
 
   public next(nodes: Node | Fragment) {
     if (this.isFragment(nodes)) {
-      nodes.forEach(node => this.runNode(node));
+      nodes.forEach((node) => this.runNode(node));
       return this;
     }
     this.runNode(nodes);

@@ -50,7 +50,7 @@ export default function editHyperlink(options: EditHyperlinkOptions) {
           options.editor.schema.marks.hyperlink.create({
             href: sanitizeURL?.href,
           }),
-        ])
+        ]),
       );
 
       return true;

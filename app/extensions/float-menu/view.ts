@@ -1,5 +1,5 @@
-import type { Editor, isNodeSelection, posToDOMRect, type Range } from "@tiptap/core";
-import type { EditorState, type PluginView } from "@tiptap/pm/state";
+import { type Editor, isNodeSelection, posToDOMRect, type Range } from "@tiptap/core";
+import type { EditorState, PluginView } from "@tiptap/pm/state";
 import type { EditorView } from "@tiptap/pm/view";
 import tippy, { type Instance, type Props } from "tippy.js";
 
@@ -13,8 +13,17 @@ export interface FloatMenuInputViewOptions {
   onEnter?: (value: string, root: HTMLInputElement, event: KeyboardEvent) => void;
   onInput?: (value: string, root: HTMLInputElement, event: Event) => void;
   onChange?: (value: string, root: HTMLInputElement, event: Event) => void;
-  onKey?: (key: Pick<KeyboardEvent, "key" | "ctrlKey" | "altKey" | "metaKey" | "shiftKey">, root: HTMLInputElement, event: KeyboardEvent) => void;
-  onBoundary?: (boundary: "left" | "right", value: string, root: HTMLInputElement, event: KeyboardEvent) => void;
+  onKey?: (
+    key: Pick<KeyboardEvent, "key" | "ctrlKey" | "altKey" | "metaKey" | "shiftKey">,
+    root: HTMLInputElement,
+    event: KeyboardEvent,
+  ) => void;
+  onBoundary?: (
+    boundary: "left" | "right",
+    value: string,
+    root: HTMLInputElement,
+    event: KeyboardEvent,
+  ) => void;
 }
 
 export interface FloatMenuTextareaViewOptions {
@@ -26,8 +35,17 @@ export interface FloatMenuTextareaViewOptions {
   onEnter?: (value: string, root: HTMLTextAreaElement, event: KeyboardEvent) => void;
   onInput?: (value: string, root: HTMLTextAreaElement, event: Event) => void;
   onChange?: (value: string, root: HTMLTextAreaElement, event: Event) => void;
-  onKey?: (key: Pick<KeyboardEvent, "key" | "ctrlKey" | "altKey" | "metaKey" | "shiftKey">, root: HTMLTextAreaElement, event: KeyboardEvent) => void;
-  onBoundary?: (boundary: "left" | "right", value: string, root: HTMLTextAreaElement, event: KeyboardEvent) => void;
+  onKey?: (
+    key: Pick<KeyboardEvent, "key" | "ctrlKey" | "altKey" | "metaKey" | "shiftKey">,
+    root: HTMLTextAreaElement,
+    event: KeyboardEvent,
+  ) => void;
+  onBoundary?: (
+    boundary: "left" | "right",
+    value: string,
+    root: HTMLTextAreaElement,
+    event: KeyboardEvent,
+  ) => void;
 }
 
 export interface FloatMenuButtonViewOptions {
@@ -51,10 +69,30 @@ export interface FloatMenuViewOptions {
   tippy?: Partial<Props>;
   show?: (props: { view: FloatMenuView; editor: Editor }) => boolean;
   rect?: (props: { view: FloatMenuView; editor: Editor }) => DOMRect;
-  onInit?: (props: { editor: Editor; view: FloatMenuView; range: Range; root: HTMLElement }) => void;
-  onMount?: (props: { editor: Editor; view: FloatMenuView; range: Range; root: HTMLElement }) => void;
-  onUpdate?: (props: { editor: Editor; view: FloatMenuView; range: Range; root: HTMLElement }) => void;
-  onDestroy?: (props: { editor: Editor; view: FloatMenuView; range: Range; root: HTMLElement }) => void;
+  onInit?: (props: {
+    editor: Editor;
+    view: FloatMenuView;
+    range: Range;
+    root: HTMLElement;
+  }) => void;
+  onMount?: (props: {
+    editor: Editor;
+    view: FloatMenuView;
+    range: Range;
+    root: HTMLElement;
+  }) => void;
+  onUpdate?: (props: {
+    editor: Editor;
+    view: FloatMenuView;
+    range: Range;
+    root: HTMLElement;
+  }) => void;
+  onDestroy?: (props: {
+    editor: Editor;
+    view: FloatMenuView;
+    range: Range;
+    root: HTMLElement;
+  }) => void;
   classes?: Array<string>;
   attributes?: Record<string, string>;
 }
@@ -88,7 +126,10 @@ export class FloatMenuView implements PluginView {
     const state = view.state;
 
     // Skip render
-    if (view.composing || (prevState && prevState.doc.eq(state.doc) && prevState.selection.eq(state.selection))) {
+    if (
+      view.composing ||
+      (prevState && prevState.doc.eq(state.doc) && prevState.selection.eq(state.selection))
+    ) {
       return;
     }
 
@@ -105,8 +146,8 @@ export class FloatMenuView implements PluginView {
         root: this.element,
         editor: this.editor,
         range: {
-          from: Math.min(...this.editor.state.selection.ranges.map(range => range.$from.pos)),
-          to: Math.max(...this.editor.state.selection.ranges.map(range => range.$to.pos)),
+          from: Math.min(...this.editor.state.selection.ranges.map((range) => range.$from.pos)),
+          to: Math.max(...this.editor.state.selection.ranges.map((range) => range.$to.pos)),
         },
       });
     }
@@ -125,8 +166,8 @@ export class FloatMenuView implements PluginView {
         root: this.element,
         editor: this.editor,
         range: {
-          from: Math.min(...this.editor.state.selection.ranges.map(range => range.$from.pos)),
-          to: Math.max(...this.editor.state.selection.ranges.map(range => range.$to.pos)),
+          from: Math.min(...this.editor.state.selection.ranges.map((range) => range.$from.pos)),
+          to: Math.max(...this.editor.state.selection.ranges.map((range) => range.$to.pos)),
         },
       });
     }
@@ -209,7 +250,11 @@ export class FloatMenuView implements PluginView {
         if (options.onBoundary && e.key === "ArrowLeft" && pos === 0) {
           options.onBoundary("left", input.value, input, e);
         }
-        if (options.onBoundary && e.key === "ArrowRight" && (pos === -1 || pos === input.value.length)) {
+        if (
+          options.onBoundary &&
+          e.key === "ArrowRight" &&
+          (pos === -1 || pos === input.value.length)
+        ) {
           options.onBoundary("right", input.value, input, e);
         }
         pos = input.selectionStart;
@@ -289,7 +334,11 @@ export class FloatMenuView implements PluginView {
         if (options.onBoundary && e.key === "ArrowLeft" && pos === 0) {
           options.onBoundary("left", root.value, root, e);
         }
-        if (options.onBoundary && e.key === "ArrowRight" && (pos === -1 || pos === root.value.length)) {
+        if (
+          options.onBoundary &&
+          e.key === "ArrowRight" &&
+          (pos === -1 || pos === root.value.length)
+        ) {
           options.onBoundary("right", root.value, root, e);
         }
         pos = root.selectionStart;
@@ -417,8 +466,8 @@ export class FloatMenuView implements PluginView {
         root: element,
         editor: this.editor,
         range: {
-          from: Math.min(...this.editor.state.selection.ranges.map(range => range.$from.pos)),
-          to: Math.max(...this.editor.state.selection.ranges.map(range => range.$to.pos)),
+          from: Math.min(...this.editor.state.selection.ranges.map((range) => range.$from.pos)),
+          to: Math.max(...this.editor.state.selection.ranges.map((range) => range.$to.pos)),
         },
       });
     }
@@ -448,8 +497,8 @@ export class FloatMenuView implements PluginView {
             root: this.element,
             editor: this.editor,
             range: {
-              from: Math.min(...this.editor.state.selection.ranges.map(range => range.$from.pos)),
-              to: Math.max(...this.editor.state.selection.ranges.map(range => range.$to.pos)),
+              from: Math.min(...this.editor.state.selection.ranges.map((range) => range.$from.pos)),
+              to: Math.max(...this.editor.state.selection.ranges.map((range) => range.$to.pos)),
             },
           });
         }

@@ -1,13 +1,13 @@
 <template>
   <div class="tab-reorder-container">
-    <div 
-      v-for="(tab, index) in tabs" 
+    <div
+      v-for="(tab, index) in tabs"
       :key="`tab-${index}`"
       :draggable="!tab.group"
       class="tab-item"
       :class="{
-        'dragging': draggedIndex === index,
-        'drag-over': dragOverIndex === index && draggedIndex !== index
+        dragging: draggedIndex === index,
+        'drag-over': dragOverIndex === index && draggedIndex !== index,
       }"
       @dragstart="handleDragStart($event, index)"
       @dragover.prevent
@@ -21,49 +21,49 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref } from "vue";
 
 interface Tab {
-  title: string
-  content: unknown
-  color?: string
-  group?: string
+  title: string;
+  content: unknown;
+  color?: string;
+  group?: string;
 }
 
 interface Props {
-  tabs: Tab[]
+  tabs: Tab[];
 }
 
 interface Emits {
-  (e: 'reorder', oldIndex: number, newIndex: number): void
+  (e: "reorder", oldIndex: number, newIndex: number): void;
 }
 
-const _props = defineProps<Props>()
-const emit = defineEmits<Emits>()
+const _props = defineProps<Props>();
+const emit = defineEmits<Emits>();
 
-const draggedIndex = ref<number | null>(null)
-const dragOverIndex = ref<number | null>(null)
+const draggedIndex = ref<number | null>(null);
+const dragOverIndex = ref<number | null>(null);
 
 const handleDragStart = (event: DragEvent, index: number) => {
-  draggedIndex.value = index
+  draggedIndex.value = index;
   if (event.dataTransfer) {
-    event.dataTransfer.effectAllowed = 'move'
-    event.dataTransfer.setData('text/plain', index.toString())
+    event.dataTransfer.effectAllowed = "move";
+    event.dataTransfer.setData("text/plain", index.toString());
   }
-}
+};
 
 const handleDrop = (event: DragEvent, dropIndex: number) => {
-  event.preventDefault()
+  event.preventDefault();
   if (draggedIndex.value !== null && draggedIndex.value !== dropIndex) {
-    emit('reorder', draggedIndex.value, dropIndex)
+    emit("reorder", draggedIndex.value, dropIndex);
   }
-  dragOverIndex.value = null
-}
+  dragOverIndex.value = null;
+};
 
 const handleDragEnd = () => {
-  draggedIndex.value = null
-  dragOverIndex.value = null
-}
+  draggedIndex.value = null;
+  dragOverIndex.value = null;
+};
 </script>
 
 <style scoped>

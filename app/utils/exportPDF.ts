@@ -1,12 +1,12 @@
-export const md2pdf = (htmlContent: string, title: string = 'Untitled') => {
-    if (htmlContent) {
-      const fullHtmlContent = `
+export const md2pdf = (htmlContent: string, title: string = "Untitled") => {
+  if (htmlContent) {
+    const fullHtmlContent = `
         <!DOCTYPE html>
         <html lang="en">
         <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>${title || 'Untitled'}</title>
+          <title>${title || "Untitled"}</title>
           <style>
             body {
               font-family: Inter, sans-serif;
@@ -159,27 +159,27 @@ export const md2pdf = (htmlContent: string, title: string = 'Untitled') => {
           </style>
         </head>
         <body>
-          <h1 style="padding-bottom: 1rem; font-weight: normal;">${title || 'Untitled'}</h1>
+          <h1 style="padding-bottom: 1rem; font-weight: normal;">${title || "Untitled"}</h1>
           ${htmlContent}
         </body>
         </html>
       `;
-      
-      const printWindow = window.open('', '_blank');
-      if (printWindow) {
-        printWindow.document.write(fullHtmlContent);
-        printWindow.document.close();
-        printWindow.focus();
-        
-        // Wait for content to load before printing
-        printWindow.onload = function() {
-          printWindow.print();
-          printWindow.close();
-        };
-      } else {
-        console.error('Failed to open print window.');
-      }
+
+    const printWindow = window.open("", "_blank");
+    if (printWindow) {
+      printWindow.document.write(fullHtmlContent);
+      printWindow.document.close();
+      printWindow.focus();
+
+      // Wait for content to load before printing
+      printWindow.onload = function () {
+        printWindow.print();
+        printWindow.close();
+      };
     } else {
-      console.error('Editor instance is not available.');
+      console.error("Failed to open print window.");
     }
-  };
+  } else {
+    console.error("Editor instance is not available.");
+  }
+};

@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "oxc.oxc-vscode",
+    "bradlc.vscode-tailwindcss",
+    "dbaeumer.vscode-eslint",
+    "Vue.volar"
+  ],
+  "unwantedRecommendations": ["octref.vetur"]
+}

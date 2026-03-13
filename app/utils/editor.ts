@@ -1,4 +1,4 @@
-import type { Editor} from "@tiptap/core";
+import type { Editor } from "@tiptap/core";
 import { findParentNode } from "@tiptap/core";
 import type { Node } from "@tiptap/pm/model";
 import type { Selection, Transaction } from "@tiptap/pm/state";
@@ -9,12 +9,12 @@ export function isRectSelected(selection: Selection, rect: Rect): selection is C
     const map = TableMap.get(selection.$anchorCell.node(-1));
     const start = selection.$anchorCell.start(-1);
     const cells = map.cellsInRect(rect);
-    const selectedCells = map.cellsInRect(map.rectBetween(
-      selection.$anchorCell.pos - start,
-      selection.$headCell.pos - start,
-    ));
+    const selectedCells = map.cellsInRect(
+      map.rectBetween(selection.$anchorCell.pos - start, selection.$headCell.pos - start),
+    );
     for (let i = 0, count = cells.length; i < count; i++) {
-      if (!selectedCells.includes(cells[i])) {
+      const cell = cells[i];
+      if (cell === undefined || !selectedCells.includes(cell)) {
         return false;
       }
     }
@@ -67,7 +67,9 @@ export function isTableSelected(selection: Selection): selection is CellSelectio
 }
 
 export function findTable(selection: Selection) {
-  return findParentNode(node => node.type.spec.tableRole && node.type.spec.tableRole === "table")(selection);
+  return findParentNode((node) => node.type.spec.tableRole && node.type.spec.tableRole === "table")(
+    selection,
+  );
 }
 
 export function getCellsInColumn(selection: Selection, index: number | number[]) {
@@ -75,24 +77,27 @@ export function getCellsInColumn(selection: Selection, index: number | number[])
   if (table) {
     const map = TableMap.get(table.node);
     const indexes = Array.isArray(index) ? index : Array.from([index]);
-    return indexes.reduce<Array<{ pos: number; start: number; node: Node | null | undefined }>>((acc, index) => {
-      if (index >= 0 && index <= map.width - 1) {
-        const cells = map.cellsInRect({
-          left: index,
-          right: index + 1,
-          top: 0,
-          bottom: map.height,
-        });
-        return acc.concat(
-          cells.map((nodePos) => {
-            const node = table.node.nodeAt(nodePos);
-            const pos = nodePos + table.start;
-            return { pos, start: pos + 1, node };
-          }),
-        );
-      }
-      return acc;
-    }, []);
+    return indexes.reduce<Array<{ pos: number; start: number; node: Node | null | undefined }>>(
+      (acc, index) => {
+        if (index >= 0 && index <= map.width - 1) {
+          const cells = map.cellsInRect({
+            left: index,
+            right: index + 1,
+            top: 0,
+            bottom: map.height,
+          });
+          return acc.concat(
+            cells.map((nodePos) => {
+              const node = table.node.nodeAt(nodePos);
+              const pos = nodePos + table.start;
+              return { pos, start: pos + 1, node };
+            }),
+          );
+        }
+        return acc;
+      },
+      [],
+    );
   }
 }
 
@@ -101,24 +106,27 @@ export function getCellsInRow(selection: Selection, index: number | number[]) {
   if (table) {
     const map = TableMap.get(table.node);
     const indexes = Array.isArray(index) ? index : Array.from([index]);
-    return indexes.reduce<Array<{ pos: number; start: number; node: Node | null | undefined }>>((acc, index) => {
-      if (index >= 0 && index <= map.height - 1) {
-        const cells = map.cellsInRect({
-          left: 0,
-          right: map.width,
-          top: index,
-          bottom: index + 1,
-        });
-        return acc.concat(
-          cells.map((nodePos) => {
-            const node = table.node.nodeAt(nodePos);
-            const pos = nodePos + table.start;
-            return { pos, start: pos + 1, node };
-          }),
-        );
-      }
-      return acc;
-    }, []);
+    return indexes.reduce<Array<{ pos: number; start: number; node: Node | null | undefined }>>(
+      (acc, index) => {
+        if (index >= 0 && index <= map.height - 1) {
+          const cells = map.cellsInRect({
+            left: 0,
+            right: map.width,
+            top: index,
+            bottom: index + 1,
+          });
+          return acc.concat(
+            cells.map((nodePos) => {
+              const node = table.node.nodeAt(nodePos);
+              const pos = nodePos + table.start;
+              return { pos, start: pos + 1, node };
+            }),
+          );
+        }
+        return acc;
+      },
+      [],
+    );
   }
 }
 
@@ -132,9 +140,10 @@ export function getCellInTable(selection: Selection, row: number, col: number) {
       top: col,
       bottom: col + 1,
     });
-    if (cells.length) {
-      const node = table.node.nodeAt(cells[0]);
-      const pos = table.start + cells[0];
+    const cell = cells[0];
+    if (cells.length && cell !== undefined) {
+      const node = table.node.nodeAt(cell);
+      const pos = table.start + cell;
       return { pos, node, start: pos + 1 };
     }
   }
@@ -161,21 +170,27 @@ export function selectRowOrColumn(type: "row" | "column", tr: Transaction, index
         bottom: isRowSelection ? top + 1 : bottom,
       });
 
-      const cellsInLastRow = bottom - top === 1 ?
-        cellsInFirstRow :
-        map.cellsInRect({
-          left: isRowSelection ? left : right - 1,
-          top: isRowSelection ? bottom - 1 : top,
-          right,
-          bottom,
-        });
+      const cellsInLastRow =
+        bottom - top === 1
+          ? cellsInFirstRow
+          : map.cellsInRect({
+              left: isRowSelection ? left : right - 1,
+              top: isRowSelection ? bottom - 1 : top,
+              right,
+              bottom,
+            });
 
-      const head = table.start + cellsInFirstRow[0];
-      const anchor = table.start + cellsInLastRow[cellsInLastRow.length - 1];
-      const $head = tr.doc.resolve(head);
-      const $anchor = tr.doc.resolve(anchor);
+      const firstCell = cellsInFirstRow[0];
+      const lastCell = cellsInLastRow[cellsInLastRow.length - 1];
 
-      return tr.setSelection(new CellSelection($anchor, $head));
+      if (firstCell !== undefined && lastCell !== undefined) {
+        const head = table.start + firstCell;
+        const anchor = table.start + lastCell;
+        const $head = tr.doc.resolve(head);
+        const $anchor = tr.doc.resolve(anchor);
+
+        return tr.setSelection(new CellSelection($anchor, $head));
+      }
     }
   }
   return tr;
@@ -194,11 +209,16 @@ export function selectTable(tr: Transaction) {
   if (table) {
     const { map } = TableMap.get(table.node);
     if (map && map.length) {
-      const head = table.start + map[0];
-      const anchor = table.start + map[map.length - 1];
-      const $head = tr.doc.resolve(head);
-      const $anchor = tr.doc.resolve(anchor);
-      return tr.setSelection(new CellSelection($anchor, $head));
+      const firstCell = map[0];
+      const lastCell = map[map.length - 1];
+
+      if (firstCell !== undefined && lastCell !== undefined) {
+        const head = table.start + firstCell;
+        const anchor = table.start + lastCell;
+        const $head = tr.doc.resolve(head);
+        const $anchor = tr.doc.resolve(anchor);
+        return tr.setSelection(new CellSelection($anchor, $head));
+      }
     }
   }
   return tr;
@@ -208,17 +228,21 @@ export function parseAttributes(value: string) {
   const regex = /([^=\s]+)="?([^"]+)"?/g;
   const attrs: Record<string, string> = {};
   let match: RegExpExecArray | null;
-   
+
   while ((match = regex.exec(value))) {
-    attrs[match[1]] = match[2];
+    if (match[1]) {
+      attrs[match[1]] = match[2] ?? "";
+    }
   }
   return attrs;
 }
 
-export function setAttributes(editor: Editor, getPos: (() => number) | boolean, attrs: Record<string, unknown>) {
+export function setAttributes(
+  editor: Editor,
+  getPos: (() => number) | boolean,
+  attrs: Record<string, unknown>,
+) {
   if (editor.isEditable && typeof getPos === "function") {
-    editor.view.dispatch(
-      editor.view.state.tr.setNodeMarkup(getPos(), undefined, attrs),
-    );
+    editor.view.dispatch(editor.view.state.tr.setNodeMarkup(getPos(), undefined, attrs));
   }
 }

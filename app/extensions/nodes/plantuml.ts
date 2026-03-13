@@ -47,7 +47,7 @@ export const Plantuml = Node.create<PlantumlOptions>({
     return {
       markdown: {
         parser: {
-          match: node => node.type === "containerDirective" && node.name === this.name,
+          match: (node) => node.type === "containerDirective" && node.name === this.name,
           apply: (state, node, type) => {
             const collect = (node: MarkdownNode): string => {
               return (node.children ?? []).reduce((a, i) => {
@@ -62,7 +62,7 @@ export const Plantuml = Node.create<PlantumlOptions>({
           },
         },
         serializer: {
-          match: node => node.type.name === this.name,
+          match: (node) => node.type.name === this.name,
           apply: (state, node) => {
             state
               .openNode({
@@ -81,7 +81,8 @@ export const Plantuml = Node.create<PlantumlOptions>({
             name: this.options.dictionary.name,
             icon: icon("plantuml"),
             keywords: "plantuml,graph",
-            action: editor => editor.chain().setPlantuml("@startuml\nBob -> Alice : hello\n@enduml").focus().run(),
+            action: (editor) =>
+              editor.chain().setPlantuml("@startuml\nBob -> Alice : hello\n@enduml").focus().run(),
           },
         ],
       },

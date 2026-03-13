@@ -1,11 +1,65 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "@nuxt/ui";
 
+@plugin "tailwindcss-animate";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --color-background: hsl(var(--background));
+  --color-primary: hsl(var(--primary));
+  --color-surface-tint: hsl(var(--surface-tint));
+  --color-on-primary: hsl(var(--on-primary));
+  --color-primary-container: hsl(var(--primary-container));
+  --color-opaque: hsl(var(--opaque));
+  --color-on-primary-container: hsl(var(--on-primary-container));
+  --color-secondary: hsl(var(--secondary));
+  --color-on-secondary: hsl(var(--on-secondary));
+  --color-secondary-container: hsl(var(--secondary-container));
+  --color-on-secondary-container: hsl(var(--on-secondary-container));
+  --color-tertiary: hsl(var(--tertiary));
+  --color-on-tertiary: hsl(var(--on-tertiary));
+  --color-tertiary-container: hsl(var(--tertiary-container));
+  --color-on-tertiary-container: hsl(var(--on-tertiary-container));
+  --color-error: hsl(var(--error));
+  --color-on-error: hsl(var(--on-error));
+  --color-error-container: hsl(var(--error-container));
+  --color-on-error-container: hsl(var(--on-error-container));
+  --color-on-background: hsl(var(--on-background));
+  --color-surface: hsl(var(--surface));
+  --color-on-surface: hsl(var(--on-surface));
+  --color-surface-variant: hsl(var(--surface-variant));
+  --color-on-surface-variant: hsl(var(--on-surface-variant));
+  --color-outline: hsl(var(--outline));
+  --color-outline-variant: hsl(var(--outline-variant));
+  --color-shadow: hsl(var(--shadow));
+  --color-scrim: hsl(var(--scrim));
+  --color-inverse-surface: hsl(var(--inverse-surface));
+  --color-inverse-on-surface: hsl(var(--inverse-on-surface));
+  --color-inverse-primary: hsl(var(--inverse-primary));
+  --color-primary-fixed: hsl(var(--primary-fixed));
+  --color-on-primary-fixed: hsl(var(--on-primary-fixed));
+  --color-primary-fixed-dim: hsl(var(--primary-fixed-dim));
+  --color-on-primary-fixed-variant: hsl(var(--on-primary-fixed-variant));
+  --color-secondary-fixed: hsl(var(--secondary-fixed));
+  --color-on-secondary-fixed: hsl(var(--on-secondary-fixed));
+  --color-secondary-fixed-dim: hsl(var(--secondary-fixed-dim));
+  --color-on-secondary-fixed-variant: hsl(var(--on-secondary-fixed-variant));
+  --color-tertiary-fixed: hsl(var(--tertiary-fixed));
+  --color-on-tertiary-fixed: hsl(var(--on-tertiary-fixed));
+  --color-tertiary-fixed-dim: hsl(var(--tertiary-fixed-dim));
+  --color-on-tertiary-fixed-variant: hsl(var(--on-tertiary-fixed-variant));
+  --color-surface-dim: hsl(var(--surface-dim));
+  --color-surface-bright: hsl(var(--surface-bright));
+  --color-surface-container-lowest: hsl(var(--surface-container-lowest));
+  --color-surface-container-low: hsl(var(--surface-container-low));
+  --color-surface-container: hsl(var(--surface-container));
+  --color-surface-container-high: hsl(var(--surface-container-high));
+  --color-surface-container-highest: hsl(var(--surface-container-highest));
+}
 @layer base {
   :root {
     --background: 0 0% 100%;
-
     --primary: 221 55% 41%; /* rgb(65 95 145) */
     --surface-tint: 221 55% 41%; /* rgb(65 95 145) */
     --on-primary: 0 0% 100%; /* rgb(255 255 255) */
@@ -167,8 +221,7 @@
 
 @font-face {
   font-family: "Dancing Script";
-  src: url("/assets/fonts/DancingScript-VariableFont_wght.ttf")
-    format("truetype");
+  src: url("/assets/fonts/DancingScript-VariableFont_wght.ttf") format("truetype");
 }
 
 @font-face {
@@ -198,8 +251,7 @@
 
 @font-face {
   font-family: "Playfair Display";
-  src: url("/assets/fonts/PlayfairDisplay-VariableFont_wght.ttf")
-    format("truetype");
+  src: url("/assets/fonts/PlayfairDisplay-VariableFont_wght.ttf") format("truetype");
 }
 
 @font-face {
@@ -219,8 +271,7 @@
 
 @font-face {
   font-family: "SpaceGrotesk";
-  src: url("/assets/fonts/SpaceGrotesk-VariableFont_wght.ttf")
-    format("truetype");
+  src: url("/assets/fonts/SpaceGrotesk-VariableFont_wght.ttf") format("truetype");
 }
 
 @font-face {
@@ -254,8 +305,6 @@ iframe {
   filter: drop-shadow(0px -0.3px 3px rgba(0, 0, 0, 0.04));
 }
 
-
-
 /* Default color for everything */
 * {
   -webkit-font-smoothing: antialiased;
@@ -265,7 +314,7 @@ iframe {
 }
 
 * {
-    scrollbar-color: #D3D1CB rgba(0, 0, 0, 0);
+  scrollbar-color: #d3d1cb rgba(0, 0, 0, 0);
 }
 
 ul[data-type="taskList"] li[data-checked="true"] div {
@@ -273,69 +322,76 @@ ul[data-type="taskList"] li[data-checked="true"] div {
 }
 
 .ProseMirror-bm-placeholder::before {
-  @apply !text-[18px] !text-[#acaba9] dark:!text-[#7a7a7a] font-normal relative right-1 border-[#c6c6c4] rounded-lg  py-1 opacity-70;
+  @apply relative right-1 rounded-lg border-[#c6c6c4] py-1 !text-[18px] font-normal !text-[#acaba9] opacity-70 dark:!text-[#7a7a7a];
 }
 
-.ProseMirror-bm{
+.ProseMirror-bm {
   @apply !flex flex-col !px-1 !py-1;
 }
 
-.ProseMirror-bm-button{
-  @apply hover:bg-[#f3f3f3] dark:hover:bg-[#333333] !rounded-[10px] 
+.ProseMirror-bm-button {
+  @apply !rounded-[10px] hover:bg-[#f3f3f3] dark:hover:bg-[#333333];
 }
 
-.ProseMirror-bm{
-    border-radius: 14px !important;
-    background: white !important;
-    backdrop-filter: none !important;
-    position: relative !important;
-    max-width: calc(-24px + 100vw) !important;
-    max-height: 200px !important;
-    box-shadow: rgba(0, 0, 0, 0.1) 2px 2px 10px -3px, rgba(0, 0, 0, 0.06) 0px 0px 0px 0px, rgba(84, 72, 49, 0.08) 0px 0px 0px 0px !important;
+.ProseMirror-bm {
+  border-radius: 14px !important;
+  background: white !important;
+  backdrop-filter: none !important;
+  position: relative !important;
+  max-width: calc(-24px + 100vw) !important;
+  max-height: 200px !important;
+  box-shadow:
+    rgba(0, 0, 0, 0.1) 2px 2px 10px -3px,
+    rgba(0, 0, 0, 0.06) 0px 0px 0px 0px,
+    rgba(84, 72, 49, 0.08) 0px 0px 0px 0px !important;
 }
 
-.dark .ProseMirror-bm{
-    background: #404040 !important;
-    border: 1px solid #525252 !important;
+.dark .ProseMirror-bm {
+  background: #404040 !important;
+  border: 1px solid #525252 !important;
 }
 
-.ProseMirror-bm-button-name{
-   @apply !text-[16.5px] text-[#32302c] dark:text-gray-50;
-   font-family: 'Inter', sans-serif;
-     -webkit-font-smoothing: antialiased;
+.ProseMirror-bm-button-name {
+  @apply !text-[16.5px] text-[#32302c] dark:text-gray-50;
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   @apply !antialiased;
 }
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
-.ProseMirror-bm-button-shortcut{
+.ProseMirror-bm-button-shortcut {
   @apply !text-[17px] text-[#32302c] dark:text-gray-300;
 }
 
-.command-input{
-  ::placeholder{
-    font-family: 'Roboto Mono', monospace !important;
+.command-input {
+  ::placeholder {
+    font-family: "Roboto Mono", monospace !important;
   }
 }
 
-.shadow-notion{
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 10px 30px -10px, rgba(0, 0, 0, 0.12) 0px 0px 1px -1px;
+.shadow-notion {
+  box-shadow:
+    rgba(0, 0, 0, 0.15) 0px 10px 30px -10px,
+    rgba(0, 0, 0, 0.12) 0px 0px 1px -1px;
 }
 
-.shadow-notion2{
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 10px 10px -10px, rgba(0, 0, 0, 0.12) 0px 0px 1px -1px;
+.shadow-notion2 {
+  box-shadow:
+    rgba(0, 0, 0, 0.05) 0px 10px 10px -10px,
+    rgba(0, 0, 0, 0.12) 0px 0px 1px -1px;
 }
 
-.font-mono{
-  font-family: 'Geist Mono';
+.font-mono {
+  font-family: "Geist Mono";
 }
 
-.ProseMirror-bm{
-  @apply scale-[0.98] !max-w-fit !bg-white/90 dark:!bg-[#404040]/90 !backdrop-blur-xl;
+.ProseMirror-bm {
+  @apply !max-w-fit scale-[0.98] !bg-white/90 !backdrop-blur-xl dark:!bg-[#404040]/90;
 }
 
 * {

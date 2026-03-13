@@ -17,8 +17,13 @@ export interface Decoration extends Parent {
 export function remarkDecoration(type: string, marker: string, flags?: boolean) {
   const CHARS = marker.replace(/[\\^$.*+?()[\]{}|]/g, "\\$&");
   const FLAGS = flags ? `([a-z0-9]{0,2})` : `()`;
-  const LOCAL_REGEXP = new RegExp(`${CHARS}${FLAGS}${CHARS}\\s*([^${CHARS}]*[^ ])\\s*${CHARS}${CHARS}`);
-  const GLOBAL_REGEXP = new RegExp(`${CHARS}${FLAGS}${CHARS}\\s*([^${CHARS}]*[^ ])\\s*${CHARS}${CHARS}`, "g");
+  const LOCAL_REGEXP = new RegExp(
+    `${CHARS}${FLAGS}${CHARS}\\s*([^${CHARS}]*[^ ])\\s*${CHARS}${CHARS}`,
+  );
+  const GLOBAL_REGEXP = new RegExp(
+    `${CHARS}${FLAGS}${CHARS}\\s*([^${CHARS}]*[^ ])\\s*${CHARS}${CHARS}`,
+    "g",
+  );
 
   const visitor: Visitor<Text> = (node, index, parent): VisitorResult => {
     if (!parent) {
@@ -90,11 +95,13 @@ export function remarkDecoration(type: string, marker: string, flags?: boolean) 
     const exit = state.enter(type);
     const tracker = state.createTracker(info);
     let value = tracker.move(marker + (flags && node.data?.flags ? node.data.flags : "") + marker);
-    value += tracker.move(state.containerPhrasing(node, {
-      before: value,
-      after: value,
-      ...tracker.current(),
-    }));
+    value += tracker.move(
+      state.containerPhrasing(node, {
+        before: value,
+        after: value,
+        ...tracker.current(),
+      }),
+    );
     value += tracker.move(marker + marker);
     exit();
     return value;
@@ -103,9 +110,11 @@ export function remarkDecoration(type: string, marker: string, flags?: boolean) 
   return function (this: Processor) {
     const data = this.data();
     (data.fromMarkdownExtensions ?? (data.fromMarkdownExtensions = [])).push({
-      transforms: [(tree) => {
-        visit(tree, "text", visitor);
-      }],
+      transforms: [
+        (tree) => {
+          visit(tree, "text", visitor);
+        },
+      ],
     });
     (data.toMarkdownExtensions ?? (data.toMarkdownExtensions = [])).push({
       handlers: {

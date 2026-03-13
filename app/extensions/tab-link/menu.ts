@@ -17,9 +17,12 @@ export interface TabLinkStorage {
   };
 }
 
-export const TabLinkMenu = Extension.create<{
-  tabData?: TabData[]
-}, TabLinkStorage>({
+export const TabLinkMenu = Extension.create<
+  {
+    tabData?: TabData[];
+  },
+  TabLinkStorage
+>({
   name: "tabLinkMenu",
 
   addOptions() {
@@ -27,7 +30,15 @@ export const TabLinkMenu = Extension.create<{
       tabData: [],
       suggestion: {
         char: "[[",
-        command: ({ editor, range, props }: { editor: Editor; range: Range; props: TabLinkItem }) => {
+        command: ({
+          editor,
+          range,
+          props,
+        }: {
+          editor: Editor;
+          range: Range;
+          props: TabLinkItem;
+        }) => {
           // Remove the trigger characters
           editor
             .chain()

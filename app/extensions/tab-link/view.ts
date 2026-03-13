@@ -1,4 +1,4 @@
-import type { Editor, Range  } from "@tiptap/core";
+import type { Editor, Range } from "@tiptap/core";
 import { VueRenderer } from "@tiptap/vue-3";
 import tippy, { type Instance } from "tippy.js";
 import TabLinkMenu from "~/components/tabLinkMenu.vue";
@@ -59,7 +59,7 @@ export class TabLinkView {
 
   getFilteredItems(): TabLinkItem[] {
     const storage = this.editor.extensionManager.extensions.find(
-      ext => ext.name === "tabLinkSuggestion"
+      (ext) => ext.name === "tabLinkSuggestion",
     )?.storage;
 
     if (!storage?.items) {
@@ -67,15 +67,15 @@ export class TabLinkView {
     }
 
     const items: TabLinkItem[] = storage.items;
-    
+
     if (!this.query) {
       return items;
     }
 
     const query = this.query.toLowerCase();
-    return items.filter(item => 
-      item.name.toLowerCase().includes(query) ||
-      item.group?.toLowerCase().includes(query)
+    return items.filter(
+      (item) =>
+        item.name.toLowerCase().includes(query) || item.group?.toLowerCase().includes(query),
     );
   }
 
@@ -83,7 +83,7 @@ export class TabLinkView {
     // Remove the trigger characters and any query text
     const { from } = this.range;
     const to = this.editor.state.selection.from;
-    
+
     this.editor
       .chain()
       .focus()

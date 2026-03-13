@@ -1,4 +1,4 @@
-import type { Editor} from "@tiptap/core";
+import type { Editor } from "@tiptap/core";
 import { Extension, findParentNode } from "@tiptap/core";
 import { Plugin, PluginKey } from "@tiptap/pm/state";
 import { Decoration, DecorationSet } from "@tiptap/pm/view";
@@ -67,10 +67,14 @@ export const BlockMenu = Extension.create<BlockMenuOptions>({
   },
   addProseMirrorPlugins() {
     const mappings = new Map<string, BlockMenuItem>();
-    for (const storage of Object.values(this.editor.storage as Record<string, BlockMenuItemStorage>)) {
+    for (const storage of Object.values(
+      this.editor.storage as Record<string, BlockMenuItemStorage>,
+    )) {
       if (storage?.blockMenu) {
         if (storage.blockMenu.items) {
-          const menus = Array.isArray(storage.blockMenu.items) ? storage.blockMenu.items : [storage.blockMenu.items];
+          const menus = Array.isArray(storage.blockMenu.items)
+            ? storage.blockMenu.items
+            : [storage.blockMenu.items];
           for (const menu of menus) {
             mappings.set(menu.id, menu);
           }
@@ -98,7 +102,10 @@ export const BlockMenu = Extension.create<BlockMenuOptions>({
             }
             if (query !== "") {
               const q = query.toLowerCase();
-              if (!item.name.toLowerCase().includes(q) && !item.keywords.toLowerCase().includes(q)) {
+              if (
+                !item.name.toLowerCase().includes(q) &&
+                !item.keywords.toLowerCase().includes(q)
+              ) {
                 continue;
               }
             }
@@ -152,7 +159,9 @@ export const BlockMenu = Extension.create<BlockMenuOptions>({
         key: new PluginKey(`${this.name}-placeholder`),
         props: {
           decorations: (state) => {
-            const parent = findParentNode(node => node.type.name === "paragraph")(state.selection);
+            const parent = findParentNode((node) => node.type.name === "paragraph")(
+              state.selection,
+            );
             if (!parent) {
               return;
             }
@@ -164,16 +173,20 @@ export const BlockMenu = Extension.create<BlockMenuOptions>({
 
             if (isTopLevel) {
               if (isEmpty) {
-                decorations.push(Decoration.node(parent.pos, parent.pos + parent.node.nodeSize, {
-                  "class": "ProseMirror-bm-placeholder",
-                  "data-empty": this.options.dictionary.lineEmpty,
-                }));
+                decorations.push(
+                  Decoration.node(parent.pos, parent.pos + parent.node.nodeSize, {
+                    class: "ProseMirror-bm-placeholder",
+                    "data-empty": this.options.dictionary.lineEmpty,
+                  }),
+                );
               }
               if (isSlash) {
-                decorations.push(Decoration.node(parent.pos, parent.pos + parent.node.nodeSize, {
-                  "class": "ProseMirror-bm-placeholder",
-                  "data-empty": ` ${this.options.dictionary.lineSlash}`,
-                }));
+                decorations.push(
+                  Decoration.node(parent.pos, parent.pos + parent.node.nodeSize, {
+                    class: "ProseMirror-bm-placeholder",
+                    "data-empty": ` ${this.options.dictionary.lineSlash}`,
+                  }),
+                );
               }
               return DecorationSet.create(state.doc, decorations);
             }

@@ -36,10 +36,14 @@ export const TabLinkSuggestion = Extension.create<TabLinkSuggestionOptions>({
         char: "[[",
         allowSpaces: true,
         pluginKey: new PluginKey("tabLinkSuggestion"),
-        command: ({ editor, range, props }: { 
-          editor: Editor; 
-          range: Range; 
-          props: TabLinkItem 
+        command: ({
+          editor,
+          range,
+          props,
+        }: {
+          editor: Editor;
+          range: Range;
+          props: TabLinkItem;
         }) => {
           // Remove the trigger characters and insert tab link
           editor

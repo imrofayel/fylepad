@@ -1,8 +1,5 @@
 <template>
-  <div
-    ref="container"
-    :class="props.class"
-  >
+  <div ref="container" :class="props.class">
     <Motion
       v-for="(child, index) in children"
       :key="index"

@@ -7,6 +7,6 @@
 
 <style>
 body {
-  @apply dark:bg-[#171717]
+  @apply dark:bg-[#171717];
 }
 </style>

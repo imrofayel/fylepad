@@ -51,7 +51,7 @@ export const Mermaid = Node.create<MermaidOptions>({
     return {
       markdown: {
         parser: {
-          match: node => node.type === "containerDirective" && node.name === this.name,
+          match: (node) => node.type === "containerDirective" && node.name === this.name,
           apply: (state, node, type) => {
             const collect = (node: MarkdownNode): string => {
               return (node.children ?? []).reduce((a, i) => {
@@ -66,7 +66,7 @@ export const Mermaid = Node.create<MermaidOptions>({
           },
         },
         serializer: {
-          match: node => node.type.name === this.name,
+          match: (node) => node.type.name === this.name,
           apply: (state, node) => {
             state
               .openNode({
@@ -85,7 +85,12 @@ export const Mermaid = Node.create<MermaidOptions>({
             name: this.options.dictionary.name,
             icon: icon("mermaid"),
             keywords: "mermaid,graph",
-            action: editor => editor.chain().setMermaid("graph TD;\n  A-->B;  A-->C;\n  B-->D;\n  C-->D;").focus().run(),
+            action: (editor) =>
+              editor
+                .chain()
+                .setMermaid("graph TD;\n  A-->B;  A-->C;\n  B-->D;\n  C-->D;")
+                .focus()
+                .run(),
           },
         ],
       },
@@ -111,7 +116,8 @@ export const Mermaid = Node.create<MermaidOptions>({
       if (code) {
         const dom = document.createElement("div");
         dom.id = `${this.name}-${Math.random().toString(36).substring(2, 10)}`;
-        mermaid.render(dom.id, code)
+        mermaid
+          .render(dom.id, code)
           .then(({ svg, bindFunctions }) => {
             dom.innerHTML = svg;
             bindFunctions?.(dom);

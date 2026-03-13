@@ -1,4 +1,4 @@
-import type { Editor, mergeAttributes, type NodeViewRendererProps } from "@tiptap/core";
+import { type Editor, mergeAttributes, type NodeViewRendererProps } from "@tiptap/core";
 import { newlineInCode } from "@tiptap/pm/commands";
 import { keymap } from "@tiptap/pm/keymap";
 import type { Node } from "@tiptap/pm/model";
@@ -11,12 +11,48 @@ export interface InnerEditorViewOptions extends NodeViewRendererProps {
   tag?: keyof HTMLElementTagNameMap;
   class?: string | string[];
   style?: Partial<CSSStyleDeclaration> | Array<Partial<CSSStyleDeclaration>>;
-  onRender?: (props: { view: InnerEditorView; editor: Editor; $root: HTMLElement; $editor: HTMLElement; $preview: HTMLElement }) => void;
-  onOpen?: (props: { view: InnerEditorView; editor: Editor; $root: HTMLElement; $editor: HTMLElement; $preview: HTMLElement }) => void;
-  onClose?: (props: { view: InnerEditorView; editor: Editor; $root: HTMLElement; $editor: HTMLElement; $preview: HTMLElement }) => void;
-  onInit?: (props: { view: InnerEditorView; editor: Editor; $root: HTMLElement; $editor: HTMLElement; $preview: HTMLElement }) => void;
-  onUpdate?: (props: { view: InnerEditorView; editor: Editor; $root: HTMLElement; $editor: HTMLElement; $preview: HTMLElement }) => void;
-  onDestroy?: (props: { view: InnerEditorView; editor: Editor; $root: HTMLElement; $editor: HTMLElement; $preview: HTMLElement }) => void;
+  onRender?: (props: {
+    view: InnerEditorView;
+    editor: Editor;
+    $root: HTMLElement;
+    $editor: HTMLElement;
+    $preview: HTMLElement;
+  }) => void;
+  onOpen?: (props: {
+    view: InnerEditorView;
+    editor: Editor;
+    $root: HTMLElement;
+    $editor: HTMLElement;
+    $preview: HTMLElement;
+  }) => void;
+  onClose?: (props: {
+    view: InnerEditorView;
+    editor: Editor;
+    $root: HTMLElement;
+    $editor: HTMLElement;
+    $preview: HTMLElement;
+  }) => void;
+  onInit?: (props: {
+    view: InnerEditorView;
+    editor: Editor;
+    $root: HTMLElement;
+    $editor: HTMLElement;
+    $preview: HTMLElement;
+  }) => void;
+  onUpdate?: (props: {
+    view: InnerEditorView;
+    editor: Editor;
+    $root: HTMLElement;
+    $editor: HTMLElement;
+    $preview: HTMLElement;
+  }) => void;
+  onDestroy?: (props: {
+    view: InnerEditorView;
+    editor: Editor;
+    $root: HTMLElement;
+    $editor: HTMLElement;
+    $preview: HTMLElement;
+  }) => void;
 }
 
 export class InnerEditorView implements NodeView {
@@ -29,15 +65,20 @@ export class InnerEditorView implements NodeView {
   private _editor: HTMLElement;
   private _preview: HTMLElement;
 
-  public static create(options: Partial<Omit<InnerEditorViewOptions, keyof Omit<NodeViewRendererProps, "HTMLAttributes">>>) {
-    return (_options: NodeViewRendererProps) => new InnerEditorView({
-      ...options,
-      ..._options,
-      HTMLAttributes: {
-        ...options.HTMLAttributes,
-        ..._options.HTMLAttributes,
-      },
-    });
+  public static create(
+    options: Partial<
+      Omit<InnerEditorViewOptions, keyof Omit<NodeViewRendererProps, "HTMLAttributes">>
+    >,
+  ) {
+    return (_options: NodeViewRendererProps) =>
+      new InnerEditorView({
+        ...options,
+        ..._options,
+        HTMLAttributes: {
+          ...options.HTMLAttributes,
+          ..._options.HTMLAttributes,
+        },
+      });
   }
 
   constructor(options: InnerEditorViewOptions) {
@@ -51,12 +92,16 @@ export class InnerEditorView implements NodeView {
       this._root.setAttribute("name", this.options.id);
     }
     if (this.options.class) {
-      for (const item of Array.isArray(this.options.class) ? this.options.class : [this.options.class]) {
+      for (const item of Array.isArray(this.options.class)
+        ? this.options.class
+        : [this.options.class]) {
         this._root.classList.add(item);
       }
     }
     if (this.options.style) {
-      for (const item of Array.isArray(this.options.style) ? this.options.style : [this.options.style]) {
+      for (const item of Array.isArray(this.options.style)
+        ? this.options.style
+        : [this.options.style]) {
         for (const [key, val] of Object.entries(item)) {
           // @ts-expect-error - dynamic CSS property assignment via string key
           this._root.style[key] = val;
@@ -164,9 +209,7 @@ export class InnerEditorView implements NodeView {
             endB += overlap;
           }
           this._view.dispatch(
-            state.tr
-              .replace(start, endB, node.slice(start, endA))
-              .setMeta("fromOutside", true),
+            state.tr.replace(start, endB, node.slice(start, endA)).setMeta("fromOutside", true),
           );
         }
       }
@@ -202,34 +245,40 @@ export class InnerEditorView implements NodeView {
     this._view = new EditorView(this._editor, {
       state: EditorState.create({
         doc: this._node,
-        plugins: [keymap({
-          "Enter": newlineInCode,
-          "Tab": (state, dispatch) => {
-            if (dispatch) {
-              dispatch(state.tr.insertText("  "));
-            }
-            return true;
-          },
-          "Backspace": (state) => {
-            if (state.selection.$anchor.parentOffset !== 0) {
-              return false;
-            }
-            return this.editor.chain().toggleNode(this._node.type.name, "paragraph").focus().run();
-          },
-          "Mod-Enter": () => {
-            const $view = this.editor.view;
-            const $state = $view.state;
-            const $to = $state.selection.to;
-            const $tr = $state.tr.replaceWith(
-              $to,
-              $to,
-              $state.schema.nodes.paragraph.createAndFill()!,
-            );
-            $view.dispatch($tr.setSelection(TextSelection.create($tr.doc, $to)));
-            $view.focus();
-            return true;
-          },
-        })],
+        plugins: [
+          keymap({
+            Enter: newlineInCode,
+            Tab: (state, dispatch) => {
+              if (dispatch) {
+                dispatch(state.tr.insertText("  "));
+              }
+              return true;
+            },
+            Backspace: (state) => {
+              if (state.selection.$anchor.parentOffset !== 0) {
+                return false;
+              }
+              return this.editor
+                .chain()
+                .toggleNode(this._node.type.name, "paragraph")
+                .focus()
+                .run();
+            },
+            "Mod-Enter": () => {
+              const $view = this.editor.view;
+              const $state = $view.state;
+              const $to = $state.selection.to;
+              const paragraphNode = $state.schema.nodes.paragraph;
+              if (!paragraphNode) {
+                return false;
+              }
+              const $tr = $state.tr.replaceWith($to, $to, paragraphNode.createAndFill()!);
+              $view.dispatch($tr.setSelection(TextSelection.create($tr.doc, $to)));
+              $view.focus();
+              return true;
+            },
+          }),
+        ],
       }),
       dispatchTransaction: (tr) => {
         if (!this._view) {

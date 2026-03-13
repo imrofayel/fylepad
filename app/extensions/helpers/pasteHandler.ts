@@ -27,9 +27,7 @@ export function pasteHandler(options: PasteHandlerOptions): Plugin {
           textContent += node.textContent;
         });
 
-        const link = find(textContent).find(
-          (item) => item.isLink && item.value === textContent
-        );
+        const link = find(textContent).find((item) => item.isLink && item.value === textContent);
 
         if (!textContent || !link) {
           return false;

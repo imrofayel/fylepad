@@ -1,5 +1,5 @@
 import tippy, { type Instance } from "tippy.js";
-import type { Editor, posToDOMRect  } from "@tiptap/core";
+import type { Editor, posToDOMRect } from "@tiptap/core";
 import type { EditorView } from "@tiptap/pm/view";
 
 export interface TippyInitOptions {
@@ -95,7 +95,7 @@ class Tooltip {
     if (this.tippyInstance.popper.firstChild) {
       (this.tippyInstance.popper.firstChild as HTMLElement).addEventListener(
         "blur",
-        this.tippyBlurHandler
+        this.tippyBlurHandler,
       );
     }
   }

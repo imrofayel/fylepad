@@ -34,12 +34,16 @@ export const Markdown = Extension.create<MarkdownOptions, MarkdownStorage>({
       .use(remarkStringify)
       .use(remarkGfm)
       .use(remarkDirective) as unknown as Processor;
-    for (const [key, value] of Object.entries(this.editor.storage as Record<string, NodeMarkdownStorage | MarkMarkdownStorage>)) {
+    for (const [key, value] of Object.entries(
+      this.editor.storage as Record<string, NodeMarkdownStorage | MarkMarkdownStorage>,
+    )) {
       if (key !== this.name && value?.markdown?.hooks?.beforeInit) {
         this.storage.processor = value.markdown.hooks.beforeInit(this.storage.processor);
       }
     }
-    for (const [key, value] of Object.entries(this.editor.storage as Record<string, NodeMarkdownStorage | MarkMarkdownStorage>)) {
+    for (const [key, value] of Object.entries(
+      this.editor.storage as Record<string, NodeMarkdownStorage | MarkMarkdownStorage>,
+    )) {
       if (key !== this.name && value?.markdown?.hooks?.afterInit) {
         this.storage.processor = value.markdown.hooks.afterInit(this.storage.processor);
       }
@@ -60,7 +64,9 @@ export const Markdown = Extension.create<MarkdownOptions, MarkdownStorage>({
     this.storage.set = (markdown: string, emit?: boolean) => {
       const tr = this.editor.state.tr;
       const doc = this.editor.storage[this.name].parse(markdown);
-      this.editor.view.dispatch(tr.replaceWith(0, tr.doc.content.size, doc).setMeta("preventUpdate", !emit));
+      this.editor.view.dispatch(
+        tr.replaceWith(0, tr.doc.content.size, doc).setMeta("preventUpdate", !emit),
+      );
     };
   },
 });

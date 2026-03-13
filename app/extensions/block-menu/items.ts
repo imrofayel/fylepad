@@ -13,7 +13,7 @@ const icons = {
   hr: `<svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="divider" style="width: 25px; height: 25px; display: block; fill: currentColor; flex-shrink: 0;"><path d="M4 9.375a.625.625 0 1 0 0 1.25h12a.625.625 0 1 0 0-1.25z"></path></svg>`,
   table: `<svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="viewTable" style="width: 25px; height: 25px; display: block; fill: currentColor; flex-shrink: 0;"><path d="M4.5 4.125A2.125 2.125 0 0 0 2.375 6.25v7.5c0 1.174.951 2.125 2.125 2.125h11a2.125 2.125 0 0 0 2.125-2.125v-7.5A2.125 2.125 0 0 0 15.5 4.125zm11.875 7h-5.75v-2.25h5.75zm-5.75 1.25h5.75v1.375a.875.875 0 0 1-.875.875h-4.875zm-1.25-1.25h-5.75v-2.25h5.75zm-5.75 1.25h5.75v2.25H4.5a.875.875 0 0 1-.875-.875zm0-4.75V6.25c0-.483.392-.875.875-.875h4.875v2.25zm7 0v-2.25H15.5c.483 0 .875.392.875.875v1.375z"></path></svg>`,
   mermaid: `<svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="whaleTail" style="width: 25px; height: 25px; display: block; fill: currentColor; flex-shrink: 0;"><path d="M2.052 4.126a.63.63 0 0 1 .56-.178l3.105.564A6.63 6.63 0 0 1 9.923 7.18l.077.107.077-.107a6.63 6.63 0 0 1 4.206-2.668l3.105-.564a.625.625 0 0 1 .724.742l-.625 2.998a5.64 5.64 0 0 1-4.028 4.288c-.566.155-.959.67-.959 1.257v3.33c0 .345-.28.625-.625.625h-3.75a.625.625 0 0 1-.625-.625v-3.33c0-.587-.392-1.101-.959-1.257a5.64 5.64 0 0 1-4.028-4.288L1.888 4.69a.63.63 0 0 1 .164-.564m1.25 1.217.435 2.09a4.39 4.39 0 0 0 3.135 3.338 2.55 2.55 0 0 1 1.878 2.462v2.704h2.5v-2.704c0-1.15.769-2.158 1.878-2.462a4.39 4.39 0 0 0 3.136-3.337l.435-2.09-2.193.398a5.38 5.38 0 0 0-3.412 2.164l-.585.82a.625.625 0 0 1-1.018 0l-.585-.82a5.38 5.38 0 0 0-3.412-2.164z"></path></svg>`,
-  plantUML: `<svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="chartBarYAxis" style="width: 25px; height: 25px; display: block; fill: currentColor; flex-shrink: 0;"><path d="M14.375 4.25c0-.621-.504-1.125-1.125-1.125h-9c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125h9c.621 0 1.125-.504 1.125-1.125zm-10 .125h8.75v1.25h-8.75zm4.875 3.75c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125h-5a1.125 1.125 0 0 1-1.125-1.125v-1.5c0-.621.504-1.125 1.125-1.125zm-.125 1.25h-4.75v1.25h4.75zm6.625 3.75c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125H4.25a1.125 1.125 0 0 1-1.125-1.125v-1.5c0-.621.504-1.125 1.125-1.125zm-.125 1.25H4.375v1.25h11.25z"></path></svg>`
+  plantUML: `<svg aria-hidden="true" role="graphics-symbol" viewBox="0 0 20 20" class="chartBarYAxis" style="width: 25px; height: 25px; display: block; fill: currentColor; flex-shrink: 0;"><path d="M14.375 4.25c0-.621-.504-1.125-1.125-1.125h-9c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125h9c.621 0 1.125-.504 1.125-1.125zm-10 .125h8.75v1.25h-8.75zm4.875 3.75c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125h-5a1.125 1.125 0 0 1-1.125-1.125v-1.5c0-.621.504-1.125 1.125-1.125zm-.125 1.25h-4.75v1.25h4.75zm6.625 3.75c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125H4.25a1.125 1.125 0 0 1-1.125-1.125v-1.5c0-.621.504-1.125 1.125-1.125zm-.125 1.25H4.375v1.25h11.25z"></path></svg>`,
 };
 
 export const BlockMenuItems = Extension.create({
@@ -43,7 +43,7 @@ export const BlockMenuItems = Extension.create({
             keywords: "list task todo checkbox",
             action: (editor) => editor.chain().focus().toggleTaskList().run(),
           },
-                    {
+          {
             id: "heading1",
             name: "Heading 1",
             icon: icons.h1,
@@ -90,14 +90,16 @@ export const BlockMenuItems = Extension.create({
             name: "Table",
             icon: icons.table,
             keywords: "table grid",
-            action: (editor) => editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run(),
+            action: (editor) =>
+              editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run(),
           },
-        {
+          {
             id: "code-mermaid",
             name: "Code — Mermaid",
             icon: icons.mermaid,
             keywords: "mermaid diagram chart",
-            action: (editor) => editor.commands.setMermaid('graph TD;\n  A-->B;  A-->C;\n  B-->D;\n  C-->D;'),
+            action: (editor) =>
+              editor.commands.setMermaid("graph TD;\n  A-->B;  A-->C;\n  B-->D;\n  C-->D;"),
           },
 
           {
@@ -105,11 +107,9 @@ export const BlockMenuItems = Extension.create({
             name: "Code — PlantUML",
             icon: icons.plantUML,
             keywords: "plantUML diagram chart uml",
-            action: (editor) => editor.commands.setPlantuml('@startuml\nBob -> Alice : hello\n@enduml'),
-          }
-
-
-
+            action: (editor) =>
+              editor.commands.setPlantuml("@startuml\nBob -> Alice : hello\n@enduml"),
+          },
         ],
       },
     } satisfies BlockMenuItemStorage;

@@ -9,11 +9,7 @@
     "active": true,
     "category": "DeveloperTool",
     "copyright": "",
-    "targets": [
-      "dmg",
-      "deb",
-      "msi"
-    ],
+    "targets": ["dmg", "deb", "msi"],
     "externalBin": [],
     "icon": [
       "icons/32x32.png",

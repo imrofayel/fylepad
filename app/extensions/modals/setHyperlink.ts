@@ -1,6 +1,7 @@
 import type { Editor } from "@tiptap/core";
 import type Tooltip from "../helpers/tippyHelper";
-import type { TippyInitOptions } from "../helpers/tippyHelper";import { find } from "linkifyjs";
+import type { TippyInitOptions } from "../helpers/tippyHelper";
+import { find } from "linkifyjs";
 
 export type TSetHyperlinkModalOptions = {
   editor: Editor;

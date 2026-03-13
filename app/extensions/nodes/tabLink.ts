@@ -1,32 +1,32 @@
-import { mergeAttributes, Node } from '@tiptap/core'
-import type { Node as ProseMirrorNode } from '@tiptap/pm/model'
+import { mergeAttributes, Node } from "@tiptap/core";
+import type { Node as ProseMirrorNode } from "@tiptap/pm/model";
 
 export interface TabLinkOptions {
-  HTMLAttributes: Record<string, unknown>
-  renderLabel: (props: { options: TabLinkOptions; node: ProseMirrorNode }) => string
+  HTMLAttributes: Record<string, unknown>;
+  renderLabel: (props: { options: TabLinkOptions; node: ProseMirrorNode }) => string;
 }
 
-declare module '@tiptap/core' {
+declare module "@tiptap/core" {
   interface Commands<ReturnType> {
     tabLink: {
-      setTabLink: (options: { id: string; label?: string }) => ReturnType
-    }
+      setTabLink: (options: { id: string; label?: string }) => ReturnType;
+    };
   }
 }
 
 export const TabLink = Node.create<TabLinkOptions>({
-  name: 'tabLink',
+  name: "tabLink",
 
   addOptions() {
     return {
       HTMLAttributes: {},
       renderLabel({ node }) {
-        return node.attrs.label || node.attrs.id
+        return node.attrs.label || node.attrs.id;
       },
-    }
+    };
   },
 
-  group: 'inline',
+  group: "inline",
 
   inline: true,
 
@@ -38,29 +38,29 @@ export const TabLink = Node.create<TabLinkOptions>({
     return {
       id: {
         default: null,
-        parseHTML: element => element.getAttribute('data-tab-id'),
-        renderHTML: attributes => {
+        parseHTML: (element) => element.getAttribute("data-tab-id"),
+        renderHTML: (attributes) => {
           if (!attributes.id) {
-            return {}
+            return {};
           }
           return {
-            'data-tab-id': attributes.id,
-          }
+            "data-tab-id": attributes.id,
+          };
         },
       },
       label: {
         default: null,
-        parseHTML: element => element.getAttribute('data-label'),
-        renderHTML: attributes => {
+        parseHTML: (element) => element.getAttribute("data-label"),
+        renderHTML: (attributes) => {
           if (!attributes.label) {
-            return {}
+            return {};
           }
           return {
-            'data-label': attributes.label,
-          }
+            "data-label": attributes.label,
+          };
         },
       },
-    }
+    };
   },
 
   parseHTML() {
@@ -68,38 +68,33 @@ export const TabLink = Node.create<TabLinkOptions>({
       {
         tag: `span[data-type="${this.name}"]`,
       },
-    ]
+    ];
   },
 
   renderHTML({ node, HTMLAttributes }) {
     return [
-      'span',
-      mergeAttributes(
-        { 'data-type': this.name },
-        this.options.HTMLAttributes,
-        HTMLAttributes,
-        {
-          class: 'tab-link',
-        }
-      ),
+      "span",
+      mergeAttributes({ "data-type": this.name }, this.options.HTMLAttributes, HTMLAttributes, {
+        class: "tab-link",
+      }),
       [
-        'span',
+        "span",
         {
-          class: 'tab-link-icon',
+          class: "tab-link-icon",
         },
-        '📄',
+        "📄",
       ],
       [
-        'span',
+        "span",
         {
-          class: 'tab-link-label',
+          class: "tab-link-label",
         },
         this.options.renderLabel({
           options: this.options,
           node,
         }),
       ],
-    ]
+    ];
   },
 
   addCommands() {
@@ -110,10 +105,10 @@ export const TabLink = Node.create<TabLinkOptions>({
           return commands.insertContent({
             type: this.name,
             attrs: options,
-          })
+          });
         },
-    }
+    };
   },
-})
+});
 
-export default TabLink
+export default TabLink;

@@ -1,4 +1,4 @@
-import type { Extension, Mark, Node, AnyExtension  } from "@tiptap/core";
+import type { Extension, Mark, Node, AnyExtension } from "@tiptap/core";
 
 export function debounce<A extends unknown[]>(delay: number, apply: (...args: A) => void) {
   let timer: number | undefined;

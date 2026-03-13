@@ -22,7 +22,7 @@ export default function autoHyperlink(options: AutoHyperlinkOptions): Plugin {
         transactions.some((transaction) => transaction.docChanged) &&
         !oldState.doc.eq(newState.doc);
       const preventAutoHyperlink = transactions.some((transaction) =>
-        transaction.getMeta("preventAutoHyperlink")
+        transaction.getMeta("preventAutoHyperlink"),
       );
 
       if (!docChanges || preventAutoHyperlink) {
@@ -30,9 +30,7 @@ export default function autoHyperlink(options: AutoHyperlinkOptions): Plugin {
       }
 
       const { tr } = newState;
-      const transform = combineTransactionSteps(oldState.doc, [
-        ...transactions,
-      ]);
+      const transform = combineTransactionSteps(oldState.doc, [...transactions]);
       const { mapping } = transform;
       const changes = getChangedRanges(transform);
 
@@ -43,29 +41,17 @@ export default function autoHyperlink(options: AutoHyperlinkOptions): Plugin {
           .forEach((oldMark) => {
             const newFrom = mapping.map(oldMark.from);
             const newTo = mapping.map(oldMark.to);
-            const newMarks = getMarksBetween(
-              newFrom,
-              newTo,
-              newState.doc
-            ).filter((item) => item.mark.type === options.type);
+            const newMarks = getMarksBetween(newFrom, newTo, newState.doc).filter(
+              (item) => item.mark.type === options.type,
+            );
 
             if (!newMarks.length) {
               return;
             }
 
             const newMark = newMarks[0];
-            const oldLinkText = oldState.doc.textBetween(
-              oldMark.from,
-              oldMark.to,
-              undefined,
-              " "
-            );
-            const newLinkText = newState.doc.textBetween(
-              newMark.from,
-              newMark.to,
-              undefined,
-              " "
-            );
+            const oldLinkText = oldState.doc.textBetween(oldMark.from, oldMark.to, undefined, " ");
+            const newLinkText = newState.doc.textBetween(newMark.from, newMark.to, undefined, " ");
             const wasLink = test(oldLinkText);
             const isLink = test(newLinkText);
 
@@ -80,7 +66,7 @@ export default function autoHyperlink(options: AutoHyperlinkOptions): Plugin {
         const nodesInChangedRanges = findChildrenInRange(
           newState.doc,
           newRange,
-          (node) => node.isTextblock
+          (node) => node.isTextblock,
         );
 
         let textBlock: NodeWithPos | undefined;
@@ -93,38 +79,32 @@ export default function autoHyperlink(options: AutoHyperlinkOptions): Plugin {
             textBlock.pos,
             textBlock.pos + textBlock.node.nodeSize,
             undefined,
-            " "
+            " ",
           );
         } else if (
           nodesInChangedRanges.length &&
           // We want to make sure to include the block seperator argument to treat hard breaks like spaces
-          newState.doc
-            .textBetween(newRange.from, newRange.to, " ", " ")
-            .endsWith(" ")
+          newState.doc.textBetween(newRange.from, newRange.to, " ", " ").endsWith(" ")
         ) {
           textBlock = nodesInChangedRanges[0];
           textBeforeWhitespace = newState.doc.textBetween(
             textBlock.pos,
             newRange.to,
             undefined,
-            " "
+            " ",
           );
         }
 
         if (textBlock && textBeforeWhitespace) {
-          const wordsBeforeWhitespace = textBeforeWhitespace
-            .split(" ")
-            .filter((s) => s !== "");
+          const wordsBeforeWhitespace = textBeforeWhitespace.split(" ").filter((s) => s !== "");
 
           if (wordsBeforeWhitespace.length <= 0) {
             return false;
           }
 
-          const lastWordBeforeSpace =
-            wordsBeforeWhitespace[wordsBeforeWhitespace.length - 1];
+          const lastWordBeforeSpace = wordsBeforeWhitespace[wordsBeforeWhitespace.length - 1];
           const lastWordAndBlockOffset =
-            textBlock.pos +
-            textBeforeWhitespace.lastIndexOf(lastWordBeforeSpace);
+            textBlock.pos + textBeforeWhitespace.lastIndexOf(lastWordBeforeSpace);
 
           if (!lastWordBeforeSpace) {
             return false;
@@ -151,7 +131,7 @@ export default function autoHyperlink(options: AutoHyperlinkOptions): Plugin {
                 link.to,
                 options.type.create({
                   href: link.href,
-                })
+                }),
               );
             });
         }

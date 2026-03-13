@@ -1,4 +1,4 @@
-import Image from '@tiptap/extension-image';
+import Image from "@tiptap/extension-image";
 
 export const ImageResize = Image.extend({
   addAttributes() {
@@ -10,9 +10,9 @@ export const ImageResize = Image.extend({
         default: null,
       },
       style: {
-        default: 'width: 100%; height: auto; cursor: pointer;',
-        parseHTML: element => {
-          const width = element.getAttribute('width');
+        default: "width: 100%; height: auto; cursor: pointer;",
+        parseHTML: (element) => {
+          const width = element.getAttribute("width");
           return width
             ? `width: ${width}px; height: auto; cursor: pointer;`
             : `${element.style.cssText}`;
@@ -69,13 +69,13 @@ export const ImageResize = Image.extend({
       tabindex: {
         default: null,
       },
-      'aria-label': {
+      "aria-label": {
         default: null,
       },
-      'aria-labelledby': {
+      "aria-labelledby": {
         default: null,
       },
-      'aria-describedby': {
+      "aria-describedby": {
         default: null,
       },
     };
@@ -87,12 +87,12 @@ export const ImageResize = Image.extend({
         options: { editable },
       } = editor;
       const { style } = node.attrs;
-      const $wrapper = document.createElement('div');
-      const $container = document.createElement('div');
-      const $img = document.createElement('img');
+      const $wrapper = document.createElement("div");
+      const $container = document.createElement("div");
+      const $img = document.createElement("img");
 
       const dispatchNodeView = () => {
-        if (typeof getPos === 'function') {
+        if (typeof getPos === "function") {
           const newAttrs = {
             ...node.attrs,
             style: `${$img.style.cssText}`,
@@ -101,10 +101,10 @@ export const ImageResize = Image.extend({
         }
       };
 
-      $wrapper.setAttribute('style', `display: flex;`);
+      $wrapper.setAttribute("style", `display: flex;`);
       $wrapper.appendChild($container);
 
-      $container.setAttribute('style', `${style}`);
+      $container.setAttribute("style", `${style}`);
       $container.appendChild($img);
 
       Object.entries(node.attrs).forEach(([key, value]) => {
@@ -115,29 +115,29 @@ export const ImageResize = Image.extend({
       if (!editable) return { dom: $img };
 
       const dotsPosition = [
-        'top: -4px; left: -4px; cursor: nwse-resize;',
-        'top: -4px; right: -4px; cursor: nesw-resize;',
-        'bottom: -4px; left: -4px; cursor: nesw-resize;',
-        'bottom: -4px; right: -4px; cursor: nwse-resize;',
+        "top: -4px; left: -4px; cursor: nwse-resize;",
+        "top: -4px; right: -4px; cursor: nesw-resize;",
+        "bottom: -4px; left: -4px; cursor: nesw-resize;",
+        "bottom: -4px; right: -4px; cursor: nwse-resize;",
       ];
 
       let isResizing = false;
       let startX: number, startWidth: number;
 
-      $container.addEventListener('click', () => {
+      $container.addEventListener("click", () => {
         $container.setAttribute(
-          'style',
+          "style",
           `position: relative; border: 3px solid #6a00f5; ${style} cursor: pointer;`,
         );
 
         Array.from({ length: 4 }, (_, index) => {
-          const $dot = document.createElement('div');
+          const $dot = document.createElement("div");
           $dot.setAttribute(
-            'style',
+            "style",
             `background-color: transparent; position: absolute; width: 9px; height: 9px; border: 0px solid black; border-radius: 50%; ${dotsPosition[index]}`,
           );
 
-          $dot.addEventListener('mousedown', e => {
+          $dot.addEventListener("mousedown", (e) => {
             e.preventDefault();
             isResizing = true;
             startX = e.clientX;
@@ -149,9 +149,9 @@ export const ImageResize = Image.extend({
 
               const newWidth = startWidth + deltaX;
 
-              $container.style.width = newWidth + 'px';
+              $container.style.width = newWidth + "px";
 
-              $img.style.width = newWidth + 'px';
+              $img.style.width = newWidth + "px";
             };
 
             const onMouseUp = () => {
@@ -160,25 +160,25 @@ export const ImageResize = Image.extend({
               }
               dispatchNodeView();
 
-              document.removeEventListener('mousemove', onMouseMove);
-              document.removeEventListener('mouseup', onMouseUp);
+              document.removeEventListener("mousemove", onMouseMove);
+              document.removeEventListener("mouseup", onMouseUp);
             };
 
-            document.addEventListener('mousemove', onMouseMove);
-            document.addEventListener('mouseup', onMouseUp);
+            document.addEventListener("mousemove", onMouseMove);
+            document.addEventListener("mouseup", onMouseUp);
           });
           $container.appendChild($dot);
         });
       });
 
-      document.addEventListener('click', (e: MouseEvent) => {
+      document.addEventListener("click", (e: MouseEvent) => {
         const $target = e.target as HTMLElement;
         const isClickInside = $container.contains($target);
 
         if (!isClickInside) {
-          const containerStyle = $container.getAttribute('style');
-          const newStyle = containerStyle?.replace('border: 1px dashed #6C6C6C;', '');
-          $container.setAttribute('style', newStyle as string);
+          const containerStyle = $container.getAttribute("style");
+          const newStyle = containerStyle?.replace("border: 1px dashed #6C6C6C;", "");
+          $container.setAttribute("style", newStyle as string);
 
           if ($container.childElementCount > 1) {
             for (let i = 0; i < 4; i++) {

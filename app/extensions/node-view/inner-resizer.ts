@@ -22,12 +22,17 @@ export class InnerResizerView implements NodeView {
   private _node: Node;
   private _root: HTMLElement;
 
-  public static create(options: Partial<Omit<InnerResizerViewOptions, keyof Omit<NodeViewRendererProps, "HTMLAttributes">>>) {
-    return (_options: NodeViewRendererProps) => new InnerResizerView({
-      ...options,
-      ..._options,
-      HTMLAttributes: options.HTMLAttributes ?? {},
-    });
+  public static create(
+    options: Partial<
+      Omit<InnerResizerViewOptions, keyof Omit<NodeViewRendererProps, "HTMLAttributes">>
+    >,
+  ) {
+    return (_options: NodeViewRendererProps) =>
+      new InnerResizerView({
+        ...options,
+        ..._options,
+        HTMLAttributes: options.HTMLAttributes ?? {},
+      });
   }
 
   constructor(options: InnerResizerViewOptions) {
@@ -41,14 +46,18 @@ export class InnerResizerView implements NodeView {
       this._root.setAttribute("name", this.options.id);
     }
     if (this.options.class) {
-      for (const item of Array.isArray(this.options.class) ? this.options.class : [this.options.class]) {
+      for (const item of Array.isArray(this.options.class)
+        ? this.options.class
+        : [this.options.class]) {
         this._root.classList.add(item);
       }
     }
     if (this.options.style) {
-      for (const item of Array.isArray(this.options.style) ? this.options.style : [this.options.style]) {
+      for (const item of Array.isArray(this.options.style)
+        ? this.options.style
+        : [this.options.style]) {
         for (const [key, val] of Object.entries(item)) {
-           // @ts-expect-error - dynamic CSS property assignment via string key
+          // @ts-expect-error - dynamic CSS property assignment via string key
           this._root.style[key] = val;
         }
       }
@@ -205,12 +214,20 @@ export class InnerResizerView implements NodeView {
         return;
       }
       if (direction === "left") {
-        const size = store.size + Math.round((e.clientX - store.offset) * (this._root.style.alignSelf === "center" ? 2 : 1));
+        const size =
+          store.size +
+          Math.round(
+            (e.clientX - store.offset) * (this._root.style.alignSelf === "center" ? 2 : 1),
+          );
         if (size >= 100) {
           this._root.style.width = `${size}px`;
         }
       } else if (direction === "right") {
-        const size = store.size - Math.round((e.clientX - store.offset) * (this._root.style.alignSelf === "center" ? 2 : 1));
+        const size =
+          store.size -
+          Math.round(
+            (e.clientX - store.offset) * (this._root.style.alignSelf === "center" ? 2 : 1),
+          );
         if (size >= 100) {
           this._root.style.width = `${size}px`;
         }

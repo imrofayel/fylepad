@@ -1,23 +1,50 @@
-import type { Editor, type Range } from "@tiptap/core";
-import type { SuggestionKeyDownProps, SuggestionOptions, SuggestionProps } from "@tiptap/suggestion";
+import { Editor } from "@tiptap/core";
+import type { Range } from "@tiptap/core";
+import type {
+  SuggestionKeyDownProps,
+  SuggestionOptions,
+  SuggestionProps,
+} from "@tiptap/suggestion";
 import scrollIntoView from "smooth-scroll-into-view-if-needed";
 import tippy, { type Instance, type Props } from "tippy.js";
 
-export type BlockMenuViewItem = "|" | {
-  id: string;
-  name: string;
-  icon?: string;
-  shortcut?: string;
-  action: (editor: Editor) => void;
-};
+export type BlockMenuViewItem =
+  | "|"
+  | {
+      id: string;
+      name: string;
+      icon?: string;
+      shortcut?: string;
+      action: (editor: Editor) => void;
+    };
 
 export interface BlockMenuViewOptions {
   editor: Editor;
   tippy?: Partial<Props>;
-  onInit?: (props: { editor: Editor; view: BlockMenuView; range: Range; root: HTMLElement }) => void;
-  onMount?: (props: { editor: Editor; view: BlockMenuView; range: Range; root: HTMLElement }) => void;
-  onUpdate?: (props: { editor: Editor; view: BlockMenuView; range: Range; root: HTMLElement }) => void;
-  onDestroy?: (props: { editor: Editor; view: BlockMenuView; range: Range; root: HTMLElement }) => void;
+  onInit?: (props: {
+    editor: Editor;
+    view: BlockMenuView;
+    range: Range;
+    root: HTMLElement;
+  }) => void;
+  onMount?: (props: {
+    editor: Editor;
+    view: BlockMenuView;
+    range: Range;
+    root: HTMLElement;
+  }) => void;
+  onUpdate?: (props: {
+    editor: Editor;
+    view: BlockMenuView;
+    range: Range;
+    root: HTMLElement;
+  }) => void;
+  onDestroy?: (props: {
+    editor: Editor;
+    view: BlockMenuView;
+    range: Range;
+    root: HTMLElement;
+  }) => void;
   classes?: Array<string>;
   attributes?: Record<string, string>;
   dictionary?: { empty?: string };
@@ -99,7 +126,13 @@ export class BlockMenuView implements ReturnType<NonNullable<SuggestionOptions["
   }
 
   public onUpdate(props: SuggestionProps) {
-    if (this._element === undefined || this._popover === undefined || this._index === undefined || this._nodes === undefined || this._items === undefined) {
+    if (
+      this._element === undefined ||
+      this._popover === undefined ||
+      this._index === undefined ||
+      this._nodes === undefined ||
+      this._items === undefined
+    ) {
       return;
     }
 
@@ -125,7 +158,13 @@ export class BlockMenuView implements ReturnType<NonNullable<SuggestionOptions["
   }
 
   public onKeyDown(props: SuggestionKeyDownProps) {
-    if (this._element === undefined || this._popover === undefined || this._index === undefined || this._nodes === undefined || this._items === undefined) {
+    if (
+      this._element === undefined ||
+      this._popover === undefined ||
+      this._index === undefined ||
+      this._nodes === undefined ||
+      this._items === undefined
+    ) {
       return false;
     }
 
@@ -159,7 +198,13 @@ export class BlockMenuView implements ReturnType<NonNullable<SuggestionOptions["
   }
 
   public onExit(props: SuggestionProps) {
-    if (this._element === undefined || this._popover === undefined || this._index === undefined || this._nodes === undefined || this._items === undefined) {
+    if (
+      this._element === undefined ||
+      this._popover === undefined ||
+      this._index === undefined ||
+      this._nodes === undefined ||
+      this._items === undefined
+    ) {
       return;
     }
 
@@ -182,7 +227,13 @@ export class BlockMenuView implements ReturnType<NonNullable<SuggestionOptions["
   }
 
   private _select(index: number, scroll?: boolean) {
-    if (this._element === undefined || this._popover === undefined || this._index === undefined || this._nodes === undefined || this._items === undefined) {
+    if (
+      this._element === undefined ||
+      this._popover === undefined ||
+      this._index === undefined ||
+      this._nodes === undefined ||
+      this._items === undefined
+    ) {
       return;
     }
 
@@ -192,25 +243,37 @@ export class BlockMenuView implements ReturnType<NonNullable<SuggestionOptions["
     this._index = Math.min(this._index, Math.max(0, this._items.length - 1));
 
     for (let i = 0; i < this._nodes.length; i++) {
-      if (i === this._index) {
-        this._nodes[i].setAttribute("data-active", "true");
-      } else {
-        this._nodes[i].removeAttribute("data-active");
+      const node = this._nodes[i];
+      if (node) {
+        if (i === this._index) {
+          node.setAttribute("data-active", "true");
+        } else {
+          node.removeAttribute("data-active");
+        }
       }
     }
 
     if (scroll) {
-      // noinspection JSIgnoredPromiseFromCall
-      scrollIntoView(this._nodes[this._index], {
-        block: "center",
-        scrollMode: "if-needed",
-        boundary: parent => parent !== this._element,
-      });
+      const node = this._nodes[this._index];
+      if (node) {
+        // noinspection JSIgnoredPromiseFromCall
+        scrollIntoView(node, {
+          block: "center",
+          scrollMode: "if-needed",
+          boundary: (parent) => parent !== this._element,
+        });
+      }
     }
   }
 
   private _render() {
-    if (this._element === undefined || this._popover === undefined || this._index === undefined || this._nodes === undefined || this._items === undefined) {
+    if (
+      this._element === undefined ||
+      this._popover === undefined ||
+      this._index === undefined ||
+      this._nodes === undefined ||
+      this._items === undefined
+    ) {
       return;
     }
 
@@ -228,6 +291,9 @@ export class BlockMenuView implements ReturnType<NonNullable<SuggestionOptions["
       this._nodes = [];
       for (let i = 0; i < this._items.length; i++) {
         const item = this._items[i];
+        if (!item) {
+          continue;
+        }
         if (item === "|") {
           const root = document.createElement("span");
           root.classList.add("ProseMirror-bm-divider");
@@ -279,11 +345,14 @@ export class BlockMenuView implements ReturnType<NonNullable<SuggestionOptions["
       }
       this._element.append(...this._nodes);
       // noinspection JSIgnoredPromiseFromCall
-      scrollIntoView(this._nodes[this._index], {
-        block: "center",
-        scrollMode: "if-needed",
-        boundary: parent => parent !== this._element,
-      });
+      const activeNode = this._nodes[this._index];
+      if (activeNode) {
+        scrollIntoView(activeNode, {
+          block: "center",
+          scrollMode: "if-needed",
+          boundary: (parent) => parent !== this._element,
+        });
+      }
     } else {
       const view = document.createElement("div");
       view.classList.add("ProseMirror-bm-empty");

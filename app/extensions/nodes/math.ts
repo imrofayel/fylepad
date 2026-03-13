@@ -46,14 +46,14 @@ export const MathBlock = Node.create<MathBlockOptions>({
     return {
       markdown: {
         parser: {
-          match: node => node.type === "math",
+          match: (node) => node.type === "math",
           apply: (state, node, type) => {
             const code = node.value as string;
             state.openNode(type).addText(code).closeNode();
           },
         },
         serializer: {
-          match: node => node.type.name === this.name,
+          match: (node) => node.type.name === this.name,
           apply: (state, node) => {
             state.addNode({
               type: "math",
@@ -62,7 +62,7 @@ export const MathBlock = Node.create<MathBlockOptions>({
           },
         },
         hooks: {
-          beforeInit: processor => processor.use(remarkMath),
+          beforeInit: (processor) => processor.use(remarkMath),
         },
       },
       blockMenu: {
@@ -72,7 +72,7 @@ export const MathBlock = Node.create<MathBlockOptions>({
             name: this.options.dictionary.name,
             icon: icon("math"),
             keywords: "mathblock,sxgs,gsk",
-            action: editor => editor.chain().setMathBlock("E = mc^2").focus().run(),
+            action: (editor) => editor.chain().setMathBlock("E = mc^2").focus().run(),
           },
         ],
       },
