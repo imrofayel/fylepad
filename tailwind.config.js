@@ -31,7 +31,6 @@ module.exports = {
         onError: "hsl(var(--on-error))",
         errorContainer: "hsl(var(--error-container))",
         onErrorContainer: "hsl(var(--on-error-container))",
-        background: "hsl(var(--background))",
         onBackground: "hsl(var(--on-background))",
         surface: "hsl(var(--surface))",
         onSurface: "hsl(var(--on-surface))",

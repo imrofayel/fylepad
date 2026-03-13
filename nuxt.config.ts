@@ -89,7 +89,7 @@ export default defineNuxtConfig({
 
   },
 
-  modules: ['@nuxt/icon', '@nuxtjs/tailwindcss', '@nuxtjs/color-mode', '@vite-pwa/nuxt'  ],
+  modules: ['@nuxt/icon', '@nuxtjs/tailwindcss', '@nuxtjs/color-mode', '@vite-pwa/nuxt', "@nuxt/eslint"],
   css: ['assets/css/main.css'],
   compatibilityDate: '2024-12-23'
 });
