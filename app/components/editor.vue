@@ -1,9 +1,9 @@
 <template>
   <UseDraggable class="absolute flex w-full items-center justify-center" style="user-select: none">
-    <div class="z-[40] flex w-full cursor-move items-center justify-center">
+    <div class="z-40 flex w-full cursor-move items-center justify-center">
       <div
         v-if="showSearch"
-        class="fixed top-0 z-[100] m-6 flex flex-col items-end justify-center space-y-2 rounded-2xl"
+        class="fixed top-0 z-100 m-6 flex flex-col items-end justify-center space-y-2 rounded-2xl"
       >
         <section class="flex gap-2">
           <div
@@ -100,11 +100,11 @@
   <div class="tiptap flex h-full flex-col dark:bg-[#171717]">
     <UiDropdownMenu v-if="!focusMode.focused">
       <UiDropdownMenuTrigger
-        class="fixed top-1 right-0 z-50 block p-1.5 px-2.5 !opacity-100 sm:hidden"
+        class="fixed top-1 right-0 z-50 block p-1.5 px-2.5 opacity-100! sm:hidden"
       >
         <button
           :class="[
-            'inline-block cursor-pointer items-center justify-center rounded-2xl border border-gray-200 bg-white !px-[7px] !py-[6px] text-black opacity-100 dark:border-[#525252] dark:bg-[#404040] dark:text-white',
+            'inline-block cursor-pointer items-center justify-center rounded-2xl border border-gray-200 bg-white px-[7px]! py-[6px]! text-black opacity-100 dark:border-[#525252] dark:bg-[#404040] dark:text-white',
           ]"
           title="Menu"
         >
@@ -128,7 +128,7 @@
       >
         <UiDropdownMenuItem>
           <button
-            class="inline-block cursor-pointer items-center justify-center rounded-2xl border border-gray-200 bg-white !px-[7px] !py-[6px] text-black dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
+            class="inline-block cursor-pointer items-center justify-center rounded-2xl border border-gray-200 bg-white px-[7px]! py-[6px]! text-black dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
             title="Command Palette (Ctrl+K)"
             @click="$emit('openCommand')"
           >
@@ -157,7 +157,7 @@
 
         <UiDropdownMenuItem>
           <button
-            class="inline-block cursor-pointer items-center justify-center rounded-2xl border border-gray-200 bg-white !px-[7px] !py-[6px] text-black dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
+            class="inline-block cursor-pointer items-center justify-center rounded-2xl border border-gray-200 bg-white px-[7px]! py-[6px]! text-black dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
             @click="toggleSearch"
           >
             <svg
@@ -189,7 +189,7 @@
         <UiDropdownMenuItem>
           <button
             :class="[
-              'inline-block cursor-pointer items-center justify-center rounded-[14px] border border-gray-200 bg-white !px-[7px] !py-[6px] text-black dark:border-[#52525280] dark:bg-[#17171720] dark:text-gray-50',
+              'inline-block cursor-pointer items-center justify-center rounded-[14px] border border-gray-200 bg-white px-[7px]! py-[6px]! text-black dark:border-[#52525280] dark:bg-[#17171720] dark:text-gray-50',
             ]"
             title="Export Markdown"
             @click="exportMarkdown"
@@ -219,7 +219,7 @@
         <UiDropdownMenuItem>
           <button
             :class="[
-              'inline-block cursor-pointer items-center justify-center rounded-[14px] border border-gray-200 bg-white !px-[7px] !py-[6px] text-black dark:border-[#52525280] dark:bg-[#17171720] dark:text-gray-50',
+              'inline-block cursor-pointer items-center justify-center rounded-[14px] border border-gray-200 bg-white px-[7px]! py-[6px]! text-black dark:border-[#52525280] dark:bg-[#17171720] dark:text-gray-50',
             ]"
             title="Import Markdown"
             @click="importMarkdownOrText"
@@ -241,7 +241,7 @@
           <button
             v-if="colorMode.value == 'dark'"
             :class="[
-              'inline-block cursor-pointer items-center justify-center rounded-[14px] border border-gray-200 bg-white !px-[7px] !py-[6px] text-black dark:border-[#52525280] dark:bg-[#17171720] dark:text-gray-50',
+              'inline-block cursor-pointer items-center justify-center rounded-[14px] border border-gray-200 bg-white px-[7px]! py-[6px]! text-black dark:border-[#52525280] dark:bg-[#17171720] dark:text-gray-50',
             ]"
             title="Light Mode"
             @click="onClick('light')"
@@ -267,7 +267,7 @@
           <button
             v-if="colorMode.value == 'light'"
             :class="[
-              'inline-block cursor-pointer items-center justify-center rounded-[14px] border border-gray-200 bg-white !px-[7px] !py-[6px] text-black dark:border-[#52525280] dark:bg-[#17171720] dark:text-gray-50',
+              'inline-block cursor-pointer items-center justify-center rounded-[14px] border border-gray-200 bg-white px-[7px]! py-[6px]! text-black dark:border-[#52525280] dark:bg-[#17171720] dark:text-gray-50',
             ]"
             title="Dark Mode"
             @click="onClick('dark')"
@@ -298,7 +298,7 @@
         <UiDropdownMenuItem>
           <button
             :class="[
-              'inline-block cursor-pointer items-center justify-center rounded-[14px] border border-gray-200 bg-white !px-[7px] !py-[6px] text-black dark:border-[#52525280] dark:bg-[#17171720] dark:text-gray-50',
+              'inline-block cursor-pointer items-center justify-center rounded-[14px] border border-gray-200 bg-white px-[7px]! py-[6px]! text-black dark:border-[#52525280] dark:bg-[#17171720] dark:text-gray-50',
             ]"
             title="Styling"
             @click="isBottomSheetOpen = true"
@@ -330,7 +330,7 @@
         <UiDropdownMenuItem>
           <button
             :class="[
-              'inline-block cursor-pointer items-center justify-center rounded-[14px] border border-gray-200 bg-white !px-[7px] !py-[6px] text-black dark:border-[#52525280] dark:bg-[#17171720] dark:text-gray-50',
+              'inline-block cursor-pointer items-center justify-center rounded-[14px] border border-gray-200 bg-white px-[7px]! py-[6px]! text-black dark:border-[#52525280] dark:bg-[#17171720] dark:text-gray-50',
             ]"
             title="About"
             @click="open = true"
@@ -365,7 +365,7 @@
 
     <div
       v-if="!focusMode.focused"
-      class="fixed top-1 right-2 !z-50 hidden !items-center gap-x-1.5 space-x-2 px-2 py-2 sm:flex dark:text-gray-50"
+      class="fixed top-1 right-2 z-50! hidden items-center! gap-x-1.5 space-x-2 px-2 py-2 sm:flex dark:text-gray-50"
       :class="
         focusMode.focused
           ? 'opacity-0 transition-all duration-500 ease-in-out'
@@ -383,7 +383,7 @@
           role="graphics-symbol"
           viewBox="0 0 20 20"
           class="lightning"
-          style="width: 25.5px; display: block; flex-shrink: 0"
+          style="width: 25.5px; display: block; shrink: 0"
         >
           <path
             d="M11.633 1.812c.263.096.43.354.41.632l-.392 5.51h3.099a.625.625 0 0 1 .506.992l-6.18 8.54a.625.625 0 0 1-1.13-.412l.402-5.5H5.25a.625.625 0 0 1-.507-.99l6.17-8.55a.625.625 0 0 1 .72-.222m-5.161 8.513H9.02a.625.625 0 0 1 .623.67l-.29 3.976 4.173-5.766H10.98a.625.625 0 0 1-.623-.67l.284-3.987z"
@@ -398,7 +398,7 @@
           role="graphics-symbol"
           viewBox="0 0 20 20"
           class="magnifyingGlass"
-          style="width: 25px; display: block; flex-shrink: 0"
+          style="width: 25px; display: block; shrink: 0"
         >
           <path
             d="M8.875 2.625a6.25 6.25 0 1 0 3.955 11.09l3.983 3.982a.625.625 0 1 0 .884-.884l-3.983-3.982a6.25 6.25 0 0 0-4.84-10.205m-5 6.25a5 5 0 1 1 10 0 5 5 0 0 1-10 0"
@@ -413,7 +413,7 @@
           role="graphics-symbol"
           viewBox="0 0 20 20"
           class="compose"
-          style="width: 24px; display: block; flex-shrink: 0"
+          style="width: 24px; display: block; shrink: 0"
         >
           <path
             d="m16.774 4.341-.59.589-1.109-1.11.596-.594a.784.784 0 0 1 1.103 0c.302.302.302.8 0 1.102zM8.65 12.462l6.816-6.813-1.11-1.11-6.822 6.808a1.1 1.1 0 0 0-.236.393l-.289.932c-.052.196.131.38.315.314l.932-.288a.9.9 0 0 0 .394-.236"
@@ -438,14 +438,14 @@
       class="fixed z-10 flex w-full justify-between p-2 py-0"
       :class="[
         'bg-white dark:bg-[#171717]',
-        focusMode.focused && isVertical ? '!pt-0' : '!pt-3',
+        focusMode.focused && isVertical ? 'pt-0!' : 'pt-3!',
         isVertical ? 'z-0' : 'z-10',
       ]"
     >
       <div
         class="flex w-full items-center justify-between space-x-2 pb-2"
         :class="[
-          isVertical && 'relative -top-6 bg-white !pt-3 !pb-0',
+          isVertical && 'relative -top-6 bg-white pt-3! pb-0!',
           !isSidebarOpen && 'relative -top-8 -right-7',
         ]"
       >
@@ -458,7 +458,7 @@
         />
 
         <!-- <button
-          class="border border-gray-200 bg-white text-black !px-[8px] dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex  "
+          class="border border-gray-200 bg-white text-black px-[8px]! dark:bg-[#404040] dark:border-[#525252] dark:text-gray-50 py-[7px] rounded-2xl justify-center items-center space-x-1 cursor-pointer flex  "
           title="Print" @click="focus" v-if="!focusMode.focused"><svg xmlns="http://www.w3.org/2000/svg" width="22" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" color="currentColor"><path d="M12.5 2h.273c3.26 0 4.892 0 6.024.798c.324.228.612.5.855.805c.848 1.066.848 2.6.848 5.67v2.545c0 2.963 0 4.445-.469 5.628c-.754 1.903-2.348 3.403-4.37 4.113c-1.257.441-2.83.441-5.98.441c-1.798 0-2.698 0-3.416-.252c-1.155-.406-2.066-1.263-2.497-2.35c-.268-.676-.268-1.523-.268-3.216V12"/><path d="M20.5 12a3.333 3.333 0 0 1-3.333 3.333c-.666 0-1.451-.116-2.098.057a1.67 1.67 0 0 0-1.179 1.179c-.173.647-.057 1.432-.057 2.098A3.333 3.333 0 0 1 10.5 22m-6-14.5C4.992 8.006 6.3 10 7 10m2.5-2.5C9.008 8.006 7.7 10 7 10m0 0V2"/></g></svg></button> -->
       </div>
     </div>
@@ -477,10 +477,7 @@
       {{ localTitle || "Untitled" }}
     </div>
 
-    <div
-      class="flex-grow"
-      :class="focusMode.focused ? 'mx-0 mt-6' : isVertical ? '!mt-8' : '!mt-10'"
-    >
+    <div class="grow" :class="focusMode.focused ? 'mx-0 mt-6' : isVertical ? 'mt-8!' : 'mt-10!'">
       <UiBubbleMenu :editor="editor as any" />
 
       <EditorContent :editor="editor as any" class="mb-4 h-full px-4" />
@@ -498,7 +495,7 @@
           <UiDropdownMenu v-if="!editor.can().deleteTable()">
             <UiDropdownMenuTrigger>
               <button
-                class="flex cursor-pointer items-center justify-center space-x-1 rounded-2xl border border-gray-200 bg-white !px-[10px] py-[5px] text-black backdrop-blur-xl sm:hidden dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
+                class="flex cursor-pointer items-center justify-center space-x-1 rounded-2xl border border-gray-200 bg-white px-[10px]! py-[5px] text-black backdrop-blur-xl sm:hidden dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -523,7 +520,7 @@
             >
               <UiDropdownMenuItem>
                 <button
-                  class="flex cursor-pointer items-center justify-center space-x-1 rounded-2xl border border-gray-200 bg-white !px-[10px] py-[5px] text-[16.5px] text-black backdrop-blur-xl dark:border-[#52525280] dark:bg-[#17171720] dark:text-gray-50"
+                  class="flex cursor-pointer items-center justify-center space-x-1 rounded-2xl border border-gray-200 bg-white px-[10px]! py-[5px] text-[16.5px] text-black backdrop-blur-xl dark:border-[#52525280] dark:bg-[#17171720] dark:text-gray-50"
                   @click="
                     editor
                       .chain()
@@ -550,7 +547,7 @@
 
               <UiDropdownMenuItem>
                 <div
-                  class="flex cursor-pointer items-center justify-center space-x-1 rounded-2xl border border-gray-200 bg-white !px-[10px] py-[5px] text-[16.5px] text-black backdrop-blur-xl dark:border-[#52525280] dark:bg-[#17171720] dark:text-gray-50"
+                  class="flex cursor-pointer items-center justify-center space-x-1 rounded-2xl border border-gray-200 bg-white px-[10px]! py-[5px] text-[16.5px] text-black backdrop-blur-xl dark:border-[#52525280] dark:bg-[#17171720] dark:text-gray-50"
                   @click="
                     editor.commands.setMermaid('graph TD;\n  A-->B;  A-->C;\n  B-->D;\n  C-->D;')
                   "
@@ -573,7 +570,7 @@
 
               <UiDropdownMenuItem>
                 <div
-                  class="flex cursor-pointer items-center justify-center space-x-1 rounded-2xl border border-gray-200 bg-white !px-[10px] py-[5px] text-[16.5px] text-black backdrop-blur-xl dark:border-[#52525280] dark:bg-[#17171720] dark:text-gray-50"
+                  class="flex cursor-pointer items-center justify-center space-x-1 rounded-2xl border border-gray-200 bg-white px-[10px]! py-[5px] text-[16.5px] text-black backdrop-blur-xl dark:border-[#52525280] dark:bg-[#17171720] dark:text-gray-50"
                   @click="editor.commands.setPlantuml('@startuml\nBob -> Alice : hello\n@enduml')"
                 >
                   <svg
@@ -596,7 +593,7 @@
 
           <div v-if="!editor.can().deleteTable()" class="hidden space-x-2 sm:flex">
             <div
-              class="drop-shadow-cool tab-item relative flex cursor-pointer items-center justify-center gap-1 rounded-xl border border-[#c6c6c4] bg-white/80 !px-[9px] py-[3px] text-black transition-all duration-200 dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
+              class="drop-shadow-cool tab-item relative flex cursor-pointer items-center justify-center gap-1 rounded-xl border border-[#c6c6c4] bg-white/80 px-[9px]! py-[3px] text-black transition-all duration-200 dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
               @click="
                 editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()
               "
@@ -612,7 +609,7 @@
             </div>
 
             <div
-              class="drop-shadow-cool tab-item relative flex cursor-pointer items-center justify-center gap-1 rounded-xl border border-[#c6c6c4] bg-white/80 !px-[9px] py-[3px] text-black transition-all duration-200 dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
+              class="drop-shadow-cool tab-item relative flex cursor-pointer items-center justify-center gap-1 rounded-xl border border-[#c6c6c4] bg-white/80 px-[9px]! py-[3px] text-black transition-all duration-200 dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
               @click="editor.commands.setMermaid('graph TD;\n  A-->B;  A-->C;\n  B-->D;\n  C-->D;')"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="19" viewBox="0 0 16 16">
@@ -626,7 +623,7 @@
             </div>
 
             <div
-              class="drop-shadow-cool tab-item relative flex cursor-pointer items-center justify-center gap-1 rounded-xl border border-[#c6c6c4] bg-white/80 !px-[9px] py-[3px] text-black transition-all duration-200 dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
+              class="drop-shadow-cool tab-item relative flex cursor-pointer items-center justify-center gap-1 rounded-xl border border-[#c6c6c4] bg-white/80 px-[9px]! py-[3px] text-black transition-all duration-200 dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
               @click="editor.commands.setPlantuml('@startuml\nBob -> Alice : hello\n@enduml')"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="19" viewBox="0 0 16 16">
@@ -644,7 +641,7 @@
 
           <div v-if="editor.can().deleteTable()" class="flex space-x-2">
             <div
-              class="flex max-h-fit cursor-pointer items-center justify-center space-x-1 rounded-2xl border border-gray-200 bg-white/80 !px-[7px] py-[4px] text-black backdrop-blur-xl dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
+              class="flex max-h-fit cursor-pointer items-center justify-center space-x-1 rounded-2xl border border-gray-200 bg-white/80 px-[7px]! py-[4px] text-black backdrop-blur-xl dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
             >
               <button
                 :disabled="!editor.can().deleteRow()"
@@ -691,7 +688,7 @@
 
             <div v-if="editor.can().deleteTable()" class="flex space-x-2">
               <div
-                class="flex max-h-fit cursor-pointer items-center justify-center space-x-1 rounded-2xl border border-gray-200 bg-white/80 !px-[7px] py-[4px] text-black backdrop-blur-xl dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
+                class="flex max-h-fit cursor-pointer items-center justify-center space-x-1 rounded-2xl border border-gray-200 bg-white/80 px-[7px]! py-[4px] text-black backdrop-blur-xl dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
               >
                 <button
                   :disabled="!editor.can().deleteColumn()"
@@ -737,7 +734,7 @@
 
             <div
               :disabled="!editor.can().toggleHeaderCell()"
-              class="hidden max-h-fit cursor-pointer items-center justify-center space-x-1 rounded-2xl border border-gray-200 bg-white/80 !px-[10px] !py-[4px] text-black backdrop-blur-xl sm:flex dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
+              class="hidden max-h-fit cursor-pointer items-center justify-center space-x-1 rounded-2xl border border-gray-200 bg-white/80 px-[10px]! py-[4px]! text-black backdrop-blur-xl sm:flex dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
               @click="editor.chain().focus().toggleHeaderCell().run()"
             >
               <svg
@@ -760,7 +757,7 @@
             </div>
 
             <div
-              class="flex max-h-fit cursor-pointer items-center justify-center space-x-1.5 rounded-2xl border border-[#bb1212] bg-[#e01212] p-1.5 text-base text-white backdrop-blur-xl hover:bg-[#cc1212] sm:!px-[10px] sm:py-[4px] dark:border-[#b91616] dark:bg-[#cc1212] dark:hover:bg-[#b81010]"
+              class="flex max-h-fit cursor-pointer items-center justify-center space-x-1.5 rounded-2xl border border-[#bb1212] bg-[#e01212] p-1.5 text-base text-white backdrop-blur-xl hover:bg-[#cc1212] sm:px-[10px]! sm:py-[4px] dark:border-[#b91616] dark:bg-[#cc1212] dark:hover:bg-[#b81010]"
               @click="editor.chain().focus().deleteTable().run()"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="20" viewBox="0 0 24 24">
@@ -781,12 +778,12 @@
         </div>
         <div class="fixed right-14 bottom-0 hidden items-center space-x-2 py-3 sm:hidden md:flex">
           <div
-            class="drop-shadow-cool tab-item relative flex max-h-fit cursor-pointer items-center justify-center gap-1 rounded-xl border border-[#c6c6c4] bg-white/80 !px-[9px] py-[3px] text-black transition-all duration-200 dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
+            class="drop-shadow-cool tab-item relative flex max-h-fit cursor-pointer items-center justify-center gap-1 rounded-xl border border-[#c6c6c4] bg-white/80 px-[9px]! py-[3px] text-black transition-all duration-200 dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
           >
             {{ characterCount }} characters
           </div>
           <div
-            class="drop-shadow-cool tab-item relative flex cursor-pointer items-center justify-center gap-1 rounded-xl border border-[#c6c6c4] bg-white/80 !px-[9px] py-[3px] text-black transition-all duration-200 dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
+            class="drop-shadow-cool tab-item relative flex cursor-pointer items-center justify-center gap-1 rounded-xl border border-[#c6c6c4] bg-white/80 px-[9px]! py-[3px] text-black transition-all duration-200 dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
           >
             {{ wordCount }} words
           </div>
@@ -794,7 +791,7 @@
       </div>
 
       <button
-        class="drop-shadow-cool tab-item right-0 mx-2 flex cursor-pointer items-center justify-center gap-1 space-x-1 rounded-xl border border-[#c6c6c4] bg-white/80 !px-[6px] py-[5px] text-black backdrop-blur-xl transition-all duration-200 dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
+        class="drop-shadow-cool tab-item right-0 mx-2 flex cursor-pointer items-center justify-center gap-1 space-x-1 rounded-xl border border-[#c6c6c4] bg-white/80 px-[6px]! py-[5px] text-black backdrop-blur-xl transition-all duration-200 dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
         :class="focusMode.focused ? 'absolute top-3 right-3' : 'fixed bottom-3'"
         title="Focus Mode"
         @click="focus"
@@ -821,7 +818,7 @@
 
       <button
         v-if="focusMode.focused"
-        class="absolute top-3 right-[70px] flex cursor-pointer items-center justify-center space-x-1 rounded-2xl border border-gray-200 bg-white/80 !px-[8px] py-[7px] text-black backdrop-blur-xl dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
+        class="absolute top-3 right-[70px] flex cursor-pointer items-center justify-center space-x-1 rounded-2xl border border-gray-200 bg-white/80 px-[8px]! py-[7px] text-black backdrop-blur-xl dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
         title="Print"
         @click="printPDF"
       >
@@ -1477,7 +1474,7 @@ defineExpose({
   .hyperlink-set-modal,
   .hyperlink-edit-modal {
     filter: drop-shadow(0px 2px 5px rgba(0, 0, 0, 0.04));
-    @apply flex overflow-hidden rounded-[20px] border border-gray-200 bg-white/80 px-1.5 !py-1 pl-2.5 text-black backdrop-blur-xl dark:border-[#525252] dark:!bg-[#404040] dark:!text-white/85 dark:text-gray-50;
+    @apply flex overflow-hidden rounded-[20px] border border-gray-200 bg-white/80 px-1.5 py-1! pl-2.5 text-black backdrop-blur-xl dark:border-[#525252] dark:bg-[#404040]! dark:text-gray-50 dark:text-white/85!;
   }
 
   .hyperlink-preview-modal__metadata,
@@ -1532,7 +1529,7 @@ defineExpose({
   }
 
   .hyperlink-edit-modal__apply-button {
-    @apply !rounded-xl border hover:!bg-gray-100/50;
+    @apply rounded-xl! border hover:!bg-gray-100/50;
   }
 
   .hyperlink-preview-modal__remove-button:hover,
@@ -1596,7 +1593,7 @@ defineExpose({
   }
 
   .hyperlink-edit-modal__inputs-wrapper > input {
-    @apply !inline !rounded-2xl bg-white !py-2 dark:bg-[#171717];
+    @apply !inline rounded-2xl! bg-white py-2! dark:bg-[#171717];
   }
 
   .hyperlink-set-modal__buttons-wrapper,

@@ -8,7 +8,7 @@
           role="graphics-symbol"
           viewBox="0 0 20 20"
           class="ellipsis"
-          style="width: 22px; display: block; flex-shrink: 0"
+          style="width: 22px; display: block; shrink: 0"
         >
           <path
             d="M4 11.375a1.375 1.375 0 1 0 0-2.75 1.375 1.375 0 0 0 0 2.75m6 0a1.375 1.375 0 1 0 0-2.75 1.375 1.375 0 0 0 0 2.75m6 0a1.375 1.375 0 1 0 0-2.75 1.375 1.375 0 0 0 0 2.75"
@@ -80,12 +80,7 @@
           class="flex w-full items-center gap-2 rounded-xl p-2 pr-6 text-left text-[16px] transition-colors hover:bg-gray-100 dark:hover:bg-[#333333]"
           @click="$emit('toggleTheme', 'dark')"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="rotate-[180deg]"
-            width="21"
-            viewBox="0 0 16 16"
-          >
+          <svg xmlns="http://www.w3.org/2000/svg" class="rotate-180" width="21" viewBox="0 0 16 16">
             <!-- Icon from Codicons by Microsoft Corporation - https://github.com/microsoft/vscode-codicons/blob/main/LICENSE -->
             <path
               fill="currentColor"

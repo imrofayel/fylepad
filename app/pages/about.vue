@@ -101,7 +101,7 @@
         <button
           v-if="colorMode.value == 'dark'"
           :class="[
-            'drop-shadow-cool inline-block cursor-pointer items-center justify-center rounded-[14px] border border-gray-200 bg-white !px-[7px] !py-[6px] text-black dark:border-[#52525280] dark:bg-white/5 dark:text-gray-50',
+            'drop-shadow-cool inline-block cursor-pointer items-center justify-center rounded-[14px] border border-gray-200 bg-white px-[7px]! py-[6px]! text-black dark:border-[#52525280] dark:bg-white/5 dark:text-gray-50',
           ]"
           title="Light Mode"
           @click="onClick('light')"
@@ -127,7 +127,7 @@
         <button
           v-if="colorMode.value == 'light'"
           :class="[
-            'drop-shadow-cool inline-block cursor-pointer items-center justify-center rounded-[14px] border border-gray-200 bg-white !px-[7px] !py-[6px] text-black dark:border-[#52525280] dark:bg-white/5 dark:text-gray-50',
+            'drop-shadow-cool inline-block cursor-pointer items-center justify-center rounded-[14px] border border-gray-200 bg-white px-[7px]! py-[6px]! text-black dark:border-[#52525280] dark:bg-white/5 dark:text-gray-50',
           ]"
           title="Dark Mode"
           @click="onClick('dark')"
@@ -169,7 +169,7 @@
           </span>
 
           <div class="flex flex-col gap-2 pt-6 text-lg sm:gap-4 sm:text-xl dark:text-white">
-            <span data-name="pencil" data-type="emoji" class="!inline-flex gap-2"
+            <span data-name="pencil" data-type="emoji" class="inline-flex! gap-2"
               ><img
                 src="https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/270f-fe0f.png"
                 draggable="false"
@@ -179,7 +179,7 @@
               /><span>Markdown based formatting with Mermaid and PlantUML support.</span></span
             >
 
-            <span data-name="book" data-type="emoji" class="!inline-flex gap-2"
+            <span data-name="book" data-type="emoji" class="inline-flex! gap-2"
               ><img
                 src="https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f4d6.png"
                 draggable="false"
@@ -189,7 +189,7 @@
               /><span>Your progress is saved always locally even you close the app.</span></span
             >
 
-            <span data-name="crystal_ball" data-type="emoji" class="!inline-flex gap-2"
+            <span data-name="crystal_ball" data-type="emoji" class="inline-flex! gap-2"
               ><img
                 src="https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f52e.png"
                 draggable="false"
@@ -199,7 +199,7 @@
               /><span>Export your notes to PDF or Markdown and import files back.</span></span
             >
 
-            <span data-name="fire" data-type="emoji" class="!inline-flex gap-2"
+            <span data-name="fire" data-type="emoji" class="inline-flex! gap-2"
               ><img
                 src="https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f525.png"
                 draggable="false"
@@ -209,7 +209,7 @@
               /><span>Open and work on multiple tabs simultaneously.</span></span
             >
 
-            <span data-name="green_heart" data-type="emoji" class="!inline-flex gap-2"
+            <span data-name="green_heart" data-type="emoji" class="inline-flex! gap-2"
               ><img
                 src="https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/1f49a.png"
                 draggable="false"
@@ -219,7 +219,7 @@
               /><span>Create tables, diagrams, code-blocks and more.</span></span
             >
 
-            <span data-name="high_voltage" data-type="emoji" class="!inline-flex gap-2"
+            <span data-name="high_voltage" data-type="emoji" class="inline-flex! gap-2"
               ><img
                 src="https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/26a1.png"
                 draggable="false"
@@ -349,7 +349,7 @@
       <ClientOnly
         ><UiBlurReveal :delay="0.1" :duration="0.75"
           ><div class="flex w-full p-3 text-xl opacity-95">
-            <span data-name="heart" data-type="emoji" class="!inline-flex gap-2"
+            <span data-name="heart" data-type="emoji" class="inline-flex! gap-2"
               >Made with<img
                 src="https://cdn.jsdelivr.net/npm/emoji-datasource-apple/img/apple/64/2764-fe0f.png"
                 draggable="false"

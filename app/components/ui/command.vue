@@ -2,7 +2,7 @@
   <Teleport to="body">
     <div
       v-if="isOpen"
-      class="fixed inset-0 z-[100] flex items-start justify-center pt-[10vh]"
+      class="fixed inset-0 z-100 flex items-start justify-center pt-[10vh]"
       @click="handleBackdropClick"
     >
       <!-- Backdrop -->
@@ -38,11 +38,11 @@
               v-model="searchQuery"
               type="text"
               placeholder="Type to find across tabs"
-              class="flex-1 bg-transparent text-[18px] font-normal !text-[#32302c] antialiased placeholder-[#32302c] outline-none placeholder:antialiased dark:!text-gray-50 dark:placeholder-gray-300"
+              class="flex-1 bg-transparent text-[18px] font-normal text-[#32302c]! antialiased placeholder-[#32302c] outline-none placeholder:antialiased dark:text-gray-50! dark:placeholder-gray-300"
               @keydown="handleKeyDown"
             />
             <div
-              class="shadow-notion rounded-xl p-0.5 px-1.5 text-[18px] !text-[#32302c] dark:!text-gray-50"
+              class="shadow-notion rounded-xl p-0.5 px-1.5 text-[18px] text-[#32302c]! dark:text-gray-50!"
             >
               {{ String(filteredResults.length).padStart(2, "0") }}
             </div>
@@ -146,11 +146,11 @@
                 <div class="mt-1 mr-3 flex items-center">
                   <svg
                     aria-hidden="true"
-                    :class="selectedIndex === index && '!fill-[#24d86c]'"
+                    :class="selectedIndex === index && 'fill-[#24d86c]!'"
                     role="graphics-symbol"
                     viewBox="0 0 16 16"
                     class="page"
-                    style="width: 23px; display: block; fill: rgba(71, 70, 68, 0.6); flex-shrink: 0"
+                    style="width: 23px; display: block; fill: rgba(71, 70, 68, 0.6); shrink: 0"
                   >
                     <path
                       d="M4.35645 15.4678H11.6367C13.0996 15.4678 13.8584 14.6953 13.8584 13.2256V7.02539C13.8584 6.0752 13.7354 5.6377 13.1406 5.03613L9.55176 1.38574C8.97754 0.804688 8.50586 0.667969 7.65137 0.667969H4.35645C2.89355 0.667969 2.13477 1.44043 2.13477 2.91016V13.2256C2.13477 14.7021 2.89355 15.4678 4.35645 15.4678ZM4.46582 14.1279C3.80273 14.1279 3.47461 13.7793 3.47461 13.1436V2.99219C3.47461 2.36328 3.80273 2.00781 4.46582 2.00781H7.37793V5.75391C7.37793 6.73145 7.86328 7.20312 8.83398 7.20312H12.5186V13.1436C12.5186 13.7793 12.1836 14.1279 11.5205 14.1279H4.46582ZM8.95703 6.02734C8.67676 6.02734 8.56055 5.9043 8.56055 5.62402V2.19238L12.334 6.02734H8.95703ZM10.4336 9.00098H5.42969C5.16992 9.00098 4.98535 9.19238 4.98535 9.43164C4.98535 9.67773 5.16992 9.86914 5.42969 9.86914H10.4336C10.6797 9.86914 10.8643 9.67773 10.8643 9.43164C10.8643 9.19238 10.6797 9.00098 10.4336 9.00098ZM10.4336 11.2979H5.42969C5.16992 11.2979 4.98535 11.4893 4.98535 11.7354C4.98535 11.9746 5.16992 12.1592 5.42969 12.1592H10.4336C10.6797 12.1592 10.8643 11.9746 10.8643 11.7354C10.8643 11.4893 10.6797 11.2979 10.4336 11.2979Z"
@@ -178,7 +178,7 @@
                     role="graphics-symbol"
                     viewBox="0 0 16 16"
                     class="enter"
-                    style="width: 17px; display: inline; flex-shrink: 0"
+                    style="width: 17px; display: inline; shrink: 0"
                   >
                     <path
                       fill="currentColor"
@@ -203,7 +203,7 @@
                       viewBox="0 0 20 20"
                       class="arrowUpDown directional-icon"
                       fill="currentColor"
-                      style="width: 20px; display: block; flex-shrink: 0"
+                      style="width: 20px; display: block; shrink: 0"
                     >
                       <path
                         d="M14.075 3.45a.625.625 0 0 0-.884 0l-3.497 3.5a.625.625 0 0 0 .883.884l2.431-2.431v10.705a.625.625 0 0 0 1.25 0V5.402l2.431 2.43a.625.625 0 1 0 .884-.883zM2.427 12.167a.625.625 0 0 1 .884 0l2.43 2.431V3.893a.625.625 0 0 1 1.25 0v10.705l2.431-2.43a.625.625 0 0 1 .884.883L6.81 16.55a.625.625 0 0 1-.884 0l-3.498-3.498a.625.625 0 0 1 0-.884"
@@ -219,7 +219,7 @@
                       viewBox="0 0 16 16"
                       class="enter"
                       fill="currentColor"
-                      style="width: 16px; display: inline; flex-shrink: 0"
+                      style="width: 16px; display: inline; shrink: 0"
                     >
                       <path
                         d="M5.38965 14.1667C5.81812 14.1667 6.10156 13.8767 6.10156 13.468C6.10156 13.2571 6.01587 13.0989 5.89062 12.967L4.18994 11.3125L3.02979 10.3369L4.55908 10.4028H12.7922C14.4402 10.4028 15.1389 9.65796 15.1389 8.04297V4.13403C15.1389 2.48608 14.4402 1.78735 12.7922 1.78735H9.13379C8.70532 1.78735 8.4021 2.11035 8.4021 2.50586C8.4021 2.90137 8.69873 3.22437 9.13379 3.22437H12.7593C13.4316 3.22437 13.7151 3.50781 13.7151 4.17358V7.99683C13.7151 8.67578 13.425 8.95923 12.7593 8.95923H4.55908L3.02979 9.03174L4.18994 8.04956L5.89062 6.39502C6.01587 6.26978 6.10156 6.11157 6.10156 5.89404C6.10156 5.48535 5.81812 5.19531 5.38965 5.19531C5.21167 5.19531 5.01392 5.27441 4.8689 5.41943L1.08521 9.1438C0.933594 9.28882 0.854492 9.48657 0.854492 9.68433C0.854492 9.87549 0.933594 10.0732 1.08521 10.2183L4.8689 13.9492C5.01392 14.0876 5.21167 14.1667 5.38965 14.1667Z"

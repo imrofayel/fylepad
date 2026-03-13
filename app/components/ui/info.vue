@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="open"
-    class="voice-settings-panel !z-[1100000] rounded-xl border border-[#c6c6c4] bg-white/80 text-black backdrop-blur-2xl dark:border-[#525252] dark:!bg-[#404040] dark:text-white"
+    class="voice-settings-panel z-1100000! rounded-xl border border-[#c6c6c4] bg-white/80 text-black backdrop-blur-2xl dark:border-[#525252] dark:bg-[#404040]! dark:text-white"
     role="dialog"
     aria-label="About Fylepad"
   >

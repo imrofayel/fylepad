@@ -160,11 +160,11 @@ onMounted(() => {
 }
 
 .tab-link-item-color {
-  @apply h-2 w-2 flex-shrink-0 rounded-full;
+  @apply h-2 w-2 shrink-0 rounded-full;
 }
 
 .tab-link-item-icon {
-  @apply flex-shrink-0 text-sm;
+  @apply shrink-0 text-sm;
 }
 
 .tab-link-item-title {

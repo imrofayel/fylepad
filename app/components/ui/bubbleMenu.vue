@@ -179,7 +179,7 @@
   <transition name="fade">
     <div
       v-if="showAIBar"
-      class="rainbow-border-effect-2 fixed top-8 left-1/2 z-[1000000000] w-[90%] -translate-x-1/2 rounded-2xl bg-white drop-shadow-sm backdrop-blur-2xl sm:w-[60%] md:w-[40%] dark:bg-[#232323] dark:text-white"
+      class="rainbow-border-effect-2 fixed top-8 left-1/2 z-1000000000 w-[90%] -translate-x-1/2 rounded-2xl bg-white drop-shadow-sm backdrop-blur-2xl sm:w-[60%] md:w-[40%] dark:bg-[#232323] dark:text-white"
     >
       <div class="flex px-2">
         <svg
@@ -199,14 +199,14 @@
           ref="aiInput"
           v-model="aiPrompt"
           :disabled="aiLoading"
-          class="ai-bar-input text-black/80 placeholder:!text-black/80 placeholder:drop-shadow-sm dark:!text-white dark:placeholder:!text-white"
+          class="ai-bar-input text-black/80 placeholder:text-black/80! placeholder:drop-shadow-sm dark:text-white! dark:placeholder:text-white!"
           placeholder="AI"
           autofocus
           @keydown.enter="submitAIPrompt"
         />
         <button
           :disabled="aiLoading || !aiPrompt.trim()"
-          class="relative top-1 max-h-fit rounded-full !border-[#28c76d] !bg-[#24d86c] p-[5px] text-white dark:!border-[#196838] dark:!bg-[#0c843c]"
+          class="relative top-1 max-h-fit rounded-full border-[#28c76d]! bg-[#24d86c]! p-[5px] text-white dark:border-[#196838]! dark:bg-[#0c843c]!"
           @click="submitAIPrompt"
         >
           <span v-if="!aiLoading">
@@ -244,7 +244,7 @@
       <div class="absolute top-12 flex w-full items-center justify-between">
         <select
           v-model="selectedModel"
-          class="mr-2 w-[200px] rounded-xl border border-gray-100 bg-white p-1.5 py-1 text-[15.5px] drop-shadow-sm backdrop-blur-xl dark:border-[#525252] dark:!bg-[#232323]"
+          class="mr-2 w-[200px] rounded-xl border border-gray-100 bg-white p-1.5 py-1 text-[15.5px] drop-shadow-sm backdrop-blur-xl dark:border-[#525252] dark:bg-[#232323]!"
         >
           <option v-for="m in freeModels" :key="m.slug" :value="m.slug">
             {{ m.name || m.slug }}
@@ -253,7 +253,7 @@
 
         <span
           :disabled="aiLoading"
-          class="cursor-pointer rounded-xl border border-gray-100 bg-white p-[3px] text-[15px] drop-shadow-sm dark:border-[#525252] dark:!bg-[#232323]"
+          class="cursor-pointer rounded-xl border border-gray-100 bg-white p-[3px] text-[15px] drop-shadow-sm dark:border-[#525252] dark:bg-[#232323]!"
           @click="closeAIBar"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="21" viewBox="0 0 24 24">
@@ -270,7 +270,7 @@
   <!-- Mini Controls -->
   <div
     v-if="isSpeechSynthesisAvailable && isReading"
-    class="mini-controls rainbow-border-effect-2 overflow-hidden !rounded-2xl bg-white/80 text-black shadow-lg backdrop-blur-xl transition-all duration-300 ease-in-out dark:bg-[#404040]"
+    class="mini-controls rainbow-border-effect-2 overflow-hidden rounded-2xl! bg-white/80 text-black shadow-lg backdrop-blur-xl transition-all duration-300 ease-in-out dark:bg-[#404040]"
   >
     <div class="p-4">
       <div class="flex items-center justify-between">
@@ -282,7 +282,7 @@
               width="18"
               viewBox="0 0 24 24"
               fill="black"
-              class="dark:!fill-white"
+              class="dark:fill-white!"
             >
               <polygon points="5 3 19 12 5 21 5 3" />
             </svg>
@@ -292,7 +292,7 @@
               width="18"
               viewBox="0 0 24 24"
               fill="black"
-              class="dark:!fill-white"
+              class="dark:fill-white!"
             >
               <rect x="6" y="4" width="4" height="16" />
               <rect x="14" y="4" width="4" height="16" />
@@ -319,7 +319,7 @@
   <!-- Voice Settings Panel -->
   <div
     v-if="isSpeechSynthesisAvailable && showVoiceSettings"
-    class="voice-settings-panel !z-[1100000] rounded-3xl border bg-white text-black dark:border-[#525252] dark:!bg-[#404040] dark:text-white"
+    class="voice-settings-panel z-1100000! rounded-3xl border bg-white text-black dark:border-[#525252] dark:bg-[#404040]! dark:text-white"
     role="dialog"
     aria-label="Voice settings"
   >
@@ -337,7 +337,7 @@
       <div class="form-group pt-3">
         <select
           v-model="selectedVoice"
-          class="rounded-xl border border-gray-300 bg-white p-2 dark:border-[#525252] dark:!bg-white/5"
+          class="rounded-xl border border-gray-300 bg-white p-2 dark:border-[#525252] dark:bg-white/5!"
         >
           <option v-for="voice in availableVoices" :key="voice.name" :value="voice">
             {{ voice.name }} ({{ voice.lang }})
@@ -352,10 +352,10 @@
             v-for="rate in [0.5, 0.9, 1.0, 1.25, 1.5, 2]"
             :key="rate"
             :class="{
-              '!text-opacity-100 border bg-[#24d86c] text-white !drop-shadow-sm dark:border-none dark:!bg-black/20':
+              '!text-opacity-100 border bg-[#24d86c] text-white drop-shadow-sm! dark:border-none dark:bg-black/20!':
                 Math.abs(voiceRate - rate) < 0.01,
             }"
-            class="text-opacity-90 rounded-2xl border !px-2 py-1 dark:border-none dark:bg-white/5"
+            class="text-opacity-90 rounded-2xl border px-2! py-1 dark:border-none dark:bg-white/5"
             @click="setVoiceRate(rate)"
           >
             {{ rate }}x
@@ -363,7 +363,7 @@
         </div>
       </div>
 
-      <div class="mt-2 flex flex-col !gap-2 border-t pt-4">
+      <div class="mt-2 flex flex-col gap-2! border-t pt-4">
         <div class="roboto-mono text-sm">Alt + S: Start / Stop reading</div>
         <div class="roboto-mono text-sm">Alt + P: Pause / Resume</div>
       </div>

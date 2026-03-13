@@ -60,17 +60,17 @@
               leave-to-class="transform scale-95 opacity-0"
             >
               <MenuItems
-                class="right-0 z-10 mt-4 inline-block max-h-60 origin-top-right cursor-pointer items-center justify-center divide-y overflow-hidden overflow-y-auto rounded-xl border border-[#c6c6c4] bg-white text-black backdrop-blur-xl dark:!border-[#484747] dark:bg-[#171717]"
+                class="right-0 z-10 mt-4 inline-block max-h-60 origin-top-right cursor-pointer items-center justify-center divide-y overflow-hidden overflow-y-auto rounded-xl border border-[#c6c6c4] bg-white text-black backdrop-blur-xl dark:border-[#484747]! dark:bg-[#171717]"
               >
                 <div class="inline-flex space-x-2 p-2">
                   <input
                     v-model="searchQuery"
                     placeholder="Search"
-                    class="drop-shadow-cool mt-1 flex justify-center rounded-lg border !border-[#c6c6c4] bg-transparent bg-white p-2 px-3 text-black outline-none dark:border-none dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50 dark:placeholder:text-gray-200/80"
+                    class="drop-shadow-cool mt-1 flex justify-center rounded-lg border border-[#c6c6c4]! bg-transparent bg-white p-2 px-3 text-black outline-none dark:border-none dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50 dark:placeholder:text-gray-200/80"
                   />
                   <button
                     title="Reset Font"
-                    class="inline-block cursor-pointer items-center justify-center rounded-xl border border-[#c6c6c4] bg-white/80 !px-[8px] text-black dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
+                    class="inline-block cursor-pointer items-center justify-center rounded-xl border border-[#c6c6c4] bg-white/80 px-[8px]! text-black dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
                     @click="resetFont"
                   >
                     <svg
@@ -98,7 +98,7 @@
                   <MenuItem v-for="font in filteredFonts" :key="font" v-slot="{ active }">
                     <button
                       :class="[
-                        '1 block w-full rounded-xl px-4 py-2 text-left !text-xl hover:border hover:bg-gray-50 dark:text-white dark:hover:border-[#414040] dark:hover:bg-[#404040]',
+                        '1 block w-full rounded-xl px-4 py-2 text-left text-xl! hover:border hover:bg-gray-50 dark:text-white dark:hover:border-[#414040] dark:hover:bg-[#404040]',
                         active ? 'bg-gray-50' : '',
                       ]"
                       :style="{ fontFamily: font }"

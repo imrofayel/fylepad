@@ -15,12 +15,12 @@
     <div
       v-if="!isVerticalTabs"
       v-show="!focusMode.focused"
-      class="fixed z-10 flex w-full items-center justify-between bg-white p-0 py-2 pr-[7.5rem] dark:bg-[#171717]"
+      class="fixed z-10 flex w-full items-center justify-between bg-white p-0 py-2 pr-30 dark:bg-[#171717]"
     >
       <div class="flex items-center justify-center space-x-2 overflow-visible">
         <!-- Tab Layout Toggle @click="toggleTabLayout" -->
         <button
-          class="hidden drop-shadow-sm hover:!scale-100"
+          class="hidden drop-shadow-sm hover:scale-100!"
           :title="isVerticalTabs ? 'Switch to Horizontal Tabs' : 'Switch to Vertical Tabs'"
         >
           <svg
@@ -28,7 +28,7 @@
             role="graphics-symbol"
             viewBox="0 0 20 20"
             class="peekSide directional-icon rotate-180"
-            style="width: 25px; display: block; flex-shrink: 0"
+            style="width: 25px; display: block; shrink: 0"
           >
             <path
               d="M10.392 6.125a.5.5 0 0 0-.5.5v6.75a.5.5 0 0 0 .5.5h4.683a.5.5 0 0 0 .5-.5v-6.75a.5.5 0 0 0-.5-.5z"
@@ -40,7 +40,7 @@
         </button>
 
         <button
-          class="drop-shadow-sm hover:!scale-100 dark:text-gray-50"
+          class="drop-shadow-sm hover:scale-100! dark:text-gray-50"
           title="New Tab"
           @click="newTab"
         >
@@ -50,13 +50,7 @@
             role="graphics-symbol"
             viewBox="0 0 16 16"
             class="plus mx-1"
-            style="
-              width: 17px;
-              display: block;
-              flex-shrink: 0;
-              margin-inline-end: 6px;
-              margin-top: 1px;
-            "
+            style="width: 17px; display: block; shrink: 0; margin-inline-end: 6px; margin-top: 1px"
           >
             <path
               d="M7.977 14.963c.407 0 .747-.324.747-.723V8.72h5.362c.399 0 .74-.34.74-.747a.746.746 0 00-.74-.738H8.724V1.706c0-.398-.34-.722-.747-.722a.732.732 0 00-.739.722v5.529h-5.37a.746.746 0 00-.74.738c0 .407.341.747.74.747h5.37v5.52c0 .399.332.723.739.723z"
@@ -71,7 +65,7 @@
               :key="tab.id"
               :ref="(el) => setTabRef(tabIndex, el)"
               draggable="true"
-              class="drop-shadow-cool tab-item relative flex cursor-pointer items-center justify-center rounded-xl border border-[#c6c6c4] bg-white/80 !px-[9px] py-[3px] text-black transition-all duration-200 dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
+              class="drop-shadow-cool tab-item relative flex cursor-pointer items-center justify-center rounded-xl border border-[#c6c6c4] bg-white/80 px-[9px]! py-[3px] text-black transition-all duration-200 dark:border-[#525252] dark:bg-[#404040] dark:text-gray-50"
               :class="getTabClasses(tabIndex)"
               :style="getTabStyle(tabIndex)"
               @dragstart="onTabDragStart(tabIndex, $event)"
@@ -114,7 +108,7 @@
     <div
       v-if="isVerticalTabs && sidebarVisible"
       v-show="!focusMode.focused"
-      class="sticky top-3 z-20 m-3 flex h-full max-w-60 min-w-60 flex-col !overflow-visible rounded-xl border border-[#c6c6c4] dark:border-[#525252] dark:bg-[#171717]"
+      class="sticky top-3 z-20 m-3 flex h-full max-w-60 min-w-60 flex-col overflow-visible! rounded-xl border border-[#c6c6c4] dark:border-[#525252] dark:bg-[#171717]"
     >
       <!-- Sidebar Header -->
       <div
@@ -122,7 +116,7 @@
       >
         <!-- Tab Layout Toggle -->
         <button
-          class="drop-shadow-sm hover:!scale-100"
+          class="drop-shadow-sm hover:scale-100!"
           :title="isVerticalTabs ? 'Switch to Horizontal Tabs' : 'Switch to Vertical Tabs'"
           @click="toggleTabLayout"
         >
@@ -131,7 +125,7 @@
             role="graphics-symbol"
             viewBox="0 0 20 20"
             class="peekSide directional-icon"
-            style="width: 25px; display: block; flex-shrink: 0"
+            style="width: 25px; display: block; shrink: 0"
           >
             <path
               d="M10.392 6.125a.5.5 0 0 0-.5.5v6.75a.5.5 0 0 0 .5.5h4.683a.5.5 0 0 0 .5-.5v-6.75a.5.5 0 0 0-.5-.5z"
@@ -143,7 +137,7 @@
         </button>
 
         <div class="flex items-center space-x-2">
-          <button class="drop-shadow-sm hover:!scale-100" title="New Tab" @click="newTab">
+          <button class="drop-shadow-sm hover:scale-100!" title="New Tab" @click="newTab">
             <svg
               aria-hidden="true"
               role="graphics-symbol"
@@ -152,7 +146,7 @@
               style="
                 width: 16px;
                 display: block;
-                flex-shrink: 0;
+                shrink: 0;
                 margin-inline-end: 6px;
                 margin-top: 1px;
               "
@@ -165,7 +159,7 @@
 
           <!-- Close Sidebar Button -->
           <button
-            class="drop-shadow-sm hover:!scale-100 dark:text-gray-50"
+            class="drop-shadow-sm hover:scale-100! dark:text-gray-50"
             title="Hide Sidebar"
             @click="sidebarVisible = false"
           >
@@ -174,7 +168,7 @@
               role="graphics-symbol"
               viewBox="0 0 16 16"
               class="doubleChevronRight directional-icon rotate-180"
-              style="width: 17px; display: block; flex-shrink: 0"
+              style="width: 17px; display: block; shrink: 0"
               fill="currentColor"
             >
               <path
@@ -193,7 +187,7 @@
           :ref="(el) => setTabRef(tabIndex, el)"
           draggable="true"
           class="group tab-item relative flex w-full cursor-pointer items-center p-1 py-1.5 pr-0.5 text-[#32302c]"
-          :class="tabIndex === activeTab && 'rounded-lg !bg-gray-100/80 !px-2'"
+          :class="tabIndex === activeTab && 'rounded-lg bg-gray-100/80! px-2!'"
           :style="getTabStyle(tabIndex)"
           @dragstart="onTabDragStart(tabIndex, $event)"
           @dragover="onTabDragOver($event, tabIndex)"
@@ -210,7 +204,7 @@
             :class="tabIndex !== activeTab && getTabIconColorIndicator(tab.color as any)"
             role="graphics-symbol"
             viewBox="0 0 16 16"
-            style="width: 19px; fill: rgba(71, 70, 68, 0.6); display: block; flex-shrink: 0"
+            style="width: 19px; fill: rgba(71, 70, 68, 0.6); display: block; shrink: 0"
           >
             <path
               data-v-2474b7ad=""
@@ -226,8 +220,8 @@
           <!-- Close button -->
           <button
             v-if="!tab.lock"
-            class="ml-2 flex-shrink-0 opacity-0 group-hover:opacity-100 hover:text-red-600"
-            :class="tabIndex === activeTab && '!opacity-100'"
+            class="ml-2 shrink-0 opacity-0 group-hover:opacity-100 hover:text-red-600"
+            :class="tabIndex === activeTab && 'opacity-100!'"
             title="Close tab"
             @click.stop="closeTab(tabIndex)"
           >
@@ -243,9 +237,9 @@
     </div>
 
     <div
-      class="flex-grow"
+      class="grow"
       :class="[
-        focusMode.focused ? 'mt-1' : isVerticalTabs ? '!mt-0' : 'mt-7',
+        focusMode.focused ? 'mt-1' : isVerticalTabs ? 'mt-0!' : 'mt-7',
         isVerticalTabs && !focusMode.focused ? 'ml-0' : '',
       ]"
     >
@@ -260,7 +254,7 @@
           role="graphics-symbol"
           viewBox="0 0 16 16"
           class="doubleChevronRight directional-icon"
-          style="width: 19px; display: block; flex-shrink: 0"
+          style="width: 19px; display: block; shrink: 0"
           fill="currentColor"
         >
           <path
@@ -565,35 +559,35 @@ const getTabClasses = (tabIndex: number) => {
     switch (tab.color) {
       case "Blue":
         classes +=
-          " !bg-blue-500 dark:!bg-blue-600 !border-blue-600 dark:!border-blue-500 !text-white font-medium";
+          " bg-blue-500! dark:bg-blue-600! border-blue-600! dark:border-blue-500! text-white! font-medium";
         break;
       case "Red":
         classes +=
-          " !bg-red-500 dark:!bg-red-600 !border-red-600 dark:!border-red-500 !text-white font-medium";
+          " bg-red-500! dark:bg-red-600! border-red-600! dark:border-red-500! text-white! font-medium";
         break;
       case "Purple":
         classes +=
-          " !bg-purple-500 dark:!bg-purple-600 !border-purple-600 dark:!border-purple-500 !text-white font-medium";
+          " bg-purple-500! dark:bg-purple-600! border-purple-600! dark:border-purple-500! text-white! font-medium";
         break;
       case "Orange":
         classes +=
-          " !bg-orange-500 dark:!bg-orange-600 !border-orange-600 dark:!border-orange-500 !text-white font-medium";
+          " bg-orange-500! dark:bg-orange-600! border-orange-600! dark:border-orange-500! text-white! font-medium";
         break;
       case "Pink":
         classes +=
-          " !bg-pink-500 dark:!bg-pink-600 !border-pink-600 dark:!border-pink-500 !text-white font-medium";
+          " bg-pink-500! dark:bg-pink-600! border-pink-600! dark:border-pink-500! text-white! font-medium";
         break;
       case "Teal":
         classes +=
-          " !bg-teal-500 dark:!bg-teal-600 !border-teal-600 dark:!border-teal-500 !text-white font-medium";
+          " bg-teal-500! dark:bg-teal-600! border-teal-600! dark:border-teal-500! text-white! font-medium";
         break;
       case "Yellow":
         classes +=
-          " !bg-yellow-500 dark:!bg-yellow-600 !border-yellow-600 dark:!border-yellow-500 !text-white font-medium";
+          " bg-yellow-500! dark:bg-yellow-600! border-yellow-600! dark:border-yellow-500! text-white! font-medium";
         break;
       default:
         classes +=
-          " !bg-[#24d86c] dark:!bg-[#0c843c] dark:!border-[#196838] !border-[#28c76d] !text-white font-medium";
+          " bg-[#24d86c]! dark:bg-[#0c843c]! dark:border-[#196838]! border-[#28c76d]! text-white! font-medium";
     }
   }
 
@@ -630,14 +624,14 @@ const getTabColorIndicator = (colorName: string) => {
 
 const getTabIconColorIndicator = (colorName: string) => {
   const colorMap: Record<string, string> = {
-    Blue: "!fill-blue-500",
-    Red: "!fill-red-500",
-    Purple: "!fill-purple-500",
-    Orange: "!fill-orange-500",
-    Pink: "!fill-pink-500",
-    Teal: "!fill-teal-500",
-    Yellow: "!fill-yellow-500",
-    default: "!fill-white",
+    Blue: "fill-blue-500!",
+    Red: "fill-red-500!",
+    Purple: "fill-purple-500!",
+    Orange: "fill-orange-500!",
+    Pink: "fill-pink-500!",
+    Teal: "fill-teal-500!",
+    Yellow: "fill-yellow-500!",
+    default: "fill-white!",
   };
   return colorMap[colorName] || "";
 };

@@ -57,6 +57,7 @@
   --color-surface-container-high: hsl(var(--surface-container-high));
   --color-surface-container-highest: hsl(var(--surface-container-highest));
 }
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -310,7 +311,7 @@ iframe {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  @apply !antialiased;
+  @apply antialiased!;
 }
 
 * {
@@ -322,15 +323,15 @@ ul[data-type="taskList"] li[data-checked="true"] div {
 }
 
 .ProseMirror-bm-placeholder::before {
-  @apply relative right-1 rounded-lg border-[#c6c6c4] py-1 !text-[18px] font-normal !text-[#acaba9] opacity-70 dark:!text-[#7a7a7a];
+  @apply relative right-1 rounded-lg border-[#c6c6c4] py-1 text-[18px]! font-normal text-[#acaba9]! opacity-70 dark:text-[#7a7a7a]!;
 }
 
 .ProseMirror-bm {
-  @apply !flex flex-col !px-1 !py-1;
+  @apply flex! flex-col px-1! py-1!;
 }
 
 .ProseMirror-bm-button {
-  @apply !rounded-[10px] hover:bg-[#f3f3f3] dark:hover:bg-[#333333];
+  @apply rounded-[10px]! hover:bg-[#f3f3f3] dark:hover:bg-[#333333];
 }
 
 .ProseMirror-bm {
@@ -352,12 +353,12 @@ ul[data-type="taskList"] li[data-checked="true"] div {
 }
 
 .ProseMirror-bm-button-name {
-  @apply !text-[16.5px] text-[#32302c] dark:text-gray-50;
+  @apply text-[16.5px]! text-[#32302c] dark:text-gray-50;
   font-family: "Inter", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  @apply !antialiased;
+  @apply antialiased!;
 }
 
 * {
@@ -365,7 +366,7 @@ ul[data-type="taskList"] li[data-checked="true"] div {
 }
 
 .ProseMirror-bm-button-shortcut {
-  @apply !text-[17px] text-[#32302c] dark:text-gray-300;
+  @apply text-[17px]! text-[#32302c] dark:text-gray-300;
 }
 
 .command-input {
@@ -391,7 +392,7 @@ ul[data-type="taskList"] li[data-checked="true"] div {
 }
 
 .ProseMirror-bm {
-  @apply !max-w-fit scale-[0.98] !bg-white/90 !backdrop-blur-xl dark:!bg-[#404040]/90;
+  @apply max-w-fit! scale-[0.98] bg-white/90! backdrop-blur-xl! dark:bg-[#404040]/90!;
 }
 
 * {

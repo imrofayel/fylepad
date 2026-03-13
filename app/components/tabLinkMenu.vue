@@ -21,9 +21,9 @@
       <div
         v-if="item.color"
         :style="{ backgroundColor: item.color }"
-        class="mr-3 h-3 w-3 flex-shrink-0 rounded-full"
+        class="mr-3 h-3 w-3 shrink-0 rounded-full"
       />
-      <div v-else class="mr-3 h-3 w-3 flex-shrink-0 rounded-full bg-zinc-300 dark:bg-zinc-600" />
+      <div v-else class="mr-3 h-3 w-3 shrink-0 rounded-full bg-zinc-300 dark:bg-zinc-600" />
 
       <!-- Tab details -->
       <div class="min-w-0 flex-1">
