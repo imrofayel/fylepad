@@ -21,13 +21,6 @@ export default defineNuxtConfig({
 
   telemetry: false,
 
-  postcss: {
-    plugins: {
-      tailwindcss: {},
-      autoprefixer: {},
-    },
-  },
-
   devServer: { host: "0.0.0.0" },
 
   vite: {
