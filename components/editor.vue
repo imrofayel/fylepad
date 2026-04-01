@@ -222,7 +222,10 @@
     ]" v-if="!focusMode?.focused">
 
       <div class="flex w-full justify-between items-center space-x-2 pb-2"
-        :class="isVertical && 'relative -top-6 !pt-3 !pb-0 bg-white', !isSidebarOpen && 'relative -right-7 -top-8'">
+        :class="[
+          isVertical && 'relative -top-6 !pt-3 !pb-0 bg-white',
+          !isSidebarOpen && 'relative -right-7 -top-8',
+        ]">
         <input v-model="localTitle" @input="$emit('update:title', localTitle)" @keydown="handleTitleKeydown"
           placeholder="Untitled"
           class="w-full border border-none ring-0 focus:border-none px-3 dark:text-white text-[#32302c] outline-none bg-transparent rounded flex text-[24px]" />

@@ -10,6 +10,7 @@
     "fs:allow-app-write",
     "fs:allow-app-write-recursive",
     "fs:allow-appcache-write",
+    "fs:allow-write-text-file",
     "fs:allow-read-file",
     "fs:allow-write-file",
     "fs:allow-read-dir",
