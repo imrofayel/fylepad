@@ -7,7 +7,7 @@
   ],
   "permissions": [
     "core:default",
-    " fs:allow-app-write",
+    "fs:allow-app-write",
     "fs:allow-app-write-recursive",
     "fs:allow-appcache-write",
     "fs:allow-read-file",

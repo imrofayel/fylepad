@@ -471,8 +471,6 @@
 </template>
 
 <script lang="ts" setup>
-import { save } from '@tauri-apps/plugin-dialog';
-
 import { type Range as EditorRange } from '@tiptap/core';
 import CharacterCount from '@tiptap/extension-character-count';
 import CodeBlockLowlight from '@tiptap/extension-code-block-lowlight';
@@ -823,6 +821,8 @@ const openFile = async () => {
 
 
 
+
+
 const exportMarkdown = async () => {
   if (editor.value) {
     const thePath = await save({
@@ -1117,6 +1117,10 @@ defineExpose({
   width: 320px;
 }
 
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
 .ProseMirror-bm-divider {
   height: 1px;
   @apply bg-gray-200 dark:bg-[#525252];
@@ -1174,7 +1178,7 @@ defineExpose({
   .hyperlink-set-modal,
   .hyperlink-edit-modal {
     filter: drop-shadow(0px 2px 5px rgba(0, 0, 0, 0.04));
-    @apply flex overflow-hidden dark: !bg-[#404040] dark:border-[#525252] dark:text-gray-50 bg-white/80 backdrop-blur-xl border border-gray-200 rounded-[20px] text-black dark: !text-white/85 px-1.5 pl-2.5 !py-1
+    @apply flex overflow-hidden dark:!bg-[#404040] dark:border-[#525252] dark:text-gray-50 bg-white/80 backdrop-blur-xl border border-gray-200 rounded-[20px] text-black dark:!text-white/85 px-1.5 pl-2.5 !py-1
   }
 
   .hyperlink-preview-modal__metadata,
@@ -1229,7 +1233,7 @@ defineExpose({
   }
 
   .hyperlink-edit-modal__apply-button {
-    @apply border !rounded-xl hover: !bg-gray-100/50
+    @apply border !rounded-xl hover:!bg-gray-100/50
   }
 
   .hyperlink-preview-modal__remove-button:hover,
