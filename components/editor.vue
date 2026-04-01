@@ -1120,10 +1120,6 @@ defineExpose({
   width: 320px;
 }
 
-@import "tailwindcss";
-
-@custom-variant dark (&:where(.dark, .dark *));
-
 .ProseMirror-bm-divider {
   height: 1px;
   @apply bg-gray-200 dark:bg-[#525252];
