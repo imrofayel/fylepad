@@ -897,17 +897,12 @@ const exportMarkdown = async () => {
     const writableStream = await fileHandle.createWritable();
 
     // write our file
-    await writableStream.write("abc")
+    await writableStream.write(markdownContent)
 
-    const handle = await (window as any).showSaveFilePicker(options);
-    const writable = await handle.createWritable();
-    const markdownContentNew = editor.value.storage.markdown.getMarkdown();
-    console.log('Markdown Content:', markdownContentNew);
 
-    await writable.write(markdownContentNew);
-    await writable.close();
+    await writableStream.close();
 
-    return handle;
+    return fileHandle;
 
     // const markdownContent = editor.value.storage.markdown.getMarkdown();
     console.log('Markdown Content:', markdownContent);
