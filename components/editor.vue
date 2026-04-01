@@ -701,37 +701,45 @@ onBeforeUnmount(() => {
   editor.value?.destroy();
 });
 
-const openFile = () => {
-   const pickerOpts = {
-  types: [
-    {
-      description: "Notes",
-      accept: {
-        "text/*": [".txt", ".md"],
+const openFile = async () => {
+  // Check if the File System Access API is supported
+  if (!('showOpenFilePicker' in window)) {
+    console.error('File System Access API is not supported in this browser');
+    importMarkdownOrText();
+    return;
+  }
+
+  const pickerOpts = {
+    types: [
+      {
+        description: "Notes",
+        accept: {
+          "text/*": [".txt", ".md"],
+        },
       },
-    },
-  ],
-  excludeAcceptAllOption: true,
-  multiple: false,
-};
-
-async function getTheFile() {
-  // Open file picker and destructure the result the first handle
-  const [fileHandle] = await showOpenFilePicker(pickerOpts);
-
-  // get file contents
-  const fileData = await fileHandle.getFile();
-
-  const reader = new FileReader();
-  reader.onload = () => {
-  console.log(reader.result);
+    ],
+    excludeAcceptAllOption: true,
+    multiple: false,
   };
 
-  reader.readAsText(fileData);
+  try {
+    const [fileHandle] = await (window as any).showOpenFilePicker(pickerOpts);
+    const fileData = await fileHandle.getFile();
+    const reader = new FileReader();
 
-  console.log(fileData)
-}
-getTheFile()
+    reader.onload = () => {
+      if (typeof reader.result === 'string' && editor.value) {
+        editor.value.commands.setContent(reader.result);
+      }
+    };
+
+    reader.readAsText(fileData);
+  } catch (err) {
+    // User cancellation is expected; avoid noisy fallback
+    if ((err as DOMException)?.name === 'AbortError') return;
+    console.error('Error opening file:', err);
+    importMarkdownOrText();
+  }
 }
 
 const exportMarkdown = () => {
