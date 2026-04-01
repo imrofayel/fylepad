@@ -158,7 +158,7 @@
     <!-- Tab Context Menu -->
     <TabContextMenu
       :visible="contextMenu?.visible"
-      :targetElement="contextMenu?.targetElement"
+      :targetElement="(contextMenu?.targetElement as HTMLElement | null)"
       :tabIndex="contextMenu?.tabIndex"
       :tabColor="contextMenu?.tabIndex >= 0 ? tabs[contextMenu.tabIndex]?.color || 'Default' : 'Default'"
       :totalTabs="tabs?.length"
