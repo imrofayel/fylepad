@@ -880,7 +880,7 @@ const exportMarkdown = async () => {
 
     }
 
-    const options = {
+    const optionsx = {
       types: [
         {
           description: "Test files",
