@@ -533,7 +533,6 @@ import {
   setHyperlinkModal,
 } from "../extensions/modals/setHyperlink";
 
-import { isTauri } from '@tauri-apps/api/core';
 import { BaseDirectory, writeTextFile } from '@tauri-apps/plugin-fs';
 import { ImageResize } from '~/extensions/ImageResize.ts';
 import BlockMenuItems from "~/extensions/block-menu/items";
@@ -822,39 +821,6 @@ const openFile = async () => {
 
 }
 
-const saveFileInTauri = async () => {
-  try {
-    const path = await save();
-    console.log(path);
-  } catch (err) {
-    console.error('Error saving file in Tauri:', err);
-  }
-};
-
-const saveToFile = async ({ saveAs }: { saveAs?: boolean } = {}) => {
-  try {
-    if (await isTauri()) {
-      await saveFileInTauri();
-    } else if (typeof (window as any).showSaveFilePicker !== 'undefined') {
-      // Desktop browser with File System Access API
-      const fileHandle = await (window as any).showSaveFilePicker({
-        types: [
-          {
-            description: 'Markdown files',
-            accept: { 'text/markdown': ['.md'] },
-          },
-        ],
-      });
-      const writable = await fileHandle.createWritable();
-      const markdownContent = editor.value?.storage.markdown.getMarkdown() || '';
-      await writable.write(markdownContent);
-      await writable.close();
-    }
-  } catch (err) {
-    console.error('Error saving file:', err);
-  }
-};
-
 
 
 const exportMarkdown = async () => {
@@ -880,7 +846,7 @@ const exportMarkdown = async () => {
 
     }
 
-    const optionsx = {
+    const optionsxx = {
       types: [
         {
           description: "Test files",
