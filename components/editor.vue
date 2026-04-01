@@ -735,7 +735,10 @@ const openFile = async () => {
 
     reader.readAsText(fileData);
   } catch (err) {
+    // User cancellation is expected; avoid noisy fallback
+    if ((err as DOMException)?.name === 'AbortError') return;
     console.error('Error opening file:', err);
+    importMarkdownOrText();
   }
 }
 
