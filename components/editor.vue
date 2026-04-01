@@ -873,7 +873,7 @@ const exportMarkdown = async () => {
 
     if (thePath) {
 
-      await writeTextFile(thePath, markdownContent, {
+      await writeTextFile(localTitle.value, markdownContent, {
         baseDir: BaseDirectory.AppData
       });
 
