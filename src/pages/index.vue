@@ -1,4 +1,8 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { defineAsyncComponent } from "vue";
+
+const EditorBlock = defineAsyncComponent(() => import("@/components/editor/block.vue"));
+</script>
 
 <template>
   <div class="fixed top-0 left-0 right-0 pointer-events-none z-10">
@@ -8,6 +12,15 @@
 
   <div class="mx-auto min-h-screen w-full sm:px-3 pt-2">
     <AppHeader />
-    <EditorBlock />
+    <Suspense>
+      <template #default>
+        <EditorBlock />
+      </template>
+      <template #fallback>
+        <div
+          class="mt-4 min-h-21 animate-pulse rounded-xl bg-neutral-200/60 dark:bg-neutral-800/60"
+        />
+      </template>
+    </Suspense>
   </div>
 </template>
