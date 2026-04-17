@@ -8,5 +8,6 @@
 
   <div class="mx-auto min-h-screen w-full sm:px-3 pt-2">
     <AppHeader />
+    <EditorBlock />
   </div>
 </template>
