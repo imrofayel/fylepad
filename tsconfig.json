@@ -21,6 +21,10 @@
     "noFallthroughCasesInSwitch": true,
 
     "paths": {
+      "baseUrl": ["."],
+      "@/*": ["./src/*"],
+      "@utils/*": ["./src/utils/*"],
+      "@lib/*": ["./src/lib/*"],
       "#build/ui/*": ["./node_modules/.nuxt-ui/ui/*"]
     }
   },

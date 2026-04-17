@@ -2,20 +2,92 @@ import { defineConfig } from "vite-plus";
 import vue from "@vitejs/plugin-vue";
 import ui from "@nuxt/ui/vite";
 import VueRouter from "vue-router/vite";
-import { uiConfig } from "./ui.config.ts";
+import path from "path";
 
-// @ts-expect-error process is a nodejs global
 const host = process.env.TAURI_DEV_HOST;
 
 // https://vite.dev/config/
 export default defineConfig(async () => ({
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+      "@lib": path.resolve(__dirname, "./src/lib"),
+      "@utils": path.resolve(__dirname, "./src/utils"),
+    },
+  },
+
   plugins: [
     VueRouter({
       /* options */
     }),
     vue(),
     ui({
-      ui: uiConfig,
+      components: {
+        dirs: ["src/components"],
+        extensions: ["vue"],
+        directoryAsNamespace: true,
+        dts: true,
+      },
+      ui: {
+        colors: {
+          primary: "black",
+          neutral: "neutral",
+        },
+        icons: {
+          light: "tabler:moon",
+          dark: "tabler:sun",
+        },
+        tooltip: {
+          slots: {
+            content: "p-2 h-7",
+            text: "dark:text-neutral-300 text-neutral-600 font-medium!",
+          },
+        },
+        slideover: {
+          slots: {
+            content: "bg-default/90 backdrop-blur-sm",
+          },
+        },
+        textarea: {
+          slots: {
+            base: "focus-visible:ring-1! dark:focus-visible:ring-neutral-500! text-[16.5px]! font-medium text-default! focus-visible:ring-neutral-400!",
+          },
+        },
+        popover: {
+          slots: {
+            content:
+              "ring-1 ring-neutral-300 dark:bg-neutral-900 bg-neutral-100 dark:ring-neutral-600",
+            arrow:
+              "dark:stroke-neutral-600! dark:fill-neutral-900! fill-neutral-100! stroke-neutral-300!",
+          },
+        },
+        input: {
+          slots: {
+            base: "focus-visible:ring-1! dark:focus-visible:ring-neutral-500! text-[16.5px] font-medium text-default! focus-visible:ring-neutral-400!",
+          },
+        },
+        button: {
+          compoundVariants: [
+            {
+              color: "neutral",
+              variant: "link",
+              class: "hover:text-neutral-600 dark:hover:text-neutral-300 px-0",
+            },
+            {
+              color: "neutral",
+              variant: "solid",
+              class:
+                "bg-green text-white/95! text-[16.5px]! py-1.5 px-2.5 hover:bg-green active:bg-green active:opacity-80 hover:opacity-80 duration-200 transition-all",
+            },
+            {
+              color: "primary",
+              variant: "solid",
+              class:
+                "dark:bg-neutral-400 text-inverted dark:hover:bg-neutral-400/80 dark:active:bg-neutral-300/80 bg-neutral-600 hover:bg-neutral-600/80 active:bg-neutral-600/80 disabled:bg-bg-neutral-400/80",
+            },
+          ],
+        },
+      },
     }),
   ],
 

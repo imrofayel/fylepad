@@ -1,1 +1,12 @@
-<template>Hello World</template>
+<script setup lang="ts"></script>
+
+<template>
+  <div class="fixed top-0 left-0 right-0 pointer-events-none z-10">
+    <div class="bg-default" style="height: env(safe-area-inset-top)"></div>
+    <div class="h-8 bg-linear-to-b from-default to-transparent"></div>
+  </div>
+
+  <div class="mx-auto min-h-screen w-full sm:px-3 pt-2">
+    <AppHeader />
+  </div>
+</template>

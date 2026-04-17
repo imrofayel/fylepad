@@ -1,0 +1,20 @@
+export const ICONS = {
+  moon: "tabler:moon",
+  social: {
+    bluesky: "tabler:brand-bluesky",
+    email: "tabler:mail",
+    x: "tabler:brand-x",
+    linktree: "tabler:brand-linktree",
+  },
+  bell: "tabler:bell",
+  mapPin: "tabler:map-pin-filled",
+  photo: "tabler:photo",
+  emoji: "tabler:mood-happy",
+  tag: "tabler:flare",
+  pen: "tabler:pencil",
+  newTab: "tabler:circle-plus",
+  menu: "tabler:dots-circle-horizontal",
+  search: "tabler:search",
+  style: "tabler:brush",
+  command: "tabler:file-spark",
+} as const;

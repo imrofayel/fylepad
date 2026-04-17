@@ -2,6 +2,10 @@
 @import "@nuxt/ui";
 @import "./fonts.css";
 
+@theme {
+  --color-green: #15c45b;
+}
+
 :root {
   --font-sans: "Open Runde", system-ui, sans-serif;
 
@@ -28,7 +32,8 @@
 
 .dark {
   --ui-text: var(--ui-color-neutral-400);
-  --ui-bg: var(--ui-color-neutral-950);
+  --ui-bg: var(--ui-color-neutral-900);
+  --color-green: #188744;
 }
 
 .text-clear {
