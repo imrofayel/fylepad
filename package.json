@@ -13,17 +13,20 @@
     "lint": "vp lint"
   },
   "dependencies": {
+    "@nuxt/ui": "^4.6.1",
     "@tauri-apps/api": "^2.10.1",
     "@tauri-apps/plugin-opener": "^2.5.3",
-    "vue": "^3.5.32"
+    "tailwindcss": "^4.2.2",
+    "vue": "^3.5.32",
+    "vue-router": "^5.0.4"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2.10.1",
     "@vitejs/plugin-vue": "^5.2.4",
     "typescript": "~5.6.3",
     "vite": "npm:@voidzero-dev/vite-plus-core@latest",
-    "vue-tsc": "^2.2.12",
-    "vite-plus": "latest"
+    "vite-plus": "latest",
+    "vue-tsc": "^2.2.12"
   },
   "packageManager": "pnpm@10.33.0",
   "pnpm": {

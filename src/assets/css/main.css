@@ -1,0 +1,75 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+@import "./fonts.css";
+
+:root {
+  --font-sans: "Open Runde", system-ui, sans-serif;
+
+  --ui-color-neutral-50: #fafafa;
+  --ui-color-neutral-100: #f5f5f5;
+  --ui-color-neutral-200: #e5e5e5;
+  --ui-color-neutral-300: #d4d4d4;
+  --ui-color-neutral-400: #a1a1a1;
+  --ui-color-neutral-500: #737373;
+  --ui-color-neutral-600: #525252;
+  --ui-color-neutral-700: #404040;
+  --ui-color-neutral-800: #262626;
+  --ui-color-neutral-900: #171717;
+  --ui-color-neutral-950: #0a0a0a;
+
+  --tracking-normal: 0.25rem;
+  --text-fit: 17px;
+}
+
+.light {
+  --ui-text: var(--ui-color-neutral-500);
+  --ui-bg: white;
+}
+
+.dark {
+  --ui-text: var(--ui-color-neutral-400);
+  --ui-bg: var(--ui-color-neutral-950);
+}
+
+.text-clear {
+  color: light-dark(var(--ui-color-neutral-950), var(--ui-color-neutral-50));
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-display: swap;
+  scrollbar-color: var(--ui-color-neutral-400) transparent;
+  scrollbar-width: thin;
+}
+
+.dark {
+  * {
+    scrollbar-color: var(--ui-color-neutral-600) transparent;
+  }
+}
+
+.no-scrollbar {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.v3-emoji-picker {
+  @apply rounded-md! dark:bg-neutral-900! font-medium! text-default!;
+
+  .v3-sticky {
+    @apply dark:bg-neutral-900! text-sm!;
+  }
+
+  .v3-skin-tones {
+    @apply bg-transparent!;
+  }
+
+  .v3-search {
+    input {
+      @apply text-sm! h-8! font-medium!;
+    }
+  }
+}
