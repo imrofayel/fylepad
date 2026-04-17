@@ -8,6 +8,8 @@
       delayDuration: 30,
     }"
   >
-    <RouterView />
+    <div class="bg-default" data-vaul-drawer-wrapper>
+      <RouterView />
+    </div>
   </UApp>
 </template>

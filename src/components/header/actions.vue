@@ -8,10 +8,10 @@ const { value } = useColorMode();
   <div class="flex items-center gap-2.5">
     <ButtonWithTooltip text="Command (Ctrl + K)" :icon="ICONS.command" />
     <ButtonWithTooltip text="Search (Ctrl + F)" :icon="ICONS.search" />
-    <ButtonWithTooltip text="Customize" :icon="ICONS.style" />
+    <EditorCustomize />
     <UTooltip :text="value === 'light' ? 'Dark mode' : 'Light mode'" arrow>
-      <UColorModeButton variant="link" color="neutral" />
+      <UColorModeButton variant="link" color="neutral" disabled />
     </UTooltip>
-    <ButtonWithTooltip text="Menu" :icon="ICONS.menu" />
+    <HeaderMenu />
   </div>
 </template>
