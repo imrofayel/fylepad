@@ -6,7 +6,7 @@
   "build": {
     "beforeDevCommand": "bun run dev",
     "devUrl": "http://localhost:1420",
-    "beforeBuildCommand": "bun run build",
+    "beforeBuildCommand": "pnpm run build",
     "frontendDist": "../dist"
   },
   "app": {
@@ -14,7 +14,8 @@
       {
         "title": "fylepad-zen",
         "width": 800,
-        "height": 600
+        "height": 600,
+        "zoomHotkeysEnabled": true
       }
     ],
     "security": {
