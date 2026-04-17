@@ -52,7 +52,7 @@ const selectTab = (id: string) => {
               size="xs"
               variant="link"
               color="neutral"
-              class="hidden px-0 group-hover:block duration-200 transition-all absolute right-2"
+              class="opacity-0 group-hover:opacity-100 transition-all duration-200 delay-150 absolute right-2"
               :class="tab.selected && 'text-inverted hover:text-inverted!'"
               :ui="{ leadingIcon: 'size-3.5!' }"
             />
