@@ -9,79 +9,45 @@ const value = ref("");
 const items: EditorToolbarItem[][] = [
   [
     {
-      icon: "i-lucide-heading",
-      tooltip: { text: "Headings" },
-      content: {
-        align: "start",
-      },
-      items: [
-        {
-          kind: "heading",
-          level: 1,
-          icon: "i-lucide-heading-1",
-          label: "Heading 1",
-        },
-        {
-          kind: "heading",
-          level: 2,
-          icon: "i-lucide-heading-2",
-          label: "Heading 2",
-        },
-        {
-          kind: "heading",
-          level: 3,
-          icon: "i-lucide-heading-3",
-          label: "Heading 3",
-        },
-        {
-          kind: "heading",
-          level: 4,
-          icon: "i-lucide-heading-4",
-          label: "Heading 4",
-        },
-      ],
-    },
-  ],
-  [
-    {
       kind: "mark",
+      size: "md",
       mark: "bold",
-      icon: "i-lucide-bold",
-      tooltip: { text: "Bold" },
+      icon: "tabler:bold",
+      tooltip: { text: "Bold", arrow: true },
     },
     {
       kind: "mark",
+      size: "md",
       mark: "italic",
-      icon: "i-lucide-italic",
-      tooltip: { text: "Italic" },
+      icon: "tabler:italic",
+      tooltip: { text: "Italic", arrow: true },
     },
     {
       kind: "mark",
+      size: "md",
       mark: "underline",
-      icon: "i-lucide-underline",
-      tooltip: { text: "Underline" },
+      icon: "tabler:underline",
+      tooltip: { text: "Underline", arrow: true },
     },
     {
       kind: "mark",
+      size: "md",
       mark: "strike",
-      icon: "i-lucide-strikethrough",
-      tooltip: { text: "Strikethrough" },
+      icon: "tabler:strikethrough",
+      tooltip: { text: "Strikethrough", arrow: true },
     },
     {
       kind: "mark",
+      size: "md",
       mark: "code",
-      icon: "i-lucide-code",
-      tooltip: { text: "Code" },
+      icon: "tabler:code",
+      tooltip: { text: "Code", arrow: true },
     },
   ],
 ];
 
 const suggestionMenu: EditorSuggestionMenuItem[][] = [
   [
-    {
-      type: "label",
-      label: "Text",
-    },
     {
       kind: "paragraph",
       label: "Paragraph",
@@ -108,10 +74,6 @@ const suggestionMenu: EditorSuggestionMenuItem[][] = [
   ],
   [
     {
-      type: "label",
-      label: "Lists",
-    },
-    {
       kind: "bulletList",
       label: "Bullet List",
       icon: "i-lucide-list",
@@ -123,10 +85,6 @@ const suggestionMenu: EditorSuggestionMenuItem[][] = [
     },
   ],
   [
-    {
-      type: "label",
-      label: "Insert",
-    },
     {
       kind: "blockquote",
       label: "Blockquote",
@@ -157,12 +115,19 @@ const suggestionMenu: EditorSuggestionMenuItem[][] = [
         types: ['heading', 'paragraph'],
       }),
     ]"
-    class="py-2 mt-4"
+    class="py-2 mt-4 min-h-21"
     :ui="{
-      base: 'sm:px-0! px-0! [&_p]:leading-2.5!',
+      base: 'sm:px-0! w-full px-0! [&_p]:leading-2.5!',
     }"
   >
-    <UEditorToolbar :editor="editor" :items="items" layout="bubble" />
+    <UEditorToolbar
+      :editor="editor"
+      :items="items"
+      layout="bubble"
+      :ui="{
+        base: 'p-0.5',
+      }"
+    />
     <UEditorSuggestionMenu :editor="editor" :items="suggestionMenu" />
   </UEditor>
 </template>

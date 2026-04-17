@@ -3,7 +3,8 @@
 @import "./fonts.css";
 
 @theme {
-  --color-green: #15c45b;
+  --color-green: #1bda67;
+  --color-green-ring: rgb(42, 208, 108);
 }
 
 :root {
