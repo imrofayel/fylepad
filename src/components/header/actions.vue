@@ -10,7 +10,7 @@ const { value } = useColorMode();
     <ButtonWithTooltip text="Search (Ctrl + F)" :icon="ICONS.search" />
     <EditorCustomize />
     <UTooltip :text="value === 'light' ? 'Dark mode' : 'Light mode'" arrow>
-      <UColorModeButton variant="link" color="neutral" disabled />
+      <UColorModeButton variant="link" color="neutral" />
     </UTooltip>
     <HeaderMenu />
   </div>

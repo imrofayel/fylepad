@@ -24,7 +24,13 @@ const color = ref("#00C16A");
 const chip = computed(() => ({ backgroundColor: color.value }));
 </script>
 <template>
-  <UDrawer should-scale-background set-background-color-on-scale>
+  <UDrawer
+    should-scale-background
+    set-background-color-on-scale
+    :ui="{
+      content: 'light:bg-neutral-100!',
+    }"
+  >
     <ButtonWithTooltip text="Customize" :icon="ICONS.style" />
 
     <template #content>
