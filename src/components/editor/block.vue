@@ -1,10 +1,21 @@
 <script setup lang="ts">
-import { EditorSuggestionMenuItem, EditorToolbarItem } from "@nuxt/ui";
+import { EditorSuggestionMenuItem, EditorToolbarItem, EditorCustomHandlers } from "@nuxt/ui";
 import { Emoji } from "@tiptap/extension-emoji";
 import { TextAlign } from "@tiptap/extension-text-align";
 import { ref } from "vue";
+import EditorLinkPopover from "./EditorLinkPopover.vue";
+import { ImageUpload } from "@lib/extentions/EditorImageUploadExtension";
 
 const value = ref("");
+
+const customHandlers = {
+  imageUpload: {
+    canExecute: (editor: Editor) => editor.can().insertContent({ type: "imageUpload" }),
+    execute: (editor: Editor) => editor.chain().focus().insertContent({ type: "imageUpload" }),
+    isActive: (editor: Editor) => editor.isActive("imageUpload"),
+    isDisabled: undefined,
+  },
+} satisfies EditorCustomHandlers;
 
 const items: EditorToolbarItem[][] = [
   [
@@ -43,6 +54,9 @@ const items: EditorToolbarItem[][] = [
       icon: "tabler:code",
       tooltip: { text: "Code", arrow: true },
     },
+    {
+      slot: "link" as const,
+    },
   ],
 ];
 
@@ -51,54 +65,59 @@ const suggestionMenu: EditorSuggestionMenuItem[][] = [
     {
       kind: "paragraph",
       label: "Paragraph",
-      icon: "i-lucide-type",
+      icon: "tabler:text-size",
     },
     {
       kind: "heading",
       level: 1,
       label: "Heading 1",
-      icon: "i-lucide-heading-1",
+      icon: "tabler:h-1",
     },
     {
       kind: "heading",
       level: 2,
       label: "Heading 2",
-      icon: "i-lucide-heading-2",
+      icon: "tabler:h-2",
     },
     {
       kind: "heading",
       level: 3,
       label: "Heading 3",
-      icon: "i-lucide-heading-3",
+      icon: "tabler:h-3",
     },
   ],
   [
     {
       kind: "bulletList",
       label: "Bullet List",
-      icon: "i-lucide-list",
+      icon: "tabler:list",
     },
     {
       kind: "orderedList",
       label: "Numbered List",
-      icon: "i-lucide-list-ordered",
+      icon: "tabler:list-numbers",
     },
   ],
   [
     {
       kind: "blockquote",
       label: "Blockquote",
-      icon: "i-lucide-text-quote",
+      icon: "tabler:blockquote",
     },
     {
       kind: "codeBlock",
       label: "Code Block",
-      icon: "i-lucide-square-code",
+      icon: "tabler:braces",
+    },
+    {
+      kind: "imageUpload",
+      label: "Image",
+      icon: "tabler:photo",
     },
     {
       kind: "horizontalRule",
       label: "Divider",
-      icon: "i-lucide-separator-horizontal",
+      icon: "tabler:line-dashed",
     },
   ],
 ];
@@ -109,7 +128,9 @@ const suggestionMenu: EditorSuggestionMenuItem[][] = [
     v-slot="{ editor }"
     v-model="value"
     placeholder="Start writing..."
+    :handlers="customHandlers"
     :extensions="[
+      ImageUpload,
       Emoji,
       TextAlign.configure({
         types: ['heading', 'paragraph'],
@@ -125,9 +146,13 @@ const suggestionMenu: EditorSuggestionMenuItem[][] = [
       :items="items"
       layout="bubble"
       :ui="{
-        base: 'p-0.5',
+        base: 'p-px',
       }"
-    />
+    >
+      <template #link>
+        <EditorLinkPopover :editor="editor" auto-open />
+      </template>
+    </UEditorToolbar>
     <UEditorSuggestionMenu :editor="editor" :items="suggestionMenu" />
   </UEditor>
 </template>

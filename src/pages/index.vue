@@ -16,11 +16,6 @@ const EditorBlock = defineAsyncComponent(() => import("@/components/editor/block
       <template #default>
         <EditorBlock />
       </template>
-      <template #fallback>
-        <div
-          class="mt-4 min-h-21 animate-pulse rounded-xl bg-neutral-200/60 dark:bg-neutral-800/60"
-        />
-      </template>
     </Suspense>
   </div>
 </template>
