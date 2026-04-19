@@ -2,13 +2,31 @@
 import { EditorSuggestionMenuItem, EditorToolbarItem, EditorCustomHandlers } from "@nuxt/ui";
 import { Emoji } from "@tiptap/extension-emoji";
 import { TextAlign } from "@tiptap/extension-text-align";
-import { ref } from "vue";
+import type { Editor } from "@tiptap/vue-3";
+import { ref, useTemplateRef } from "vue";
 import EditorLinkPopover from "./EditorLinkPopover.vue";
 import { ImageUpload } from "@lib/extentions/EditorImageUploadExtension";
+import { useEditorCompletion } from "@/composables/useEditorCompletion";
+
+const editorRef = useTemplateRef("editorRef");
+
+const {
+  extension: completionExtension,
+  handlers: aiHandlers,
+  isLoading: aiLoading,
+} = useEditorCompletion(editorRef, {
+  api: "http://localhost:3008/ai",
+  autoTrigger: false,
+  debounce: 800,
+  minAutoTriggerChars: 10,
+  acceptOnTab: true,
+  trapTab: true,
+});
 
 const value = ref("");
 
 const customHandlers = {
+  ...aiHandlers,
   imageUpload: {
     canExecute: (editor: Editor) => editor.can().insertContent({ type: "imageUpload" }),
     execute: (editor: Editor) => editor.chain().focus().insertContent({ type: "imageUpload" }),
@@ -56,6 +74,75 @@ const items: EditorToolbarItem[][] = [
     },
     {
       slot: "link" as const,
+    },
+  ],
+  [
+    {
+      icon: "i-lucide-sparkles",
+      label: "Improve",
+      variant: "soft",
+      loading: aiLoading.value,
+      content: {
+        align: "start",
+      },
+      items: [
+        {
+          kind: "aiFix",
+          icon: "i-lucide-spell-check",
+          label: "Fix spelling & grammar",
+        },
+        {
+          kind: "aiExtend",
+          icon: "i-lucide-unfold-vertical",
+          label: "Extend text",
+        },
+        {
+          kind: "aiReduce",
+          icon: "i-lucide-fold-vertical",
+          label: "Reduce text",
+        },
+        {
+          kind: "aiSimplify",
+          icon: "i-lucide-lightbulb",
+          label: "Simplify text",
+        },
+        {
+          kind: "aiContinue",
+          icon: "i-lucide-text",
+          label: "Continue sentence",
+        },
+        {
+          kind: "aiSummarize",
+          icon: "i-lucide-list",
+          label: "Summarize",
+        },
+        {
+          icon: "i-lucide-languages",
+          label: "Translate",
+          children: [
+            {
+              kind: "aiTranslate",
+              language: "English",
+              label: "English",
+            },
+            {
+              kind: "aiTranslate",
+              language: "French",
+              label: "French",
+            },
+            {
+              kind: "aiTranslate",
+              language: "Spanish",
+              label: "Spanish",
+            },
+            {
+              kind: "aiTranslate",
+              language: "German",
+              label: "German",
+            },
+          ],
+        },
+      ],
     },
   ],
 ];
@@ -125,11 +212,13 @@ const suggestionMenu: EditorSuggestionMenuItem[][] = [
 
 <template>
   <UEditor
+    ref="editorRef"
     v-slot="{ editor }"
     v-model="value"
     placeholder="Start writing..."
     :handlers="customHandlers"
     :extensions="[
+      completionExtension,
       ImageUpload,
       Emoji,
       TextAlign.configure({
@@ -138,7 +227,7 @@ const suggestionMenu: EditorSuggestionMenuItem[][] = [
     ]"
     class="py-2 mt-4 min-h-21"
     :ui="{
-      base: 'sm:px-0! w-full px-0! [&_p]:leading-2.5!',
+      base: 'sm:px-0! w-full px-0! [&_p]:leading-normal',
     }"
   >
     <UEditorToolbar

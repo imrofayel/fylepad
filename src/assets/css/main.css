@@ -79,3 +79,11 @@
     }
   }
 }
+
+.completion-suggestion {
+  color: light-dark(var(--ui-color-neutral-400), var(--ui-color-neutral-500));
+  opacity: 0.7;
+  white-space: pre;
+  pointer-events: none;
+  user-select: none;
+}
