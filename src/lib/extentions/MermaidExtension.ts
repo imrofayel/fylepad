@@ -59,17 +59,23 @@ interface MermaidPluginState {
   editingId: string | null;
 }
 
+const getMermaidBlockKey = (id: string, pos: number) => `${id || "mermaid"}@${pos}`;
+
 const isMermaidNode = (nodeName: string, language: unknown, expectedName: string) =>
   nodeName === expectedName && typeof language === "string" && MERMAID_LANG_RE.test(language);
 
 const getSelectionMermaidId = (viewState: {
-  selection: { $from: { depth: number; node: (depth: number) => any } };
+  selection: {
+    $from: { depth: number; node: (depth: number) => any; before: (depth: number) => number };
+  };
 }) => {
   const { $from } = viewState.selection;
   for (let depth = $from.depth; depth >= 0; depth -= 1) {
     const node = $from.node(depth);
-    if (MERMAID_LANG_RE.test(node.attrs?.language || "") && typeof node.attrs?.id === "string") {
-      return node.attrs.id as string;
+    if (MERMAID_LANG_RE.test(node.attrs?.language || "")) {
+      const id = typeof node.attrs?.id === "string" ? node.attrs.id : "";
+      const pos = depth > 0 ? $from.before(depth) : 0;
+      return getMermaidBlockKey(id, pos);
     }
   }
 
@@ -92,17 +98,17 @@ const createMermaidPlugin = ({
   const renderTimers = new Map<string, ReturnType<typeof setTimeout>>();
   const renderTokens = new Map<string, number>();
   const containers = new Map<string, MermaidContainer>();
-  const positionById = new Map<string, number>();
+  const positionByKey = new Map<string, number>();
   let activeTheme = resolveMermaidTheme();
 
   mermaid.initialize(buildMermaidConfig(activeTheme, mermaidConfig));
 
   let activeView: EditorView | null = null;
 
-  const createContainer = (id: string) => {
+  const createContainer = (key: string) => {
     const container = document.createElement("div") as MermaidContainer;
     container.classList.add(...(Array.isArray(classList) ? classList : [classList]));
-    container.dataset.mermaidId = id;
+    container.dataset.mermaidId = key;
     container.title = "Click to edit Mermaid source";
     return container;
   };
@@ -121,12 +127,12 @@ const createMermaidPlugin = ({
   };
 
   const renderDiagram = async (
-    id: string,
+    key: string,
     source: string,
     token: number,
     theme: NonNullable<MermaidConfig["theme"]>,
   ) => {
-    const container = containers.get(id);
+    const container = containers.get(key);
     if (!container) {
       return;
     }
@@ -135,8 +141,9 @@ const createMermaidPlugin = ({
       await waitForFontLoad();
       mermaid.initialize(buildMermaidConfig(theme, mermaidConfig));
 
-      const { svg } = await mermaid.render(id, source);
-      if (renderTokens.get(id) !== token) {
+      const renderId = `mermaid_${key.replace(/[^a-zA-Z0-9_-]/g, "_")}`;
+      const { svg } = await mermaid.render(renderId, source);
+      if (renderTokens.get(key) !== token) {
         return;
       }
 
@@ -150,13 +157,13 @@ const createMermaidPlugin = ({
         container.appendChild(svgElement);
       }
     } catch (error) {
-      if (renderTokens.get(id) !== token) {
+      if (renderTokens.get(key) !== token) {
         return;
       }
 
       renderError(container, error);
     } finally {
-      renderTimers.delete(id);
+      renderTimers.delete(key);
     }
   };
 
@@ -167,7 +174,7 @@ const createMermaidPlugin = ({
 
     activeTheme = currentTheme;
 
-    positionById.clear();
+    positionByKey.clear();
 
     doc.descendants((node: any, pos: number) => {
       if (!isMermaidNode(node.type.name, node.attrs?.language, name)) {
@@ -175,17 +182,18 @@ const createMermaidPlugin = ({
       }
 
       const id = typeof node.attrs?.id === "string" ? node.attrs.id : "";
+      const key = getMermaidBlockKey(id, pos);
       const source = node.textContent.trim();
-      if (!id || !source) {
+      if (!source) {
         return;
       }
 
-      liveIds.add(id);
-      positionById.set(id, pos);
+      liveIds.add(key);
+      positionByKey.set(key, pos);
 
-      const isEditing = editingId === id;
-      const container = containers.get(id) ?? createContainer(id);
-      containers.set(id, container);
+      const isEditing = editingId === key;
+      const container = containers.get(key) ?? createContainer(key);
+      containers.set(key, container);
 
       container.classList.toggle("is-editing", isEditing);
 
@@ -196,13 +204,13 @@ const createMermaidPlugin = ({
             return;
           }
 
-          const nodePos = positionById.get(id);
+          const nodePos = positionByKey.get(key);
           if (typeof nodePos !== "number") {
             return;
           }
 
           const tr = view.state.tr
-            .setMeta(MERMAID_PLUGIN_KEY, { editingId: id })
+            .setMeta(MERMAID_PLUGIN_KEY, { editingId: key })
             .setSelection(TextSelection.create(view.state.doc, nodePos + 1));
 
           view.dispatch(tr);
@@ -226,28 +234,28 @@ const createMermaidPlugin = ({
         }),
       );
 
-      if (sourceCache.get(id) === source && themeCache.get(id) === currentTheme) {
+      if (sourceCache.get(key) === source && themeCache.get(key) === currentTheme) {
         return;
       }
 
-      sourceCache.set(id, source);
-      themeCache.set(id, currentTheme);
+      sourceCache.set(key, source);
+      themeCache.set(key, currentTheme);
 
-      const existingTimer = renderTimers.get(id);
+      const existingTimer = renderTimers.get(key);
       if (existingTimer) {
         clearTimeout(existingTimer);
       }
 
-      const token = (renderTokens.get(id) ?? 0) + 1;
-      renderTokens.set(id, token);
+      const token = (renderTokens.get(key) ?? 0) + 1;
+      renderTokens.set(key, token);
 
       const timeout = setTimeout(
         () => {
-          void renderDiagram(id, source, token, currentTheme);
+          void renderDiagram(key, source, token, currentTheme);
         },
         refresh ? 0 : debounce,
       );
-      renderTimers.set(id, timeout);
+      renderTimers.set(key, timeout);
     });
 
     for (const id of Array.from(containers.keys())) {
@@ -265,7 +273,7 @@ const createMermaidPlugin = ({
       renderTokens.delete(id);
       sourceCache.delete(id);
       themeCache.delete(id);
-      positionById.delete(id);
+      positionByKey.delete(id);
     }
 
     return DecorationSet.create(doc, decorations);

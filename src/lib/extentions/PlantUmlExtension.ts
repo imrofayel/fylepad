@@ -98,6 +98,8 @@ interface PlantUmlPluginState {
   editingId: string | null;
 }
 
+const getPlantUmlBlockKey = (id: string, pos: number) => `${id || "plantuml"}@${pos}`;
+
 interface CodeBlockLowlightPlantUmlOptions extends CodeBlockLowlightOptions {
   /**
    * The debounce delay in milliseconds for rendering the PlantUML diagram after
@@ -127,13 +129,17 @@ const isPlantUmlNode = (nodeName: string, language: unknown, expectedName: strin
   nodeName === expectedName && typeof language === "string" && PLANTUML_LANG_RE.test(language);
 
 const getSelectionPlantUmlId = (viewState: {
-  selection: { $from: { depth: number; node: (depth: number) => any } };
+  selection: {
+    $from: { depth: number; node: (depth: number) => any; before: (depth: number) => number };
+  };
 }) => {
   const { $from } = viewState.selection;
   for (let depth = $from.depth; depth >= 0; depth -= 1) {
     const node = $from.node(depth);
-    if (PLANTUML_LANG_RE.test(node.attrs?.language || "") && typeof node.attrs?.id === "string") {
-      return node.attrs.id as string;
+    if (PLANTUML_LANG_RE.test(node.attrs?.language || "")) {
+      const id = typeof node.attrs?.id === "string" ? node.attrs.id : "";
+      const pos = depth > 0 ? $from.before(depth) : 0;
+      return getPlantUmlBlockKey(id, pos);
     }
   }
 
@@ -167,15 +173,15 @@ const createPlantUmlPlugin = ({
   const renderTokens = new Map<string, number>();
   const renderControllers = new Map<string, AbortController>();
   const containers = new Map<string, PlantUmlContainer>();
-  const positionById = new Map<string, number>();
+  const positionByKey = new Map<string, number>();
   let activeTheme = resolvePlantUmlTheme();
 
   let activeView: EditorView | null = null;
 
-  const createContainer = (id: string) => {
+  const createContainer = (key: string) => {
     const container = document.createElement("div") as PlantUmlContainer;
     container.classList.add(...(Array.isArray(classList) ? classList : [classList]));
-    container.dataset.plantumlId = id;
+    container.dataset.plantumlId = key;
     container.title = "Click to edit PlantUML source";
     return container;
   };
@@ -217,12 +223,12 @@ const createPlantUmlPlugin = ({
   };
 
   const renderDiagram = async (
-    id: string,
+    key: string,
     source: string,
     token: number,
     theme: "dark" | "light",
   ) => {
-    const container = containers.get(id);
+    const container = containers.get(key);
     if (!container) {
       return;
     }
@@ -230,17 +236,17 @@ const createPlantUmlPlugin = ({
     try {
       await waitForFontLoad();
 
-      const prevController = renderControllers.get(id);
+      const prevController = renderControllers.get(key);
       if (prevController) {
         prevController.abort();
       }
 
       const controller = new AbortController();
-      renderControllers.set(id, controller);
+      renderControllers.set(key, controller);
 
       const themedSource = withPlantUmlTheme(source, theme);
       const svg = await fetchPlantUmlSvg(themedSource, controller.signal);
-      if (renderTokens.get(id) !== token) {
+      if (renderTokens.get(key) !== token) {
         return;
       }
 
@@ -259,13 +265,13 @@ const createPlantUmlPlugin = ({
         return;
       }
 
-      if (renderTokens.get(id) !== token) {
+      if (renderTokens.get(key) !== token) {
         return;
       }
 
       renderError(container, error);
     } finally {
-      renderTimers.delete(id);
+      renderTimers.delete(key);
     }
   };
 
@@ -276,7 +282,7 @@ const createPlantUmlPlugin = ({
 
     activeTheme = currentTheme;
 
-    positionById.clear();
+    positionByKey.clear();
 
     doc.descendants((node: any, pos: number) => {
       if (!isPlantUmlNode(node.type.name, node.attrs?.language, name)) {
@@ -284,17 +290,18 @@ const createPlantUmlPlugin = ({
       }
 
       const id = typeof node.attrs?.id === "string" ? node.attrs.id : "";
+      const key = getPlantUmlBlockKey(id, pos);
       const source = node.textContent.trim();
-      if (!id || !source) {
+      if (!source) {
         return;
       }
 
-      liveIds.add(id);
-      positionById.set(id, pos);
+      liveIds.add(key);
+      positionByKey.set(key, pos);
 
-      const isEditing = editingId === id;
-      const container = containers.get(id) ?? createContainer(id);
-      containers.set(id, container);
+      const isEditing = editingId === key;
+      const container = containers.get(key) ?? createContainer(key);
+      containers.set(key, container);
 
       container.classList.toggle("is-editing", isEditing);
 
@@ -305,13 +312,13 @@ const createPlantUmlPlugin = ({
             return;
           }
 
-          const nodePos = positionById.get(id);
+          const nodePos = positionByKey.get(key);
           if (typeof nodePos !== "number") {
             return;
           }
 
           const tr = view.state.tr
-            .setMeta(PLANTUML_PLUGIN_KEY, { editingId: id })
+            .setMeta(PLANTUML_PLUGIN_KEY, { editingId: key })
             .setSelection(TextSelection.create(view.state.doc, nodePos + 1));
 
           view.dispatch(tr);
@@ -335,28 +342,28 @@ const createPlantUmlPlugin = ({
         }),
       );
 
-      if (sourceCache.get(id) === source && themeCache.get(id) === currentTheme) {
+      if (sourceCache.get(key) === source && themeCache.get(key) === currentTheme) {
         return;
       }
 
-      sourceCache.set(id, source);
-      themeCache.set(id, currentTheme);
+      sourceCache.set(key, source);
+      themeCache.set(key, currentTheme);
 
-      const existingTimer = renderTimers.get(id);
+      const existingTimer = renderTimers.get(key);
       if (existingTimer) {
         clearTimeout(existingTimer);
       }
 
-      const token = (renderTokens.get(id) ?? 0) + 1;
-      renderTokens.set(id, token);
+      const token = (renderTokens.get(key) ?? 0) + 1;
+      renderTokens.set(key, token);
 
       const timeout = setTimeout(
         () => {
-          void renderDiagram(id, source, token, currentTheme);
+          void renderDiagram(key, source, token, currentTheme);
         },
         refresh ? 0 : debounce,
       );
-      renderTimers.set(id, timeout);
+      renderTimers.set(key, timeout);
     });
 
     for (const id of Array.from(containers.keys())) {
@@ -380,7 +387,7 @@ const createPlantUmlPlugin = ({
       renderControllers.delete(id);
       sourceCache.delete(id);
       themeCache.delete(id);
-      positionById.delete(id);
+      positionByKey.delete(id);
     }
 
     return DecorationSet.create(doc, decorations);

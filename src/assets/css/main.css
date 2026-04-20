@@ -96,6 +96,10 @@
   display: none;
 }
 
+.spotify-source--hidden {
+  display: none;
+}
+
 .mermaid-container {
   display: flex;
   justify-content: flex-start;
@@ -122,6 +126,27 @@
   background: transparent;
   color: var(--ui-text);
   cursor: text;
+}
+
+.spotify-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: min(100%, 420px);
+  margin: 0.25rem 0 0.5rem;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 16px;
+  background: transparent;
+  cursor: text;
+}
+
+.spotify-embed {
+  width: 100%;
+  border: 0;
+  border-radius: 12px;
+  pointer-events: none;
 }
 
 .mermaid-container svg {
@@ -177,12 +202,22 @@
   display: none;
 }
 
+.spotify-container.is-editing {
+  display: none;
+}
+
 .mermaid-container--error {
   border: 0;
 }
 
 .plantuml-container--error {
   border: 0;
+}
+
+.spotify-container--error {
+  border: 1px solid #dc2626;
+  border-radius: 12px;
+  padding: 0.5rem 0.625rem;
 }
 
 .mermaid-error {
@@ -193,6 +228,13 @@
 }
 
 .plantuml-error {
+  margin: 0;
+  color: #dc2626;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.spotify-error {
   margin: 0;
   color: #dc2626;
   font-size: 0.875rem;

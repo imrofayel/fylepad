@@ -9,6 +9,7 @@ import { ImageUpload } from "@lib/extentions/EditorImageUploadExtension";
 import { useEditorCompletion } from "@/composables/useEditorCompletion";
 import { CodeBlockLowlightMermaid } from "@lib/extentions/MermaidExtension";
 import { CodeBlockLowlightPlantUml } from "@lib/extentions/PlantUmlExtension";
+import { CodeBlockLowlightSpotify } from "@lib/extentions/SpotifyExtension";
 import mermaid from "mermaid";
 import { createLowlight } from "lowlight";
 
@@ -55,6 +56,19 @@ const createStarterPlantUmlDiagram = () => ({
   ],
 });
 
+const createStarterSpotifyEmbed = () => ({
+  type: "codeBlock",
+  attrs: {
+    language: "spotify",
+  },
+  content: [
+    {
+      type: "text",
+      text: "https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT",
+    },
+  ],
+});
+
 const customHandlers = {
   ...aiHandlers,
   imageUpload: {
@@ -90,6 +104,21 @@ const customHandlers = {
     isActive: (editor: Editor) =>
       editor.isActive("codeBlock", {
         language: "plantuml",
+      }),
+    isDisabled: undefined,
+  },
+  spotify: {
+    canExecute: (editor: Editor) => editor.can().insertContent(createStarterSpotifyEmbed()),
+    execute: (editor: Editor) =>
+      editor
+        .chain()
+        .focus()
+        .insertContent(createStarterSpotifyEmbed())
+        .insertContent({ type: "paragraph" })
+        .run(),
+    isActive: (editor: Editor) =>
+      editor.isActive("codeBlock", {
+        language: "spotify",
       }),
     isDisabled: undefined,
   },
@@ -276,6 +305,11 @@ const suggestionMenu: EditorSuggestionMenuItem<typeof customHandlers>[][] = [
       label: "PlantUML Diagram",
       icon: "vscode-icons:file-type-plantuml",
     },
+    {
+      kind: "spotify",
+      label: "Spotify Embed",
+      icon: "logos:spotify-icon",
+    },
   ],
 ];
 
@@ -304,6 +338,10 @@ const lowlight = createLowlight();
         lowlight,
         classList: 'plantuml-container',
         debounce: 400,
+      }),
+      CodeBlockLowlightSpotify.configure({
+        lowlight,
+        classList: 'spotify-container',
       }),
       completionExtension,
       ImageUpload,
