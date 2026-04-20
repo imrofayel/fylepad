@@ -1,7 +1,9 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
+@import "katex/dist/katex.min.css";
 @import "@shikijs/twoslash/style-rich.css";
 @import "./fonts.css";
+@import "katex/dist/katex.min.css";
 
 @theme {
   --color-green: #1bda67;
@@ -498,4 +500,8 @@ html.dark .tiptap .twoslash .twoslash-popup-code .shiki span {
   background: transparent !important;
   margin: 0 !important;
   padding: 0 !important;
+}
+
+.tiptap .tiptap-mathematics-render--editable {
+  cursor: pointer;
 }

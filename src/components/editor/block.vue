@@ -16,6 +16,7 @@ import { TwoslashExtension } from "@lib/extentions/TwoslashExtension";
 import mermaid from "mermaid";
 import { createLowlight } from "lowlight";
 import CodeBlockShiki from "tiptap-extension-code-block-shiki";
+import { Mathematics } from "@tiptap/extension-mathematics";
 
 const editorRef = useTemplateRef("editorRef");
 
@@ -33,6 +34,53 @@ const {
 });
 
 const value = ref("");
+
+const mathPopoverOpen = ref(false);
+const mathLatex = ref("");
+const mathPos = ref<number | null>(null);
+const mathKind = ref<"inline" | "block">("block");
+
+const openMathPopover = (
+  node: { attrs?: { latex?: string } },
+  pos: number,
+  kind: "inline" | "block",
+) => {
+  mathLatex.value = node.attrs?.latex || "";
+  mathPos.value = pos;
+  mathKind.value = kind;
+  mathPopoverOpen.value = true;
+};
+
+const closeMathPopover = () => {
+  mathPopoverOpen.value = false;
+};
+
+const getMathReference = (editor: Editor) => {
+  if (mathPos.value === null) {
+    return undefined;
+  }
+
+  const dom = editor.view.nodeDOM(mathPos.value);
+  return dom instanceof HTMLElement ? dom : undefined;
+};
+
+const applyMathUpdate = (editor: Editor) => {
+  const pos = mathPos.value;
+  const latex = mathLatex.value.trim();
+
+  if (pos === null || !latex) {
+    return;
+  }
+
+  const chain = editor.chain().focus().setNodeSelection(pos);
+  if (mathKind.value === "block") {
+    chain.updateBlockMath({ latex, pos }).run();
+  } else {
+    chain.updateInlineMath({ latex, pos }).run();
+  }
+
+  closeMathPopover();
+};
 
 const createStarterMermaidDiagram = () => ({
   type: "codeBlock",
@@ -365,6 +413,17 @@ const lowlight = createLowlight();
     placeholder="Write / for commands..."
     :handlers="customHandlers"
     :extensions="[
+      Mathematics.configure({
+        inlineOptions: {
+          onClick: (node, pos) => openMathPopover(node, pos, 'inline'),
+        },
+        blockOptions: {
+          onClick: (node, pos) => openMathPopover(node, pos, 'block'),
+        },
+        katexOptions: {
+          throwOnError: false,
+        },
+      }),
       CodeBlockShiki.configure({
         defaultTheme: 'tokyo-night',
         themes: {
@@ -420,6 +479,56 @@ const lowlight = createLowlight();
         <EditorLinkPopover :editor="editor" auto-open />
       </template>
     </UEditorToolbar>
+
+    <UPopover
+      :open="mathPopoverOpen"
+      :reference="getMathReference(editor)"
+      :content="{ side: 'top', align: 'start', sideOffset: 8 }"
+      :ui="{ content: 'p-0.5 dark:bg-neutral-800! w-84 z-[120]' }"
+      @update:open="(value) => (mathPopoverOpen = value)"
+    >
+      <span class="sr-only" />
+
+      <template #content>
+        <div class="p-1.5 space-y-2">
+          <UTextarea
+            v-model="mathLatex"
+            autofocus
+            autoresize
+            :rows="3"
+            :maxrows="8"
+            placeholder="Edit LaTeX"
+            :ui="{
+              base: 'font-mono text-sm leading-6',
+            }"
+            @keydown="
+              (event: KeyboardEvent) => {
+                if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') {
+                  event.preventDefault();
+                  applyMathUpdate(editor);
+                }
+              }
+            "
+          />
+
+          <div class="flex items-center justify-end gap-1">
+            <UButton color="neutral" variant="ghost" size="xs" @click="closeMathPopover">
+              Cancel
+            </UButton>
+            <UButton
+              icon="tabler:check"
+              color="primary"
+              size="xs"
+              :disabled="!mathLatex.trim()"
+              @click="applyMathUpdate(editor)"
+            >
+              Update
+            </UButton>
+          </div>
+        </div>
+      </template>
+    </UPopover>
+
     <UEditorSuggestionMenu :editor="editor" :items="suggestionMenu" />
   </UEditor>
 </template>
