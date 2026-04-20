@@ -28,12 +28,40 @@ const {
 
 const value = ref("");
 
+const createStarterMermaidDiagram = () => ({
+  type: "codeBlock",
+  attrs: {
+    language: "mermaid",
+  },
+  content: [
+    {
+      type: "text",
+      text: "flowchart TD\nA[Mermaid] --> B{You know syntax?}\nB -->|Yes| C[Cool!]\nB -->|No| D[Try it!]",
+    },
+  ],
+});
+
 const customHandlers = {
   ...aiHandlers,
   imageUpload: {
     canExecute: (editor: Editor) => editor.can().insertContent({ type: "imageUpload" }),
     execute: (editor: Editor) => editor.chain().focus().insertContent({ type: "imageUpload" }),
     isActive: (editor: Editor) => editor.isActive("imageUpload"),
+    isDisabled: undefined,
+  },
+  mermaid: {
+    canExecute: (editor: Editor) => editor.can().insertContent(createStarterMermaidDiagram()),
+    execute: (editor: Editor) =>
+      editor
+        .chain()
+        .focus()
+        .insertContent(createStarterMermaidDiagram())
+        .insertContent({ type: "paragraph" })
+        .run(),
+    isActive: (editor: Editor) =>
+      editor.isActive("codeBlock", {
+        language: "mermaid",
+      }),
     isDisabled: undefined,
   },
 } satisfies EditorCustomHandlers;
@@ -150,7 +178,7 @@ const items: EditorToolbarItem[][] = [
   ],
 ];
 
-const suggestionMenu: EditorSuggestionMenuItem[][] = [
+const suggestionMenu: EditorSuggestionMenuItem<typeof customHandlers>[][] = [
   [
     {
       kind: "paragraph",
@@ -209,6 +237,11 @@ const suggestionMenu: EditorSuggestionMenuItem[][] = [
       label: "Divider",
       icon: "tabler:line-dashed",
     },
+    {
+      kind: "mermaid",
+      label: "Mermaid Diagram",
+      icon: "vscode-icons:file-type-mermaid",
+    },
   ],
 ];
 
@@ -240,7 +273,7 @@ const lowlight = createLowlight();
         types: ['heading', 'paragraph'],
       }),
     ]"
-    class="py-2 mt-4 min-h-21"
+    class="py-2 mt-2 min-h-21"
     :ui="{
       base: 'sm:px-0! w-full px-0! [&_p]:leading-normal',
     }"
