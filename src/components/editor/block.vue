@@ -32,44 +32,7 @@ const {
   trapTab: true,
 });
 
-const twoslashDemo = `// @twoslash
-// Basic types
-const message: string = "Hello Twoslash"
-
-// @log: This is a green log message
-const count = 42
-
-// Hover example
-const user = {
-  name: "Adam",
-  age: 21,
-}
-user.name
-
-// @warn: This is a warning
-const maybeNumber: number | undefined = undefined
-maybeNumber?.toFixed()
-
-// @error: Type error example
-const wrong: string = 123
-
-// Query type
-const nums = [1, 2, 3]
-nums
-
-// Function example
-function greet(name: string) {
-  return "Hello " + name
-}
-greet("World")
-
-// @log: Done testing Twoslash ✨
-`;
-
-const escapeHtml = (content: string) =>
-  content.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
-const value = ref(`<pre><code class="language-ts">${escapeHtml(twoslashDemo)}</code></pre>`);
+const value = ref("");
 
 const createStarterMermaidDiagram = () => ({
   type: "codeBlock",
@@ -399,7 +362,7 @@ const lowlight = createLowlight();
     ref="editorRef"
     v-slot="{ editor }"
     v-model="value"
-    placeholder="Start writing..."
+    placeholder="Write / for commands..."
     :handlers="customHandlers"
     :extensions="[
       CodeBlockShiki.configure({
