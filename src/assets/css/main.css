@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
+@import "./twoslash.css";
 @import "./fonts.css";
 
 @theme {
@@ -171,6 +172,37 @@ pre.codeblock-with-copy:focus-within .codeblock-copy-button {
 
 .youtube-source--hidden {
   display: none;
+}
+
+.twoslash-source--hidden {
+  display: none;
+}
+
+.twoslash-container {
+  margin: 0.15rem 0 0.45rem;
+  position: relative;
+  overflow: visible;
+}
+
+.twoslash-container pre {
+  margin: 0;
+  border-radius: 0.55rem;
+}
+
+.twoslash-container .shiki {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.twoslash-container.is-editing {
+  display: none;
+}
+
+.twoslash-error {
+  margin: 0;
+  color: #dc2626;
+  font-size: 0.875rem;
+  line-height: 1.4;
 }
 
 .mermaid-container {
@@ -393,4 +425,58 @@ html.dark .tiptap .shiki,
 html.dark .tiptap .shiki span {
   color: var(--shiki-dark) !important;
   background-color: var(--color-neutral-800) !important;
+}
+
+html.dark .tiptap .twoslash .twoslash-popup-code .shiki,
+html.dark .tiptap .twoslash .twoslash-popup-code .shiki span {
+  background-color: transparent !important;
+}
+
+.tiptap .twoslash {
+  --twoslash-popup-bg: light-dark(var(--ui-color-neutral-50), var(--ui-color-neutral-900));
+  --twoslash-popup-color: light-dark(var(--ui-color-neutral-900), var(--ui-color-neutral-100));
+  --twoslash-border-color: light-dark(
+    var(--ui-color-neutral-200),
+    color-mix(in srgb, var(--ui-color-neutral-700) 72%, transparent)
+  );
+  --twoslash-docs-color: light-dark(var(--ui-color-neutral-600), var(--ui-color-neutral-300));
+  --twoslash-code-font:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace;
+  --twoslash-code-font-size: 0.9em;
+  --twoslash-popup-shadow: none;
+  --twoslash-underline-color: color-mix(in srgb, var(--ui-primary) 60%, currentColor);
+  --twoslash-error-color: #dc2626;
+  --twoslash-error-bg: color-mix(in srgb, #ef4444 16%, transparent);
+  --twoslash-warn-color: #d97706;
+  --twoslash-warn-bg: color-mix(in srgb, #f59e0b 16%, transparent);
+}
+
+.tiptap .twoslash .twoslash-popup-container {
+  z-index: 30;
+  border-radius: 6px;
+  box-shadow: none !important;
+}
+
+.tiptap .twoslash .twoslash-popup-code {
+  white-space: pre;
+  overflow-x: auto;
+  max-width: min(72ch, calc(100vw - 3rem));
+  line-height: 1.45;
+}
+
+.tiptap .twoslash .twoslash-popup-docs,
+.tiptap .twoslash .twoslash-popup-error {
+  white-space: pre-wrap;
+  max-width: min(72ch, calc(100vw - 3rem));
+}
+
+.tiptap .twoslash .twoslash-popup-code .shiki,
+.tiptap .twoslash .twoslash-popup-code pre.shiki {
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }

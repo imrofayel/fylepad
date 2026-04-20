@@ -16,6 +16,7 @@
     "@ai-sdk/gateway": "^3.0.104",
     "@ai-sdk/vue": "^3.0.168",
     "@nuxt/ui": "^4.6.1",
+    "@shikijs/twoslash": "^4.0.2",
     "@tauri-apps/api": "^2.10.1",
     "@tauri-apps/plugin-opener": "^2.5.3",
     "@tiptap/core": "^3.22.4",
@@ -36,6 +37,7 @@
     "state": "link:@tiptap/pm/state",
     "tailwindcss": "^4.2.2",
     "tiptap-extension-code-block-shiki": "^1.1.0",
+    "twoslash-cdn": "^0.3.8",
     "view": "link:@tiptap/pm/view",
     "vue": "^3.5.32",
     "vue-router": "^5.0.4"

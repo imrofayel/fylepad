@@ -12,6 +12,7 @@ import { CodeBlockLowlightPlantUml } from "@lib/extentions/PlantUmlExtension";
 import { CodeBlockLowlightSpotify } from "@lib/extentions/SpotifyExtension";
 import { CodeBlockLowlightYouTube } from "@lib/extentions/YouTubeExtension";
 import { CodeBlockCopyExtension } from "@lib/extentions/CodeBlockCopyExtension";
+import { TwoslashExtension } from "@lib/extentions/TwoslashExtension";
 import mermaid from "mermaid";
 import { createLowlight } from "lowlight";
 import CodeBlockShiki from "tiptap-extension-code-block-shiki";
@@ -31,7 +32,43 @@ const {
   trapTab: true,
 });
 
-const value = ref("");
+const value = ref(`\`\`\`ts
+// @twoslash
+
+// Basic types
+const message: string = "Hello Twoslash"
+
+// @log: This is a green log message
+const count = 42
+
+// Hover example
+const user = {
+  name: "Adam",
+  age: 21
+}
+user.name
+
+// @warn: This is a warning
+const maybeNumber: number | undefined = undefined
+maybeNumber?.toFixed()
+
+// @error: Type error example
+const wrong: string = 123
+
+// Query type
+const nums = [1, 2, 3]
+nums
+
+// ---cut---
+
+// Function example
+function greet(name: string) {
+  return "Hello " + name
+}
+greet("World")
+
+// @log: Done testing Twoslash ✨
+\`\`\``);
 
 const createStarterMermaidDiagram = () => ({
   type: "codeBlock",
@@ -371,6 +408,7 @@ const lowlight = createLowlight();
           dark: 'github-dark',
         },
       }),
+      TwoslashExtension,
       CodeBlockCopyExtension,
       CodeBlockLowlightMermaid.configure({
         lowlight,
