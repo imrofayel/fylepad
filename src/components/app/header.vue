@@ -27,7 +27,7 @@ const selectTab = (id: string) => {
     <div class="flex gap-2.5">
       <ButtonWithTooltip text="New Tab" variant="link" color="neutral" :icon="ICONS.newTab" />
 
-      <div class="flex gap-2 z-100">
+      <div class="flex gap-2 z-10">
         <UButton
           v-for="tab in tabs"
           :key="tab.id"

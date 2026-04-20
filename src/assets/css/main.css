@@ -88,6 +88,57 @@
   user-select: none;
 }
 
+.codeblock-with-copy {
+  position: relative;
+}
+
+.codeblock-copy-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 0;
+  @apply rounded-full;
+  background: color-mix(in srgb, var(--ui-bg) 76%, transparent);
+  color: var(--ui-text);
+  opacity: 0;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+  transition:
+    opacity 120ms ease,
+    background-color 120ms ease,
+    transform 120ms ease;
+}
+
+.codeblock-copy-button svg {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.codeblock-copy-button:hover {
+  @apply opacity-80!;
+}
+
+pre.codeblock-with-copy:hover .codeblock-copy-button,
+pre.codeblock-with-copy:focus-within .codeblock-copy-button {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.codeblock-copy-button:hover {
+  background: color-mix(in srgb, var(--ui-bg) 88%, transparent);
+}
+
+.codeblock-copy-button[data-state="error"] {
+  color: #dc2626;
+}
+
 .mermaid-source--hidden {
   display: none;
 }

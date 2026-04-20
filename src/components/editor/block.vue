@@ -11,9 +11,9 @@ import { CodeBlockLowlightMermaid } from "@lib/extentions/MermaidExtension";
 import { CodeBlockLowlightPlantUml } from "@lib/extentions/PlantUmlExtension";
 import { CodeBlockLowlightSpotify } from "@lib/extentions/SpotifyExtension";
 import { CodeBlockLowlightYouTube } from "@lib/extentions/YouTubeExtension";
+import { CodeBlockCopyExtension } from "@lib/extentions/CodeBlockCopyExtension";
 import mermaid from "mermaid";
 import { createLowlight } from "lowlight";
-import StarterKit from "@tiptap/starter-kit";
 import CodeBlockShiki from "tiptap-extension-code-block-shiki";
 
 const editorRef = useTemplateRef("editorRef");
@@ -371,6 +371,7 @@ const lowlight = createLowlight();
           dark: 'github-dark',
         },
       }),
+      CodeBlockCopyExtension,
       CodeBlockLowlightMermaid.configure({
         lowlight,
         classList: 'mermaid-container',
@@ -409,6 +410,7 @@ const lowlight = createLowlight();
       :items="items"
       layout="bubble"
       :ui="{
+        root: 'z-100!',
         base: 'p-px',
       }"
     >

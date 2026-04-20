@@ -10,7 +10,7 @@ const EditorBlock = defineAsyncComponent(() => import("@/components/editor/block
     <div class="h-8 bg-linear-to-b from-default to-transparent"></div>
   </div>
 
-  <div class="mx-auto min-h-screen w-full sm:px-3 pt-2">
+  <div class="mx-auto min-h-screen w-full z-100 sm:px-3 pt-2">
     <AppHeader />
     <Suspense>
       <template #default>
