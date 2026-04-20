@@ -32,9 +32,7 @@ const {
   trapTab: true,
 });
 
-const value = ref(`\`\`\`ts
-// @twoslash
-
+const twoslashDemo = `// @twoslash
 // Basic types
 const message: string = "Hello Twoslash"
 
@@ -44,7 +42,7 @@ const count = 42
 // Hover example
 const user = {
   name: "Adam",
-  age: 21
+  age: 21,
 }
 user.name
 
@@ -59,8 +57,6 @@ const wrong: string = 123
 const nums = [1, 2, 3]
 nums
 
-// ---cut---
-
 // Function example
 function greet(name: string) {
   return "Hello " + name
@@ -68,7 +64,12 @@ function greet(name: string) {
 greet("World")
 
 // @log: Done testing Twoslash ✨
-\`\`\``);
+`;
+
+const escapeHtml = (content: string) =>
+  content.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+const value = ref(`<pre><code class="language-ts">${escapeHtml(twoslashDemo)}</code></pre>`);
 
 const createStarterMermaidDiagram = () => ({
   type: "codeBlock",

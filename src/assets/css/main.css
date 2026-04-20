@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
-@import "./twoslash.css";
+@import "@shikijs/twoslash/style-rich.css";
 @import "./fonts.css";
 
 @theme {
@@ -10,6 +10,9 @@
 
 :root {
   --font-sans: "Open Runde", system-ui, sans-serif;
+  --font-mono:
+    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
 
   --ui-color-neutral-50: #fafafa;
   --ui-color-neutral-100: #f5f5f5;
@@ -158,6 +161,14 @@ pre.codeblock-with-copy:focus-within .codeblock-copy-button {
   color: #dc2626;
 }
 
+.tiptap pre,
+.tiptap code,
+.tiptap .shiki {
+  font-family: var(--font-mono) !important;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
 .mermaid-source--hidden {
   display: none;
 }
@@ -201,7 +212,7 @@ pre.codeblock-with-copy:focus-within .codeblock-copy-button {
 .twoslash-error {
   margin: 0;
   color: #dc2626;
-  font-size: 0.875rem;
+  font-size: 1rem;
   line-height: 1.4;
 }
 
@@ -440,16 +451,21 @@ html.dark .tiptap .twoslash .twoslash-popup-code .shiki span {
     color-mix(in srgb, var(--ui-color-neutral-700) 72%, transparent)
   );
   --twoslash-docs-color: light-dark(var(--ui-color-neutral-600), var(--ui-color-neutral-300));
-  --twoslash-code-font:
-    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
-    monospace;
-  --twoslash-code-font-size: 0.9em;
+  --twoslash-code-font: var(--font-mono);
+  --twoslash-code-font-size: 1.02em;
   --twoslash-popup-shadow: none;
   --twoslash-underline-color: color-mix(in srgb, var(--ui-primary) 60%, currentColor);
   --twoslash-error-color: #dc2626;
   --twoslash-error-bg: color-mix(in srgb, #ef4444 16%, transparent);
   --twoslash-warn-color: #d97706;
   --twoslash-warn-bg: color-mix(in srgb, #f59e0b 16%, transparent);
+}
+
+.tiptap .twoslash,
+.tiptap .twoslash code,
+.tiptap .twoslash .shiki {
+  font-family: var(--font-mono) !important;
+  font-size: 1.02rem;
 }
 
 .tiptap .twoslash .twoslash-popup-container {
@@ -462,13 +478,16 @@ html.dark .tiptap .twoslash .twoslash-popup-code .shiki span {
   white-space: pre;
   overflow-x: auto;
   max-width: min(72ch, calc(100vw - 3rem));
-  line-height: 1.45;
+  line-height: 1.55;
 }
 
 .tiptap .twoslash .twoslash-popup-docs,
 .tiptap .twoslash .twoslash-popup-error {
+  font-family: var(--font-mono) !important;
   white-space: pre-wrap;
   max-width: min(72ch, calc(100vw - 3rem));
+  font-size: 0.98rem;
+  line-height: 1.55;
 }
 
 .tiptap .twoslash .twoslash-popup-code .shiki,
