@@ -57,6 +57,9 @@ importers:
       mermaid:
         specifier: ^11.14.0
         version: 11.14.0
+      plantuml-encoder:
+        specifier: ^1.4.0
+        version: 1.4.0
       prosemirror-mermaid:
         specifier: ^0.0.0
         version: 0.0.0(lowlight@3.3.0)(prosemirror-model@1.25.4)(prosemirror-state@1.4.4)(prosemirror-view@1.41.8)
@@ -2435,6 +2438,9 @@ packages:
 
   pkg-types@2.3.0:
     resolution: {integrity: sha512-SIqCzDRg0s9npO5XQ3tNZioRY1uK06lA41ynBC1YmFTmnY6FjUjVt6s4LoADmwoig1qqD0oK8h1p/8mlMx8Oig==}
+
+  plantuml-encoder@1.4.0:
+    resolution: {integrity: sha512-sxMwpDw/ySY1WB2CE3+IdMuEcWibJ72DDOsXLkSmEaSzwEUaYBT6DWgOfBiHGCux4q433X6+OEFWjlVqp7gL6g==}
 
   pngjs@7.0.0:
     resolution: {integrity: sha512-LKWqWJRhstyYo9pGvgor/ivk2w94eSjE3RGVuzLGlr3NmD8bf7RcYGze1mNdEHRP6TRP6rMuDHk5t44hnTRyow==}
@@ -5170,6 +5176,8 @@ snapshots:
       confbox: 0.2.4
       exsolve: 1.0.8
       pathe: 2.0.3
+
+  plantuml-encoder@1.4.0: {}
 
   pngjs@7.0.0: {}
 

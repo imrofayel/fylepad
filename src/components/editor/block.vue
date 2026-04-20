@@ -8,6 +8,7 @@ import EditorLinkPopover from "./EditorLinkPopover.vue";
 import { ImageUpload } from "@lib/extentions/EditorImageUploadExtension";
 import { useEditorCompletion } from "@/composables/useEditorCompletion";
 import { CodeBlockLowlightMermaid } from "@lib/extentions/MermaidExtension";
+import { CodeBlockLowlightPlantUml } from "@lib/extentions/PlantUmlExtension";
 import mermaid from "mermaid";
 import { createLowlight } from "lowlight";
 
@@ -41,6 +42,19 @@ const createStarterMermaidDiagram = () => ({
   ],
 });
 
+const createStarterPlantUmlDiagram = () => ({
+  type: "codeBlock",
+  attrs: {
+    language: "plantuml",
+  },
+  content: [
+    {
+      type: "text",
+      text: "@startuml\nBob -> Alice : hello\n@enduml",
+    },
+  ],
+});
+
 const customHandlers = {
   ...aiHandlers,
   imageUpload: {
@@ -61,6 +75,21 @@ const customHandlers = {
     isActive: (editor: Editor) =>
       editor.isActive("codeBlock", {
         language: "mermaid",
+      }),
+    isDisabled: undefined,
+  },
+  plantuml: {
+    canExecute: (editor: Editor) => editor.can().insertContent(createStarterPlantUmlDiagram()),
+    execute: (editor: Editor) =>
+      editor
+        .chain()
+        .focus()
+        .insertContent(createStarterPlantUmlDiagram())
+        .insertContent({ type: "paragraph" })
+        .run(),
+    isActive: (editor: Editor) =>
+      editor.isActive("codeBlock", {
+        language: "plantuml",
       }),
     isDisabled: undefined,
   },
@@ -242,6 +271,11 @@ const suggestionMenu: EditorSuggestionMenuItem<typeof customHandlers>[][] = [
       label: "Mermaid Diagram",
       icon: "vscode-icons:file-type-mermaid",
     },
+    {
+      kind: "plantuml",
+      label: "PlantUML Diagram",
+      icon: "vscode-icons:file-type-plantuml",
+    },
   ],
 ];
 
@@ -265,6 +299,11 @@ const lowlight = createLowlight();
         mermaidConfig: {
           theme: 'neutral',
         },
+      }),
+      CodeBlockLowlightPlantUml.configure({
+        lowlight,
+        classList: 'plantuml-container',
+        debounce: 400,
       }),
       completionExtension,
       ImageUpload,
