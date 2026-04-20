@@ -7,6 +7,9 @@ import { ref, useTemplateRef } from "vue";
 import EditorLinkPopover from "./EditorLinkPopover.vue";
 import { ImageUpload } from "@lib/extentions/EditorImageUploadExtension";
 import { useEditorCompletion } from "@/composables/useEditorCompletion";
+import { CodeBlockLowlightMermaid } from "@lib/extentions/MermaidExtension";
+import mermaid from "mermaid";
+import { createLowlight } from "lowlight";
 
 const editorRef = useTemplateRef("editorRef");
 
@@ -208,6 +211,10 @@ const suggestionMenu: EditorSuggestionMenuItem[][] = [
     },
   ],
 ];
+
+mermaid.initialize({ startOnLoad: false });
+
+const lowlight = createLowlight();
 </script>
 
 <template>
@@ -218,6 +225,14 @@ const suggestionMenu: EditorSuggestionMenuItem[][] = [
     placeholder="Start writing..."
     :handlers="customHandlers"
     :extensions="[
+      CodeBlockLowlightMermaid.configure({
+        lowlight,
+        classList: 'mermaid-container',
+        debounce: 400,
+        mermaidConfig: {
+          theme: 'neutral',
+        },
+      }),
       completionExtension,
       ImageUpload,
       Emoji,

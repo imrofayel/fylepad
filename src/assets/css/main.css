@@ -87,3 +87,63 @@
   pointer-events: none;
   user-select: none;
 }
+
+.mermaid-source--hidden {
+  display: none;
+}
+
+.mermaid-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin: 0.15rem 0 0.35rem;
+  padding: 0;
+  overflow-x: auto;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  color: var(--ui-text);
+  cursor: text;
+}
+
+.mermaid-container svg {
+  max-width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.mermaid-container svg text,
+.mermaid-container svg foreignObject,
+.mermaid-container svg tspan {
+  fill: var(--ui-text) !important;
+  color: var(--ui-text) !important;
+}
+
+.mermaid-container svg .label,
+.mermaid-container svg .nodeLabel,
+.mermaid-container svg .edgeLabel,
+.mermaid-container svg .cluster-label text,
+.mermaid-container svg .flowchart-label text,
+.mermaid-container svg .label text,
+.mermaid-container svg foreignObject div,
+.mermaid-container svg foreignObject span,
+.mermaid-container svg p {
+  fill: var(--ui-text) !important;
+  color: var(--ui-text) !important;
+  font-family: var(--font-sans) !important;
+}
+
+.mermaid-container.is-editing {
+  display: none;
+}
+
+.mermaid-container--error {
+  border: 0;
+}
+
+.mermaid-error {
+  margin: 0;
+  color: #dc2626;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
