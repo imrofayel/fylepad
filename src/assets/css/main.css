@@ -88,6 +88,24 @@
   user-select: none;
 }
 
+.dark .tiptap ::selection {
+  background: var(--color-neutral-400);
+  color: var(--ui-text-inverted);
+}
+
+.dark .tiptap ::-moz-selection {
+  background: var(--color-neutral-400);
+  color: var(--ui-text-inverted);
+}
+
+.tiptap ::selection {
+  background: var(--color-neutral-100);
+}
+
+.dark .tiptap ::-moz-selection {
+  background: var(--color-neutral-100);
+}
+
 .codeblock-with-copy {
   position: relative;
 }
