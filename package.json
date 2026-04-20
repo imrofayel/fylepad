@@ -32,8 +32,10 @@
     "prosemirror-mermaid": "^0.0.0",
     "prosemirror-state": "^1.4.4",
     "prosemirror-view": "^1.41.8",
+    "shiki": "^4.0.2",
     "state": "link:@tiptap/pm/state",
     "tailwindcss": "^4.2.2",
+    "tiptap-extension-code-block-shiki": "^1.1.0",
     "view": "link:@tiptap/pm/view",
     "vue": "^3.5.32",
     "vue-router": "^5.0.4"

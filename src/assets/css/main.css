@@ -319,3 +319,9 @@
   font-size: 0.875rem;
   line-height: 1.4;
 }
+
+html.dark .tiptap .shiki,
+html.dark .tiptap .shiki span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--color-neutral-800) !important;
+}

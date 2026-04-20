@@ -13,6 +13,8 @@ import { CodeBlockLowlightSpotify } from "@lib/extentions/SpotifyExtension";
 import { CodeBlockLowlightYouTube } from "@lib/extentions/YouTubeExtension";
 import mermaid from "mermaid";
 import { createLowlight } from "lowlight";
+import StarterKit from "@tiptap/starter-kit";
+import CodeBlockShiki from "tiptap-extension-code-block-shiki";
 
 const editorRef = useTemplateRef("editorRef");
 
@@ -362,6 +364,13 @@ const lowlight = createLowlight();
     placeholder="Start writing..."
     :handlers="customHandlers"
     :extensions="[
+      CodeBlockShiki.configure({
+        defaultTheme: 'tokyo-night',
+        themes: {
+          light: 'github-light',
+          dark: 'github-dark',
+        },
+      }),
       CodeBlockLowlightMermaid.configure({
         lowlight,
         classList: 'mermaid-container',
