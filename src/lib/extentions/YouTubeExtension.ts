@@ -4,26 +4,26 @@ import CodeBlockLowlight, {
 import { Plugin, PluginKey, TextSelection } from "prosemirror-state";
 import { Decoration, DecorationSet, type EditorView } from "prosemirror-view";
 
-type SpotifyContainer = HTMLElement & { __bound?: boolean };
+type YouTubeContainer = HTMLElement & { __bound?: boolean };
 
-const SPOTIFY_LANG_RE = /^spotify$/i;
-const SPOTIFY_PLUGIN_KEY = new PluginKey<SpotifyPluginState>("spotify");
+const YOUTUBE_LANG_RE = /^youtube$/i;
+const YOUTUBE_PLUGIN_KEY = new PluginKey<YouTubePluginState>("youtube");
 
-interface SpotifyPluginState {
+interface YouTubePluginState {
   decorations: DecorationSet;
   editingId: string | null;
 }
 
-const getSpotifyBlockKey = (id: string, pos: number) => `${id || "spotify"}@${pos}`;
-
-interface CodeBlockLowlightSpotifyOptions extends CodeBlockLowlightOptions {
+interface CodeBlockLowlightYouTubeOptions extends CodeBlockLowlightOptions {
   classList: string[] | string;
 }
 
-const isSpotifyNode = (nodeName: string, language: unknown, expectedName: string) =>
-  nodeName === expectedName && typeof language === "string" && SPOTIFY_LANG_RE.test(language);
+const getYouTubeBlockKey = (id: string, pos: number) => `${id || "youtube"}@${pos}`;
 
-const getSelectionSpotifyId = (viewState: {
+const isYouTubeNode = (nodeName: string, language: unknown, expectedName: string) =>
+  nodeName === expectedName && typeof language === "string" && YOUTUBE_LANG_RE.test(language);
+
+const getSelectionYouTubeId = (viewState: {
   selection: {
     $from: { depth: number; node: (depth: number) => any; before: (depth: number) => number };
   };
@@ -31,82 +31,63 @@ const getSelectionSpotifyId = (viewState: {
   const { $from } = viewState.selection;
   for (let depth = $from.depth; depth >= 0; depth -= 1) {
     const node = $from.node(depth);
-    if (SPOTIFY_LANG_RE.test(node.attrs?.language || "")) {
+    if (YOUTUBE_LANG_RE.test(node.attrs?.language || "")) {
       const id = typeof node.attrs?.id === "string" ? node.attrs.id : "";
       const pos = depth > 0 ? $from.before(depth) : 0;
-      return getSpotifyBlockKey(id, pos);
+      return getYouTubeBlockKey(id, pos);
     }
   }
 
   return null;
 };
 
-const normalizeSpotifyEmbedUrl = (rawUrl: string) => {
+const normalizeYouTubeEmbedUrl = (rawUrl: string) => {
   const source = rawUrl.trim();
   if (!source) {
     return null;
   }
 
-  const spotifyUriMatch = source.match(
-    /^spotify:(track|album|playlist|artist|episode|show):([A-Za-z0-9]+)$/i,
-  );
-  if (spotifyUriMatch) {
-    const [, type, id] = spotifyUriMatch;
-    return {
-      embedUrl: `https://open.spotify.com/embed/${type.toLowerCase()}/${id}`,
-      type: type.toLowerCase(),
-    };
+  const urlMatch = source.match(/^(?:https?:\/\/)?(?:www\.)?(youtube\.com|youtu\.be)\/.+$/i);
+  const isVideoIdOnly = /^[A-Za-z0-9_-]{11}$/.test(source);
+
+  let videoId: string | null = null;
+
+  if (isVideoIdOnly) {
+    videoId = source;
+  } else if (urlMatch) {
+    let parsed: URL;
+    try {
+      parsed = new URL(source.startsWith("http") ? source : `https://${source}`);
+    } catch {
+      return null;
+    }
+
+    const host = parsed.hostname.toLowerCase();
+    if (host.endsWith("youtu.be")) {
+      videoId = parsed.pathname.split("/").filter(Boolean)[0] || null;
+    } else if (host.endsWith("youtube.com")) {
+      const pathname = parsed.pathname.toLowerCase();
+      if (pathname === "/watch") {
+        videoId = parsed.searchParams.get("v");
+      } else if (pathname.startsWith("/embed/")) {
+        videoId = parsed.pathname.split("/").filter(Boolean)[1] || null;
+      } else if (pathname.startsWith("/shorts/")) {
+        videoId = parsed.pathname.split("/").filter(Boolean)[1] || null;
+      }
+    }
   }
 
-  let parsed: URL;
-  try {
-    parsed = new URL(source);
-  } catch {
-    return null;
-  }
-
-  const host = parsed.hostname.toLowerCase();
-  if (!host.endsWith("spotify.com")) {
-    return null;
-  }
-
-  const parts = parsed.pathname.split("/").filter(Boolean);
-  if (parts.length < 2) {
-    return null;
-  }
-
-  let type = parts[0]?.toLowerCase();
-  let id = parts[1];
-
-  if (type === "embed") {
-    type = parts[1]?.toLowerCase();
-    id = parts[2];
-  }
-
-  if (!type || !id) {
-    return null;
-  }
-
-  const allowedTypes = new Set(["track", "album", "playlist", "artist", "episode", "show"]);
-  if (!allowedTypes.has(type)) {
+  if (!videoId) {
     return null;
   }
 
   return {
-    embedUrl: `https://open.spotify.com/embed/${type}/${id}`,
-    type,
+    embedUrl: `https://www.youtube-nocookie.com/embed/${videoId}`,
+    videoId,
   };
 };
 
-const spotifyEmbedHeight = (type: string) => {
-  if (type === "track" || type === "episode") {
-    return 152;
-  }
-
-  return 352;
-};
-
-const createSpotifyPlugin = ({
+const createYouTubePlugin = ({
   name,
   classList,
 }: {
@@ -114,16 +95,16 @@ const createSpotifyPlugin = ({
   classList: string[] | string;
 }) => {
   const sourceCache = new Map<string, string>();
-  const containers = new Map<string, SpotifyContainer>();
+  const containers = new Map<string, YouTubeContainer>();
   const positionByKey = new Map<string, number>();
 
   let activeView: EditorView | null = null;
 
   const createContainer = (key: string) => {
-    const container = document.createElement("div") as SpotifyContainer;
+    const container = document.createElement("div") as YouTubeContainer;
     container.classList.add(...(Array.isArray(classList) ? classList : [classList]));
-    container.dataset.spotifyId = key;
-    container.title = "Hover and use Edit to change Spotify URL";
+    container.dataset.youtubeId = key;
+    container.title = "Hover and use Edit to change YouTube URL";
     return container;
   };
 
@@ -131,10 +112,10 @@ const createSpotifyPlugin = ({
     const button = document.createElement("button");
     button.type = "button";
     button.className = "media-edit-button";
-    button.title = "Edit Spotify URL";
-    button.setAttribute("aria-label", "Edit Spotify URL");
+    button.title = "Edit YouTube URL";
+    button.setAttribute("aria-label", "Edit YouTube URL");
     button.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 20h4L18.5 9.5a2.828 2.828 0 1 0-4-4L4 16zm9.5-13.5l4 4"/></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 20h4L18.5 9.5a2.828 2.828 0 1 0-4-4L4 16zm9.5-13.5l4 4"/></svg>
     `;
     button.addEventListener("click", (event) => {
       event.preventDefault();
@@ -144,29 +125,33 @@ const createSpotifyPlugin = ({
     return button;
   };
 
-  const renderError = (container: SpotifyContainer, message: string) => {
+  const renderError = (container: YouTubeContainer, message: string) => {
     container.replaceChildren();
-    container.classList.add("spotify-container--error");
+    container.classList.add("youtube-container--error");
 
     const text = document.createElement("p");
-    text.className = "spotify-error";
+    text.className = "youtube-error";
     text.textContent = message;
     container.appendChild(text);
   };
 
-  const renderEmbed = (container: SpotifyContainer, rawUrl: string, onEdit: () => void) => {
-    const normalized = normalizeSpotifyEmbedUrl(rawUrl);
+  const renderEmbed = (container: YouTubeContainer, rawUrl: string, onEdit: () => void) => {
+    const normalized = normalizeYouTubeEmbedUrl(rawUrl);
     if (!normalized) {
-      renderError(container, "Invalid Spotify URL. Use open.spotify.com links or spotify: URI.");
+      renderError(
+        container,
+        "Invalid YouTube URL or video id. Use youtube.com, youtu.be, shorts, or a 11-char video id.",
+      );
       return;
     }
 
     const iframe = document.createElement("iframe");
-    iframe.className = "spotify-embed";
-    iframe.src = normalized.embedUrl;
+    iframe.className = "youtube-embed";
+    iframe.src = `${normalized.embedUrl}?rel=0`;
     iframe.width = "100%";
-    iframe.height = String(spotifyEmbedHeight(normalized.type));
-    iframe.allow = "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture";
+    iframe.height = "352";
+    iframe.allow =
+      "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
     iframe.loading = "lazy";
     iframe.referrerPolicy = "strict-origin-when-cross-origin";
     iframe.setAttribute("allowfullscreen", "");
@@ -174,7 +159,7 @@ const createSpotifyPlugin = ({
     const editButton = createEditButton(onEdit);
 
     container.replaceChildren();
-    container.classList.remove("spotify-container--error");
+    container.classList.remove("youtube-container--error");
     container.appendChild(iframe);
     container.appendChild(editButton);
   };
@@ -186,12 +171,12 @@ const createSpotifyPlugin = ({
     positionByKey.clear();
 
     doc.descendants((node: any, pos: number) => {
-      if (!isSpotifyNode(node.type.name, node.attrs?.language, name)) {
+      if (!isYouTubeNode(node.type.name, node.attrs?.language, name)) {
         return;
       }
 
       const id = typeof node.attrs?.id === "string" ? node.attrs.id : "";
-      const key = getSpotifyBlockKey(id, pos);
+      const key = getYouTubeBlockKey(id, pos);
       const source = node.textContent.trim();
       if (!source) {
         return;
@@ -218,7 +203,7 @@ const createSpotifyPlugin = ({
         }
 
         const tr = view.state.tr
-          .setMeta(SPOTIFY_PLUGIN_KEY, { editingId: key })
+          .setMeta(YOUTUBE_PLUGIN_KEY, { editingId: key })
           .setSelection(TextSelection.create(view.state.doc, nodePos + 1));
 
         view.dispatch(tr);
@@ -238,8 +223,8 @@ const createSpotifyPlugin = ({
       decorations.push(
         Decoration.node(pos, pos + node.nodeSize, {
           class: isEditing
-            ? "spotify-source spotify-source--editing"
-            : "spotify-source spotify-source--hidden",
+            ? "youtube-source youtube-source--editing"
+            : "youtube-source youtube-source--hidden",
         }),
       );
 
@@ -268,11 +253,11 @@ const createSpotifyPlugin = ({
     return DecorationSet.create(doc, decorations);
   };
 
-  return new Plugin<SpotifyPluginState>({
-    key: SPOTIFY_PLUGIN_KEY,
+  return new Plugin<YouTubePluginState>({
+    key: YOUTUBE_PLUGIN_KEY,
     state: {
       init: (_, state) => {
-        const editingId = getSelectionSpotifyId(state);
+        const editingId = getSelectionYouTubeId(state);
 
         return {
           editingId,
@@ -280,9 +265,9 @@ const createSpotifyPlugin = ({
         };
       },
       apply: (tr, pluginState, _oldState, newState) => {
-        const meta = tr.getMeta(SPOTIFY_PLUGIN_KEY) as { editingId?: string | null } | undefined;
+        const meta = tr.getMeta(YOUTUBE_PLUGIN_KEY) as { editingId?: string | null } | undefined;
         const editingId =
-          meta?.editingId !== undefined ? meta.editingId : getSelectionSpotifyId(newState);
+          meta?.editingId !== undefined ? meta.editingId : getSelectionYouTubeId(newState);
 
         if (!tr.docChanged && !tr.selectionSet && meta?.editingId === undefined) {
           return pluginState;
@@ -295,7 +280,7 @@ const createSpotifyPlugin = ({
       },
     },
     props: {
-      decorations: (state) => SPOTIFY_PLUGIN_KEY.getState(state)?.decorations ?? null,
+      decorations: (state) => YOUTUBE_PLUGIN_KEY.getState(state)?.decorations ?? null,
     },
     view: (view) => {
       activeView = view;
@@ -311,7 +296,7 @@ const createSpotifyPlugin = ({
   });
 };
 
-export const CodeBlockLowlightSpotify = CodeBlockLowlight.extend<CodeBlockLowlightSpotifyOptions>({
+export const CodeBlockLowlightYouTube = CodeBlockLowlight.extend<CodeBlockLowlightYouTubeOptions>({
   addOptions() {
     return {
       ...this.parent?.(),
@@ -323,7 +308,7 @@ export const CodeBlockLowlightSpotify = CodeBlockLowlight.extend<CodeBlockLowlig
       enableTabIndentation: false,
       tabSize: 4,
       HTMLAttributes: {},
-      classList: "spotify-container",
+      classList: "youtube-container",
     };
   },
   addAttributes() {
@@ -332,9 +317,9 @@ export const CodeBlockLowlightSpotify = CodeBlockLowlight.extend<CodeBlockLowlig
     return {
       ...parentAttrs,
       id: {
-        default: () => `s${crypto.randomUUID().slice(0, 8)}`,
+        default: () => `y${crypto.randomUUID().slice(0, 8)}`,
         parseHTML: (element) =>
-          element.getAttribute("data-id") || `s${crypto.randomUUID().slice(0, 8)}`,
+          element.getAttribute("data-id") || `y${crypto.randomUUID().slice(0, 8)}`,
         renderHTML: (attributes) => {
           if (!attributes.id) return {};
           return { "data-id": attributes.id };
@@ -345,7 +330,7 @@ export const CodeBlockLowlightSpotify = CodeBlockLowlight.extend<CodeBlockLowlig
   addProseMirrorPlugins() {
     return [
       ...(this.parent?.() || []),
-      createSpotifyPlugin({
+      createYouTubePlugin({
         name: this.name,
         classList: this.options.classList,
       }),

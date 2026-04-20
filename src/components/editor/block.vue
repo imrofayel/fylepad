@@ -10,6 +10,7 @@ import { useEditorCompletion } from "@/composables/useEditorCompletion";
 import { CodeBlockLowlightMermaid } from "@lib/extentions/MermaidExtension";
 import { CodeBlockLowlightPlantUml } from "@lib/extentions/PlantUmlExtension";
 import { CodeBlockLowlightSpotify } from "@lib/extentions/SpotifyExtension";
+import { CodeBlockLowlightYouTube } from "@lib/extentions/YouTubeExtension";
 import mermaid from "mermaid";
 import { createLowlight } from "lowlight";
 
@@ -69,6 +70,19 @@ const createStarterSpotifyEmbed = () => ({
   ],
 });
 
+const createStarterYouTubeEmbed = () => ({
+  type: "codeBlock",
+  attrs: {
+    language: "youtube",
+  },
+  content: [
+    {
+      type: "text",
+      text: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    },
+  ],
+});
+
 const customHandlers = {
   ...aiHandlers,
   imageUpload: {
@@ -119,6 +133,21 @@ const customHandlers = {
     isActive: (editor: Editor) =>
       editor.isActive("codeBlock", {
         language: "spotify",
+      }),
+    isDisabled: undefined,
+  },
+  youtube: {
+    canExecute: (editor: Editor) => editor.can().insertContent(createStarterYouTubeEmbed()),
+    execute: (editor: Editor) =>
+      editor
+        .chain()
+        .focus()
+        .insertContent(createStarterYouTubeEmbed())
+        .insertContent({ type: "paragraph" })
+        .run(),
+    isActive: (editor: Editor) =>
+      editor.isActive("codeBlock", {
+        language: "youtube",
       }),
     isDisabled: undefined,
   },
@@ -295,6 +324,8 @@ const suggestionMenu: EditorSuggestionMenuItem<typeof customHandlers>[][] = [
       label: "Divider",
       icon: "tabler:line-dashed",
     },
+  ],
+  [
     {
       kind: "mermaid",
       label: "Mermaid Diagram",
@@ -309,6 +340,11 @@ const suggestionMenu: EditorSuggestionMenuItem<typeof customHandlers>[][] = [
       kind: "spotify",
       label: "Spotify Embed",
       icon: "logos:spotify-icon",
+    },
+    {
+      kind: "youtube",
+      label: "YouTube Embed",
+      icon: "logos:youtube-icon",
     },
   ],
 ];
@@ -342,6 +378,10 @@ const lowlight = createLowlight();
       CodeBlockLowlightSpotify.configure({
         lowlight,
         classList: 'spotify-container',
+      }),
+      CodeBlockLowlightYouTube.configure({
+        lowlight,
+        classList: 'youtube-container',
       }),
       completionExtension,
       ImageUpload,

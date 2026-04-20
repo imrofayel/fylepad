@@ -100,6 +100,10 @@
   display: none;
 }
 
+.youtube-source--hidden {
+  display: none;
+}
+
 .mermaid-container {
   display: flex;
   justify-content: flex-start;
@@ -129,13 +133,29 @@
 }
 
 .spotify-container {
+  position: relative;
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
   width: min(100%, 420px);
   margin: 0.25rem 0 0.5rem;
   padding: 0;
-  overflow: hidden;
+  overflow: visible;
+  border: 0;
+  border-radius: 16px;
+  background: transparent;
+  cursor: text;
+}
+
+.youtube-container {
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: min(100%, 720px);
+  margin: 0.25rem 0 0.5rem;
+  padding: 0;
+  overflow: visible;
   border: 0;
   border-radius: 16px;
   background: transparent;
@@ -146,7 +166,49 @@
   width: 100%;
   border: 0;
   border-radius: 12px;
+}
+
+.youtube-embed {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+  border-radius: 16px;
+  background: transparent;
+}
+
+.media-edit-button {
+  position: absolute;
+  top: 0.2rem;
+  right: 0.2rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  @apply rounded-xl! bg-black/45 backdrop-blur-lg! text-white/80!;
+  opacity: 0;
   pointer-events: none;
+  transition:
+    opacity 140ms ease,
+    transform 140ms ease,
+    background-color 140ms ease,
+    box-shadow 140ms ease;
+}
+
+.media-edit-button svg {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.spotify-container:hover .media-edit-button,
+.spotify-container:focus-within .media-edit-button,
+.youtube-container:hover .media-edit-button,
+.youtube-container:focus-within .media-edit-button {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
 }
 
 .mermaid-container svg {
@@ -206,6 +268,10 @@
   display: none;
 }
 
+.youtube-container.is-editing {
+  display: none;
+}
+
 .mermaid-container--error {
   border: 0;
 }
@@ -217,6 +283,12 @@
 .spotify-container--error {
   border: 1px solid #dc2626;
   border-radius: 12px;
+  padding: 0.5rem 0.625rem;
+}
+
+.youtube-container--error {
+  border: 1px solid #dc2626;
+  border-radius: 16px;
   padding: 0.5rem 0.625rem;
 }
 
@@ -235,6 +307,13 @@
 }
 
 .spotify-error {
+  margin: 0;
+  color: #dc2626;
+  font-size: 0.875rem;
+  line-height: 1.4;
+}
+
+.youtube-error {
   margin: 0;
   color: #dc2626;
   font-size: 0.875rem;
