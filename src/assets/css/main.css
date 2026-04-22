@@ -505,3 +505,74 @@ html.dark .tiptap .twoslash .twoslash-popup-code .shiki span {
 .tiptap .tiptap-mathematics-render--editable {
   cursor: pointer;
 }
+
+
+/* Basic editor styles */
+.tiptap {
+
+  /* First child margin */
+  :first-child {
+    margin-top: 0;
+  }
+
+  /* Table-specific styling */
+  table {
+    @apply rounded-2xl w-full overflow-hidden m-0 drop-shadow-sm;
+
+    /* Adding rounded border with smooth corners */
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    /* Light mode */
+    @apply dark:border-white/20;
+    /* Dark mode */
+    border-radius: 1rem;
+    /* Smooth rounded corners for the entire table */
+
+    td,
+    th {
+      @apply border p-2 align-top relative;
+
+      /* Adding transparent borders to cells */
+      @apply border-black/10 dark:border-white/20;
+
+      /* Ensure child elements have no bottom margin */
+      >* {
+        @apply mb-0;
+      }
+    }
+
+    th {
+      @apply font-normal text-left;
+
+      /* Light and dark mode for table header */
+      @apply bg-gray-100/40 dark:bg-[#303030];
+    }
+
+    /* Selected cell styling */
+    .selectedCell:after {
+      content: "";
+      @apply absolute top-0 left-0 right-0 bottom-0 z-10 pointer-events-none;
+
+      /* Light and dark mode for selected cell */
+      @apply bg-gray-100/30 dark:bg-[#292828];
+    }
+
+  }
+
+  /* Table wrapper for horizontal scroll */
+  .tableWrapper {
+    @apply my-6 overflow-x-auto border;
+
+    /* Applying rounded corners to the wrapper */
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    /* Light mode */
+    @apply dark:border-white/20;
+    /* Dark mode */
+    border-radius: 1rem;
+    /* Smooth rounded corners for the wrapper */
+  }
+
+  /* Resize cursor */
+  &.resize-cursor {
+    @apply cursor-ew-resize;
+  }
+}

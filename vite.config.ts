@@ -23,6 +23,7 @@ export default defineConfig(async () => ({
       "@nuxt/ui > prosemirror-model",
       "@nuxt/ui > prosemirror-view",
       "@nuxt/ui > prosemirror-gapcursor",
+      "@tiptap/extension-table > prosemirror-tables",
     ],
   },
 

@@ -1,7 +1,6 @@
-import { Extension } from "@tiptap/core";
+import { Extension, type Editor, type KeyboardShortcutCommand } from "@tiptap/core";
 import { Decoration, DecorationSet } from "@tiptap/pm/view";
 import { Plugin, PluginKey } from "@tiptap/pm/state";
-import type { Editor } from "@tiptap/vue-3";
 import { useDebounceFn } from "@vueuse/core";
 
 export interface CompletionOptions {
@@ -146,7 +145,7 @@ export const Completion = Extension.create<CompletionOptions, CompletionStorage>
       return true;
     };
 
-    const shortcuts: Record<string, ({ editor }: { editor: Editor }) => boolean> = {
+    const shortcuts: Record<string, KeyboardShortcutCommand> = {
       "Mod-Space": ({ editor }) => {
         // Clear any existing suggestion first to avoid flickering
         if (this.storage.visible) {
@@ -156,7 +155,7 @@ export const Completion = Extension.create<CompletionOptions, CompletionStorage>
 
         this.storage.position = editor.state.selection.from;
         this.storage.visible = true;
-        this.options.onTrigger?.(editor as Editor);
+        this.options.onTrigger?.(editor);
         return true;
       },
       "Mod-Enter": ({ editor }) => {
@@ -200,7 +199,7 @@ export const Completion = Extension.create<CompletionOptions, CompletionStorage>
 
     // Debounced trigger check (only if autoTrigger is enabled)
     if (this.options.autoTrigger) {
-      this.storage.debouncedTrigger?.(editor as Editor);
+      this.storage.debouncedTrigger?.(editor);
     }
   },
 

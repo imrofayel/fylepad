@@ -17,6 +17,7 @@ import mermaid from "mermaid";
 import { createLowlight } from "lowlight";
 import CodeBlockShiki from "tiptap-extension-code-block-shiki";
 import { Mathematics } from "@tiptap/extension-mathematics";
+import { TableKit } from "@tiptap/extension-table";
 
 const editorRef = useTemplateRef("editorRef");
 
@@ -202,6 +203,86 @@ const customHandlers = {
       }),
     isDisabled: undefined,
   },
+  table: {
+    canExecute: (editor: Editor) =>
+      editor.can().insertTable({ rows: 3, cols: 3, withHeaderRow: true }),
+    execute: (editor: Editor) =>
+      editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run(),
+    isActive: (editor: Editor) => editor.isActive("table"),
+    isDisabled: undefined,
+  },
+  tableDeleteRow: {
+    canExecute: (editor: Editor) => editor.can().deleteRow(),
+    execute: (editor: Editor) => editor.chain().focus().deleteRow().run(),
+    isActive: () => false,
+    isDisabled: undefined,
+  },
+  tableAddRowBefore: {
+    canExecute: (editor: Editor) => editor.can().addRowBefore(),
+    execute: (editor: Editor) => editor.chain().focus().addRowBefore().run(),
+    isActive: () => false,
+    isDisabled: undefined,
+  },
+  tableAddRowAfter: {
+    canExecute: (editor: Editor) => editor.can().addRowAfter(),
+    execute: (editor: Editor) => editor.chain().focus().addRowAfter().run(),
+    isActive: () => false,
+    isDisabled: undefined,
+  },
+  tableAddColumnBefore: {
+    canExecute: (editor: Editor) => editor.can().addColumnBefore(),
+    execute: (editor: Editor) => editor.chain().focus().addColumnBefore().run(),
+    isActive: () => false,
+    isDisabled: undefined,
+  },
+  tableDeleteColumn: {
+    canExecute: (editor: Editor) => editor.can().deleteColumn(),
+    execute: (editor: Editor) => editor.chain().focus().deleteColumn().run(),
+    isActive: () => false,
+    isDisabled: undefined,
+  },
+  tableAddColumnAfter: {
+    canExecute: (editor: Editor) => editor.can().addColumnAfter(),
+    execute: (editor: Editor) => editor.chain().focus().addColumnAfter().run(),
+    isActive: () => false,
+    isDisabled: undefined,
+  },
+  tableMergeCells: {
+    canExecute: (editor: Editor) => editor.can().mergeCells(),
+    execute: (editor: Editor) => editor.chain().focus().mergeCells().run(),
+    isActive: () => false,
+    isDisabled: undefined,
+  },
+  tableSplitCell: {
+    canExecute: (editor: Editor) => editor.can().splitCell(),
+    execute: (editor: Editor) => editor.chain().focus().splitCell().run(),
+    isActive: () => false,
+    isDisabled: undefined,
+  },
+  tableToggleHeaderColumn: {
+    canExecute: (editor: Editor) => editor.can().toggleHeaderColumn(),
+    execute: (editor: Editor) => editor.chain().focus().toggleHeaderColumn().run(),
+    isActive: () => false,
+    isDisabled: undefined,
+  },
+  tableToggleHeaderRow: {
+    canExecute: (editor: Editor) => editor.can().toggleHeaderRow(),
+    execute: (editor: Editor) => editor.chain().focus().toggleHeaderRow().run(),
+    isActive: () => false,
+    isDisabled: undefined,
+  },
+  tableToggleHeaderCell: {
+    canExecute: (editor: Editor) => editor.can().toggleHeaderCell(),
+    execute: (editor: Editor) => editor.chain().focus().toggleHeaderCell().run(),
+    isActive: (editor: Editor) => editor.isActive("tableHeader"),
+    isDisabled: undefined,
+  },
+  tableDelete: {
+    canExecute: (editor: Editor) => editor.can().deleteTable(),
+    execute: (editor: Editor) => editor.chain().focus().deleteTable().run(),
+    isActive: () => false,
+    isDisabled: undefined,
+  },
 } satisfies EditorCustomHandlers;
 
 const items: EditorToolbarItem[][] = [
@@ -316,6 +397,98 @@ const items: EditorToolbarItem[][] = [
   ],
 ];
 
+const tableItems: EditorToolbarItem[][] = [
+  [
+    {
+      icon: "tabler:table-filled",
+      label: "Table",
+      content: {
+        align: "start",
+      },
+      items: [
+        [
+          {
+            kind: "tableAddColumnBefore",
+            icon: "tabler:table-column",
+            label: "Insert column before",
+          },
+          {
+            kind: "tableAddColumnAfter",
+            icon: "tabler:box-align-right-filled",
+            label: "Insert column after",
+          },
+          {
+            kind: "tableDeleteColumn",
+            icon: "tabler:column-remove",
+            label: "Delete column",
+          },
+        ],
+        [
+          {
+            kind: "tableAddRowBefore",
+            icon: "tabler:table-row",
+            label: "Insert row before",
+          },
+          {
+            kind: "tableAddRowAfter",
+            icon: "tabler:box-align-bottom-filled",
+            label: "Insert row after",
+          },
+          {
+            kind: "tableDeleteRow",
+            icon: "tabler:row-remove",
+            label: "Delete row",
+          },
+        ],
+        [
+          {
+            kind: "tableToggleHeaderColumn",
+            icon: "tabler:freeze-row-column",
+            label: "Toggle header column",
+          },
+          {
+            kind: "tableToggleHeaderRow",
+            icon: "tabler:freeze-row",
+            label: "Toggle header row",
+          },
+          {
+            kind: "tableToggleHeaderCell",
+            icon: "tabler:crop-16-9-filled",
+            label: "Toggle header cell",
+          },
+        ],
+        [
+          {
+            kind: "tableDelete",
+            icon: "tabler:trash-filled",
+            label: "Delete table",
+            color: "error",
+          },
+        ],
+      ],
+    },
+    {
+      kind: "tableMergeCells",
+      icon: "tabler:arrow-merge",
+      label: "Merge cells",
+    },
+    {
+      kind: "tableSplitCell",
+      icon: "tabler:arrows-split-2",
+      label: "Split cell",
+    },
+  ],
+];
+
+const shouldShowTextToolbar = ({ editor, state, view }: any) => {
+  const { selection } = state;
+  return view.hasFocus() && !selection.empty && !editor.isActive("table");
+};
+
+const shouldShowTableToolbar = ({ editor, view }: any) => {
+  return view.hasFocus() && editor.isActive("table");
+};
+
 const suggestionMenu: EditorSuggestionMenuItem<typeof customHandlers>[][] = [
   [
     {
@@ -375,6 +548,11 @@ const suggestionMenu: EditorSuggestionMenuItem<typeof customHandlers>[][] = [
       label: "Divider",
       icon: "tabler:line-dashed",
     },
+    {
+      kind: "table",
+      label: "Table",
+      icon: "tabler:table-filled",
+    },
   ],
   [
     {
@@ -413,6 +591,11 @@ const lowlight = createLowlight();
     placeholder="Write / for commands..."
     :handlers="customHandlers"
     :extensions="[
+      TableKit.configure({
+        table: {
+          resizable: true,
+        },
+      }),
       Mathematics.configure({
         inlineOptions: {
           onClick: (node, pos) => openMathPopover(node, pos, 'inline'),
@@ -470,8 +653,9 @@ const lowlight = createLowlight();
       :editor="editor"
       :items="items"
       layout="bubble"
+      :should-show="shouldShowTextToolbar"
       :ui="{
-        root: 'z-100!',
+        root: 'z-130!',
         base: 'p-px',
       }"
     >
@@ -480,11 +664,22 @@ const lowlight = createLowlight();
       </template>
     </UEditorToolbar>
 
+    <UEditorToolbar
+      :editor="editor"
+      :items="[...tableItems, ...items]"
+      layout="bubble"
+      :should-show="shouldShowTableToolbar"
+      :ui="{
+        root: 'z-120!',
+        base: 'p-px',
+      }"
+    />
+
     <UPopover
       :open="mathPopoverOpen"
       :reference="getMathReference(editor)"
       :content="{ side: 'top', align: 'start', sideOffset: 8 }"
-      :ui="{ content: 'p-0.5 dark:bg-neutral-800! w-84 z-[120]' }"
+      :ui="{ content: 'p-0.5 dark:bg-neutral-800! w-84 z-120' }"
       @update:open="(value) => (mathPopoverOpen = value)"
     >
       <span class="sr-only" />
