@@ -9,7 +9,7 @@ export const ICONS = {
   bell: "tabler:bell",
   mapPin: "tabler:map-pin-filled",
   photo: "tabler:photo",
-  emoji: "tabler:mood-happy",
+  emoji: "tabler:mood-happy-filled",
   tag: "tabler:flare",
   pen: "tabler:pencil",
   newTab: "tabler:circle-plus",

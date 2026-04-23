@@ -9,6 +9,7 @@ const EditorCustomize = defineAsyncComponent(() => import("@/components/editor/c
 </script>
 <template>
   <div class="flex items-center gap-2.5">
+    <EmojiPicker />
     <ButtonWithTooltip text="Command (Ctrl + K)" :icon="ICONS.command" />
     <ButtonWithTooltip text="Search (Ctrl + F)" :icon="ICONS.search" />
     <EditorCustomize />
