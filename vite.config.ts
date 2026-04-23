@@ -94,7 +94,7 @@ export default defineConfig(async () => ({
               color: "primary",
               variant: "solid",
               class:
-                "dark:bg-neutral-400 text-inverted dark:hover:bg-neutral-400/80 dark:active:bg-neutral-300/80 bg-green hover:bg-green/80 active:bg-green/80 disabled:bg-green/80 light:ring-1! ring-green-ring",
+                "dark:bg-neutral-400 dark:disabled:bg-neutral-400 text-inverted dark:hover:bg-neutral-400/80 dark:active:bg-neutral-300/80 bg-green hover:bg-green/80 active:bg-green/80 light:disabled:bg-green/80 light:ring-1! ring-green-ring",
             },
           ],
         },

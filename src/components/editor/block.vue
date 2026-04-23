@@ -135,6 +135,8 @@ const createStarterYouTubeEmbed = () => ({
   ],
 });
 
+const starterMathLatex = String.raw`\sqrt{4} = 2`;
+
 const customHandlers = {
   ...aiHandlers,
   imageUpload: {
@@ -202,6 +204,25 @@ const customHandlers = {
         language: "youtube",
       }),
     isDisabled: undefined,
+  },
+  math: {
+    canExecute: (editor: Editor) =>
+      (editor.can().insertInlineMath?.({ latex: starterMathLatex }) ?? false) ||
+      editor.can().insertBlockMath({ latex: starterMathLatex }),
+    execute: (editor: Editor) => {
+      const chain = editor.chain().focus();
+
+      if (editor.can().insertInlineMath?.({ latex: starterMathLatex })) {
+        return chain.insertInlineMath({ latex: starterMathLatex }).run();
+      }
+
+      return chain
+        .insertBlockMath({ latex: starterMathLatex })
+        .insertContent({ type: "paragraph" })
+        .run();
+    },
+    isActive: (editor: Editor) => editor.isActive("blockMath") || editor.isActive("inlineMath"),
+    isDisabled: (editor: Editor) => !editor.isEditable,
   },
   table: {
     canExecute: (editor: Editor) =>
@@ -530,6 +551,11 @@ const suggestionMenu: EditorSuggestionMenuItem<typeof customHandlers>[][] = [
       label: "Table",
       icon: "tabler:table-filled",
     },
+    {
+      kind: "math",
+      label: "Math (LaTeX)",
+      icon: "tabler:math-function",
+    },
   ],
   [
     {
@@ -662,16 +688,13 @@ const lowlight = createLowlight();
       <span class="sr-only" />
 
       <template #content>
-        <div class="p-1.5 space-y-2">
-          <UTextarea
+        <div class="p-1.5 w-full flex flex-col space-y-2">
+          <UInput
             v-model="mathLatex"
             autofocus
-            autoresize
-            :rows="3"
-            :maxrows="8"
             placeholder="Edit LaTeX"
             :ui="{
-              base: 'font-mono text-sm leading-6',
+              base: 'w-full font-mono leading-6 bg-transparent ring- 0 focus-visible:ring-0! p-0',
             }"
             @keydown="
               (event: KeyboardEvent) => {
@@ -684,18 +707,14 @@ const lowlight = createLowlight();
           />
 
           <div class="flex items-center justify-end gap-1">
-            <UButton color="neutral" variant="ghost" size="xs" @click="closeMathPopover">
-              Cancel
-            </UButton>
             <UButton
-              icon="tabler:check"
+              icon="tabler:circle-check-filled"
               color="primary"
-              size="xs"
+              size="sm"
               :disabled="!mathLatex.trim()"
               @click="applyMathUpdate(editor)"
-            >
-              Update
-            </UButton>
+              label="Update"
+            />
           </div>
         </div>
       </template>
