@@ -338,32 +338,32 @@ const items: EditorToolbarItem[][] = [
       items: [
         {
           kind: "aiFix",
-          icon: "i-lucide-spell-check",
+          icon: "tabler:text-spellcheck",
           label: "Fix spelling & grammar",
         },
         {
           kind: "aiExtend",
-          icon: "i-lucide-unfold-vertical",
+          icon: "tabler:arrow-autofit-width",
           label: "Extend text",
         },
         {
           kind: "aiReduce",
-          icon: "i-lucide-fold-vertical",
+          icon: "tabler:arrows-diagonal-minimize",
           label: "Reduce text",
         },
         {
           kind: "aiSimplify",
-          icon: "i-lucide-lightbulb",
+          icon: "tabler:bulb",
           label: "Simplify text",
         },
         {
           kind: "aiContinue",
-          icon: "i-lucide-text",
+          icon: "tabler:track-next",
           label: "Continue sentence",
         },
         {
           kind: "aiSummarize",
-          icon: "i-lucide-list",
+          icon: "tabler:menu",
           label: "Summarize",
         },
       ],
@@ -379,6 +379,7 @@ const tableItems: EditorToolbarItem[][] = [
       content: {
         align: "start",
       },
+      size: "md",
       items: [
         [
           {
