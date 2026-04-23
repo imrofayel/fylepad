@@ -676,7 +676,11 @@ const lowlight = createLowlight();
         root: 'z-120!',
         base: 'p-1',
       }"
-    />
+    >
+      <template #link>
+        <EditorLinkPopover :editor="editor" auto-open />
+      </template>
+    </UEditorToolbar>
 
     <UPopover
       :open="mathPopoverOpen"
