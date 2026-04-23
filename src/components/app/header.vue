@@ -1,24 +1,11 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import { ICONS } from "@/lib/constants/icons";
+import { useEditor } from "@/composables/useEditor";
 
-type Tab = {
-  id: string;
-  title: string;
-  icon: string;
-  selected: boolean;
-};
-
-const tabs = ref<Tab[]>([
-  { id: "wabi-sabi", title: "Wabi Sabi", icon: "tabler:border-radius", selected: false },
-  { id: "notes", title: "Notes", icon: "tabler:border-outer", selected: true },
-]);
+const { activeTabId, setActiveTab, tabs } = useEditor();
 
 const selectTab = (id: string) => {
-  tabs.value = tabs.value.map((tab) => ({
-    ...tab,
-    selected: tab.id === id,
-  }));
+  setActiveTab(id);
 };
 </script>
 
@@ -32,13 +19,13 @@ const selectTab = (id: string) => {
           v-for="tab in tabs"
           :key="tab.id"
           :label="tab.title"
-          :variant="tab.selected ? 'solid' : 'outline'"
-          :color="tab.selected ? 'primary' : 'neutral'"
+          :variant="tab.id === activeTabId ? 'solid' : 'outline'"
+          :color="tab.id === activeTabId ? 'primary' : 'neutral'"
           :icon="tab.icon"
           class="group text-[15.3px] relative"
           :ui="{
             base: [
-              tab.selected
+              tab.id === activeTabId
                 ? 'hover:pr-7! py-0.5!'
                 : 'dark:bg-neutral-800! hover:opacity-80! bg-neutral-50! hover:pr-7! py-0.5!',
               'duration-300 transition-all',
@@ -53,7 +40,7 @@ const selectTab = (id: string) => {
               variant="link"
               color="neutral"
               class="opacity-0 group-hover:opacity-100 transition-all duration-200 delay-150 absolute right-2"
-              :class="tab.selected && 'text-inverted hover:text-inverted!'"
+              :class="tab.id === activeTabId && 'text-inverted hover:text-inverted!'"
               :ui="{ leadingIcon: 'size-3.5!' }"
             />
           </template>

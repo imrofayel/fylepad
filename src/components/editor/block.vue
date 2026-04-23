@@ -2,10 +2,11 @@
 import { EditorSuggestionMenuItem, EditorToolbarItem, EditorCustomHandlers } from "@nuxt/ui";
 import { TextAlign } from "@tiptap/extension-text-align";
 import type { Editor } from "@tiptap/vue-3";
-import { ref, useTemplateRef } from "vue";
+import { onBeforeUnmount, ref, useTemplateRef, watch } from "vue";
 import EditorLinkPopover from "./EditorLinkPopover.vue";
 import { ImageUpload } from "@lib/extentions/EditorImageUploadExtension";
 import { useEditorCompletion } from "@/composables/useEditorCompletion";
+import { useEditor } from "@/composables/useEditor";
 import { CodeBlockLowlightMermaid } from "@lib/extentions/MermaidExtension";
 import { CodeBlockLowlightPlantUml } from "@lib/extentions/PlantUmlExtension";
 import { CodeBlockLowlightSpotify } from "@lib/extentions/SpotifyExtension";
@@ -21,7 +22,30 @@ import { TableOfContents, getHierarchicalIndexes } from "@tiptap/extension-table
 import { ListKit } from "@tiptap/extension-list";
 import Emoji, { gitHubEmojis } from "@tiptap/extension-emoji";
 
+const props = defineProps<{
+  tabId: string;
+}>();
+
 const editorRef = useTemplateRef("editorRef");
+const { registerEditor, unregisterEditor } = useEditor();
+
+watch(
+  () => editorRef.value?.editor,
+  (editor, previousEditor) => {
+    if (previousEditor && previousEditor !== editor) {
+      unregisterEditor(props.tabId);
+    }
+
+    if (editor) {
+      registerEditor(props.tabId, editor);
+    }
+  },
+  { immediate: true },
+);
+
+onBeforeUnmount(() => {
+  unregisterEditor(props.tabId);
+});
 
 const {
   extension: completionExtension,

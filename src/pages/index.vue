@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { defineAsyncComponent } from "vue";
+import { useEditor } from "@/composables/useEditor";
 
 const EditorBlock = defineAsyncComponent(() => import("@/components/editor/block.vue"));
+const { activeTabId, tabs } = useEditor();
 </script>
 
 <template>
@@ -14,7 +16,11 @@ const EditorBlock = defineAsyncComponent(() => import("@/components/editor/block
     <AppHeader />
     <Suspense>
       <template #default>
-        <EditorBlock />
+        <div>
+          <div v-for="tab in tabs" :key="tab.id" v-show="tab.id === activeTabId">
+            <EditorBlock :tab-id="tab.id" />
+          </div>
+        </div>
       </template>
     </Suspense>
   </div>

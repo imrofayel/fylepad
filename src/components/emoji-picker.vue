@@ -2,6 +2,7 @@
 import EmojiPicker from "vue3-emoji-picker";
 import { useColorMode } from "@vueuse/core";
 import { ICONS } from "@/lib/constants/icons";
+import { useEditor } from "@/composables/useEditor";
 
 interface EmojiSelectPayload {
   i?: string;
@@ -11,12 +12,10 @@ interface EmojiSelectPayload {
   u?: string;
 }
 
-const emit = defineEmits<{
-  select: [emoji: EmojiSelectPayload];
-}>();
+const { activeEditor } = useEditor();
 
 const onSelect = (emoji: EmojiSelectPayload) => {
-  emit("select", emoji);
+  activeEditor.value?.commands.insertContent(emoji.i || "");
 };
 
 const { value } = useColorMode();
@@ -27,7 +26,7 @@ const { value } = useColorMode();
     <ButtonWithTooltip text="Emoji" :icon="ICONS.emoji" />
     <template #content>
       <EmojiPicker
-        :native="false"
+        :native="true"
         :theme="value === 'dark' ? 'dark' : 'light'"
         :display-recent="true"
         @select="onSelect"
