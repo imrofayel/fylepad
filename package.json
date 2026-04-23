@@ -22,6 +22,7 @@
     "@tiptap/core": "^3.22.4",
     "@tiptap/extension-code-block-lowlight": "^3.22.4",
     "@tiptap/extension-emoji": "^3.22.3",
+    "@tiptap/extension-list": "^3.22.4",
     "@tiptap/extension-mathematics": "^3.22.4",
     "@tiptap/extension-table": "^3.22.4",
     "@tiptap/extension-table-of-contents": "^3.22.4",
@@ -43,7 +44,8 @@
     "twoslash-cdn": "^0.3.8",
     "view": "link:@tiptap/pm/view",
     "vue": "^3.5.32",
-    "vue-router": "^5.0.4"
+    "vue-router": "^5.0.4",
+    "vue3-emoji-picker": "^1.1.8"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2.10.1",

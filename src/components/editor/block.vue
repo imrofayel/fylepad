@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { EditorSuggestionMenuItem, EditorToolbarItem, EditorCustomHandlers } from "@nuxt/ui";
-import { Emoji } from "@tiptap/extension-emoji";
 import { TextAlign } from "@tiptap/extension-text-align";
 import type { Editor } from "@tiptap/vue-3";
 import { ref, useTemplateRef } from "vue";
@@ -19,6 +18,8 @@ import CodeBlockShiki from "tiptap-extension-code-block-shiki";
 import { Mathematics } from "@tiptap/extension-mathematics";
 import { TableKit } from "@tiptap/extension-table";
 import { TableOfContents, getHierarchicalIndexes } from "@tiptap/extension-table-of-contents";
+import { ListKit } from "@tiptap/extension-list";
+import Emoji, { gitHubEmojis } from "@tiptap/extension-emoji";
 
 const editorRef = useTemplateRef("editorRef");
 
@@ -616,6 +617,7 @@ const lowlight = createLowlight();
       placeholder="Write / for commands..."
       :handlers="customHandlers"
       :extensions="[
+        ListKit,
         TableKit.configure({
           table: {
             resizable: true,
@@ -669,7 +671,10 @@ const lowlight = createLowlight();
         }),
         completionExtension,
         ImageUpload,
-        Emoji,
+        Emoji.configure({
+          emojis: gitHubEmojis,
+          enableEmoticons: true,
+        }),
         TextAlign.configure({
           types: ['heading', 'paragraph'],
         }),
