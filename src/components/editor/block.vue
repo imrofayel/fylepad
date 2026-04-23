@@ -328,13 +328,13 @@ const items: EditorToolbarItem[][] = [
   ],
   [
     {
-      icon: "i-lucide-sparkles",
-      label: "Improve",
-      variant: "soft",
+      icon: "i-icons-ai",
+      size: "md",
       loading: aiLoading.value,
       content: {
         align: "start",
       },
+      tooltip: { text: "Assistant", arrow: true },
       items: [
         {
           kind: "aiFix",
@@ -365,32 +365,6 @@ const items: EditorToolbarItem[][] = [
           kind: "aiSummarize",
           icon: "i-lucide-list",
           label: "Summarize",
-        },
-        {
-          icon: "i-lucide-languages",
-          label: "Translate",
-          children: [
-            {
-              kind: "aiTranslate",
-              language: "English",
-              label: "English",
-            },
-            {
-              kind: "aiTranslate",
-              language: "French",
-              label: "French",
-            },
-            {
-              kind: "aiTranslate",
-              language: "Spanish",
-              label: "Spanish",
-            },
-            {
-              kind: "aiTranslate",
-              language: "German",
-              label: "German",
-            },
-          ],
         },
       ],
     },
@@ -453,8 +427,20 @@ const tableItems: EditorToolbarItem[][] = [
           },
           {
             kind: "tableToggleHeaderCell",
-            icon: "tabler:crop-16-9-filled",
+            icon: "tabler:section-filled",
             label: "Toggle header cell",
+          },
+        ],
+        [
+          {
+            kind: "tableMergeCells",
+            icon: "tabler:border-outer",
+            label: "Merge cells",
+          },
+          {
+            kind: "tableSplitCell",
+            icon: "tabler:border-sides",
+            label: "Split cell",
           },
         ],
         [
@@ -466,16 +452,6 @@ const tableItems: EditorToolbarItem[][] = [
           },
         ],
       ],
-    },
-    {
-      kind: "tableMergeCells",
-      icon: "tabler:arrow-merge",
-      label: "Merge cells",
-    },
-    {
-      kind: "tableSplitCell",
-      icon: "tabler:arrows-split-2",
-      label: "Split cell",
     },
   ],
 ];
@@ -656,7 +632,7 @@ const lowlight = createLowlight();
       :should-show="shouldShowTextToolbar"
       :ui="{
         root: 'z-130!',
-        base: 'p-px',
+        base: 'p-0.5',
       }"
     >
       <template #link>
@@ -671,7 +647,7 @@ const lowlight = createLowlight();
       :should-show="shouldShowTableToolbar"
       :ui="{
         root: 'z-120!',
-        base: 'p-px',
+        base: 'p-1',
       }"
     />
 

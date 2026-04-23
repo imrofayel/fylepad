@@ -15,6 +15,7 @@
   "dependencies": {
     "@ai-sdk/gateway": "^3.0.104",
     "@ai-sdk/vue": "^3.0.168",
+    "@iconify/vue": "^5.0.0",
     "@nuxt/ui": "^4.6.1",
     "@shikijs/twoslash": "^4.0.2",
     "@tauri-apps/api": "^2.10.1",
