@@ -530,9 +530,7 @@ html.dark .tiptap .twoslash .twoslash-popup-code .shiki span {
     }
 
     th {
-      @apply font-normal text-left;
-
-      @apply bg-gray-100/40 dark:bg-[#303030];
+      @apply font-normal text-left bg-neutral-100 dark:bg-neutral-800;
     }
 
     .selectedCell:after {
@@ -547,7 +545,6 @@ html.dark .tiptap .twoslash .twoslash-popup-code .shiki span {
     @apply my-6 overflow-x-auto border;
 
     border: 1px solid rgba(0, 0, 0, 0.1);
-    /* Light mode */
     @apply dark:border-white/20 rounded-md;
   }
 

@@ -646,19 +646,20 @@ const lowlight = createLowlight();
 </script>
 
 <template>
-  <div class="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1fr)_17rem]">
+  <div
+    class="grid grid-cols-1 gap-8"
+    :class="tocAnchors.length !== 0 && 'xl:grid-cols-[minmax(0,1fr)_17rem]'"
+  >
     <div>
-      <div class="mb-2 flex items-center gap-2 px-1 sm:px-0">
-        <UInput
-          v-model="tabTitle"
-          placeholder="Untitled"
-          class="w-full"
-          :ui="{
-            base: 'ring-0 px-0 text-2xl! tracking-tight shadow-none mt-3 focus-visible:ring-0!',
-          }"
-          @blur="normalizeTabTitle"
-        />
-      </div>
+      <UInput
+        v-model="tabTitle"
+        placeholder="Untitled"
+        class="w-full"
+        :ui="{
+          base: 'ring-0 px-0 text-2xl! tracking-tight shadow-none mt-3 focus-visible:ring-0!',
+        }"
+        @blur="normalizeTabTitle"
+      />
 
       <UEditor
         ref="editorRef"
