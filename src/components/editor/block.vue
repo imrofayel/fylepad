@@ -1,18 +1,13 @@
 <script setup lang="ts">
-import { EditorCustomHandlers } from "@nuxt/ui";
-import type { Editor } from "@tiptap/vue-3";
 import { computed, onBeforeUnmount, ref, useTemplateRef, watch } from "vue";
 import EditorLinkPopover from "./EditorLinkPopover.vue";
 import { useEditorCompletion } from "@/composables/useEditorCompletion";
+import { useEditorMathPopover } from "@/composables/useEditorMathPopover";
+import { useEditorToc } from "@/composables/useEditorToc";
 import { useEditor } from "@/composables/useEditor";
 import { TipTapExtensions } from "@/lib/extensions";
 import { suggestionMenu, buildToolbarItems, tableItems } from "@/lib/menus";
-import {
-  createStarterMermaidDiagram,
-  createStarterPlantUmlDiagram,
-  createStarterSpotifyEmbed,
-  createStarterYouTubeEmbed,
-} from "@/lib/createStarter";
+import { createEditorCustomHandlers } from "@/lib/editorCustomHandlers";
 
 const props = defineProps<{
   tabId: string;
@@ -63,248 +58,17 @@ const toolBarItems = computed(() => buildToolbarItems(aiLoading.value));
 
 const value = ref("");
 
-type TocAnchor = {
-  id: string;
-  level: number;
-  itemIndex: number | string;
-  textContent: string;
-  isActive: boolean;
-  isScrolledOver: boolean;
-  dom: HTMLElement;
-};
+const { tocAnchors, updateTocAnchors, goToTocAnchor } = useEditorToc();
 
-const tocAnchors = ref<TocAnchor[]>([]);
-
-const updateTocAnchors = (anchors: unknown[]) => {
-  tocAnchors.value = anchors as TocAnchor[];
-};
-
-const goToTocAnchor = (anchor: TocAnchor) => {
-  anchor.dom?.scrollIntoView({ behavior: "smooth", block: "start" });
-};
-
-const mathPopoverOpen = ref(false);
-const mathLatex = ref("");
-const mathPos = ref<number | null>(null);
-const mathKind = ref<"inline" | "block">("block");
-
-const openMathPopover = (
-  node: { attrs?: { latex?: string } },
-  pos: number,
-  kind: "inline" | "block",
-) => {
-  mathLatex.value = node.attrs?.latex || "";
-  mathPos.value = pos;
-  mathKind.value = kind;
-  mathPopoverOpen.value = true;
-};
-
-const closeMathPopover = () => {
-  mathPopoverOpen.value = false;
-};
-
-const getMathReference = (editor: Editor) => {
-  if (mathPos.value === null) {
-    return undefined;
-  }
-
-  const dom = editor.view.nodeDOM(mathPos.value);
-  return dom instanceof HTMLElement ? dom : undefined;
-};
-
-const applyMathUpdate = (editor: Editor) => {
-  const pos = mathPos.value;
-  const latex = mathLatex.value.trim();
-
-  if (pos === null || !latex) {
-    return;
-  }
-
-  const chain = editor.chain().focus().setNodeSelection(pos);
-  if (mathKind.value === "block") {
-    chain.updateBlockMath({ latex, pos }).run();
-  } else {
-    chain.updateInlineMath({ latex, pos }).run();
-  }
-
-  closeMathPopover();
-};
-
-const starterMathLatex = String.raw`\sqrt{4} = 2`;
+const { mathPopoverOpen, mathLatex, openMathPopover, getMathReference, applyMathUpdate } =
+  useEditorMathPopover();
 
 const tipTapExtensions = TipTapExtensions({
   onTocUpdate: updateTocAnchors,
   openMathPopover,
 });
 
-const customHandlers = {
-  ...aiHandlers,
-  imageUpload: {
-    canExecute: (editor: Editor) => editor.can().insertContent({ type: "imageUpload" }),
-    execute: (editor: Editor) => editor.chain().focus().insertContent({ type: "imageUpload" }),
-    isActive: (editor: Editor) => editor.isActive("imageUpload"),
-    isDisabled: undefined,
-  },
-  mermaid: {
-    canExecute: (editor: Editor) => editor.can().insertContent(createStarterMermaidDiagram()),
-    execute: (editor: Editor) =>
-      editor
-        .chain()
-        .focus()
-        .insertContent(createStarterMermaidDiagram())
-        .insertContent({ type: "paragraph" })
-        .run(),
-    isActive: (editor: Editor) =>
-      editor.isActive("codeBlock", {
-        language: "mermaid",
-      }),
-    isDisabled: undefined,
-  },
-  plantuml: {
-    canExecute: (editor: Editor) => editor.can().insertContent(createStarterPlantUmlDiagram()),
-    execute: (editor: Editor) =>
-      editor
-        .chain()
-        .focus()
-        .insertContent(createStarterPlantUmlDiagram())
-        .insertContent({ type: "paragraph" })
-        .run(),
-    isActive: (editor: Editor) =>
-      editor.isActive("codeBlock", {
-        language: "plantuml",
-      }),
-    isDisabled: undefined,
-  },
-  spotify: {
-    canExecute: (editor: Editor) => editor.can().insertContent(createStarterSpotifyEmbed()),
-    execute: (editor: Editor) =>
-      editor
-        .chain()
-        .focus()
-        .insertContent(createStarterSpotifyEmbed())
-        .insertContent({ type: "paragraph" })
-        .run(),
-    isActive: (editor: Editor) =>
-      editor.isActive("codeBlock", {
-        language: "spotify",
-      }),
-    isDisabled: undefined,
-  },
-  youtube: {
-    canExecute: (editor: Editor) => editor.can().insertContent(createStarterYouTubeEmbed()),
-    execute: (editor: Editor) =>
-      editor
-        .chain()
-        .focus()
-        .insertContent(createStarterYouTubeEmbed())
-        .insertContent({ type: "paragraph" })
-        .run(),
-    isActive: (editor: Editor) =>
-      editor.isActive("codeBlock", {
-        language: "youtube",
-      }),
-    isDisabled: undefined,
-  },
-  math: {
-    canExecute: (editor: Editor) =>
-      (editor.can().insertInlineMath?.({ latex: starterMathLatex }) ?? false) ||
-      editor.can().insertBlockMath({ latex: starterMathLatex }),
-    execute: (editor: Editor) => {
-      const chain = editor.chain().focus();
-
-      if (editor.can().insertInlineMath?.({ latex: starterMathLatex })) {
-        return chain.insertInlineMath({ latex: starterMathLatex }).run();
-      }
-
-      return chain
-        .insertBlockMath({ latex: starterMathLatex })
-        .insertContent({ type: "paragraph" })
-        .run();
-    },
-    isActive: (editor: Editor) => editor.isActive("blockMath") || editor.isActive("inlineMath"),
-    isDisabled: (editor: Editor) => !editor.isEditable,
-  },
-  table: {
-    canExecute: (editor: Editor) =>
-      editor.can().insertTable({ rows: 3, cols: 3, withHeaderRow: true }),
-    execute: (editor: Editor) =>
-      editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run(),
-    isActive: (editor: Editor) => editor.isActive("table"),
-    isDisabled: undefined,
-  },
-  tableDeleteRow: {
-    canExecute: (editor: Editor) => editor.can().deleteRow(),
-    execute: (editor: Editor) => editor.chain().focus().deleteRow().run(),
-    isActive: () => false,
-    isDisabled: undefined,
-  },
-  tableAddRowBefore: {
-    canExecute: (editor: Editor) => editor.can().addRowBefore(),
-    execute: (editor: Editor) => editor.chain().focus().addRowBefore().run(),
-    isActive: () => false,
-    isDisabled: undefined,
-  },
-  tableAddRowAfter: {
-    canExecute: (editor: Editor) => editor.can().addRowAfter(),
-    execute: (editor: Editor) => editor.chain().focus().addRowAfter().run(),
-    isActive: () => false,
-    isDisabled: undefined,
-  },
-  tableAddColumnBefore: {
-    canExecute: (editor: Editor) => editor.can().addColumnBefore(),
-    execute: (editor: Editor) => editor.chain().focus().addColumnBefore().run(),
-    isActive: () => false,
-    isDisabled: undefined,
-  },
-  tableDeleteColumn: {
-    canExecute: (editor: Editor) => editor.can().deleteColumn(),
-    execute: (editor: Editor) => editor.chain().focus().deleteColumn().run(),
-    isActive: () => false,
-    isDisabled: undefined,
-  },
-  tableAddColumnAfter: {
-    canExecute: (editor: Editor) => editor.can().addColumnAfter(),
-    execute: (editor: Editor) => editor.chain().focus().addColumnAfter().run(),
-    isActive: () => false,
-    isDisabled: undefined,
-  },
-  tableMergeCells: {
-    canExecute: (editor: Editor) => editor.can().mergeCells(),
-    execute: (editor: Editor) => editor.chain().focus().mergeCells().run(),
-    isActive: () => false,
-    isDisabled: undefined,
-  },
-  tableSplitCell: {
-    canExecute: (editor: Editor) => editor.can().splitCell(),
-    execute: (editor: Editor) => editor.chain().focus().splitCell().run(),
-    isActive: () => false,
-    isDisabled: undefined,
-  },
-  tableToggleHeaderColumn: {
-    canExecute: (editor: Editor) => editor.can().toggleHeaderColumn(),
-    execute: (editor: Editor) => editor.chain().focus().toggleHeaderColumn().run(),
-    isActive: () => false,
-    isDisabled: undefined,
-  },
-  tableToggleHeaderRow: {
-    canExecute: (editor: Editor) => editor.can().toggleHeaderRow(),
-    execute: (editor: Editor) => editor.chain().focus().toggleHeaderRow().run(),
-    isActive: () => false,
-    isDisabled: undefined,
-  },
-  tableToggleHeaderCell: {
-    canExecute: (editor: Editor) => editor.can().toggleHeaderCell(),
-    execute: (editor: Editor) => editor.chain().focus().toggleHeaderCell().run(),
-    isActive: (editor: Editor) => editor.isActive("tableHeader"),
-    isDisabled: undefined,
-  },
-  tableDelete: {
-    canExecute: (editor: Editor) => editor.can().deleteTable(),
-    execute: (editor: Editor) => editor.chain().focus().deleteTable().run(),
-    isActive: () => false,
-    isDisabled: undefined,
-  },
-} satisfies EditorCustomHandlers;
+const customHandlers = createEditorCustomHandlers(aiHandlers);
 
 const shouldShowTextToolbar = ({ editor, state, view }: any) => {
   const { selection } = state;
