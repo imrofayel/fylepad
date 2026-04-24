@@ -23,7 +23,7 @@ jobs:
             args: "--target aarch64-apple-darwin --bundles app"
           - platform: "macos-latest" # for Intel based macs.
             args: "--target x86_64-apple-darwin"
-          - platform: "ubuntu-22.04" # for Tauri v1 you could replace this with ubuntu-20.04.
+          - platform: "ubuntu-22.04"
             args: ""
           - platform: "windows-latest"
             args: ""
@@ -34,8 +34,6 @@ jobs:
 
       - name: install pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 10.x.x
 
       - name: Setup Node
         uses: actions/setup-node@v4
