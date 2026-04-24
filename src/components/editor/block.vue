@@ -1,27 +1,18 @@
 <script setup lang="ts">
-import { EditorToolbarItem, EditorCustomHandlers } from "@nuxt/ui";
-import { TextAlign } from "@tiptap/extension-text-align";
+import { EditorCustomHandlers } from "@nuxt/ui";
 import type { Editor } from "@tiptap/vue-3";
 import { computed, onBeforeUnmount, ref, useTemplateRef, watch } from "vue";
 import EditorLinkPopover from "./EditorLinkPopover.vue";
-import { ImageUpload } from "@lib/extentions/EditorImageUploadExtension";
 import { useEditorCompletion } from "@/composables/useEditorCompletion";
 import { useEditor } from "@/composables/useEditor";
-import { CodeBlockLowlightMermaid } from "@lib/extentions/MermaidExtension";
-import { CodeBlockLowlightPlantUml } from "@lib/extentions/PlantUmlExtension";
-import { CodeBlockLowlightSpotify } from "@lib/extentions/SpotifyExtension";
-import { CodeBlockLowlightYouTube } from "@lib/extentions/YouTubeExtension";
-import { CodeBlockCopyExtension } from "@lib/extentions/CodeBlockCopyExtension";
-import { TwoslashExtension } from "@lib/extentions/TwoslashExtension";
-import mermaid from "mermaid";
-import { createLowlight } from "lowlight";
-import CodeBlockShiki from "tiptap-extension-code-block-shiki";
-import { Mathematics } from "@tiptap/extension-mathematics";
-import { TableKit } from "@tiptap/extension-table";
-import { TableOfContents, getHierarchicalIndexes } from "@tiptap/extension-table-of-contents";
-import { ListKit } from "@tiptap/extension-list";
-import Emoji, { gitHubEmojis } from "@tiptap/extension-emoji";
+import { TipTapExtensions } from "@/lib/extensions";
 import { suggestionMenu, buildToolbarItems, tableItems } from "@/lib/menus";
+import {
+  createStarterMermaidDiagram,
+  createStarterPlantUmlDiagram,
+  createStarterSpotifyEmbed,
+  createStarterYouTubeEmbed,
+} from "@/lib/createStarter";
 
 const props = defineProps<{
   tabId: string;
@@ -84,18 +75,12 @@ type TocAnchor = {
 
 const tocAnchors = ref<TocAnchor[]>([]);
 
-const updateTocAnchors = (anchors: TocAnchor[]) => {
-  tocAnchors.value = anchors;
+const updateTocAnchors = (anchors: unknown[]) => {
+  tocAnchors.value = anchors as TocAnchor[];
 };
 
 const goToTocAnchor = (anchor: TocAnchor) => {
   anchor.dom?.scrollIntoView({ behavior: "smooth", block: "start" });
-};
-
-const normalizeTabTitle = () => {
-  if (!tabTitle.value.trim()) {
-    tabTitle.value = "Untitled";
-  }
 };
 
 const mathPopoverOpen = ref(false);
@@ -145,59 +130,12 @@ const applyMathUpdate = (editor: Editor) => {
   closeMathPopover();
 };
 
-const createStarterMermaidDiagram = () => ({
-  type: "codeBlock",
-  attrs: {
-    language: "mermaid",
-  },
-  content: [
-    {
-      type: "text",
-      text: "flowchart TD\nA[Mermaid] --> B{You know syntax?}\nB -->|Yes| C[Cool!]\nB -->|No| D[Try it!]",
-    },
-  ],
-});
-
-const createStarterPlantUmlDiagram = () => ({
-  type: "codeBlock",
-  attrs: {
-    language: "plantuml",
-  },
-  content: [
-    {
-      type: "text",
-      text: "@startuml\nBob -> Alice : hello\n@enduml",
-    },
-  ],
-});
-
-const createStarterSpotifyEmbed = () => ({
-  type: "codeBlock",
-  attrs: {
-    language: "spotify",
-  },
-  content: [
-    {
-      type: "text",
-      text: "https://open.spotify.com/track/4cOdK2wGLETKBW3PvgPWqT",
-    },
-  ],
-});
-
-const createStarterYouTubeEmbed = () => ({
-  type: "codeBlock",
-  attrs: {
-    language: "youtube",
-  },
-  content: [
-    {
-      type: "text",
-      text: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-    },
-  ],
-});
-
 const starterMathLatex = String.raw`\sqrt{4} = 2`;
+
+const tipTapExtensions = TipTapExtensions({
+  onTocUpdate: updateTocAnchors,
+  openMathPopover,
+});
 
 const customHandlers = {
   ...aiHandlers,
@@ -376,10 +314,6 @@ const shouldShowTextToolbar = ({ editor, state, view }: any) => {
 const shouldShowTableToolbar = ({ editor, view }: any) => {
   return view.hasFocus() && editor.isActive("table");
 };
-
-mermaid.initialize({ startOnLoad: false });
-
-const lowlight = createLowlight();
 </script>
 
 <template>
@@ -388,85 +322,14 @@ const lowlight = createLowlight();
     :class="tocAnchors.length !== 0 && 'xl:grid-cols-[minmax(0,1fr)_17rem]'"
   >
     <div>
-      <UInput
-        v-model="tabTitle"
-        placeholder="Untitled"
-        class="w-full"
-        :ui="{
-          base: 'ring-0 px-0 text-2xl! tracking-tight shadow-none mt-2.5 focus-visible:ring-0!',
-        }"
-        @blur="normalizeTabTitle"
-      />
-
+      <EditorHead v-model="tabTitle" />
       <UEditor
         ref="editorRef"
         v-slot="{ editor }"
         v-model="value"
         placeholder="Write / for commands..."
         :handlers="customHandlers"
-        :extensions="[
-          ListKit,
-          TableKit.configure({
-            table: {
-              resizable: true,
-            },
-          }),
-          TableOfContents.configure({
-            anchorTypes: ['heading'],
-            getIndex: getHierarchicalIndexes,
-            onUpdate: (anchors) => updateTocAnchors(anchors as TocAnchor[]),
-          }),
-          Mathematics.configure({
-            inlineOptions: {
-              onClick: (node, pos) => openMathPopover(node, pos, 'inline'),
-            },
-            blockOptions: {
-              onClick: (node, pos) => openMathPopover(node, pos, 'block'),
-            },
-            katexOptions: {
-              throwOnError: false,
-            },
-          }),
-          CodeBlockShiki.configure({
-            defaultTheme: 'tokyo-night',
-            themes: {
-              light: 'github-light',
-              dark: 'github-dark',
-            },
-          }),
-          TwoslashExtension,
-          CodeBlockCopyExtension,
-          CodeBlockLowlightMermaid.configure({
-            lowlight,
-            classList: 'mermaid-container',
-            debounce: 400,
-            mermaidConfig: {
-              theme: 'neutral',
-            },
-          }),
-          CodeBlockLowlightPlantUml.configure({
-            lowlight,
-            classList: 'plantuml-container',
-            debounce: 400,
-          }),
-          CodeBlockLowlightSpotify.configure({
-            lowlight,
-            classList: 'spotify-container',
-          }),
-          CodeBlockLowlightYouTube.configure({
-            lowlight,
-            classList: 'youtube-container',
-          }),
-          completionExtension,
-          ImageUpload,
-          Emoji.configure({
-            emojis: gitHubEmojis,
-            enableEmoticons: true,
-          }),
-          TextAlign.configure({
-            types: ['heading', 'paragraph'],
-          }),
-        ]"
+        :extensions="[...tipTapExtensions, completionExtension]"
         class="py-2 min-h-21"
         :ui="{
           base: 'sm:px-0! text-[16.5px] w-full px-0! [&_p]:leading-normal',
