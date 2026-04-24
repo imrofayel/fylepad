@@ -102,6 +102,7 @@ const getToolbarItems = (editor: any) =>
         :ui="{
           base: 'sm:px-0! text-[16.5px] w-full px-0!',
         }"
+        textDirection="auto"
       >
         <UEditorToolbar
           :editor="editor"
