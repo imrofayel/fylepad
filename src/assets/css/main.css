@@ -31,6 +31,13 @@
 
   --tracking-normal: 0.25rem;
   --text-fit: 17px;
+
+  --highlight-yellow: #fef2a8;
+  --highlight-blue: #cfe6ff;
+  --highlight-green: #cdeed9;
+  --highlight-orange: #ffe2c5;
+  --highlight-pink: #ffd8e8;
+  --highlight-purple: #e6ddff;
 }
 
 .light {
@@ -42,6 +49,13 @@
   --ui-text: var(--ui-color-neutral-400);
   --ui-bg: var(--ui-color-neutral-900);
   --color-green: #188744;
+
+  --highlight-yellow: #7a6520;
+  --highlight-blue: #224865;
+  --highlight-green: #214d3b;
+  --highlight-orange: #634227;
+  --highlight-pink: #5b2c47;
+  --highlight-purple: #433460;
 }
 
 .text-clear {
@@ -107,6 +121,39 @@
 
 .tiptap ::selection {
   background: var(--color-neutral-100);
+}
+
+.tiptap mark {
+  background-color: light-dark(var(--highlight-yellow), var(--highlight-yellow));
+  color: inherit;
+  border-radius: 0.18rem;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  padding: 0.02em 0.22em;
+}
+
+.highlight-option-yellow {
+  color: light-dark(#8a6c0f, #c7ad58) !important;
+}
+
+.highlight-option-blue {
+  color: light-dark(#2b5f87, #8db5d4) !important;
+}
+
+.highlight-option-green {
+  color: light-dark(#2f6a4f, #8fc1a4) !important;
+}
+
+.highlight-option-orange {
+  color: light-dark(#8a5a1f, #d3a470) !important;
+}
+
+.highlight-option-pink {
+  color: light-dark(#915070, #d6a6bf) !important;
+}
+
+.highlight-option-purple {
+  color: light-dark(#654d9a, #b8abd9) !important;
 }
 
 .dark .tiptap ::-moz-selection {

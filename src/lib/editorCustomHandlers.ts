@@ -13,6 +13,53 @@ export const createEditorCustomHandlers = (
   aiHandlers: EditorCustomHandlers,
 ): EditorCustomHandlers => ({
   ...aiHandlers,
+  highlightColor: {
+    canExecute: (editor: Editor) => editor.isEditable,
+    execute: (
+      editor: Editor,
+      cmd:
+        | {
+            color?: string;
+            cmd?: { color?: string };
+            highlightColor?: string;
+          }
+        | undefined,
+    ) => {
+      const chain = editor.chain().focus();
+      const color = cmd?.cmd?.color ?? cmd?.highlightColor ?? cmd?.color;
+
+      if (color) {
+        return chain.setHighlight({ color }).run();
+      }
+
+      return chain.toggleHighlight().run();
+    },
+    isActive: (
+      editor: Editor,
+      cmd:
+        | {
+            color?: string;
+            cmd?: { color?: string };
+            highlightColor?: string;
+          }
+        | undefined,
+    ) => {
+      const color = cmd?.cmd?.color ?? cmd?.highlightColor ?? cmd?.color;
+
+      if (color) {
+        return editor.isActive("highlight", { color });
+      }
+
+      return editor.isActive("highlight") && !editor.getAttributes("highlight")?.color;
+    },
+    isDisabled: (editor: Editor) => !editor.isEditable,
+  },
+  highlightClear: {
+    canExecute: (editor: Editor) => editor.isEditable && editor.isActive("highlight"),
+    execute: (editor: Editor) => editor.chain().focus().unsetHighlight().run(),
+    isActive: () => false,
+    isDisabled: (editor: Editor) => !editor.isEditable || !editor.isActive("highlight"),
+  },
   imageUpload: {
     canExecute: (editor: Editor) => editor.can().insertContent({ type: "imageUpload" }),
     execute: (editor: Editor) => editor.chain().focus().insertContent({ type: "imageUpload" }),

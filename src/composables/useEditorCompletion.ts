@@ -1,5 +1,5 @@
 import { useCompletion } from "@ai-sdk/vue";
-import type { Editor } from "@tiptap/vue-3";
+import type { Editor } from "@tiptap/core";
 import { Completion } from "@lib/extensions/EditorCompletionExtension";
 import type { CompletionStorage } from "@lib/extensions/EditorCompletionExtension";
 import { computed, Ref, ref, watch } from "vue";

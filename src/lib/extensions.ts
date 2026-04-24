@@ -14,6 +14,7 @@ import { CodeBlockLowlightYouTube } from "@lib/extensions/YouTubeExtension";
 import ImageUpload from "@lib/extensions/EditorImageUploadExtension";
 import { TwoslashExtension } from "@lib/extensions/TwoslashExtension";
 import Image from "@tiptap/extension-image";
+import Highlight from "@tiptap/extension-highlight";
 
 type TipTapExtensionsOptions = {
   onTocUpdate: (anchors: unknown[]) => void;
@@ -92,5 +93,8 @@ export const TipTapExtensions = ({ onTocUpdate, openMathPopover }: TipTapExtensi
   }),
   TextAlign.configure({
     types: ["heading", "paragraph"],
+  }),
+  Highlight.configure({
+    multicolor: true,
   }),
 ];

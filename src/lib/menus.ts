@@ -1,6 +1,38 @@
 import { EditorSuggestionMenuItem, EditorToolbarItem } from "@nuxt/ui";
 import { Editor } from "@tiptap/core";
 
+const highlightPalette = [
+  {
+    label: "Default Yellow",
+    class: "highlight-option highlight-option-yellow",
+  },
+  {
+    label: "Ocean Blue",
+    class: "highlight-option highlight-option-blue",
+    color: "var(--highlight-blue)",
+  },
+  {
+    label: "Mint Green",
+    class: "highlight-option highlight-option-green",
+    color: "var(--highlight-green)",
+  },
+  {
+    label: "Sunset Orange",
+    class: "highlight-option highlight-option-orange",
+    color: "var(--highlight-orange)",
+  },
+  {
+    label: "Rose Pink",
+    class: "highlight-option highlight-option-pink",
+    color: "var(--highlight-pink)",
+  },
+  {
+    label: "Lavender",
+    class: "highlight-option highlight-option-purple",
+    color: "var(--highlight-purple)",
+  },
+];
+
 const suggestionMenu: EditorSuggestionMenuItem[][] = [
   [
     {
@@ -135,6 +167,33 @@ const buildToolbarItems = (aiLoading: boolean | undefined): EditorToolbarItem[][
       },
       {
         slot: "link" as const,
+      },
+    ],
+    [
+      {
+        icon: "tabler:brush",
+        size: "md",
+        tooltip: { text: "Highlight", arrow: true },
+        content: {
+          align: "start",
+        },
+        items: [
+          ...highlightPalette.map((item) => ({
+            kind: "highlightColor",
+            label: item.label,
+            class: item.class,
+            ...(item.color ? { highlightColor: item.color } : {}),
+          })),
+          {
+            type: "separator" as const,
+          },
+          {
+            kind: "highlightClear",
+            label: "Clear highlight",
+            icon: "tabler:trash-filled",
+            color: "error",
+          },
+        ],
       },
     ],
     [
