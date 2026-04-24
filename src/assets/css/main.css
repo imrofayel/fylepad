@@ -11,6 +11,10 @@
   --color-green-ring: rgb(42, 208, 108);
 }
 
+body {
+  @apply bg-neutral-100! dark:bg-neutral-800!;
+}
+
 :root {
   --font-sans: "Open Runde", system-ui, sans-serif;
   --font-mono:

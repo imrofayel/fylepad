@@ -123,10 +123,6 @@ watch(currentLineHeight, (value) => {
     <ButtonWithTooltip text="Customize" :icon="ICONS.style" />
 
     <template #content>
-      <div class="px-4 flex items-center gap-1">
-        <UIcon name="tabler:typography" class="text-xl" />Typography
-      </div>
-
       <div class="p-4 gap-3 flex">
         <div class="relative flex items-center">
           <UIcon
