@@ -1,4 +1,5 @@
 import { EditorSuggestionMenuItem, EditorToolbarItem } from "@nuxt/ui";
+import { Editor } from "@tiptap/core";
 
 const suggestionMenu: EditorSuggestionMenuItem[][] = [
   [
@@ -268,4 +269,43 @@ const tableItems: EditorToolbarItem[][] = [
   ],
 ];
 
-export { suggestionMenu, buildToolbarItems, tableItems };
+const imageToolbar = (editor: Editor): EditorToolbarItem[][] => {
+  const node = editor.state.doc.nodeAt(editor.state.selection.from);
+
+  return [
+    [
+      {
+        icon: "tabler:file-download-filled",
+        to: node?.attrs?.src,
+        download: true,
+        tooltip: { text: "Download" },
+        size: "md",
+      },
+    ],
+    [
+      {
+        icon: "tabler:trash-filled",
+        tooltip: { text: "Delete" },
+        color: "error",
+        size: "md",
+        onClick: () => {
+          const { state } = editor;
+          const { selection } = state;
+
+          const pos = selection.from;
+          const node = state.doc.nodeAt(pos);
+
+          if (node && node.type.name === "image") {
+            editor
+              .chain()
+              .focus()
+              .deleteRange({ from: pos, to: pos + node.nodeSize })
+              .run();
+          }
+        },
+      },
+    ],
+  ];
+};
+
+export { suggestionMenu, buildToolbarItems, tableItems, imageToolbar };

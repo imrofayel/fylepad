@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, useTemplateRef, watch } from "vue";
-import EditorLinkPopover from "./EditorLinkPopover.vue";
 import { useEditorCompletion } from "@/composables/useEditorCompletion";
 import { useEditorMathPopover } from "@/composables/useEditorMathPopover";
 import { useEditorToc } from "@/composables/useEditorToc";
 import { useEditor } from "@/composables/useEditor";
 import { TipTapExtensions } from "@/lib/extensions";
-import { suggestionMenu, buildToolbarItems, tableItems } from "@/lib/menus";
+import { suggestionMenu, buildToolbarItems, tableItems, imageToolbar } from "@/lib/menus";
 import { createEditorCustomHandlers } from "@/lib/editorCustomHandlers";
 
 const props = defineProps<{
@@ -70,14 +69,19 @@ const tipTapExtensions = TipTapExtensions({
 
 const customHandlers = createEditorCustomHandlers(aiHandlers);
 
-const shouldShowTextToolbar = ({ editor, state, view }: any) => {
+const shouldShowToolbar = ({ editor, state, view }: any) => {
   const { selection } = state;
-  return view.hasFocus() && !selection.empty && !editor.isActive("table");
+  return (
+    view.hasFocus() && (editor.isActive("table") || !selection.empty || editor.isActive("image"))
+  );
 };
 
-const shouldShowTableToolbar = ({ editor, view }: any) => {
-  return view.hasFocus() && editor.isActive("table");
-};
+const getToolbarItems = (editor: any) =>
+  editor.isActive("image")
+    ? imageToolbar(editor)
+    : editor.isActive("table")
+      ? [...tableItems, ...toolBarItems.value]
+      : toolBarItems.value;
 </script>
 
 <template>
@@ -101,9 +105,9 @@ const shouldShowTableToolbar = ({ editor, view }: any) => {
       >
         <UEditorToolbar
           :editor="editor"
-          :items="toolBarItems"
+          :items="getToolbarItems(editor)"
           layout="bubble"
-          :should-show="shouldShowTextToolbar"
+          :should-show="shouldShowToolbar"
           :ui="{
             root: 'z-130!',
             base: 'p-0.5',
@@ -114,91 +118,20 @@ const shouldShowTableToolbar = ({ editor, view }: any) => {
           </template>
         </UEditorToolbar>
 
-        <UEditorToolbar
+        <EditorMathPopover
           :editor="editor"
-          :items="[...tableItems, ...toolBarItems]"
-          layout="bubble"
-          :should-show="shouldShowTableToolbar"
-          :ui="{
-            root: 'z-120!',
-            base: 'p-1',
-          }"
-        >
-          <template #link>
-            <EditorLinkPopover :editor="editor" auto-open />
-          </template>
-        </UEditorToolbar>
-
-        <UPopover
           :open="mathPopoverOpen"
-          :reference="getMathReference(editor)"
-          :content="{ side: 'top', align: 'start', sideOffset: 8 }"
-          :ui="{ content: 'p-0.5 dark:bg-neutral-800! w-84 z-120' }"
-          @update:open="(value) => (mathPopoverOpen = value)"
-        >
-          <span class="sr-only" />
-
-          <template #content>
-            <div class="p-1.5 w-full flex flex-col space-y-2">
-              <UInput
-                v-model="mathLatex"
-                autofocus
-                placeholder="Edit LaTeX"
-                :ui="{
-                  base: 'w-full font-mono leading-6 bg-transparent ring- 0 focus-visible:ring-0! p-0',
-                }"
-                @keydown="
-                  (event: KeyboardEvent) => {
-                    if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') {
-                      event.preventDefault();
-                      applyMathUpdate(editor);
-                    }
-                  }
-                "
-              />
-
-              <div class="flex items-center justify-end gap-1">
-                <UButton
-                  icon="tabler:circle-check-filled"
-                  color="primary"
-                  size="sm"
-                  :disabled="!mathLatex.trim()"
-                  @click="applyMathUpdate(editor)"
-                  label="Update"
-                />
-              </div>
-            </div>
-          </template>
-        </UPopover>
+          :latex="mathLatex"
+          :get-reference="getMathReference"
+          @update:open="(value: boolean) => (mathPopoverOpen = value)"
+          @update:latex="(value: string) => (mathLatex = value)"
+          @apply="applyMathUpdate(editor)"
+        />
 
         <UEditorSuggestionMenu :editor="editor" :items="suggestionMenu" />
       </UEditor>
     </div>
 
-    <aside class="hidden xl:block mr-4" v-if="tocAnchors.length !== 0">
-      <div class="sticky top-18 max-h-[calc(100vh-5.5rem)] overflow-y-auto">
-        <div class="px-2 dark:text-neutral-300 text-neutral-600 flex gap-1 items-center">
-          <UIcon name="tabler:align-left" class="text-xl" />On this page
-        </div>
-        <nav class="py-2" aria-label="Table of contents">
-          <UButton
-            v-for="anchor in tocAnchors"
-            :key="anchor.id"
-            variant="link"
-            color="neutral"
-            size="lg"
-            class="w-full transition-colors"
-            :ui="{
-              base: 'text-left py-1.5 text-[16.5px]',
-            }"
-            :class="[anchor.isActive && 'dark:text-neutral-300 text-neutral-600']"
-            :style="{ paddingLeft: `${Math.max(anchor.level - 1, 0) * 0.8 + 0.5}rem` }"
-            @click="goToTocAnchor(anchor)"
-          >
-            {{ anchor.textContent || "Untitled heading" }}
-          </UButton>
-        </nav>
-      </div>
-    </aside>
+    <EditorTocSidebar :toc-anchors="tocAnchors" @select="goToTocAnchor" />
   </div>
 </template>
