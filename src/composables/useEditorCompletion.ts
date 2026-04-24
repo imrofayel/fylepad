@@ -2,7 +2,8 @@ import { useCompletion } from "@ai-sdk/vue";
 import type { Editor } from "@tiptap/core";
 import { Completion } from "@lib/extensions/EditorCompletionExtension";
 import type { CompletionStorage } from "@lib/extensions/EditorCompletionExtension";
-import { computed, Ref, ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
+import type { Ref, ShallowRef } from "vue";
 
 type CompletionMode =
   | "continue"
@@ -23,7 +24,9 @@ export interface UseEditorCompletionOptions {
 }
 
 export function useEditorCompletion(
-  editorRef: Ref<{ editor: Editor | undefined } | null | undefined>,
+  editorRef:
+    | Ref<{ editor: Editor | undefined } | null | undefined>
+    | Readonly<ShallowRef<{ editor: Editor | undefined } | null>>,
   options: UseEditorCompletionOptions = {},
 ) {
   const autoTriggerEnabled = options.autoTrigger ?? false;

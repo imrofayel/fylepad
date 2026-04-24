@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Editor } from "@tiptap/vue-3";
+import type { Editor } from "@tiptap/core";
 
 const props = defineProps<{
   editor: Editor;
@@ -28,7 +28,7 @@ const handleKeydown = (event: KeyboardEvent) => {
     :reference="props.getReference(props.editor)"
     :content="{ side: 'top', align: 'start', sideOffset: 8 }"
     :ui="{ content: 'p-0.5 dark:bg-neutral-800! w-84 z-120' }"
-    @update:open="(value) => emit('update:open', value)"
+    @update:open="(value: boolean) => emit('update:open', value)"
   >
     <span class="sr-only" />
 
@@ -41,7 +41,7 @@ const handleKeydown = (event: KeyboardEvent) => {
           :ui="{
             base: 'w-full font-mono leading-6 bg-transparent ring- 0 focus-visible:ring-0! p-0',
           }"
-          @update:model-value="(value) => emit('update:latex', value)"
+          @update:model-value="(value: string) => emit('update:latex', value)"
           @keydown="handleKeydown"
         />
 

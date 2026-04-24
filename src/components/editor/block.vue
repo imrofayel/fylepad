@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { Editor } from "@tiptap/core";
 import { computed, onBeforeUnmount, ref, useTemplateRef, watch } from "vue";
 import { useEditorCompletion } from "@/composables/useEditorCompletion";
 import { useEditorMathPopover } from "@/composables/useEditorMathPopover";
@@ -12,7 +13,7 @@ const props = defineProps<{
   tabId: string;
 }>();
 
-const editorRef = useTemplateRef("editorRef");
+const editorRef = useTemplateRef<{ editor: Editor | undefined }>("editorRef");
 const { getTab, registerEditor, unregisterEditor, updateTabTitle } = useEditor();
 
 const currentTab = computed(() => getTab(props.tabId));

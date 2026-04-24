@@ -1,4 +1,4 @@
-import type { Editor } from "@tiptap/vue-3";
+import type { Editor } from "@tiptap/core";
 import { ref } from "vue";
 
 type MathKind = "inline" | "block";
