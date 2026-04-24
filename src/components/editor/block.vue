@@ -100,7 +100,7 @@ const getToolbarItems = (editor: any) =>
         :extensions="[...tipTapExtensions, completionExtension]"
         class="py-2 min-h-21"
         :ui="{
-          base: 'sm:px-0! text-[16.5px] w-full px-0! [&_p]:leading-normal',
+          base: 'sm:px-0! text-[16.5px] w-full px-0!',
         }"
       >
         <UEditorToolbar

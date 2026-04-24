@@ -171,6 +171,42 @@ const buildToolbarItems = (aiLoading: boolean | undefined): EditorToolbarItem[][
     ],
     [
       {
+        icon: "tabler:align-left",
+        size: "md",
+        tooltip: { text: "Align", arrow: true },
+        content: {
+          align: "start",
+        },
+        items: [
+          {
+            kind: "textAlign",
+            align: "left",
+            label: "Left",
+            icon: "tabler:align-left",
+          },
+          {
+            kind: "textAlign",
+            align: "center",
+            label: "Center",
+            icon: "tabler:align-center",
+          },
+          {
+            kind: "textAlign",
+            align: "right",
+            label: "Right",
+            icon: "tabler:align-right",
+          },
+          {
+            kind: "textAlign",
+            align: "justify",
+            label: "Justify",
+            icon: "tabler:align-justified",
+          },
+        ],
+      },
+    ],
+    [
+      {
         icon: "tabler:brush",
         size: "md",
         tooltip: { text: "Highlight", arrow: true },

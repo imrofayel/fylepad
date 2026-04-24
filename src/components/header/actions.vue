@@ -7,6 +7,7 @@ const { value } = useColorMode();
 <template>
   <div class="flex items-center gap-2.5">
     <EmojiPicker />
+    <EditorCustomize />
     <ButtonWithTooltip text="Search (Ctrl + F)" :icon="ICONS.search" />
     <UTooltip :text="value === 'light' ? 'Dark mode' : 'Light mode'" arrow>
       <UColorModeButton variant="link" color="neutral" />

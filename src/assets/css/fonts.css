@@ -33,3 +33,24 @@
   font-style: normal;
   font-display: swap;
 }
+
+@font-face {
+  font-family: "EB Garamond";
+  src: url("../fonts/EBGaramond.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Noto Nastaliq Urdu";
+  src: url("../fonts/NotoNastaliqUrdu.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Patrick Hand";
+  src: url("../fonts/PatrickHand.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}

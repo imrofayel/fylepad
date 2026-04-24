@@ -6,6 +6,9 @@ import {
   createStarterSpotifyEmbed,
   createStarterYouTubeEmbed,
 } from "@/lib/createStarter";
+import { FONT_FAMILY_OPTIONS } from "@lib/constants/fonts";
+
+const allowedFontFamilies = new Set(FONT_FAMILY_OPTIONS.map((item) => item.value));
 
 const starterMathLatex = String.raw`\sqrt{4} = 2`;
 
@@ -13,6 +16,45 @@ export const createEditorCustomHandlers = (
   aiHandlers: EditorCustomHandlers,
 ): EditorCustomHandlers => ({
   ...aiHandlers,
+  fontFamily: {
+    canExecute: (editor: Editor) => editor.isEditable,
+    execute: (
+      editor: Editor,
+      cmd:
+        | {
+            fontFamily?: string;
+            cmd?: { fontFamily?: string };
+          }
+        | undefined,
+    ) => {
+      const fontFamily = cmd?.cmd?.fontFamily ?? cmd?.fontFamily ?? "";
+      const chain = editor.chain().focus();
+
+      if (fontFamily && allowedFontFamilies.has(fontFamily)) {
+        return chain.setFontFamily(fontFamily).run();
+      }
+
+      return chain.unsetFontFamily().run();
+    },
+    isActive: (
+      editor: Editor,
+      cmd:
+        | {
+            fontFamily?: string;
+            cmd?: { fontFamily?: string };
+          }
+        | undefined,
+    ) => {
+      const fontFamily = cmd?.cmd?.fontFamily ?? cmd?.fontFamily ?? "";
+
+      if (!fontFamily || !allowedFontFamilies.has(fontFamily)) {
+        return !editor.getAttributes("textStyle")?.fontFamily;
+      }
+
+      return editor.getAttributes("textStyle")?.fontFamily === fontFamily;
+    },
+    isDisabled: (editor: Editor) => !editor.isEditable,
+  },
   highlightColor: {
     canExecute: (editor: Editor) => editor.isEditable,
     execute: (

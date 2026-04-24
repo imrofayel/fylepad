@@ -15,6 +15,7 @@ import ImageUpload from "@lib/extensions/EditorImageUploadExtension";
 import { TwoslashExtension } from "@lib/extensions/TwoslashExtension";
 import Image from "@tiptap/extension-image";
 import Highlight from "@tiptap/extension-highlight";
+import { FontFamily, FontSize, LineHeight, TextStyle } from "@tiptap/extension-text-style";
 
 type TipTapExtensionsOptions = {
   onTocUpdate: (anchors: unknown[]) => void;
@@ -90,6 +91,16 @@ export const TipTapExtensions = ({ onTocUpdate, openMathPopover }: TipTapExtensi
   Emoji.configure({
     emojis: gitHubEmojis,
     enableEmoticons: true,
+  }),
+  TextStyle,
+  FontFamily.configure({
+    types: ["textStyle"],
+  }),
+  FontSize.configure({
+    types: ["textStyle"],
+  }),
+  LineHeight.configure({
+    types: ["textStyle"],
   }),
   TextAlign.configure({
     types: ["heading", "paragraph"],
