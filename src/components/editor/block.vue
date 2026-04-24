@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { EditorSuggestionMenuItem, EditorToolbarItem, EditorCustomHandlers } from "@nuxt/ui";
+import { EditorToolbarItem, EditorCustomHandlers } from "@nuxt/ui";
 import { TextAlign } from "@tiptap/extension-text-align";
 import type { Editor } from "@tiptap/vue-3";
 import { computed, onBeforeUnmount, ref, useTemplateRef, watch } from "vue";
@@ -21,6 +21,7 @@ import { TableKit } from "@tiptap/extension-table";
 import { TableOfContents, getHierarchicalIndexes } from "@tiptap/extension-table-of-contents";
 import { ListKit } from "@tiptap/extension-list";
 import Emoji, { gitHubEmojis } from "@tiptap/extension-emoji";
+import { suggestionMenu, buildToolbarItems, tableItems } from "@/lib/menus";
 
 const props = defineProps<{
   tabId: string;
@@ -66,6 +67,8 @@ const {
   acceptOnTab: true,
   trapTab: true,
 });
+
+const toolBarItems = computed(() => buildToolbarItems(aiLoading.value));
 
 const value = ref("");
 
@@ -365,178 +368,6 @@ const customHandlers = {
   },
 } satisfies EditorCustomHandlers;
 
-const items: EditorToolbarItem[][] = [
-  [
-    {
-      kind: "mark",
-      size: "md",
-      mark: "bold",
-      icon: "tabler:bold",
-      tooltip: { text: "Bold", arrow: true },
-    },
-    {
-      kind: "mark",
-      size: "md",
-      mark: "italic",
-      icon: "tabler:italic",
-      tooltip: { text: "Italic", arrow: true },
-    },
-    {
-      kind: "mark",
-      size: "md",
-      mark: "underline",
-      icon: "tabler:underline",
-      tooltip: { text: "Underline", arrow: true },
-    },
-    {
-      kind: "mark",
-      size: "md",
-      mark: "strike",
-      icon: "tabler:strikethrough",
-      tooltip: { text: "Strikethrough", arrow: true },
-    },
-    {
-      kind: "mark",
-      size: "md",
-      mark: "code",
-      icon: "tabler:code",
-      tooltip: { text: "Code", arrow: true },
-    },
-    {
-      slot: "link" as const,
-    },
-  ],
-  [
-    {
-      icon: "i-icons-ai",
-      size: "md",
-      loading: aiLoading.value,
-      content: {
-        align: "start",
-      },
-      tooltip: { text: "Assistant", arrow: true },
-      items: [
-        {
-          kind: "aiFix",
-          icon: "tabler:text-spellcheck",
-          label: "Fix spelling & grammar",
-        },
-        {
-          kind: "aiExtend",
-          icon: "tabler:arrow-autofit-width",
-          label: "Extend text",
-        },
-        {
-          kind: "aiReduce",
-          icon: "tabler:arrows-diagonal-minimize",
-          label: "Reduce text",
-        },
-        {
-          kind: "aiSimplify",
-          icon: "tabler:bulb",
-          label: "Simplify text",
-        },
-        {
-          kind: "aiContinue",
-          icon: "tabler:track-next",
-          label: "Continue sentence",
-        },
-        {
-          kind: "aiSummarize",
-          icon: "tabler:menu",
-          label: "Summarize",
-        },
-      ],
-    },
-  ],
-];
-
-const tableItems: EditorToolbarItem[][] = [
-  [
-    {
-      icon: "tabler:table-filled",
-      label: "Table",
-      content: {
-        align: "start",
-      },
-      size: "md",
-      items: [
-        [
-          {
-            kind: "tableAddColumnBefore",
-            icon: "tabler:table-column",
-            label: "Insert column before",
-          },
-          {
-            kind: "tableAddColumnAfter",
-            icon: "tabler:box-align-right-filled",
-            label: "Insert column after",
-          },
-          {
-            kind: "tableDeleteColumn",
-            icon: "tabler:column-remove",
-            label: "Delete column",
-          },
-        ],
-        [
-          {
-            kind: "tableAddRowBefore",
-            icon: "tabler:table-row",
-            label: "Insert row before",
-          },
-          {
-            kind: "tableAddRowAfter",
-            icon: "tabler:box-align-bottom-filled",
-            label: "Insert row after",
-          },
-          {
-            kind: "tableDeleteRow",
-            icon: "tabler:row-remove",
-            label: "Delete row",
-          },
-        ],
-        [
-          {
-            kind: "tableToggleHeaderColumn",
-            icon: "tabler:freeze-row-column",
-            label: "Toggle header column",
-          },
-          {
-            kind: "tableToggleHeaderRow",
-            icon: "tabler:freeze-row",
-            label: "Toggle header row",
-          },
-          {
-            kind: "tableToggleHeaderCell",
-            icon: "tabler:section-filled",
-            label: "Toggle header cell",
-          },
-        ],
-        [
-          {
-            kind: "tableMergeCells",
-            icon: "tabler:border-outer",
-            label: "Merge cells",
-          },
-          {
-            kind: "tableSplitCell",
-            icon: "tabler:border-sides",
-            label: "Split cell",
-          },
-        ],
-        [
-          {
-            kind: "tableDelete",
-            icon: "tabler:trash-filled",
-            label: "Delete table",
-            color: "error",
-          },
-        ],
-      ],
-    },
-  ],
-];
-
 const shouldShowTextToolbar = ({ editor, state, view }: any) => {
   const { selection } = state;
   return view.hasFocus() && !selection.empty && !editor.isActive("table");
@@ -545,100 +376,6 @@ const shouldShowTextToolbar = ({ editor, state, view }: any) => {
 const shouldShowTableToolbar = ({ editor, view }: any) => {
   return view.hasFocus() && editor.isActive("table");
 };
-
-const suggestionMenu: EditorSuggestionMenuItem<typeof customHandlers>[][] = [
-  [
-    {
-      kind: "paragraph",
-      label: "Paragraph",
-      icon: "tabler:text-size",
-    },
-    {
-      kind: "heading",
-      level: 1,
-      label: "Heading 1",
-      icon: "tabler:h-1",
-    },
-    {
-      kind: "heading",
-      level: 2,
-      label: "Heading 2",
-      icon: "tabler:h-2",
-    },
-    {
-      kind: "heading",
-      level: 3,
-      label: "Heading 3",
-      icon: "tabler:h-3",
-    },
-  ],
-  [
-    {
-      kind: "bulletList",
-      label: "Bullet List",
-      icon: "tabler:list",
-    },
-    {
-      kind: "orderedList",
-      label: "Numbered List",
-      icon: "tabler:list-numbers",
-    },
-  ],
-  [
-    {
-      kind: "blockquote",
-      label: "Blockquote",
-      icon: "tabler:blockquote",
-    },
-    {
-      kind: "codeBlock",
-      label: "Code Block",
-      icon: "tabler:braces",
-    },
-    {
-      kind: "imageUpload",
-      label: "Image",
-      icon: "tabler:photo",
-    },
-    {
-      kind: "horizontalRule",
-      label: "Divider",
-      icon: "tabler:line-dashed",
-    },
-    {
-      kind: "table",
-      label: "Table",
-      icon: "tabler:table-filled",
-    },
-    {
-      kind: "math",
-      label: "Math (LaTeX)",
-      icon: "tabler:math-function",
-    },
-  ],
-  [
-    {
-      kind: "mermaid",
-      label: "Mermaid Diagram",
-      icon: "vscode-icons:file-type-mermaid",
-    },
-    {
-      kind: "plantuml",
-      label: "PlantUML Diagram",
-      icon: "vscode-icons:file-type-plantuml",
-    },
-    {
-      kind: "spotify",
-      label: "Spotify Embed",
-      icon: "logos:spotify-icon",
-    },
-    {
-      kind: "youtube",
-      label: "YouTube Embed",
-      icon: "logos:youtube-icon",
-    },
-  ],
-];
 
 mermaid.initialize({ startOnLoad: false });
 
@@ -656,7 +393,7 @@ const lowlight = createLowlight();
         placeholder="Untitled"
         class="w-full"
         :ui="{
-          base: 'ring-0 px-0 text-2xl! tracking-tight shadow-none mt-3 focus-visible:ring-0!',
+          base: 'ring-0 px-0 text-2xl! tracking-tight shadow-none mt-2.5 focus-visible:ring-0!',
         }"
         @blur="normalizeTabTitle"
       />
@@ -730,14 +467,14 @@ const lowlight = createLowlight();
             types: ['heading', 'paragraph'],
           }),
         ]"
-        class="py-2 mt-2 min-h-21"
+        class="py-2 min-h-21"
         :ui="{
           base: 'sm:px-0! text-[16.5px] w-full px-0! [&_p]:leading-normal',
         }"
       >
         <UEditorToolbar
           :editor="editor"
-          :items="items"
+          :items="toolBarItems"
           layout="bubble"
           :should-show="shouldShowTextToolbar"
           :ui="{
@@ -752,7 +489,7 @@ const lowlight = createLowlight();
 
         <UEditorToolbar
           :editor="editor"
-          :items="[...tableItems, ...items]"
+          :items="[...tableItems, ...toolBarItems]"
           layout="bubble"
           :should-show="shouldShowTableToolbar"
           :ui="{
