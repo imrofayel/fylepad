@@ -74,7 +74,7 @@ export default defineConfig(async () => ({
         },
         input: {
           slots: {
-            base: "focus-visible:ring-1! dark:focus-visible:ring-neutral-500! text-[16.5px] font-medium text-default! focus-visible:ring-neutral-400!",
+            base: "focus-visible:ring-1! dark:focus-visible:ring-neutral-500! font-medium text-default! focus-visible:ring-neutral-400!",
           },
         },
         button: {

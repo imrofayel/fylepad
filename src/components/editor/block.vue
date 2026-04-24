@@ -2,7 +2,7 @@
 import { EditorSuggestionMenuItem, EditorToolbarItem, EditorCustomHandlers } from "@nuxt/ui";
 import { TextAlign } from "@tiptap/extension-text-align";
 import type { Editor } from "@tiptap/vue-3";
-import { onBeforeUnmount, ref, useTemplateRef, watch } from "vue";
+import { computed, onBeforeUnmount, ref, useTemplateRef, watch } from "vue";
 import EditorLinkPopover from "./EditorLinkPopover.vue";
 import { ImageUpload } from "@lib/extentions/EditorImageUploadExtension";
 import { useEditorCompletion } from "@/composables/useEditorCompletion";
@@ -27,7 +27,14 @@ const props = defineProps<{
 }>();
 
 const editorRef = useTemplateRef("editorRef");
-const { registerEditor, unregisterEditor } = useEditor();
+const { getTab, registerEditor, unregisterEditor, updateTabTitle } = useEditor();
+
+const currentTab = computed(() => getTab(props.tabId));
+
+const tabTitle = computed({
+  get: () => currentTab.value?.title ?? "Untitled",
+  set: (value: string) => updateTabTitle(props.tabId, value),
+});
 
 watch(
   () => editorRef.value?.editor,
@@ -80,6 +87,12 @@ const updateTocAnchors = (anchors: TocAnchor[]) => {
 
 const goToTocAnchor = (anchor: TocAnchor) => {
   anchor.dom?.scrollIntoView({ behavior: "smooth", block: "start" });
+};
+
+const normalizeTabTitle = () => {
+  if (!tabTitle.value.trim()) {
+    tabTitle.value = "Untitled";
+  }
 };
 
 const mathPopoverOpen = ref(false);
@@ -634,154 +647,168 @@ const lowlight = createLowlight();
 
 <template>
   <div class="grid grid-cols-1 gap-8 xl:grid-cols-[minmax(0,1fr)_17rem]">
-    <UEditor
-      ref="editorRef"
-      v-slot="{ editor }"
-      v-model="value"
-      placeholder="Write / for commands..."
-      :handlers="customHandlers"
-      :extensions="[
-        ListKit,
-        TableKit.configure({
-          table: {
-            resizable: true,
-          },
-        }),
-        TableOfContents.configure({
-          anchorTypes: ['heading'],
-          getIndex: getHierarchicalIndexes,
-          onUpdate: (anchors) => updateTocAnchors(anchors as TocAnchor[]),
-        }),
-        Mathematics.configure({
-          inlineOptions: {
-            onClick: (node, pos) => openMathPopover(node, pos, 'inline'),
-          },
-          blockOptions: {
-            onClick: (node, pos) => openMathPopover(node, pos, 'block'),
-          },
-          katexOptions: {
-            throwOnError: false,
-          },
-        }),
-        CodeBlockShiki.configure({
-          defaultTheme: 'tokyo-night',
-          themes: {
-            light: 'github-light',
-            dark: 'github-dark',
-          },
-        }),
-        TwoslashExtension,
-        CodeBlockCopyExtension,
-        CodeBlockLowlightMermaid.configure({
-          lowlight,
-          classList: 'mermaid-container',
-          debounce: 400,
-          mermaidConfig: {
-            theme: 'neutral',
-          },
-        }),
-        CodeBlockLowlightPlantUml.configure({
-          lowlight,
-          classList: 'plantuml-container',
-          debounce: 400,
-        }),
-        CodeBlockLowlightSpotify.configure({
-          lowlight,
-          classList: 'spotify-container',
-        }),
-        CodeBlockLowlightYouTube.configure({
-          lowlight,
-          classList: 'youtube-container',
-        }),
-        completionExtension,
-        ImageUpload,
-        Emoji.configure({
-          emojis: gitHubEmojis,
-          enableEmoticons: true,
-        }),
-        TextAlign.configure({
-          types: ['heading', 'paragraph'],
-        }),
-      ]"
-      class="py-2 mt-2 min-h-21"
-      :ui="{
-        base: 'sm:px-0! text-[16.5px] w-full px-0! [&_p]:leading-normal',
-      }"
-    >
-      <UEditorToolbar
-        :editor="editor"
-        :items="items"
-        layout="bubble"
-        :should-show="shouldShowTextToolbar"
+    <div>
+      <div class="mb-2 flex items-center gap-2 px-1 sm:px-0">
+        <UInput
+          v-model="tabTitle"
+          placeholder="Untitled"
+          class="w-full"
+          :ui="{
+            base: 'ring-0 px-0 text-2xl! tracking-tight shadow-none mt-3 focus-visible:ring-0!',
+          }"
+          @blur="normalizeTabTitle"
+        />
+      </div>
+
+      <UEditor
+        ref="editorRef"
+        v-slot="{ editor }"
+        v-model="value"
+        placeholder="Write / for commands..."
+        :handlers="customHandlers"
+        :extensions="[
+          ListKit,
+          TableKit.configure({
+            table: {
+              resizable: true,
+            },
+          }),
+          TableOfContents.configure({
+            anchorTypes: ['heading'],
+            getIndex: getHierarchicalIndexes,
+            onUpdate: (anchors) => updateTocAnchors(anchors as TocAnchor[]),
+          }),
+          Mathematics.configure({
+            inlineOptions: {
+              onClick: (node, pos) => openMathPopover(node, pos, 'inline'),
+            },
+            blockOptions: {
+              onClick: (node, pos) => openMathPopover(node, pos, 'block'),
+            },
+            katexOptions: {
+              throwOnError: false,
+            },
+          }),
+          CodeBlockShiki.configure({
+            defaultTheme: 'tokyo-night',
+            themes: {
+              light: 'github-light',
+              dark: 'github-dark',
+            },
+          }),
+          TwoslashExtension,
+          CodeBlockCopyExtension,
+          CodeBlockLowlightMermaid.configure({
+            lowlight,
+            classList: 'mermaid-container',
+            debounce: 400,
+            mermaidConfig: {
+              theme: 'neutral',
+            },
+          }),
+          CodeBlockLowlightPlantUml.configure({
+            lowlight,
+            classList: 'plantuml-container',
+            debounce: 400,
+          }),
+          CodeBlockLowlightSpotify.configure({
+            lowlight,
+            classList: 'spotify-container',
+          }),
+          CodeBlockLowlightYouTube.configure({
+            lowlight,
+            classList: 'youtube-container',
+          }),
+          completionExtension,
+          ImageUpload,
+          Emoji.configure({
+            emojis: gitHubEmojis,
+            enableEmoticons: true,
+          }),
+          TextAlign.configure({
+            types: ['heading', 'paragraph'],
+          }),
+        ]"
+        class="py-2 mt-2 min-h-21"
         :ui="{
-          root: 'z-130!',
-          base: 'p-0.5',
+          base: 'sm:px-0! text-[16.5px] w-full px-0! [&_p]:leading-normal',
         }"
       >
-        <template #link>
-          <EditorLinkPopover :editor="editor" auto-open />
-        </template>
-      </UEditorToolbar>
+        <UEditorToolbar
+          :editor="editor"
+          :items="items"
+          layout="bubble"
+          :should-show="shouldShowTextToolbar"
+          :ui="{
+            root: 'z-130!',
+            base: 'p-0.5',
+          }"
+        >
+          <template #link>
+            <EditorLinkPopover :editor="editor" auto-open />
+          </template>
+        </UEditorToolbar>
 
-      <UEditorToolbar
-        :editor="editor"
-        :items="[...tableItems, ...items]"
-        layout="bubble"
-        :should-show="shouldShowTableToolbar"
-        :ui="{
-          root: 'z-120!',
-          base: 'p-1',
-        }"
-      >
-        <template #link>
-          <EditorLinkPopover :editor="editor" auto-open />
-        </template>
-      </UEditorToolbar>
+        <UEditorToolbar
+          :editor="editor"
+          :items="[...tableItems, ...items]"
+          layout="bubble"
+          :should-show="shouldShowTableToolbar"
+          :ui="{
+            root: 'z-120!',
+            base: 'p-1',
+          }"
+        >
+          <template #link>
+            <EditorLinkPopover :editor="editor" auto-open />
+          </template>
+        </UEditorToolbar>
 
-      <UPopover
-        :open="mathPopoverOpen"
-        :reference="getMathReference(editor)"
-        :content="{ side: 'top', align: 'start', sideOffset: 8 }"
-        :ui="{ content: 'p-0.5 dark:bg-neutral-800! w-84 z-120' }"
-        @update:open="(value) => (mathPopoverOpen = value)"
-      >
-        <span class="sr-only" />
+        <UPopover
+          :open="mathPopoverOpen"
+          :reference="getMathReference(editor)"
+          :content="{ side: 'top', align: 'start', sideOffset: 8 }"
+          :ui="{ content: 'p-0.5 dark:bg-neutral-800! w-84 z-120' }"
+          @update:open="(value) => (mathPopoverOpen = value)"
+        >
+          <span class="sr-only" />
 
-        <template #content>
-          <div class="p-1.5 w-full flex flex-col space-y-2">
-            <UInput
-              v-model="mathLatex"
-              autofocus
-              placeholder="Edit LaTeX"
-              :ui="{
-                base: 'w-full font-mono leading-6 bg-transparent ring- 0 focus-visible:ring-0! p-0',
-              }"
-              @keydown="
-                (event: KeyboardEvent) => {
-                  if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') {
-                    event.preventDefault();
-                    applyMathUpdate(editor);
+          <template #content>
+            <div class="p-1.5 w-full flex flex-col space-y-2">
+              <UInput
+                v-model="mathLatex"
+                autofocus
+                placeholder="Edit LaTeX"
+                :ui="{
+                  base: 'w-full font-mono leading-6 bg-transparent ring- 0 focus-visible:ring-0! p-0',
+                }"
+                @keydown="
+                  (event: KeyboardEvent) => {
+                    if ((event.metaKey || event.ctrlKey) && event.key === 'Enter') {
+                      event.preventDefault();
+                      applyMathUpdate(editor);
+                    }
                   }
-                }
-              "
-            />
-
-            <div class="flex items-center justify-end gap-1">
-              <UButton
-                icon="tabler:circle-check-filled"
-                color="primary"
-                size="sm"
-                :disabled="!mathLatex.trim()"
-                @click="applyMathUpdate(editor)"
-                label="Update"
+                "
               />
-            </div>
-          </div>
-        </template>
-      </UPopover>
 
-      <UEditorSuggestionMenu :editor="editor" :items="suggestionMenu" />
-    </UEditor>
+              <div class="flex items-center justify-end gap-1">
+                <UButton
+                  icon="tabler:circle-check-filled"
+                  color="primary"
+                  size="sm"
+                  :disabled="!mathLatex.trim()"
+                  @click="applyMathUpdate(editor)"
+                  label="Update"
+                />
+              </div>
+            </div>
+          </template>
+        </UPopover>
+
+        <UEditorSuggestionMenu :editor="editor" :items="suggestionMenu" />
+      </UEditor>
+    </div>
 
     <aside class="hidden xl:block mr-4" v-if="tocAnchors.length !== 0">
       <div class="sticky top-18 max-h-[calc(100vh-5.5rem)] overflow-y-auto">

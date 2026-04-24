@@ -2,7 +2,7 @@
 import { ICONS } from "@/lib/constants/icons";
 import { useEditor } from "@/composables/useEditor";
 
-const { activeTabId, setActiveTab, tabs } = useEditor();
+const { activeTabId, createTab, setActiveTab, tabs } = useEditor();
 
 const selectTab = (id: string) => {
   setActiveTab(id);
@@ -12,7 +12,13 @@ const selectTab = (id: string) => {
 <template>
   <div class="flex justify-between w-full items-center">
     <div class="flex gap-2.5">
-      <ButtonWithTooltip text="New Tab" variant="link" color="neutral" :icon="ICONS.newTab" />
+      <ButtonWithTooltip
+        text="New Tab"
+        variant="link"
+        color="neutral"
+        :icon="ICONS.newTab"
+        @click="createTab"
+      />
 
       <div class="flex gap-2 z-10">
         <UButton

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import EmojiPicker from "vue3-emoji-picker";
 import { useColorMode } from "@vueuse/core";
+import { computed } from "vue";
 import { ICONS } from "@/lib/constants/icons";
 import { useEditor } from "@/composables/useEditor";
 
@@ -18,19 +19,16 @@ const onSelect = (emoji: EmojiSelectPayload) => {
   activeEditor.value?.commands.insertContent(emoji.i || "");
 };
 
-const { value } = useColorMode();
+const colorMode = useColorMode();
+
+const emojiTheme = computed(() => (colorMode.value === "dark" ? "dark" : "light"));
 </script>
 
 <template>
   <UPopover arrow>
     <ButtonWithTooltip text="Emoji" :icon="ICONS.emoji" />
     <template #content>
-      <EmojiPicker
-        :native="true"
-        :theme="value === 'dark' ? 'dark' : 'light'"
-        :display-recent="true"
-        @select="onSelect"
-      />
+      <EmojiPicker :native="true" :theme="emojiTheme" :display-recent="true" @select="onSelect" />
     </template>
   </UPopover>
 </template>
