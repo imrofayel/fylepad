@@ -8,7 +8,13 @@ import {
 } from "@/lib/createStarter";
 import { FONT_FAMILY_OPTIONS } from "@lib/constants/fonts";
 
-const allowedFontFamilies = new Set(FONT_FAMILY_OPTIONS.map((item) => item.value));
+type FontFamilyOption = (typeof FONT_FAMILY_OPTIONS)[number]["value"];
+
+const allowedFontFamilies = new Set<FontFamilyOption>(
+  FONT_FAMILY_OPTIONS.map((item) => item.value),
+);
+const isAllowedFontFamily = (value: string): value is FontFamilyOption =>
+  allowedFontFamilies.has(value as FontFamilyOption);
 
 const starterMathLatex = String.raw`\sqrt{4} = 2`;
 
@@ -30,7 +36,7 @@ export const createEditorCustomHandlers = (
       const fontFamily = cmd?.cmd?.fontFamily ?? cmd?.fontFamily ?? "";
       const chain = editor.chain().focus();
 
-      if (fontFamily && allowedFontFamilies.has(fontFamily)) {
+      if (fontFamily && isAllowedFontFamily(fontFamily)) {
         return chain.setFontFamily(fontFamily).run();
       }
 
@@ -47,7 +53,7 @@ export const createEditorCustomHandlers = (
     ) => {
       const fontFamily = cmd?.cmd?.fontFamily ?? cmd?.fontFamily ?? "";
 
-      if (!fontFamily || !allowedFontFamilies.has(fontFamily)) {
+      if (!fontFamily || !isAllowedFontFamily(fontFamily)) {
         return !editor.getAttributes("textStyle")?.fontFamily;
       }
 
