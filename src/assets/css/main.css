@@ -220,7 +220,7 @@ pre.codeblock-with-copy:focus-within .codeblock-copy-button {
 .tiptap .shiki {
   font-family: var(--font-mono) !important;
   font-size: 1rem;
-  line-height: 1.6;
+  line-height: 2;
 }
 
 .mermaid-source--hidden {
@@ -252,11 +252,12 @@ pre.codeblock-with-copy:focus-within .codeblock-copy-button {
 .twoslash-container pre {
   margin: 0;
   border-radius: 0.55rem;
+  overflow-x: auto;
+  overflow-y: visible;
 }
 
 .twoslash-container .shiki {
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: visible;
 }
 
 .twoslash-container.is-editing {
