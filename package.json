@@ -22,6 +22,7 @@
     "@tiptap/core": "^3.22.4",
     "@tiptap/extension-code-block-lowlight": "^3.22.4",
     "@tiptap/extension-emoji": "^3.22.3",
+    "@tiptap/extension-image": "^3.22.4",
     "@tiptap/extension-list": "^3.22.4",
     "@tiptap/extension-mathematics": "^3.22.4",
     "@tiptap/extension-table": "^3.22.4",

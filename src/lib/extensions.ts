@@ -13,6 +13,7 @@ import { CodeBlockLowlightSpotify } from "@lib/extensions/SpotifyExtension";
 import { CodeBlockLowlightYouTube } from "@lib/extensions/YouTubeExtension";
 import ImageUpload from "@lib/extensions/EditorImageUploadExtension";
 import { TwoslashExtension } from "@lib/extensions/TwoslashExtension";
+import Image from "@tiptap/extension-image";
 
 type TipTapExtensionsOptions = {
   onTocUpdate: (anchors: unknown[]) => void;
@@ -26,6 +27,12 @@ type TipTapExtensionsOptions = {
 const lowlight = createLowlight();
 
 export const TipTapExtensions = ({ onTocUpdate, openMathPopover }: TipTapExtensionsOptions) => [
+  Image.configure({
+    resize: {
+      enabled: true,
+      alwaysPreserveAspectRatio: true,
+    },
+  }),
   ListKit,
   TableKit.configure({
     table: {
