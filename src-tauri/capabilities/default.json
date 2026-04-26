@@ -3,5 +3,18 @@
   "identifier": "default",
   "description": "Capability for the main window",
   "windows": ["main"],
-  "permissions": ["core:default", "opener:default", "core:webview:allow-set-webview-zoom"]
+  "permissions": [
+    "core:default",
+    "opener:default",
+    "core:webview:allow-set-webview-zoom",
+    {
+      "identifier": "http:default",
+      "allow": [
+        { "url": "https://kroki.io**" },
+        { "url": "https://typescriptlang.org**" },
+        { "url": "https://youtube.com**" },
+        { "url": "https://spotify.com**" }
+      ]
+    }
+  ]
 }

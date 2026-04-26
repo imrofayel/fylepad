@@ -27,6 +27,9 @@ importers:
       '@tauri-apps/api':
         specifier: ^2.10.1
         version: 2.10.1
+      '@tauri-apps/plugin-http':
+        specifier: ~2.5.8
+        version: 2.5.8
       '@tauri-apps/plugin-opener':
         specifier: ^2.5.3
         version: 2.5.3
@@ -121,6 +124,15 @@ importers:
         specifier: ^1.1.8
         version: 1.1.8(typescript@5.6.3)
     devDependencies:
+      '@iconify-json/logos':
+        specifier: ^1.2.11
+        version: 1.2.11
+      '@iconify-json/tabler':
+        specifier: ^1.2.33
+        version: 1.2.33
+      '@iconify-json/vscode-icons':
+        specifier: ^1.2.46
+        version: 1.2.46
       '@tauri-apps/cli':
         specifier: ^2.10.1
         version: 2.10.1
@@ -384,6 +396,15 @@ packages:
 
   '@floating-ui/vue@1.1.11':
     resolution: {integrity: sha512-HzHKCNVxnGS35r9fCHBc3+uCnjw9IWIlCPL683cGgM9Kgj2BiAl8x1mS7vtvP6F9S/e/q4O6MApwSHj8hNLGfw==}
+
+  '@iconify-json/logos@1.2.11':
+    resolution: {integrity: sha512-fOo4pGEatuyuCFNL+cwquYMa2Im0oJHRHV7lt/Qqs5Ode/lPImHCQcfTtPzZj7qYMPb/h8YHN3TG54uEowrjNQ==}
+
+  '@iconify-json/tabler@1.2.33':
+    resolution: {integrity: sha512-q9nUQfE/cjIrGh5bAKHTphitAZpT0kX9SxDgZo3Sx8ofeDTsaHVdRwrn+CfKiJ5vQ1b1btqVwizXzIgz9KEPjA==}
+
+  '@iconify-json/vscode-icons@1.2.46':
+    resolution: {integrity: sha512-ZuLQscdXzGfUy1BtpNE74rNRjhNkcT/BLUbclQpY7aNLS2ByBuF9RzSjJQ1c0nqRyyInBFWmEL8DbTufw6w5Vw==}
 
   '@iconify/collections@1.0.673':
     resolution: {integrity: sha512-xTnmPhEvJLiMVm2ABjYk8t+dg8TgdF7h0RNOXIq0GBsvs1pM5gcVWV6OxaG+7Ocbo05UXGFOxebwonO48fXQmw==}
@@ -1021,6 +1042,9 @@ packages:
     resolution: {integrity: sha512-jQNGF/5quwORdZSSLtTluyKQ+o6SMa/AUICfhf4egCGFdMHqWssApVgYSbg+jmrZoc8e1DscNvjTnXtlHLS11g==}
     engines: {node: '>= 10'}
     hasBin: true
+
+  '@tauri-apps/plugin-http@2.5.8':
+    resolution: {integrity: sha512-oxd7oypzQeu8kAfFCrw534Kq7Cw+NzozcnCY21O4rz3A+veJiIiuSCMIprgGcZOcLAXFP9GmDhKUbhuKWcunRw==}
 
   '@tauri-apps/plugin-opener@2.5.3':
     resolution: {integrity: sha512-CCcUltXMOfUEArbf3db3kCE7Ggy1ExBEBl51Ko2ODJ6GDYHRp1nSNlQm5uNCFY5k7/ufaK5Ib3Du/Zir19IYQQ==}
@@ -3322,6 +3346,18 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
+  '@iconify-json/logos@1.2.11':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/tabler@1.2.33':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/vscode-icons@1.2.46':
+    dependencies:
+      '@iconify/types': 2.0.0
+
   '@iconify/collections@1.0.673':
     dependencies:
       '@iconify/types': 2.0.0
@@ -3959,6 +3995,10 @@ snapshots:
       '@tauri-apps/cli-win32-arm64-msvc': 2.10.1
       '@tauri-apps/cli-win32-ia32-msvc': 2.10.1
       '@tauri-apps/cli-win32-x64-msvc': 2.10.1
+
+  '@tauri-apps/plugin-http@2.5.8':
+    dependencies:
+      '@tauri-apps/api': 2.10.1
 
   '@tauri-apps/plugin-opener@2.5.3':
     dependencies:

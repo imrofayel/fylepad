@@ -33,6 +33,9 @@ export default defineConfig(async () => ({
     }),
     vue(),
     ui({
+      icon: {
+        mode: "svg",
+      } as any,
       components: {
         dirs: ["src/components"],
         extensions: ["vue"],
