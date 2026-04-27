@@ -1,3 +1,10 @@
+<script setup lang="ts">
+import { useHead } from "@vueuse/head";
+import SEO from "./lib/seo";
+
+useHead(SEO);
+</script>
+
 <template>
   <UApp
     :tooltip="{

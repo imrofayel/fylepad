@@ -34,6 +34,7 @@
     "@tiptap/pm": "^3.22.4",
     "@tiptap/vue-3": "^3.22.4",
     "@vueuse/core": "^14.2.1",
+    "@vueuse/head": "^2.0.0",
     "katex": "^0.16.45",
     "lowlight": "^3.3.0",
     "mermaid": "^11.14.0",
@@ -60,6 +61,7 @@
     "@vitejs/plugin-vue": "^5.2.4",
     "typescript": "~5.6.3",
     "vite": "npm:@voidzero-dev/vite-plus-core@latest",
+    "vite-plugin-prerender": "^1.0.8",
     "vite-plus": "latest",
     "vue-tsc": "^2.2.12"
   },
