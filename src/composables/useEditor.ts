@@ -4,10 +4,9 @@ import { computed, markRaw, ref, shallowReactive } from "vue";
 export type EditorTab = {
   id: string;
   title: string;
-  icon: string;
 };
 
-const tabs = ref<EditorTab[]>([{ id: "notes", title: "Untitled", icon: "tabler:border-outer" }]);
+const tabs = ref<EditorTab[]>([{ id: "notes", title: "Untitled" }]);
 let tabCounter = 1;
 
 const activeTabId = ref(tabs.value[0]?.id ?? "");
@@ -38,7 +37,6 @@ const createTab = () => {
   const tab: EditorTab = {
     id,
     title: "Untitled",
-    icon: "tabler:border-outer",
   };
 
   tabs.value = [...tabs.value, tab];

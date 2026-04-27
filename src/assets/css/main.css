@@ -332,7 +332,7 @@ pre.codeblock-with-copy:focus-within .codeblock-copy-button {
 .spotify-embed {
   width: 100%;
   border: 0;
-  border-radius: 12px;
+  border-radius: 20px;
 }
 
 .youtube-embed {
@@ -716,4 +716,13 @@ html.dark .tiptap .twoslash .twoslash-popup-code .shiki span {
     outline: 1px solid rgba(0, 0, 0, 0.25);
     border-radius: 0.125rem;
   }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply text-default!;
 }

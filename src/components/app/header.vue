@@ -11,7 +11,8 @@ const selectTab = (id: string) => {
 
 <template>
   <div class="flex justify-between w-full items-center">
-    <div class="flex gap-2.5">
+    <div class="flex gap-2.5 items-center">
+      <img src="/favicon.svg" alt="fylepad logo" class="w-6 h-6" />
       <ButtonWithTooltip
         text="New Tab"
         variant="link"
@@ -27,13 +28,11 @@ const selectTab = (id: string) => {
           :label="tab.title"
           :variant="tab.id === activeTabId ? 'solid' : 'outline'"
           :color="tab.id === activeTabId ? 'primary' : 'neutral'"
-          :icon="tab.icon"
           class="group text-[15.3px] relative"
           :ui="{
             base: [
-              tab.id === activeTabId
-                ? 'hover:pr-7! py-0.5!'
-                : 'dark:bg-neutral-800! hover:opacity-80! bg-neutral-50! hover:pr-7! py-0.5!',
+              'py-1! px-2 hover:pr-7!',
+              tab.id === activeTabId ? '' : 'dark:bg-neutral-800! hover:opacity-80! bg-neutral-50!',
               'duration-300 transition-all',
             ],
           }"

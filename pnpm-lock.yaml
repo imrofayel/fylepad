@@ -78,6 +78,9 @@ importers:
       '@vueuse/head':
         specifier: ^2.0.0
         version: 2.0.0(vue@3.5.32(typescript@5.6.3))
+      dotenv:
+        specifier: ^17.4.2
+        version: 17.4.2
       katex:
         specifier: ^0.16.45
         version: 0.16.45

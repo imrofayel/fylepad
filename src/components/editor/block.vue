@@ -46,7 +46,7 @@ const {
   handlers: aiHandlers,
   isLoading: aiLoading,
 } = useEditorCompletion(editorRef, {
-  api: process.env.AI_BACKEND_API,
+  api: import.meta.env.AI_BACKEND_API,
   autoTrigger: false,
   debounce: 800,
   minAutoTriggerChars: 10,
@@ -101,7 +101,7 @@ const getToolbarItems = (editor: any) =>
         :extensions="[...tipTapExtensions, completionExtension]"
         class="py-2 min-h-21"
         :ui="{
-          base: 'sm:px-0! text-[16.5px] w-full px-0!',
+          base: 'sm:px-0! text-[17.8px] w-full px-0!',
         }"
         textDirection="auto"
       >
