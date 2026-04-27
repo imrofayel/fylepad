@@ -7,7 +7,7 @@ const { activeTabId, tabs } = useEditor();
 </script>
 
 <template>
-  <div class="mx-auto min-h-screen w-full z-100 sm:px-3 pt-2">
+  <div class="mx-auto min-h-screen w-full z-100 sm:px-3 pt-2 px-2">
     <AppHeader />
     <Suspense>
       <template #default>
