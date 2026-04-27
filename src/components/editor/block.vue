@@ -46,7 +46,7 @@ const {
   handlers: aiHandlers,
   isLoading: aiLoading,
 } = useEditorCompletion(editorRef, {
-  api: "http://localhost:3008/ai",
+  api: process.env.AI_BACKEND_API,
   autoTrigger: false,
   debounce: 800,
   minAutoTriggerChars: 10,
