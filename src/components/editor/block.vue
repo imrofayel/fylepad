@@ -6,7 +6,13 @@ import { useEditorMathPopover } from "@/composables/useEditorMathPopover";
 import { useEditorToc } from "@/composables/useEditorToc";
 import { useEditor } from "@/composables/useEditor";
 import { TipTapExtensions } from "@/lib/extensions";
-import { suggestionMenu, buildToolbarItems, tableItems, imageToolbar } from "@/lib/menus";
+import {
+  suggestionMenu,
+  buildToolbarItems,
+  tableItems,
+  imageToolbar,
+  codeToolbar,
+} from "@/lib/menus";
 import { createEditorCustomHandlers } from "@/lib/editorCustomHandlers";
 
 const props = defineProps<{
@@ -46,7 +52,7 @@ const {
   handlers: aiHandlers,
   isLoading: aiLoading,
 } = useEditorCompletion(editorRef, {
-  api: import.meta.env.AI_BACKEND_API,
+  api: import.meta.env.VITE_AI_BACKEND_API,
   autoTrigger: false,
   debounce: 800,
   minAutoTriggerChars: 10,
@@ -73,7 +79,11 @@ const customHandlers = createEditorCustomHandlers(aiHandlers);
 const shouldShowToolbar = ({ editor, state, view }: any) => {
   const { selection } = state;
   return (
-    view.hasFocus() && (editor.isActive("table") || !selection.empty || editor.isActive("image"))
+    view.hasFocus() &&
+    (editor.isActive("table") ||
+      editor.isActive("codeBlock") ||
+      !selection.empty ||
+      editor.isActive("image"))
   );
 };
 
@@ -82,7 +92,9 @@ const getToolbarItems = (editor: any) =>
     ? imageToolbar(editor)
     : editor.isActive("table")
       ? [...tableItems, ...toolBarItems.value]
-      : toolBarItems.value;
+      : editor.isActive("codeBlock")
+        ? codeToolbar(editor)
+        : toolBarItems.value;
 </script>
 
 <template>
@@ -117,6 +129,9 @@ const getToolbarItems = (editor: any) =>
         >
           <template #link>
             <EditorLinkPopover :editor="editor" auto-open />
+          </template>
+          <template #codeLanguage>
+            <EditorCodePopover :editor="editor" />
           </template>
         </UEditorToolbar>
 

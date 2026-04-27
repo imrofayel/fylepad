@@ -50,7 +50,7 @@ export function useEditorCompletion(
   }
 
   const { completion, complete, isLoading, stop, setCompletion } = useCompletion({
-    api: options.api || import.meta.env.VITE_AI_API_URL || "http://localhost:3008/ai",
+    api: options.api || import.meta.env.VITE_AI_BACKEND_API || "http://localhost:3008/ai",
     streamProtocol: "text",
     body: computed(() => ({
       mode: mode.value,

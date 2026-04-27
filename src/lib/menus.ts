@@ -403,4 +403,14 @@ const imageToolbar = (editor: Editor): EditorToolbarItem[][] => {
   ];
 };
 
-export { suggestionMenu, buildToolbarItems, tableItems, imageToolbar };
+const codeToolbar = (_editor: Editor): EditorToolbarItem[][] => {
+  return [
+    [
+      {
+        slot: "codeLanguage" as const,
+      },
+    ],
+  ];
+};
+
+export { suggestionMenu, buildToolbarItems, tableItems, imageToolbar, codeToolbar };
