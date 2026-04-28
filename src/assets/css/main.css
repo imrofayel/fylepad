@@ -3,7 +3,6 @@
 @import "katex/dist/katex.min.css";
 @import "@shikijs/twoslash/style-rich.css";
 @import "./fonts.css";
-@import "katex/dist/katex.min.css";
 @import "vue3-emoji-picker/css";
 
 @theme {
