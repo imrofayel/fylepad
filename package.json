@@ -117,7 +117,7 @@
     "@types/plantuml-encoder": "^1.4.2",
     "@vitest/coverage-v8": "^4.1.2",
     "@vueuse/core": "^11.1.0",
-    "@vueuse/nuxt": "^11.1.0",
+    "@vueuse/nuxt": "^14.2.1",
     "autoprefixer": "^10.4.20",
     "jsdom": "^29.0.1",
     "postcss": "^8.4.49",
