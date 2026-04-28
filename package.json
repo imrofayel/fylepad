@@ -88,7 +88,7 @@
     "openai": "^4.95.0",
     "pinia": "^3.0.3",
     "plantuml-encoder": "^1.4.0",
-    "reka-ui": "^2.2.0",
+    "reka-ui": "^2.9.6",
     "remark": "^15.0.1",
     "remark-directive": "^4.0.0",
     "remark-gfm": "^4.0.1",
