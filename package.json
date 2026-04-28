@@ -33,7 +33,7 @@
     "@tauri-apps/plugin-fs": "~2.4.5",
     "@tiptap/core": "^2.7.1",
     "@tiptap/extension-bubble-menu": "^2.7.1",
-    "@tiptap/extension-character-count": "^2.7.1",
+    "@tiptap/extension-character-count": "^3.22.5",
     "@tiptap/extension-code-block-lowlight": "^2.7.1",
     "@tiptap/extension-color": "^2.7.1",
     "@tiptap/extension-details": "^2.11.2",
