@@ -57,7 +57,7 @@ export const ICONS = {
   plantuml: "vscode-icons:file-type-plantuml",
   spotify: "logos:spotify-icon",
   youtube: "logos:youtube-icon",
-  ai: "i-icons-ai",
+  ai: "icons-ai",
   aiSpellcheck: "tabler:text-spellcheck",
   arrowAutofitWidth: "tabler:arrow-autofit-width",
   arrowsDiagonalMinimize: "tabler:arrows-diagonal-minimize",

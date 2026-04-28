@@ -6,9 +6,9 @@ import App from "./App.vue";
 import ui from "@nuxt/ui/vue-plugin";
 import { addCollection } from "@iconify/vue";
 import aiSvg from "./assets/icons/hume-ai.svg?raw";
-import tabler from "@iconify-json/tabler/icons.json";
+import { registerIcons } from "./lib/register-icons";
 
-addCollection(tabler);
+registerIcons();
 
 addCollection({
   prefix: "icons",

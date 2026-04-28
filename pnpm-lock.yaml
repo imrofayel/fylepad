@@ -130,6 +130,9 @@ importers:
       '@iconify-json/logos':
         specifier: ^1.2.11
         version: 1.2.11
+      '@iconify-json/material-icon-theme':
+        specifier: ^1.2.61
+        version: 1.2.61
       '@iconify-json/tabler':
         specifier: ^1.2.33
         version: 1.2.33
@@ -405,6 +408,9 @@ packages:
 
   '@iconify-json/logos@1.2.11':
     resolution: {integrity: sha512-fOo4pGEatuyuCFNL+cwquYMa2Im0oJHRHV7lt/Qqs5Ode/lPImHCQcfTtPzZj7qYMPb/h8YHN3TG54uEowrjNQ==}
+
+  '@iconify-json/material-icon-theme@1.2.61':
+    resolution: {integrity: sha512-g/JUDumQ0h7wdUffYSmeMP8qSi+iKRK9DUtIttHG9gIlz2KJFbu1bakx9B2qzk8n3mw7FE/tZPMNCwIPksVr0g==}
 
   '@iconify-json/tabler@1.2.33':
     resolution: {integrity: sha512-q9nUQfE/cjIrGh5bAKHTphitAZpT0kX9SxDgZo3Sx8ofeDTsaHVdRwrn+CfKiJ5vQ1b1btqVwizXzIgz9KEPjA==}
@@ -4218,6 +4224,10 @@ snapshots:
       - vue
 
   '@iconify-json/logos@1.2.11':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/material-icon-theme@1.2.61':
     dependencies:
       '@iconify/types': 2.0.0
 
