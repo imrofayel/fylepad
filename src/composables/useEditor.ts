@@ -45,6 +45,27 @@ const createTab = () => {
   return tab;
 };
 
+const closeTab = (tabId: string) => {
+  const index = tabs.value.findIndex((tab) => tab.id === tabId);
+
+  if (index === -1) {
+    return;
+  }
+
+  tabs.value = tabs.value.filter((tab) => tab.id !== tabId);
+
+  editors.delete(tabId);
+
+  if (activeTabId.value === tabId) {
+    if (tabs.value.length > 0) {
+      const nextIndex = Math.min(index, tabs.value.length - 1);
+      activeTabId.value = tabs.value[nextIndex].id;
+    } else {
+      activeTabId.value = "";
+    }
+  }
+};
+
 export function useEditor() {
   const activeEditor = computed(() => editors.get(activeTabId.value));
 
@@ -65,6 +86,7 @@ export function useEditor() {
   return {
     activeEditor,
     activeTabId,
+    closeTab,
     createTab,
     editors,
     getEditor,

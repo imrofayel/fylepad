@@ -95,6 +95,10 @@ const getToolbarItems = (editor: any) =>
       : editor.isActive("codeBlock")
         ? codeToolbar(editor)
         : toolBarItems.value;
+
+const focusEditor = () => {
+  editorRef.value?.editor?.commands.focus();
+};
 </script>
 
 <template>
@@ -103,7 +107,7 @@ const getToolbarItems = (editor: any) =>
     :class="tocAnchors.length !== 0 && 'xl:grid-cols-[minmax(0,1fr)_17rem]'"
   >
     <div>
-      <EditorHead v-model="tabTitle" />
+      <EditorHead v-model="tabTitle" @enter="focusEditor" />
       <UEditor
         ref="editorRef"
         v-slot="{ editor }"

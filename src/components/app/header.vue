@@ -2,10 +2,15 @@
 import { ICONS } from "@/lib/constants/icons";
 import { useEditor } from "@/composables/useEditor";
 
-const { activeTabId, createTab, setActiveTab, tabs } = useEditor();
+const { activeTabId, closeTab, createTab, setActiveTab, tabs } = useEditor();
 
 const selectTab = (id: string) => {
   setActiveTab(id);
+};
+
+const handleCloseTab = (id: string, event: Event) => {
+  event.stopPropagation();
+  closeTab(id);
 };
 </script>
 
@@ -47,6 +52,7 @@ const selectTab = (id: string) => {
               class="opacity-0 group-hover:opacity-100 transition-all duration-200 delay-150 absolute right-2"
               :class="tab.id === activeTabId && 'text-inverted hover:text-inverted!'"
               :ui="{ leadingIcon: 'size-3.5!' }"
+              @click="handleCloseTab(tab.id, $event)"
             />
           </template>
         </UButton>
