@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ICONS } from "@/lib/constants/icons";
 import type { NodeViewProps } from "@tiptap/vue-3";
 import { NodeViewWrapper } from "@tiptap/vue-3";
 import { ref, watch } from "vue";
@@ -56,7 +57,7 @@ watch(file, async (newFile) => {
     >
       <template #leading>
         <UAvatar
-          :icon="loading ? 'tabler:loader-2' : 'tabler:photo-plus'"
+          :icon="loading ? ICONS.loader : ICONS.addPhoto"
           size="2xl"
           :ui="{
             root: 'bg-transparent',

@@ -45,7 +45,7 @@ const handleCloseTab = (id: string, event: Event) => {
         >
           <template #trailing>
             <UButton
-              icon="tabler:x"
+              :icon="ICONS.close"
               size="xs"
               variant="link"
               color="neutral"
