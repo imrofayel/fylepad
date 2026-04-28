@@ -77,7 +77,7 @@
     "@vite-pwa/nuxt": "^1.0.0",
     "@vueuse/components": "^11.1.0",
     "clsx": "^2.1.1",
-    "katex": "^0.16.11",
+    "katex": "^0.16.45",
     "linkifyjs": "^4.2.0",
     "lowlight": "^3.1.0",
     "mdast": "^3.0.0",
