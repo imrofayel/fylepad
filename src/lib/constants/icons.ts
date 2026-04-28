@@ -75,4 +75,72 @@ export const ICONS = {
   sectionFilled: "tabler:section-filled",
   borderOuter: "tabler:border-outer",
   borderSides: "tabler:border-sides",
+
+  // Terminal & Scripting
+  terminal: "vscode-icons:file-type-shell",
+
+  // Languages & Formats
+  languages: {
+    plainText: "material-icon-theme:document",
+    markdown: "material-icon-theme:markdown",
+    json: "material-icon-theme:json",
+    yaml: "material-icon-theme:yaml",
+    toml: "material-icon-theme:toml",
+    xml: "material-icon-theme:xml",
+    ini: "material-icon-theme:settings",
+
+    // Web
+    javascript: "material-icon-theme:javascript",
+    typescript: "material-icon-theme:typescript",
+    react: "material-icon-theme:react",
+    reactTs: "material-icon-theme:react-ts",
+    html: "material-icon-theme:html",
+    css: "material-icon-theme:css",
+    scss: "material-icon-theme:sass",
+    sass: "material-icon-theme:sass",
+    less: "material-icon-theme:less",
+    vue: "material-icon-theme:vue",
+    svelte: "material-icon-theme:svelte",
+    astro: "material-icon-theme:astro",
+
+    // Backend
+    python: "material-icon-theme:python",
+    go: "material-icon-theme:go",
+    rust: "material-icon-theme:rust",
+    java: "material-icon-theme:java",
+    c: "material-icon-theme:c",
+    cpp: "material-icon-theme:cpp",
+    csharp: "material-icon-theme:csharp",
+    php: "material-icon-theme:php",
+    ruby: "material-icon-theme:ruby",
+    swift: "material-icon-theme:swift",
+    kotlin: "material-icon-theme:kotlin",
+    dart: "material-icon-theme:dart",
+
+    // Functional
+    scala: "material-icon-theme:scala",
+    haskell: "material-icon-theme:haskell",
+    elixir: "material-icon-theme:elixir",
+    erlang: "material-icon-theme:erlang",
+    ocaml: "material-icon-theme:ocaml",
+
+    // Scripting
+    lua: "material-icon-theme:lua",
+    perl: "material-icon-theme:perl",
+    powershell: "material-icon-theme:powershell",
+
+    // Data
+    sql: "material-icon-theme:database",
+    graphql: "material-icon-theme:graphql",
+
+    // Infrastructure
+    dockerfile: "material-icon-theme:docker",
+    nginx: "material-icon-theme:nginx",
+    makefile: "material-icon-theme:makefile",
+    cmake: "material-icon-theme:cmake",
+
+    // Other
+    assembly: "material-icon-theme:assembly",
+    disc: "material-icon-theme:disc",
+  },
 } as const;

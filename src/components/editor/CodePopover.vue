@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ICONS } from "@/lib/constants/icons";
 import type { Editor } from "@tiptap/vue-3";
 import { onBeforeUnmount, onMounted, ref } from "vue";
 
@@ -21,68 +22,68 @@ const FALLBACK_LANGUAGE = "other";
 // ---------------- Language Registry ----------------
 const languages: Language[] = [
   // Core
-  { label: "Plain Text", value: "txt", icon: "material-icon-theme:document" },
-  { label: "Markdown", value: "md", icon: "material-icon-theme:markdown" },
-  { label: "JSON", value: "json", icon: "material-icon-theme:json" },
-  { label: "YAML", value: "yaml", icon: "material-icon-theme:yaml" },
-  { label: "TOML", value: "toml", icon: "material-icon-theme:toml" },
-  { label: "XML", value: "xml", icon: "material-icon-theme:xml" },
-  { label: "INI", value: "ini", icon: "material-icon-theme:settings" },
+  { label: "Plain Text", value: "txt", icon: ICONS.languages.plainText },
+  { label: "Markdown", value: "md", icon: ICONS.languages.markdown },
+  { label: "JSON", value: "json", icon: ICONS.languages.json },
+  { label: "YAML", value: "yaml", icon: ICONS.languages.yaml },
+  { label: "TOML", value: "toml", icon: ICONS.languages.toml },
+  { label: "XML", value: "xml", icon: ICONS.languages.xml },
+  { label: "INI", value: "ini", icon: ICONS.languages.ini },
 
   // Web
-  { label: "JavaScript", value: "js", icon: "material-icon-theme:javascript" },
-  { label: "TypeScript", value: "ts", icon: "material-icon-theme:typescript" },
-  { label: "React", value: "jsx", icon: "material-icon-theme:react" },
-  { label: "React", value: "tsx", icon: "material-icon-theme:react-ts" },
-  { label: "HTML", value: "html", icon: "material-icon-theme:html" },
-  { label: "CSS", value: "css", icon: "material-icon-theme:css" },
-  { label: "SCSS", value: "scss", icon: "material-icon-theme:sass" },
-  { label: "SASS", value: "sass", icon: "material-icon-theme:sass" },
-  { label: "LESS", value: "less", icon: "material-icon-theme:less" },
-  { label: "Vue", value: "vue", icon: "material-icon-theme:vue" },
-  { label: "Svelte", value: "svelte", icon: "material-icon-theme:svelte" },
-  { label: "Astro", value: "astro", icon: "material-icon-theme:astro" },
+  { label: "JavaScript", value: "js", icon: ICONS.languages.javascript },
+  { label: "TypeScript", value: "ts", icon: ICONS.languages.typescript },
+  { label: "React", value: "jsx", icon: ICONS.languages.react },
+  { label: "React", value: "tsx", icon: ICONS.languages.reactTs },
+  { label: "HTML", value: "html", icon: ICONS.languages.html },
+  { label: "CSS", value: "css", icon: ICONS.languages.css },
+  { label: "SCSS", value: "scss", icon: ICONS.languages.scss },
+  { label: "SASS", value: "sass", icon: ICONS.languages.sass },
+  { label: "LESS", value: "less", icon: ICONS.languages.less },
+  { label: "Vue", value: "vue", icon: ICONS.languages.vue },
+  { label: "Svelte", value: "svelte", icon: ICONS.languages.svelte },
+  { label: "Astro", value: "astro", icon: ICONS.languages.astro },
 
   // Backend
-  { label: "Python", value: "py", icon: "material-icon-theme:python" },
-  { label: "Go", value: "go", icon: "material-icon-theme:go" },
-  { label: "Rust", value: "rs", icon: "material-icon-theme:rust" },
-  { label: "Java", value: "java", icon: "material-icon-theme:java" },
-  { label: "C", value: "c", icon: "material-icon-theme:c" },
-  { label: "C++", value: "cpp", icon: "material-icon-theme:cpp" },
-  { label: "C#", value: "csharp", icon: "material-icon-theme:csharp" },
-  { label: "PHP", value: "php", icon: "material-icon-theme:php" },
-  { label: "Ruby", value: "rb", icon: "material-icon-theme:ruby" },
-  { label: "Swift", value: "swift", icon: "material-icon-theme:swift" },
-  { label: "Kotlin", value: "kotlin", icon: "material-icon-theme:kotlin" },
-  { label: "Dart", value: "dart", icon: "material-icon-theme:dart" },
+  { label: "Python", value: "py", icon: ICONS.languages.python },
+  { label: "Go", value: "go", icon: ICONS.languages.go },
+  { label: "Rust", value: "rs", icon: ICONS.languages.rust },
+  { label: "Java", value: "java", icon: ICONS.languages.java },
+  { label: "C", value: "c", icon: ICONS.languages.c },
+  { label: "C++", value: "cpp", icon: ICONS.languages.cpp },
+  { label: "C#", value: "csharp", icon: ICONS.languages.csharp },
+  { label: "PHP", value: "php", icon: ICONS.languages.php },
+  { label: "Ruby", value: "rb", icon: ICONS.languages.ruby },
+  { label: "Swift", value: "swift", icon: ICONS.languages.swift },
+  { label: "Kotlin", value: "kotlin", icon: ICONS.languages.kotlin },
+  { label: "Dart", value: "dart", icon: ICONS.languages.dart },
 
   // JVM / Functional
-  { label: "Scala", value: "scala", icon: "material-icon-theme:scala" },
-  { label: "Haskell", value: "hs", icon: "material-icon-theme:haskell" },
-  { label: "Elixir", value: "ex", icon: "material-icon-theme:elixir" },
-  { label: "Erlang", value: "erl", icon: "material-icon-theme:erlang" },
-  { label: "OCaml", value: "ml", icon: "material-icon-theme:ocaml" },
+  { label: "Scala", value: "scala", icon: ICONS.languages.scala },
+  { label: "Haskell", value: "hs", icon: ICONS.languages.haskell },
+  { label: "Elixir", value: "ex", icon: ICONS.languages.elixir },
+  { label: "Erlang", value: "erl", icon: ICONS.languages.erlang },
+  { label: "OCaml", value: "ml", icon: ICONS.languages.ocaml },
 
   // Scripting
-  { label: "Terminal", value: "bash", icon: "vscode-icons:file-type-shell" },
-  { label: "Lua", value: "lua", icon: "material-icon-theme:lua" },
-  { label: "Perl", value: "pl", icon: "material-icon-theme:perl" },
-  { label: "PowerShell", value: "powershell", icon: "material-icon-theme:powershell" },
+  { label: "Terminal", value: "bash", icon: ICONS.terminal },
+  { label: "Lua", value: "lua", icon: ICONS.languages.lua },
+  { label: "Perl", value: "pl", icon: ICONS.languages.perl },
+  { label: "PowerShell", value: "powershell", icon: ICONS.languages.powershell },
 
   // Data / Query
-  { label: "SQL", value: "sql", icon: "material-icon-theme:database" },
-  { label: "GraphQL", value: "graphql", icon: "material-icon-theme:graphql" },
+  { label: "SQL", value: "sql", icon: ICONS.languages.sql },
+  { label: "GraphQL", value: "graphql", icon: ICONS.languages.graphql },
 
   // Infra
-  { label: "Dockerfile", value: "dockerfile", icon: "material-icon-theme:docker" },
-  { label: "NGINX", value: "nginx", icon: "material-icon-theme:nginx" },
-  { label: "Makefile", value: "makefile", icon: "material-icon-theme:makefile" },
-  { label: "CMake", value: "cmake", icon: "material-icon-theme:cmake" },
+  { label: "Dockerfile", value: "dockerfile", icon: ICONS.languages.dockerfile },
+  { label: "NGINX", value: "nginx", icon: ICONS.languages.nginx },
+  { label: "Makefile", value: "makefile", icon: ICONS.languages.makefile },
+  { label: "CMake", value: "cmake", icon: ICONS.languages.cmake },
 
   // Other
-  { label: "Assembly", value: "asm", icon: "material-icon-theme:assembly" },
-  { label: "Other", value: "other", icon: "material-icon-theme:disc" },
+  { label: "Assembly", value: "asm", icon: ICONS.languages.assembly },
+  { label: "Other", value: "other", icon: ICONS.languages.disc },
 ];
 
 const LANGUAGE_ALIASES: Record<string, string> = {
