@@ -28,7 +28,7 @@
 
 @font-face {
   font-family: "JetBrains Mono";
-  src: url("../fonts/JetBrainsMono-Regular.ttf") format("truetype");
+  src: url("../fonts/JetBrainsMono-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -36,21 +36,21 @@
 
 @font-face {
   font-family: "EB Garamond";
-  src: url("../fonts/EBGaramond.ttf") format("truetype");
+  src: url("../fonts/EBGaramond.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Noto Nastaliq Urdu";
-  src: url("../fonts/NotoNastaliqUrdu.ttf") format("truetype");
+  src: url("../fonts/NotoNastaliqUrdu.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
 }
 
 @font-face {
   font-family: "Patrick Hand";
-  src: url("../fonts/PatrickHand.ttf") format("truetype");
+  src: url("../fonts/PatrickHand.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
 }
