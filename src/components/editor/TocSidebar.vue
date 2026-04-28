@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { TocAnchor } from "@/composables/useEditorToc";
+import { ICONS } from "@/lib/constants/icons";
 
 defineProps<{
   tocAnchors: TocAnchor[];
@@ -14,7 +15,7 @@ const emit = defineEmits<{
   <aside class="hidden xl:block mr-4" v-if="tocAnchors.length !== 0">
     <div class="sticky top-18 max-h-[calc(100vh-5.5rem)] overflow-y-auto">
       <div class="px-2 dark:text-neutral-300 text-neutral-600 flex gap-1 items-center">
-        <UIcon name="tabler:align-left" class="text-xl" />On this page
+        <UIcon :name="ICONS.alignLeft" class="text-xl" />On this page
       </div>
       <nav class="py-2" aria-label="Table of contents">
         <UButton

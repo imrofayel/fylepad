@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ICONS } from "@/lib/constants/icons";
 import type { Editor } from "@tiptap/core";
 
 const props = defineProps<{
@@ -47,7 +48,7 @@ const handleKeydown = (event: KeyboardEvent) => {
 
         <div class="flex items-center justify-end gap-1">
           <UButton
-            icon="tabler:circle-check-filled"
+            :icon="ICONS.circleCheck"
             color="primary"
             size="sm"
             :disabled="!latex.trim()"

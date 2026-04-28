@@ -1,3 +1,5 @@
+import { ICONS } from "../constants/icons";
+
 type LanguageInfo = {
   label: string;
   icon: string;
@@ -91,14 +93,14 @@ export function getLanguageInfo(input?: string): LanguageInfo {
   if (!ext) {
     return {
       label: "Plain Text",
-      icon: "tabler:code-asterisk",
+      icon: ICONS.codeLanguage,
     };
   }
 
   return (
     LANGUAGE_MAP[ext] || {
       label: "Plain Text",
-      icon: "tabler:code-asterisk",
+      icon: ICONS.codeLanguage,
     }
   );
 }

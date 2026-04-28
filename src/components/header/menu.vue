@@ -11,7 +11,7 @@ import { ICONS } from "@lib/constants/icons";
           label="Save file"
           variant="link"
           color="neutral"
-          icon="tabler:markdown"
+          :icon="ICONS.markdown"
           class="p-2 py-1.5"
         />
 
@@ -19,7 +19,7 @@ import { ICONS } from "@lib/constants/icons";
           label="Open (Ctrl + O)"
           variant="link"
           color="neutral"
-          icon="tabler:folder-open"
+          :icon="ICONS.folderOpen"
           class="p-2 py-1.5"
         />
 
@@ -27,7 +27,7 @@ import { ICONS } from "@lib/constants/icons";
           label="About"
           variant="link"
           color="neutral"
-          icon="tabler:info-circle"
+          :icon="ICONS.info"
           class="p-2 py-1.5"
         />
       </div>

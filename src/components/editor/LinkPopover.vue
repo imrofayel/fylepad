@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ICONS } from "@/lib/constants/icons";
 import type { Editor } from "@tiptap/vue-3";
 import { computed, ref, watch } from "vue";
 
@@ -97,7 +98,7 @@ function handleKeyDown(event: KeyboardEvent) {
   <UPopover v-model:open="open" :ui="{ content: 'p-0.5 dark:bg-neutral-800!' }">
     <UTooltip text="Link">
       <UButton
-        icon="tabler:link"
+        :icon="ICONS.link"
         color="neutral"
         active-color="primary"
         variant="ghost"
@@ -124,7 +125,7 @@ function handleKeyDown(event: KeyboardEvent) {
         <div class="flex items-center mr-0.5">
           <ButtonWithTooltip
             text="Apply Link"
-            icon="tabler:arrow-back"
+            :icon="ICONS.arrowBack"
             size="md"
             class="px-1"
             :disabled="!url && !active"
@@ -134,7 +135,7 @@ function handleKeyDown(event: KeyboardEvent) {
 
           <ButtonWithTooltip
             text="Open in New Window"
-            icon="tabler:circle-arrow-up-right"
+            :icon="ICONS.circleArrowUpRight"
             class="px-2"
             :disabled="!url && !active"
             title="Open in new window"
@@ -143,7 +144,7 @@ function handleKeyDown(event: KeyboardEvent) {
 
           <ButtonWithTooltip
             text="Remove Link"
-            icon="tabler:trash"
+            :icon="ICONS.trash"
             size="md"
             class="px-1"
             :disabled="!url && !active"

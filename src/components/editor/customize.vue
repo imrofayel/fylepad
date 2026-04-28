@@ -125,10 +125,7 @@ watch(currentLineHeight, (value) => {
     <template #content>
       <div class="p-4 gap-3 flex">
         <div class="relative flex items-center">
-          <UIcon
-            name="tabler:brand-foursquare"
-            class="absolute left-2 pointer-events-none z-10 text-xl"
-          />
+          <UIcon :name="ICONS.font" class="absolute left-2 pointer-events-none z-10 text-xl" />
 
           <UInputMenu
             v-model="currentFont"
@@ -144,7 +141,7 @@ watch(currentLineHeight, (value) => {
         </div>
 
         <div class="relative flex items-center">
-          <UIcon name="tabler:text-size" class="absolute left-2 pointer-events-none z-10 text-xl" />
+          <UIcon :name="ICONS.textSize" class="absolute left-2 pointer-events-none z-10 text-xl" />
           <UInputNumber
             v-model="currentFontSize"
             :disabled="isDisabled"
@@ -161,7 +158,7 @@ watch(currentLineHeight, (value) => {
 
         <div class="relative flex items-center">
           <UIcon
-            name="tabler:arrow-autofit-height"
+            :name="ICONS.lineHeight"
             class="absolute left-2 pointer-events-none z-10 text-lg"
           />
           <UInputNumber

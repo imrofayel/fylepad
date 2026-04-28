@@ -1,5 +1,6 @@
 import { EditorSuggestionMenuItem, EditorToolbarItem } from "@nuxt/ui";
 import { Editor } from "@tiptap/core";
+import { ICONS } from "./constants/icons";
 
 const highlightPalette = [
   {
@@ -38,91 +39,91 @@ const suggestionMenu: EditorSuggestionMenuItem[][] = [
     {
       kind: "paragraph",
       label: "Paragraph",
-      icon: "tabler:text-size",
+      icon: ICONS.textSize,
     },
     {
       kind: "heading",
       level: 1,
       label: "Heading 1",
-      icon: "tabler:h-1",
+      icon: ICONS.heading1,
     },
     {
       kind: "heading",
       level: 2,
       label: "Heading 2",
-      icon: "tabler:h-2",
+      icon: ICONS.heading2,
     },
     {
       kind: "heading",
       level: 3,
       label: "Heading 3",
-      icon: "tabler:h-3",
+      icon: ICONS.heading3,
     },
   ],
   [
     {
       kind: "bulletList",
       label: "Bullet List",
-      icon: "tabler:list",
+      icon: ICONS.bulletList,
     },
     {
       kind: "orderedList",
       label: "Numbered List",
-      icon: "tabler:list-numbers",
+      icon: ICONS.orderedList,
     },
   ],
   [
     {
       kind: "blockquote",
       label: "Blockquote",
-      icon: "tabler:blockquote",
+      icon: ICONS.blockquote,
     },
     {
       kind: "codeBlock",
       label: "Code Block",
-      icon: "tabler:braces",
+      icon: ICONS.codeBlock,
     },
     {
       kind: "imageUpload",
       label: "Image",
-      icon: "tabler:photo",
+      icon: ICONS.photo,
     },
     {
       kind: "horizontalRule",
       label: "Divider",
-      icon: "tabler:line-dashed",
+      icon: ICONS.horizontalRule,
     },
     {
       kind: "table",
       label: "Table",
-      icon: "tabler:table-filled",
+      icon: ICONS.table,
     },
     {
       kind: "math",
       label: "Math (LaTeX)",
-      icon: "tabler:math-function",
+      icon: ICONS.math,
     },
   ],
   [
     {
       kind: "mermaid",
       label: "Mermaid Diagram",
-      icon: "vscode-icons:file-type-mermaid",
+      icon: ICONS.mermaid,
     },
     {
       kind: "plantuml",
       label: "PlantUML Diagram",
-      icon: "vscode-icons:file-type-plantuml",
+      icon: ICONS.plantuml,
     },
     {
       kind: "spotify",
       label: "Spotify Embed",
-      icon: "logos:spotify-icon",
+      icon: ICONS.spotify,
     },
     {
       kind: "youtube",
       label: "YouTube Embed",
-      icon: "logos:youtube-icon",
+      icon: ICONS.youtube,
     },
   ],
 ];
@@ -134,35 +135,35 @@ const buildToolbarItems = (aiLoading: boolean | undefined): EditorToolbarItem[][
         kind: "mark",
         size: "md",
         mark: "bold",
-        icon: "tabler:bold",
+        icon: ICONS.bold,
         tooltip: { text: "Bold", arrow: true },
       },
       {
         kind: "mark",
         size: "md",
         mark: "italic",
-        icon: "tabler:italic",
+        icon: ICONS.italic,
         tooltip: { text: "Italic", arrow: true },
       },
       {
         kind: "mark",
         size: "md",
         mark: "underline",
-        icon: "tabler:underline",
+        icon: ICONS.underline,
         tooltip: { text: "Underline", arrow: true },
       },
       {
         kind: "mark",
         size: "md",
         mark: "strike",
-        icon: "tabler:strikethrough",
+        icon: ICONS.strikethrough,
         tooltip: { text: "Strikethrough", arrow: true },
       },
       {
         kind: "mark",
         size: "md",
         mark: "code",
-        icon: "tabler:code",
+        icon: ICONS.code,
         tooltip: { text: "Code", arrow: true },
       },
       {
@@ -171,7 +172,7 @@ const buildToolbarItems = (aiLoading: boolean | undefined): EditorToolbarItem[][
     ],
     [
       {
-        icon: "tabler:align-left",
+        icon: ICONS.alignLeft,
         size: "md",
         tooltip: { text: "Align", arrow: true },
         content: {
@@ -182,32 +183,32 @@ const buildToolbarItems = (aiLoading: boolean | undefined): EditorToolbarItem[][
             kind: "textAlign",
             align: "left",
             label: "Left",
-            icon: "tabler:align-left",
+            icon: ICONS.alignLeft,
           },
           {
             kind: "textAlign",
             align: "center",
             label: "Center",
-            icon: "tabler:align-center",
+            icon: ICONS.alignCenter,
           },
           {
             kind: "textAlign",
             align: "right",
             label: "Right",
-            icon: "tabler:align-right",
+            icon: ICONS.alignRight,
           },
           {
             kind: "textAlign",
             align: "justify",
             label: "Justify",
-            icon: "tabler:align-justified",
+            icon: ICONS.justified,
           },
         ],
       },
     ],
     [
       {
-        icon: "tabler:brush",
+        icon: ICONS.style,
         size: "md",
         tooltip: { text: "Highlight", arrow: true },
         content: {
@@ -226,7 +227,7 @@ const buildToolbarItems = (aiLoading: boolean | undefined): EditorToolbarItem[][
           {
             kind: "highlightClear",
             label: "Clear highlight",
-            icon: "tabler:trash-filled",
+            icon: ICONS.trashFilled,
             color: "error",
           },
         ],
@@ -234,7 +235,7 @@ const buildToolbarItems = (aiLoading: boolean | undefined): EditorToolbarItem[][
     ],
     [
       {
-        icon: "i-icons-ai",
+        icon: ICONS.ai,
         size: "md",
         loading: aiLoading,
         content: {
@@ -244,32 +245,32 @@ const buildToolbarItems = (aiLoading: boolean | undefined): EditorToolbarItem[][
         items: [
           {
             kind: "aiFix",
-            icon: "tabler:text-spellcheck",
+            icon: ICONS.aiSpellcheck,
             label: "Fix spelling & grammar",
           },
           {
             kind: "aiExtend",
-            icon: "tabler:arrow-autofit-width",
+            icon: ICONS.arrowAutofitWidth,
             label: "Extend text",
           },
           {
             kind: "aiReduce",
-            icon: "tabler:arrows-diagonal-minimize",
+            icon: ICONS.arrowsDiagonalMinimize,
             label: "Reduce text",
           },
           {
             kind: "aiSimplify",
-            icon: "tabler:bulb",
+            icon: ICONS.bulb,
             label: "Simplify text",
           },
           {
             kind: "aiContinue",
-            icon: "tabler:track-next",
+            icon: ICONS.trackNext,
             label: "Continue sentence",
           },
           {
             kind: "aiSummarize",
-            icon: "tabler:menu",
+            icon: ICONS.menu,
             label: "Summarize",
           },
         ],
@@ -281,7 +282,7 @@ const buildToolbarItems = (aiLoading: boolean | undefined): EditorToolbarItem[][
 const tableItems: EditorToolbarItem[][] = [
   [
     {
-      icon: "tabler:table-filled",
+      icon: ICONS.table,
       label: "Table",
       content: {
         align: "start",
@@ -291,70 +292,70 @@ const tableItems: EditorToolbarItem[][] = [
         [
           {
             kind: "tableAddColumnBefore",
-            icon: "tabler:table-column",
+            icon: ICONS.tableColumn,
             label: "Insert column before",
           },
           {
             kind: "tableAddColumnAfter",
-            icon: "tabler:box-align-right-filled",
+            icon: ICONS.boxAlignRightFilled,
             label: "Insert column after",
           },
           {
             kind: "tableDeleteColumn",
-            icon: "tabler:column-remove",
+            icon: ICONS.columnRemove,
             label: "Delete column",
           },
         ],
         [
           {
             kind: "tableAddRowBefore",
-            icon: "tabler:table-row",
+            icon: ICONS.tableRow,
             label: "Insert row before",
           },
           {
             kind: "tableAddRowAfter",
-            icon: "tabler:box-align-bottom-filled",
+            icon: ICONS.boxAlignBottomFilled,
             label: "Insert row after",
           },
           {
             kind: "tableDeleteRow",
-            icon: "tabler:row-remove",
+            icon: ICONS.rowRemove,
             label: "Delete row",
           },
         ],
         [
           {
             kind: "tableToggleHeaderColumn",
-            icon: "tabler:freeze-row-column",
+            icon: ICONS.freezeRowColumn,
             label: "Toggle header column",
           },
           {
             kind: "tableToggleHeaderRow",
-            icon: "tabler:freeze-row",
+            icon: ICONS.freezeRow,
             label: "Toggle header row",
           },
           {
             kind: "tableToggleHeaderCell",
-            icon: "tabler:section-filled",
+            icon: ICONS.sectionFilled,
             label: "Toggle header cell",
           },
         ],
         [
           {
             kind: "tableMergeCells",
-            icon: "tabler:border-outer",
+            icon: ICONS.borderOuter,
             label: "Merge cells",
           },
           {
             kind: "tableSplitCell",
-            icon: "tabler:border-sides",
+            icon: ICONS.borderSides,
             label: "Split cell",
           },
         ],
         [
           {
             kind: "tableDelete",
-            icon: "tabler:trash-filled",
+            icon: ICONS.trashFilled,
             label: "Delete table",
             color: "error",
           },
@@ -370,7 +371,7 @@ const imageToolbar = (editor: Editor): EditorToolbarItem[][] => {
   return [
     [
       {
-        icon: "tabler:file-download-filled",
+        icon: ICONS.fileDownloadFilled,
         to: node?.attrs?.src,
         download: true,
         tooltip: { text: "Download" },
@@ -379,7 +380,7 @@ const imageToolbar = (editor: Editor): EditorToolbarItem[][] => {
     ],
     [
       {
-        icon: "tabler:trash-filled",
+        icon: ICONS.trashFilled,
         tooltip: { text: "Delete" },
         color: "error",
         size: "md",
