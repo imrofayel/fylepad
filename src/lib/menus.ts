@@ -374,14 +374,14 @@ const imageToolbar = (editor: Editor): EditorToolbarItem[][] => {
         icon: ICONS.fileDownloadFilled,
         to: node?.attrs?.src,
         download: true,
-        tooltip: { text: "Download" },
+        tooltip: { text: "Download", arrow: true },
         size: "md",
       },
     ],
     [
       {
         icon: ICONS.trashFilled,
-        tooltip: { text: "Delete" },
+        tooltip: { text: "Delete", arrow: true },
         color: "error",
         size: "md",
         onClick: () => {

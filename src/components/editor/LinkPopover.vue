@@ -96,7 +96,7 @@ function handleKeyDown(event: KeyboardEvent) {
 
 <template>
   <UPopover v-model:open="open" :ui="{ content: 'p-0.5 dark:bg-neutral-800!' }">
-    <UTooltip text="Link">
+    <UTooltip text="Link" arrow>
       <UButton
         :icon="ICONS.link"
         color="neutral"
