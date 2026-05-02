@@ -10,12 +10,12 @@ const fontFamilyItems = [...FONT_FAMILY_OPTIONS];
 
 const currentFont = ref<(typeof FONT_FAMILY_OPTIONS)[number] | undefined>(FONT_FAMILY_OPTIONS[0]);
 const currentFontSize = ref<number>(16);
-const currentLineHeight = ref<number>(1.4);
+const currentLineHeight = ref<number>(1.5);
 
 const isDisabled = computed(() => !activeEditor.value?.isEditable);
 
 const clampFontSize = (value: number) => Math.min(30, Math.max(14, Math.round(value)));
-const clampLineHeight = (value: number) => Math.min(2, Math.max(0, Math.round(value * 10) / 10));
+const clampLineHeight = (value: number) => Math.min(3, Math.max(1.6, Math.round(value * 10) / 10));
 
 const readTypographyFromEditor = () => {
   const attrs = activeEditor.value?.getAttributes("textStyle") ?? {};
@@ -31,7 +31,7 @@ const readTypographyFromEditor = () => {
   currentFont.value =
     FONT_FAMILY_OPTIONS.find((option) => option.value === fontFamily) ?? FONT_FAMILY_OPTIONS[0];
   currentFontSize.value = Number.isFinite(rawFontSize) ? clampFontSize(rawFontSize) : 16;
-  currentLineHeight.value = Number.isFinite(rawLineHeight) ? clampLineHeight(rawLineHeight) : 1.4;
+  currentLineHeight.value = Number.isFinite(rawLineHeight) ? clampLineHeight(rawLineHeight) : 1.6;
 };
 
 const setFontFamily = (option: (typeof FONT_FAMILY_OPTIONS)[number] | undefined) => {
@@ -124,57 +124,68 @@ watch(currentLineHeight, (value) => {
 
     <template #content>
       <div class="p-4 gap-3 flex">
-        <div class="relative flex items-center">
-          <UIcon :name="ICONS.font" class="absolute left-2 pointer-events-none z-10 text-xl" />
+        <UTooltip arrow text="Font">
+          <div class="relative flex items-center">
+            <UIcon :name="ICONS.font" class="absolute left-2 pointer-events-none z-10 text-xl" />
 
-          <UInputMenu
-            v-model="currentFont"
-            :disabled="isDisabled"
-            placeholder="Select font"
-            label-key="label"
-            :items="fontFamilyItems"
-            :autofocus="false"
-            :ui="{
-              base: 'w-40! pl-8!',
-            }"
-          />
-        </div>
+            <UInputMenu
+              v-model="currentFont"
+              :disabled="isDisabled"
+              placeholder="Select font"
+              label-key="label"
+              :items="fontFamilyItems"
+              :autofocus="false"
+              :ui="{
+                base: 'w-40! pl-8!',
+              }"
+            />
+          </div>
+        </UTooltip>
 
-        <div class="relative flex items-center">
-          <UIcon :name="ICONS.textSize" class="absolute left-2 pointer-events-none z-10 text-xl" />
-          <UInputNumber
-            v-model="currentFontSize"
-            :disabled="isDisabled"
-            :min="14"
-            :max="30"
-            :step="1"
-            orientation="vertical"
-            :placeholder="currentFontSize.toString()"
-            :ui="{
-              base: 'w-25! pl-8!',
-            }"
-          />
-        </div>
+        <UTooltip arrow text="Text Size">
+          <div class="relative flex items-center">
+            <UIcon
+              :name="ICONS.textSize"
+              class="absolute left-2 pointer-events-none z-10 text-xl"
+            />
+            <UInputNumber
+              v-model="currentFontSize"
+              :disabled="isDisabled"
+              :min="14"
+              :max="30"
+              :step="1"
+              orientation="vertical"
+              :placeholder="currentFontSize.toString()"
+              :ui="{
+                base: 'w-25! pl-8!',
+              }"
+            />
+          </div>
+        </UTooltip>
 
-        <div class="relative flex items-center">
-          <UIcon
-            :name="ICONS.lineHeight"
-            class="absolute left-2 pointer-events-none z-10 text-lg"
-          />
-          <UInputNumber
-            v-model="currentLineHeight"
-            :disabled="isDisabled"
-            :min="0"
-            :max="2"
-            :step="0.1"
-            orientation="vertical"
-            :placeholder="currentLineHeight.toString()"
-            :ui="{
-              base: 'w-25! pl-8!',
-            }"
-          />
-        </div>
+        <UTooltip arrow text="Line Height">
+          <div class="relative flex items-center">
+            <UIcon
+              :name="ICONS.lineHeight"
+              class="absolute left-2 pointer-events-none z-10 text-lg"
+            />
+            <UInputNumber
+              v-model="currentLineHeight"
+              :disabled="isDisabled"
+              :min="1.6"
+              :max="3"
+              :step="0.1"
+              orientation="vertical"
+              :placeholder="currentLineHeight.toString()"
+              :ui="{
+                base: 'w-25! pl-8!',
+              }"
+            />
+          </div>
+        </UTooltip>
       </div>
+
+      <div class="w-full justify-end p-4 italic flex">fylepad v0.1.0-beta</div>
     </template>
   </UDrawer>
 </template>

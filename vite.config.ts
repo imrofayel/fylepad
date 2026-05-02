@@ -54,7 +54,7 @@ export default defineConfig(async () => ({
         tooltip: {
           slots: {
             content: "p-2 h-7",
-            text: "dark:text-neutral-300 text-neutral-600 font-medium!",
+            text: "dark:text-neutral-300 text-neutral-600 font-medium! text-[13px]",
           },
         },
         slideover: {
