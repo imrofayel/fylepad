@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ICONS } from "@lib/constants/icons";
+import { useColorMode } from "@vueuse/core";
+
+const color = useColorMode();
 </script>
 <template>
   <UPopover arrow>
@@ -20,6 +23,13 @@ import { ICONS } from "@lib/constants/icons";
           variant="link"
           color="neutral"
           :icon="ICONS.folderOpen"
+          class="p-2 py-1.5"
+        />
+
+        <UColorModeButton
+          variant="link"
+          color="neutral"
+          :label="color === 'light' ? 'Dark mode' : 'Light mode'"
           class="p-2 py-1.5"
         />
 

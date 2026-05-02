@@ -11,9 +11,7 @@ const { activeTabId } = useEditor();
     <EmojiPicker />
     <EditorCustomize />
     <ButtonWithTooltip text="Search (Ctrl + F)" :icon="ICONS.search" />
-    <UTooltip :text="value === 'light' ? 'Dark mode' : 'Light mode'" arrow>
-      <UColorModeButton variant="link" color="neutral" />
-    </UTooltip>
+
     <HeaderMenu />
   </div>
 
