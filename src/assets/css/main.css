@@ -175,14 +175,13 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
+  width: 2.3rem;
+  height: 2.3rem;
   padding: 0;
   border: 0;
-  @apply rounded-full;
-  background: color-mix(in srgb, var(--ui-bg) 76%, transparent);
+  @apply rounded-full bg-neutral-200/50 dark:bg-neutral-900;
   color: var(--ui-text);
-  opacity: 0;
+  opacity: 100;
   pointer-events: none;
   backdrop-filter: blur(6px);
   transition:
@@ -192,8 +191,8 @@ body {
 }
 
 .codeblock-copy-button svg {
-  width: 1.1rem;
-  height: 1.1rem;
+  width: 1.15rem;
+  height: 1.15rem;
 }
 
 .codeblock-copy-button:hover {
