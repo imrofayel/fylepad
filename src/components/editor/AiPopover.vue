@@ -80,7 +80,7 @@ function applyPrompt() {
                 </linearGradient>
               </defs>
             </svg>
-            <UIcon :name="ICONS.aiText" class="size-5" />
+            <UIcon :name="isLoading ? ICONS.loader : ICONS.aiText" class="size-5" />
           </span>
         </template>
       </UButton>
@@ -120,5 +120,11 @@ function applyPrompt() {
 <style scoped>
 .ai-gradient-icon :deep(svg path) {
   fill: url(#ai-icon-gradient);
+}
+
+.ai-gradient-icon :deep(svg path),
+.ai-gradient-icon :deep(svg circle),
+.ai-gradient-icon :deep(svg rect) {
+  fill: url(#ai-icon-gradient) !important;
 }
 </style>

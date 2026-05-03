@@ -67,7 +67,7 @@ export function useEditorCompletion(
         return;
       }
 
-      // For transform modes, insert the full completion with markdown parsing
+      // For transform modes, replace raw text with parsed markdown
       const transformModes = ["fix", "extend", "reduce", "simplify", "summarize", "translate"];
       const userModes = ["user"];
       if (
@@ -77,12 +77,20 @@ export function useEditorCompletion(
       ) {
         const editor = editorRef.value?.editor;
         if (editor) {
-          // Delete the original selection if not already done
-          if (insertState.value.deleteRange) {
-            editor.chain().focus().deleteRange(insertState.value.deleteRange).run();
-          }
+          // Find the end position of what we've inserted during streaming
+          const endPos = insertState.value.pos + completionText.length;
 
-          // Insert with markdown parsing
+          // Delete the raw text that was streamed
+          editor
+            .chain()
+            .focus()
+            .deleteRange({
+              from: insertState.value.pos,
+              to: Math.min(endPos, editor.state.doc.content.size),
+            })
+            .run();
+
+          // Parse markdown and insert formatted version
           const html = marked.parse(completionText) as string;
           editor
             .chain()
@@ -129,18 +137,47 @@ export function useEditorCompletion(
     } else if (insertState.value) {
       // Direct insertion/transform mode (from toolbar actions)
 
-      // Transform modes use markdown insertion - wait for full completion
-      const transformModes = ["fix", "extend", "reduce", "simplify", "summarize"];
+      // Determine whether this mode expects markdown rendering
+      const transformModes = ["fix", "extend", "reduce", "simplify", "summarize", "translate"];
       const userModes = ["user"];
-      if (transformModes.includes(mode.value) || userModes.includes(mode.value)) {
-        // Don't stream - will be handled in onFinish
-        return;
-      }
+      const isMarkdownMode = transformModes.includes(mode.value) || userModes.includes(mode.value);
 
       // If this is the first chunk and we have a selection to replace, delete it first
       if (insertState.value.deleteRange && !oldCompletion) {
         editor.chain().focus().deleteRange(insertState.value.deleteRange).run();
         insertState.value.deleteRange = undefined;
+      }
+
+      // For markdown-transform modes, parse accumulated markdown and replace the rendered content
+      if (isMarkdownMode) {
+        // Replace previously rendered portion (if any) with newly parsed HTML
+        const existingText = editor.state.doc.textBetween(
+          insertState.value.pos,
+          Math.min(insertState.value.pos + 10000, editor.state.doc.content.size),
+        );
+
+        if (existingText) {
+          editor
+            .chain()
+            .focus()
+            .deleteRange({
+              from: insertState.value.pos,
+              to: insertState.value.pos + existingText.length,
+            })
+            .run();
+        }
+
+        const html = marked.parse(newCompletion) as string;
+        editor
+          .chain()
+          .focus()
+          .insertContentAt(insertState.value.pos, html, {
+            parseOptions: { preserveWhitespace: "full" },
+          })
+          .run();
+
+        // Don't insert raw markdown – we've rendered HTML live instead
+        return;
       }
 
       let delta = newCompletion.slice(oldCompletion?.length || 0);

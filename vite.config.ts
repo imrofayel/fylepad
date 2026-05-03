@@ -50,6 +50,7 @@ export default defineConfig(async () => ({
         icons: {
           light: "tabler:moon",
           dark: "tabler:sun",
+          loading: "svg-spinners:tadpole",
         },
         tooltip: {
           slots: {

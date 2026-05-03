@@ -23,7 +23,7 @@ export const ICONS = {
   font: "tabler:brand-foursquare",
   textSize: "tabler:text-size",
   lineHeight: "tabler:arrow-autofit-height",
-  loader: "tabler:loader-2",
+  loader: "svg-spinners:tadpole",
   addPhoto: "tabler:photo-plus",
   link: "tabler:link",
   arrowBack: "tabler:arrow-back",
