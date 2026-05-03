@@ -137,6 +137,9 @@ const focusEditor = () => {
           <template #codeLanguage>
             <EditorCodePopover :editor="editor" />
           </template>
+          <template #prompt>
+            <EditorAiPopover :editor="editor" auto-open />
+          </template>
         </UEditorToolbar>
 
         <EditorMathPopover

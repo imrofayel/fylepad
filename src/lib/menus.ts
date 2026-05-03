@@ -235,6 +235,11 @@ const buildToolbarItems = (aiLoading: boolean | undefined): EditorToolbarItem[][
     ],
     [
       {
+        slot: "prompt" as const,
+      },
+    ],
+    [
+      {
         icon: ICONS.ai,
         size: "md",
         loading: aiLoading,

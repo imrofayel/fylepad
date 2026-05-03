@@ -75,6 +75,7 @@ export const ICONS = {
   sectionFilled: "tabler:section-filled",
   borderOuter: "tabler:border-outer",
   borderSides: "tabler:border-sides",
+  aiText: "tabler:bolt-filled",
 
   // Terminal & Scripting
   terminal: "vscode-icons:file-type-shell",
