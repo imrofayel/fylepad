@@ -40,6 +40,10 @@ export function useEditorCompletion(
     pos: number;
     deleteRange?: { from: number; to: number };
   }>();
+  const renderedState = ref<{
+    from: number;
+    to: number;
+  }>();
   const mode = ref<CompletionMode>("continue");
   const language = ref<string>();
   const customPrompt = ref<string>("");
@@ -77,18 +81,14 @@ export function useEditorCompletion(
       ) {
         const editor = editorRef.value?.editor;
         if (editor) {
-          // Find the end position of what we've inserted during streaming
-          const endPos = insertState.value.pos + completionText.length;
+          const range = renderedState.value ?? {
+            from: insertState.value.pos,
+            to: insertState.value.pos,
+          };
 
-          // Delete the raw text that was streamed
-          editor
-            .chain()
-            .focus()
-            .deleteRange({
-              from: insertState.value.pos,
-              to: Math.min(endPos, editor.state.doc.content.size),
-            })
-            .run();
+          if (range.to > range.from) {
+            editor.chain().focus().deleteRange(range).run();
+          }
 
           // Parse markdown and insert formatted version
           const html = marked.parse(completionText) as string;
@@ -105,10 +105,12 @@ export function useEditorCompletion(
       }
 
       insertState.value = undefined;
+      renderedState.value = undefined;
     },
     onError: (error) => {
       console.error("AI completion error:", error);
       insertState.value = undefined;
+      renderedState.value = undefined;
       getCompletionStorage()?.clearSuggestion();
     },
   });
@@ -150,23 +152,12 @@ export function useEditorCompletion(
 
       // For markdown-transform modes, parse accumulated markdown and replace the rendered content
       if (isMarkdownMode) {
-        // Replace previously rendered portion (if any) with newly parsed HTML
-        const existingText = editor.state.doc.textBetween(
-          insertState.value.pos,
-          Math.min(insertState.value.pos + 10000, editor.state.doc.content.size),
-        );
-
-        if (existingText) {
-          editor
-            .chain()
-            .focus()
-            .deleteRange({
-              from: insertState.value.pos,
-              to: insertState.value.pos + existingText.length,
-            })
-            .run();
+        if (renderedState.value && renderedState.value.to > renderedState.value.from) {
+          editor.chain().focus().deleteRange(renderedState.value).run();
+          renderedState.value = undefined;
         }
 
+        const beforeInsertSize = editor.state.doc.content.size;
         const html = marked.parse(newCompletion) as string;
         editor
           .chain()
@@ -175,6 +166,11 @@ export function useEditorCompletion(
             parseOptions: { preserveWhitespace: "full" },
           })
           .run();
+        const afterInsertSize = editor.state.doc.content.size;
+        renderedState.value = {
+          from: insertState.value.pos,
+          to: insertState.value.pos + Math.max(0, afterInsertSize - beforeInsertSize),
+        };
 
         // Don't insert raw markdown – we've rendered HTML live instead
         return;
@@ -234,6 +230,7 @@ export function useEditorCompletion(
       pos: selection.from,
       deleteRange: { from: selection.from, to: selection.to },
     };
+    renderedState.value = undefined;
 
     complete(selectedText);
   }
@@ -293,6 +290,7 @@ export function useEditorCompletion(
       pos: selection.from,
       deleteRange: { from: selection.from, to: selection.to },
     };
+    renderedState.value = undefined;
 
     complete(selectedText);
   }
