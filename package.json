@@ -37,6 +37,7 @@
     "@vueuse/head": "^2.0.0",
     "katex": "^0.16.45",
     "lowlight": "^3.3.0",
+    "marked": "^18.0.3",
     "mermaid": "^11.14.0",
     "plantuml-encoder": "^1.4.0",
     "prosemirror-mermaid": "^0.0.0",

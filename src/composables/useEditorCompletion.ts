@@ -4,6 +4,7 @@ import { Completion } from "@lib/extensions/EditorCompletionExtension";
 import type { CompletionStorage } from "@lib/extensions/EditorCompletionExtension";
 import { computed, ref, watch } from "vue";
 import type { Ref, ShallowRef } from "vue";
+import { marked } from "marked";
 
 type CompletionMode =
   | "continue"
@@ -82,11 +83,14 @@ export function useEditorCompletion(
           }
 
           // Insert with markdown parsing
+          const html = marked.parse(completionText) as string;
           editor
             .chain()
             .focus()
-            .insertContentAt(insertState.value.pos, completionText, {
-              contentType: "markdown",
+            .insertContentAt(insertState.value.pos, html, {
+              parseOptions: {
+                preserveWhitespace: "full",
+              },
             })
             .run();
         }
@@ -126,7 +130,7 @@ export function useEditorCompletion(
       // Direct insertion/transform mode (from toolbar actions)
 
       // Transform modes use markdown insertion - wait for full completion
-      const transformModes = ["fix", "extend", "reduce", "simplify", "summarize", "translate"];
+      const transformModes = ["fix", "extend", "reduce", "simplify", "summarize"];
       const userModes = ["user"];
       if (transformModes.includes(mode.value) || userModes.includes(mode.value)) {
         // Don't stream - will be handled in onFinish
