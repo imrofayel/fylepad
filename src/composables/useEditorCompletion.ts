@@ -12,7 +12,8 @@ type CompletionMode =
   | "reduce"
   | "simplify"
   | "summarize"
-  | "translate";
+  | "translate"
+  | "user";
 
 export interface UseEditorCompletionOptions {
   api?: string;
@@ -40,6 +41,7 @@ export function useEditorCompletion(
   }>();
   const mode = ref<CompletionMode>("continue");
   const language = ref<string>();
+  const customPrompt = ref<string>("");
 
   // Helper to get completion storage
   function getCompletionStorage() {
@@ -55,6 +57,7 @@ export function useEditorCompletion(
     body: computed(() => ({
       mode: mode.value,
       language: language.value,
+      ...(mode.value === "user" && customPrompt.value ? { prompt: customPrompt.value } : {}),
     })),
     onFinish: (_prompt, completionText) => {
       // For inline suggestion mode, don't clear - let user accept with Tab
@@ -65,7 +68,12 @@ export function useEditorCompletion(
 
       // For transform modes, insert the full completion with markdown parsing
       const transformModes = ["fix", "extend", "reduce", "simplify", "summarize", "translate"];
-      if (transformModes.includes(mode.value) && insertState.value && completionText) {
+      const userModes = ["user"];
+      if (
+        (transformModes.includes(mode.value) || userModes.includes(mode.value)) &&
+        insertState.value &&
+        completionText
+      ) {
         const editor = editorRef.value?.editor;
         if (editor) {
           // Delete the original selection if not already done
@@ -119,7 +127,8 @@ export function useEditorCompletion(
 
       // Transform modes use markdown insertion - wait for full completion
       const transformModes = ["fix", "extend", "reduce", "simplify", "summarize", "translate"];
-      if (transformModes.includes(mode.value)) {
+      const userModes = ["user"];
+      if (transformModes.includes(mode.value) || userModes.includes(mode.value)) {
         // Don't stream - will be handled in onFinish
         return;
       }
@@ -224,6 +233,28 @@ export function useEditorCompletion(
     }
   }
 
+  function triggerCustomPrompt(editor: Editor, prompt: string) {
+    if (isLoading.value || !prompt) return;
+
+    getCompletionStorage()?.clearSuggestion();
+
+    const { state } = editor;
+    const { selection } = state;
+
+    if (selection.empty) return;
+
+    mode.value = "user";
+    customPrompt.value = prompt;
+    const selectedText = state.doc.textBetween(selection.from, selection.to);
+
+    // Replace the selected text with the response
+    insertState.value = {
+      pos: selection.from,
+      deleteRange: { from: selection.from, to: selection.to },
+    };
+
+    complete(selectedText);
+  }
   // Configure Completion extension
   const extension = Completion.configure({
     autoTrigger: autoTriggerEnabled,
@@ -324,6 +355,17 @@ export function useEditorCompletion(
       },
       isActive: (_editor: Editor, cmd: { language?: string } | undefined) =>
         !!(isLoading.value && mode.value === "translate" && language.value === cmd?.language),
+      isDisabled: (editor: Editor) => editor.state.selection.empty || !!isLoading.value,
+    },
+    aiCustom: {
+      canExecute: (editor: Editor) => !editor.state.selection.empty && !isLoading.value,
+      execute: (editor: Editor, cmd: { prompt: string } | undefined) => {
+        if (cmd?.prompt) {
+          triggerCustomPrompt(editor, cmd.prompt);
+        }
+        return editor.chain();
+      },
+      isActive: () => !!(isLoading.value && mode.value === "user"),
       isDisabled: (editor: Editor) => editor.state.selection.empty || !!isLoading.value,
     },
   };
