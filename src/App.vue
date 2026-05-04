@@ -1,8 +1,16 @@
 <script setup lang="ts">
 import { useHead } from "@vueuse/head";
 import SEO from "./lib/seo";
+import { useAuth } from "@/composables/useAuth";
+import { onMounted } from "vue";
 
 useHead(SEO);
+
+const { fetchUser } = useAuth();
+
+onMounted(() => {
+  fetchUser();
+});
 </script>
 
 <template>

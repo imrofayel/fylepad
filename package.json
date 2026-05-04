@@ -35,6 +35,7 @@
     "@tiptap/vue-3": "^3.22.4",
     "@vueuse/core": "^14.2.1",
     "@vueuse/head": "^2.0.0",
+    "better-auth": "^1.6.9",
     "katex": "^0.16.45",
     "lowlight": "^3.3.0",
     "marked": "^18.0.3",

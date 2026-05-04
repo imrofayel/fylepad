@@ -13,9 +13,12 @@ const { activeTabId } = useEditor();
     <ButtonWithTooltip text="Search (Ctrl + F)" :icon="ICONS.search" />
 
     <HeaderMenu />
+    <AuthUser />
   </div>
 
   <UTooltip :text="value === 'light' ? 'Dark mode' : 'Light mode'" arrow v-if="!activeTabId">
     <UColorModeButton variant="link" color="neutral" />
   </UTooltip>
+
+  <AuthUser v-if="!activeTabId" />
 </template>

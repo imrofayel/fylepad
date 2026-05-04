@@ -82,7 +82,15 @@ export default defineConfig(async () => ({
           },
         },
         button: {
+          slots: {
+            base: "focus:ring-0!",
+          },
           compoundVariants: [
+            {
+              color: "neutral",
+              variant: "link",
+              class: "hover:text-neutral-600 dark:hover:text-neutral-300 px-0",
+            },
             {
               color: "neutral",
               variant: "link",

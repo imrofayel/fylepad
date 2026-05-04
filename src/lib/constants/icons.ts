@@ -76,6 +76,12 @@ export const ICONS = {
   borderOuter: "tabler:border-outer",
   borderSides: "tabler:border-sides",
   aiText: "tabler:bolt-filled",
+  logout: "tabler:logout",
+  user: "tabler:user-filled",
+  home: "tabler:home",
+  settings: "tabler:settings",
+  google: "logos:google-icon",
+  github: "akar-icons:github-fill",
 
   // Terminal & Scripting
   terminal: "vscode-icons:file-type-shell",
