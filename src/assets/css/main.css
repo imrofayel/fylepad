@@ -62,7 +62,7 @@ body {
 }
 
 .text-clear {
-  color: light-dark(var(--ui-color-neutral-950), var(--ui-color-neutral-50));
+  color: light-dark(var(--ui-color-neutral-800), var(--ui-color-neutral-50));
 }
 
 * {

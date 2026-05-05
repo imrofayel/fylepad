@@ -27,6 +27,7 @@ export const ICONS = {
   addPhoto: "tabler:photo-plus",
   link: "tabler:link",
   arrowBack: "tabler:arrow-back",
+  arrowBackFilled: "tabler:circle-chevron-left-filled",
   circleArrowUpRight: "tabler:circle-arrow-up-right",
   trash: "tabler:trash",
   trashFilled: "tabler:trash-filled",

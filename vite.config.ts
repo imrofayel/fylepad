@@ -48,7 +48,7 @@ export default defineConfig(async () => ({
           neutral: "neutral",
         },
         icons: {
-          light: "tabler:moon",
+          light: "tabler:moon-filled",
           dark: "tabler:sun",
           loading: "svg-spinners:tadpole",
         },

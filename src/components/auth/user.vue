@@ -27,6 +27,7 @@ const { user, loading, signInWithGoogle, logout } = useAuth();
             color="neutral"
             :icon="ICONS.settings"
             class="p-2 py-1.5"
+            href="/settings"
           />
           <UButton
             label="Logout"
