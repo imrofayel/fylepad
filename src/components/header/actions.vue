@@ -16,9 +16,11 @@ const { activeTabId } = useEditor();
     <AuthUser />
   </div>
 
-  <UTooltip :text="value === 'light' ? 'Dark mode' : 'Light mode'" arrow v-if="!activeTabId">
-    <UColorModeButton variant="link" color="neutral" />
-  </UTooltip>
+  <div class="flex gap-2.5" v-if="!activeTabId">
+    <UTooltip :text="value === 'light' ? 'Dark mode' : 'Light mode'" arrow>
+      <UColorModeButton variant="link" color="neutral" />
+    </UTooltip>
 
-  <AuthUser v-if="!activeTabId" />
+    <AuthUser />
+  </div>
 </template>
