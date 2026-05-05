@@ -10,14 +10,23 @@
     "frontendDist": "../dist",
     "removeUnusedCommands": true
   },
+  "plugins": {
+    "deep-link": {
+      "desktop": {
+        "schemes": [
+          "fylepad"
+        ]
+      }
+    }
+  },
   "app": {
     "windows": [
       {
+        "label": "main",
         "title": "fylepad-zen",
         "width": 800,
         "height": 600,
-        "zoomHotkeysEnabled": true,
-        "url": "http://127.0.0.1:1420"
+        "zoomHotkeysEnabled": true
       }
     ],
     "security": {
