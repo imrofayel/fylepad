@@ -1,6 +1,5 @@
 use tauri::{Emitter, Manager};
 use tauri_plugin_deep_link::DeepLinkExt;
-use tauri_plugin_localhost::Builder as LocalhostBuilder;
 
 #[tauri::command]
 fn greet(name: &str) -> String {
@@ -10,7 +9,6 @@ fn greet(name: &str) -> String {
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
-    .plugin(LocalhostBuilder::new(1420).build())
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_single_instance::init(|app, args, _cwd| {
             println!("Single instance args: {:?}", args);
