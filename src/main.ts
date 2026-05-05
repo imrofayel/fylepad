@@ -6,7 +6,10 @@ import App from "./App.vue";
 import ui from "@nuxt/ui/vue-plugin";
 import { addCollection } from "@iconify/vue";
 import aiSvg from "./assets/icons/hume-ai.svg?raw";
-import { registerIcons } from "./lib/register-icons";
+import { registerIcons } from "@lib/register-icons.js";
+import { patchFetchForTauri } from "@lib/tauri-fetch.js";
+
+patchFetchForTauri();
 
 registerIcons();
 
