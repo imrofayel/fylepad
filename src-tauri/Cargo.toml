@@ -24,7 +24,6 @@ serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 tauri-plugin-http = "2"
 tauri-plugin-deep-link = "2"
-tauri-plugin-shell = "2"
 
 [profile.release]
 codegen-units = 1
@@ -32,6 +31,7 @@ lto = true
 opt-level = "z"
 panic = "abort"
 strip = true
+
 
 [target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
 tauri-plugin-single-instance = { version = "2.0.0", features = ["deep-link"] }
