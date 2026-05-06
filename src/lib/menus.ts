@@ -305,7 +305,7 @@ const tableItems: EditorToolbarItem[][] = [
   [
     {
       icon: ICONS.table,
-      label: "Table",
+      tooltip: { text: "Table", arrow: true },
       content: {
         align: "start",
       },

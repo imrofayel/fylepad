@@ -113,7 +113,7 @@ watch(isLoading, (val: boolean | undefined) => {
   <UPopover
     v-model:open="open"
     :dismissible="false"
-    :ui="{ content: 'p-0.5 dark:bg-neutral-800! mt-1 ai-popover-content' }"
+    :ui="{ content: 'p-px py-0.5 dark:bg-neutral-800! mt-1 ai-popover-content' }"
   >
     <span class="ai-popover-trigger">
       <UButton
@@ -141,12 +141,11 @@ watch(isLoading, (val: boolean | undefined) => {
         @keydown="handleKeyDown"
       >
         <template #trailing>
-          <div class="flex items-center mr-0.5">
+          <div class="flex items-center">
             <ButtonWithTooltip
               text="Apply Prompt"
               :icon="ICONS.arrowBack"
               size="md"
-              class="px-1"
               :disabled="!prompt"
               title="Apply prompt"
               @click="applyPrompt"

@@ -145,8 +145,7 @@ const focusEditor = () => {
           :should-show="shouldShowToolbar"
           :ui="{
             root: 'z-130!',
-            base: 'p-0.5 pr-0! px-px',
-            group: 'gap-0',
+            base: 'p-0.5 pr-0! gap-1 px-px',
           }"
         >
           <template #link>
