@@ -28,9 +28,7 @@ export default defineConfig(async () => ({
   },
 
   plugins: [
-    VueRouter({
-      /* options */
-    }),
+    VueRouter(),
     vue(),
     ui({
       icon: {

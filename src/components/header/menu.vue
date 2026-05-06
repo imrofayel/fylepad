@@ -5,7 +5,13 @@ import { useColorMode } from "@vueuse/core";
 const color = useColorMode();
 </script>
 <template>
-  <UPopover arrow>
+  <UPopover
+    arrow
+    :ui="{
+      content: 'dark:bg-neutral-800!',
+      arrow: 'dark:fill-neutral-800!',
+    }"
+  >
     <ButtonWithTooltip text="Menu" :icon="ICONS.menu" />
 
     <template #content>
