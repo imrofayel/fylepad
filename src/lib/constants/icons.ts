@@ -15,7 +15,7 @@ export const ICONS = {
   menu: "tabler:dots-circle-horizontal",
   search: "tabler:search",
   style: "tabler:brush",
-  highlight: "tabler:circle-filled",
+  highlight: "icons-square",
   command: "tabler:file-spark",
   moon: "tabler:moon",
   sun: "tabler:sun",

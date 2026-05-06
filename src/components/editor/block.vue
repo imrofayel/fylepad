@@ -60,8 +60,6 @@ const {
   trapTab: true,
 });
 
-const toolBarItems = computed(() => buildToolbarItems(aiLoading.value));
-
 const value = ref("");
 
 const { tocAnchors, updateTocAnchors, goToTocAnchor } = useEditorToc();
@@ -91,10 +89,10 @@ const getToolbarItems = (editor: any) =>
   editor.isActive("image")
     ? imageToolbar(editor)
     : editor.isActive("table")
-      ? [...tableItems, ...toolBarItems.value]
+      ? [...tableItems, ...buildToolbarItems(aiLoading.value, editor)]
       : editor.isActive("codeBlock")
         ? codeToolbar(editor)
-        : toolBarItems.value;
+        : buildToolbarItems(aiLoading.value, editor);
 
 const focusEditor = () => {
   editorRef.value?.editor?.commands.focus();

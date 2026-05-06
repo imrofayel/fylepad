@@ -2,6 +2,24 @@ import { EditorSuggestionMenuItem, EditorToolbarItem } from "@nuxt/ui";
 import { Editor } from "@tiptap/core";
 import { ICONS } from "./constants/icons";
 
+const getHighlightColorStyle = (editor: Editor | undefined): { style?: Record<string, string> } => {
+  if (!editor) return {};
+
+  let highlightColor = "var(--highlight-yellow)";
+
+  const isHighlighted = editor.isActive("highlight");
+
+  if (isHighlighted) {
+    highlightColor = editor.getAttributes("highlight").color || highlightColor;
+  }
+
+  return {
+    style: {
+      color: highlightColor,
+    },
+  };
+};
+
 const highlightPalette = [
   {
     label: "Default Yellow",
@@ -128,7 +146,10 @@ const suggestionMenu: EditorSuggestionMenuItem[][] = [
   ],
 ];
 
-const buildToolbarItems = (aiLoading: boolean | undefined): EditorToolbarItem[][] => {
+const buildToolbarItems = (
+  aiLoading: boolean | undefined,
+  editor?: Editor,
+): EditorToolbarItem[][] => {
   return [
     [
       {
@@ -199,7 +220,8 @@ const buildToolbarItems = (aiLoading: boolean | undefined): EditorToolbarItem[][
       {
         icon: ICONS.highlight,
         size: "md",
-        class: "text-yellow-400 scale-110",
+        ...getHighlightColorStyle(editor),
+        class: "scale-110",
         tooltip: { text: "Highlight", arrow: true },
         content: {
           align: "start",

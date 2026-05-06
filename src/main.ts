@@ -21,6 +21,11 @@ addCollection({
       width: 1200,
       height: 1200,
     },
+    square: {
+      body: '<path fill="currentColor" d="M3 3v18h18V3"/>',
+      width: 22,
+      height: 22,
+    },
   },
 });
 
