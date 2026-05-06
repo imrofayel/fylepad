@@ -12,7 +12,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (event: "update:open", value: boolean): void;
-  (event: "update:loading", value: boolean): void;
+  (event: "update:loading", value: boolean | undefined): void;
 }>();
 
 const internalOpen = ref(false);
