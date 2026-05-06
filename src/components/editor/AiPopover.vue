@@ -4,9 +4,6 @@ import type { Editor } from "@tiptap/vue-3";
 import { computed, onBeforeUnmount, ref, watch } from "vue";
 import { useEditorCompletion } from "@/composables/useEditorCompletion";
 import { breakpointsTailwind, useBreakpoints } from "@vueuse/core";
-import { useEditor } from "@/composables/useEditor";
-
-const { activeEditor } = useEditor();
 
 const breakpoints = useBreakpoints(breakpointsTailwind);
 
