@@ -23,8 +23,8 @@ addCollection({
     },
     square: {
       body: '<path fill="currentColor" d="M3 3v18h18V3"/>',
-      width: 22,
-      height: 22,
+      width: 25,
+      height: 25,
     },
   },
 });

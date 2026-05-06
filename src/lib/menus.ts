@@ -149,6 +149,7 @@ const suggestionMenu: EditorSuggestionMenuItem[][] = [
 const buildToolbarItems = (
   aiLoading: boolean | undefined,
   editor?: Editor,
+  onCustomPromptClick?: () => void,
 ): EditorToolbarItem[][] => {
   return [
     [
@@ -221,7 +222,7 @@ const buildToolbarItems = (
         icon: ICONS.highlight,
         size: "md",
         ...getHighlightColorStyle(editor),
-        class: "scale-110",
+        class: "scale-110 p-1 relative top-px",
         tooltip: { text: "Highlight", arrow: true },
         content: {
           align: "start",
@@ -247,17 +248,20 @@ const buildToolbarItems = (
     ],
     [
       {
-        slot: "prompt" as const,
-      },
-      {
         icon: ICONS.ai,
         size: "md",
+        class: "relative right-0.5",
         loading: aiLoading,
         content: {
           align: "start",
         },
         tooltip: { text: "Assistant", arrow: true },
         items: [
+          {
+            icon: ICONS.ai,
+            label: "Custom prompt",
+            onClick: onCustomPromptClick,
+          },
           {
             kind: "aiFix",
             icon: ICONS.aiSpellcheck,
@@ -289,6 +293,9 @@ const buildToolbarItems = (
             label: "Summarize",
           },
         ],
+      },
+      {
+        slot: "prompt" as const,
       },
     ],
   ];

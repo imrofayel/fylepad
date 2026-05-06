@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Editor } from "@tiptap/core";
-import { computed, onBeforeUnmount, ref, useTemplateRef, watch } from "vue";
+import { computed, nextTick, onBeforeUnmount, ref, useTemplateRef, watch } from "vue";
 import { useEditorCompletion } from "@/composables/useEditorCompletion";
 import { useEditorMathPopover } from "@/composables/useEditorMathPopover";
 import { useEditorToc } from "@/composables/useEditorToc";
@@ -62,6 +62,8 @@ const {
 
 const value = ref("");
 
+const aiPopoverOpen = ref(false);
+
 const { tocAnchors, updateTocAnchors, goToTocAnchor } = useEditorToc();
 
 const { mathPopoverOpen, mathLatex, openMathPopover, getMathReference, applyMathUpdate } =
@@ -74,8 +76,21 @@ const tipTapExtensions = TipTapExtensions({
 
 const customHandlers = createEditorCustomHandlers(aiHandlers);
 
+const onCustomPromptClick = () => {
+  nextTick(() => {
+    aiPopoverOpen.value = true;
+  });
+};
+
+const handleAiPopoverOpenUpdate = (value: boolean) => {
+  aiPopoverOpen.value = value;
+};
+
 const shouldShowToolbar = ({ editor, state, view }: any) => {
   const { selection } = state;
+
+  if (aiPopoverOpen.value) return true;
+
   return (
     view.hasFocus() &&
     (editor.isActive("table") ||
@@ -85,14 +100,18 @@ const shouldShowToolbar = ({ editor, state, view }: any) => {
   );
 };
 
+const aiPopoverLoading = ref(false);
+
+const isLoading = computed(() => aiLoading.value || aiPopoverLoading.value);
+
 const getToolbarItems = (editor: any) =>
   editor.isActive("image")
     ? imageToolbar(editor)
     : editor.isActive("table")
-      ? [...tableItems, ...buildToolbarItems(aiLoading.value, editor)]
+      ? [...tableItems, ...buildToolbarItems(isLoading.value, editor, onCustomPromptClick)]
       : editor.isActive("codeBlock")
         ? codeToolbar(editor)
-        : buildToolbarItems(aiLoading.value, editor);
+        : buildToolbarItems(isLoading.value, editor, onCustomPromptClick);
 
 const focusEditor = () => {
   editorRef.value?.editor?.commands.focus();
@@ -126,7 +145,7 @@ const focusEditor = () => {
           :should-show="shouldShowToolbar"
           :ui="{
             root: 'z-130!',
-            base: 'p-0.5 px-px',
+            base: 'p-0.5 pr-0! px-px',
             group: 'gap-0',
           }"
         >
@@ -137,7 +156,13 @@ const focusEditor = () => {
             <EditorCodePopover :editor="editor" />
           </template>
           <template #prompt>
-            <EditorAiPopover :editor="editor" auto-open />
+            <EditorAiPopover
+              :editor="editor"
+              :open="aiPopoverOpen"
+              @update:open="handleAiPopoverOpenUpdate"
+              @update:loading="(val) => (aiPopoverLoading = val)"
+              auto-open
+            />
           </template>
         </UEditorToolbar>
 
