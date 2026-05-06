@@ -3,8 +3,11 @@ import { ICONS } from "@/lib/constants/icons";
 import { FONT_FAMILY_OPTIONS } from "@/lib/constants/fonts";
 import { useEditor } from "@/composables/useEditor";
 import { computed, ref, watch } from "vue";
+import { breakpointsTailwind, useBreakpoints } from "@vueuse/core";
 
 const { activeEditor } = useEditor();
+
+const breakpoints = useBreakpoints(breakpointsTailwind);
 
 const fontFamilyItems = [...FONT_FAMILY_OPTIONS];
 
@@ -110,6 +113,8 @@ watch(currentLineHeight, (value) => {
 
   setLineHeight(normalized);
 });
+
+const size = computed(() => (breakpoints.greater("sm").value ? "md" : "sm"));
 </script>
 <template>
   <UDrawer
@@ -123,10 +128,10 @@ watch(currentLineHeight, (value) => {
     <ButtonWithTooltip text="Customize" :icon="ICONS.style" />
 
     <template #content>
-      <div class="p-4 gap-3 flex">
+      <div class="p-4 gap-1 sm:gap-3 flex">
         <UTooltip arrow text="Font">
           <div class="relative flex items-center">
-            <UIcon :name="ICONS.font" class="absolute left-2 pointer-events-none z-10 text-xl" />
+            <UIcon :name="ICONS.font" class="absolute left-2 pointer-events-none z-10 sm:text-xl" />
 
             <UInputMenu
               v-model="currentFont"
@@ -135,8 +140,9 @@ watch(currentLineHeight, (value) => {
               label-key="label"
               :items="fontFamilyItems"
               :autofocus="false"
+              :size="size"
               :ui="{
-                base: 'w-40! pl-8!',
+                base: 'w-full pl-7! sm:pl-8!',
               }"
             />
           </div>
@@ -146,7 +152,7 @@ watch(currentLineHeight, (value) => {
           <div class="relative flex items-center">
             <UIcon
               :name="ICONS.textSize"
-              class="absolute left-2 pointer-events-none z-10 text-xl"
+              class="absolute left-2 pointer-events-none z-10 sm:text-xl"
             />
             <UInputNumber
               v-model="currentFontSize"
@@ -154,10 +160,11 @@ watch(currentLineHeight, (value) => {
               :min="14"
               :max="30"
               :step="1"
+              :size="size"
               orientation="vertical"
               :placeholder="currentFontSize.toString()"
               :ui="{
-                base: 'w-25! pl-8!',
+                base: 'w-22! pl-7! sm:pl-8!',
               }"
             />
           </div>
@@ -167,7 +174,7 @@ watch(currentLineHeight, (value) => {
           <div class="relative flex items-center">
             <UIcon
               :name="ICONS.lineHeight"
-              class="absolute left-2 pointer-events-none z-10 text-lg"
+              class="absolute left-2 pointer-events-none z-10 sm:text-lg"
             />
             <UInputNumber
               v-model="currentLineHeight"
@@ -175,10 +182,11 @@ watch(currentLineHeight, (value) => {
               :min="1.6"
               :max="3"
               :step="0.1"
+              :size="size"
               orientation="vertical"
               :placeholder="currentLineHeight.toString()"
               :ui="{
-                base: 'w-25! pl-8!',
+                base: 'w-22! pl-7! sm:pl-8!',
               }"
             />
           </div>

@@ -3,6 +3,12 @@ import { ICONS } from "@/lib/constants/icons";
 import type { Editor } from "@tiptap/vue-3";
 import { computed, onBeforeUnmount, ref, watch } from "vue";
 import { useEditorCompletion } from "@/composables/useEditorCompletion";
+import { breakpointsTailwind, useBreakpoints } from "@vueuse/core";
+import { useEditor } from "@/composables/useEditor";
+
+const { activeEditor } = useEditor();
+
+const breakpoints = useBreakpoints(breakpointsTailwind);
 
 const props = defineProps<{
   editor: Editor;
@@ -134,6 +140,8 @@ watch(isLoading, (val: boolean | undefined) => {
         name="prompt"
         type="text"
         variant="none"
+        :size="breakpoints.greater('sm').value ? 'md' : 'sm'"
+        s
         placeholder="Enter a prompt..."
         :ui="{
           base: 'focus-visible:ring-0!',
