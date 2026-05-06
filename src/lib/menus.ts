@@ -250,7 +250,7 @@ const buildToolbarItems = (
       {
         icon: ICONS.ai,
         size: "md",
-        class: "relative right-0.5",
+        class: "relative right-0.5 bg-neutral-800",
         loading: aiLoading,
         content: {
           align: "start",

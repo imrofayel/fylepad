@@ -86,23 +86,7 @@ body {
   }
 }
 
-.v3-emoji-picker {
-  @apply rounded-md! dark:bg-neutral-900! font-medium! text-default!;
 
-  .v3-sticky {
-    @apply dark:bg-neutral-900! text-sm!;
-  }
-
-  .v3-skin-tones {
-    @apply bg-transparent!;
-  }
-
-  .v3-search {
-    input {
-      @apply text-sm! h-8! font-medium!;
-    }
-  }
-}
 
 .completion-suggestion {
   color: light-dark(var(--ui-color-neutral-400), var(--ui-color-neutral-500));
@@ -604,10 +588,10 @@ html.dark .tiptap .twoslash .twoslash-popup-code .shiki span {
 }
 
 .v3-emoji-picker {
-  @apply rounded-md! dark:bg-neutral-900! font-medium! text-default!;
+  @apply rounded-md! font-medium! text-default! bg-transparent;
 
   .v3-sticky {
-    @apply dark:bg-neutral-900! text-sm!;
+    @apply dark:bg-neutral-800! bg-neutral-100! text-sm!;
   }
 
   .v3-skin-tones {
