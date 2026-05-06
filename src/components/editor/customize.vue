@@ -112,7 +112,14 @@ watch(currentLineHeight, (value) => {
 });
 </script>
 <template>
-  <UDrawer should-scale-background set-background-color-on-scale :overlay="false">
+  <UDrawer
+    should-scale-background
+    set-background-color-on-scale
+    :overlay="false"
+    :ui="{
+      content: 'dark:bg-neutral-800! light:bg-neutral-100! ring-0 rounded-none',
+    }"
+  >
     <ButtonWithTooltip text="Customize" :icon="ICONS.style" />
 
     <template #content>
