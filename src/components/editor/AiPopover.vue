@@ -104,7 +104,7 @@ function applyPrompt() {
   selectedText.value = "";
 }
 
-watch(isLoading, (val) => {
+watch(isLoading, (val: boolean | undefined) => {
   emit("update:loading", val);
 });
 </script>

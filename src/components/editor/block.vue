@@ -160,7 +160,7 @@ const focusEditor = () => {
               :editor="editor"
               :open="aiPopoverOpen"
               @update:open="handleAiPopoverOpenUpdate"
-              @update:loading="(val) => (aiPopoverLoading = val ?? false)"
+              @update:loading="(val: boolean | undefined) => (aiPopoverLoading = val ?? false)"
               auto-open
             />
           </template>
