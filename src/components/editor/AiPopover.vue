@@ -113,7 +113,7 @@ watch(isLoading, (val) => {
   <UPopover
     v-model:open="open"
     :dismissible="false"
-    :ui="{ content: 'p-0.5 dark:bg-neutral-800! mt-4 ai-popover-content' }"
+    :ui="{ content: 'p-0.5 dark:bg-neutral-800! mt-1 ai-popover-content' }"
   >
     <span class="ai-popover-trigger">
       <UButton
