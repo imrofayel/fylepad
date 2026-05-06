@@ -15,7 +15,7 @@ const { user, loading, signInWithGoogle, logout } = useAuth();
       <template #content>
         <div class="flex flex-col p-0.5 py-1 gap-0.5 w-42">
           <UButton
-            label="Account"
+            label="Catelog"
             variant="link"
             color="neutral"
             :icon="ICONS.home"

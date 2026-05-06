@@ -112,14 +112,7 @@ watch(currentLineHeight, (value) => {
 });
 </script>
 <template>
-  <UDrawer
-    should-scale-background
-    set-background-color-on-scale
-    :ui="{
-      content: 'light:bg-neutral-100!',
-    }"
-    :overlay="false"
-  >
+  <UDrawer should-scale-background set-background-color-on-scale :overlay="false">
     <ButtonWithTooltip text="Customize" :icon="ICONS.style" />
 
     <template #content>
@@ -184,8 +177,6 @@ watch(currentLineHeight, (value) => {
           </div>
         </UTooltip>
       </div>
-
-      <div class="w-full justify-end p-4 italic flex">fylepad v0.1.0-beta</div>
     </template>
   </UDrawer>
 </template>

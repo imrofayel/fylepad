@@ -160,17 +160,8 @@ const buildToolbarItems = (aiLoading: boolean | undefined): EditorToolbarItem[][
         tooltip: { text: "Strikethrough", arrow: true },
       },
       {
-        kind: "mark",
-        size: "md",
-        mark: "code",
-        icon: ICONS.code,
-        tooltip: { text: "Code", arrow: true },
-      },
-      {
         slot: "link" as const,
       },
-    ],
-    [
       {
         icon: ICONS.alignLeft,
         size: "md",
@@ -205,11 +196,10 @@ const buildToolbarItems = (aiLoading: boolean | undefined): EditorToolbarItem[][
           },
         ],
       },
-    ],
-    [
       {
-        icon: ICONS.style,
+        icon: ICONS.highlight,
         size: "md",
+        class: "text-yellow-400 scale-110",
         tooltip: { text: "Highlight", arrow: true },
         content: {
           align: "start",
@@ -237,8 +227,6 @@ const buildToolbarItems = (aiLoading: boolean | undefined): EditorToolbarItem[][
       {
         slot: "prompt" as const,
       },
-    ],
-    [
       {
         icon: ICONS.ai,
         size: "md",
