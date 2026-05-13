@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "identifier": "com.naveed-azhar.fylepad-zen",
   "build": {
-    "beforeDevCommand": "bun run dev",
+    "beforeDevCommand": "pnpm run dev",
     "devUrl": "http://localhost:1420",
     "beforeBuildCommand": "pnpm run build",
     "frontendDist": "../dist",
