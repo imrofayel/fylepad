@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import type { Editor } from "@tiptap/core";
-import { computed, nextTick, onBeforeUnmount, ref, useTemplateRef, watch } from "vue";
+import { computed, nextTick, ref, useTemplateRef, watch } from "vue";
 import { useEditorCompletion } from "@/composables/useEditorCompletion";
 import { useEditorMathPopover } from "@/composables/useEditorMathPopover";
 import { useEditorToc } from "@/composables/useEditorToc";
 import { useEditor } from "@/composables/useEditor";
+import { EMPTY_DOC } from "@/lib/editorDb";
 import { TipTapExtensions } from "@/lib/extensions";
 import {
   suggestionMenu,
@@ -20,7 +21,7 @@ const props = defineProps<{
 }>();
 
 const editorRef = useTemplateRef<{ editor: Editor | undefined }>("editorRef");
-const { getTab, registerEditor, unregisterEditor, updateTabTitle } = useEditor();
+const { getTab, registerEditor, unregisterEditor, updateTabContent, updateTabTitle } = useEditor();
 
 const currentTab = computed(() => getTab(props.tabId));
 
@@ -31,21 +32,35 @@ const tabTitle = computed({
 
 watch(
   () => editorRef.value?.editor,
-  (editor, previousEditor) => {
+  (editor, previousEditor, onCleanup) => {
     if (previousEditor && previousEditor !== editor) {
       unregisterEditor(props.tabId);
     }
 
-    if (editor) {
-      registerEditor(props.tabId, editor);
+    if (!editor) {
+      return;
     }
+
+    const tab = currentTab.value;
+
+    if (tab) {
+      editor.commands.setContent(tab.content ?? EMPTY_DOC, { emitUpdate: false });
+    }
+
+    const handleUpdate = () => {
+      updateTabContent(props.tabId, editor.getJSON());
+    };
+
+    editor.on("update", handleUpdate);
+    registerEditor(props.tabId, editor);
+
+    onCleanup(() => {
+      editor.off("update", handleUpdate);
+      unregisterEditor(props.tabId);
+    });
   },
   { immediate: true },
 );
-
-onBeforeUnmount(() => {
-  unregisterEditor(props.tabId);
-});
 
 const {
   extension: completionExtension,
@@ -124,7 +139,11 @@ const focusEditor = () => {
     :class="tocAnchors.length !== 0 && 'xl:grid-cols-[minmax(0,1fr)_17rem]'"
   >
     <div>
-      <EditorHead v-model="tabTitle" @enter="focusEditor" />
+      <EditorHead
+        v-model="tabTitle"
+        :folder-label="currentTab?.collectionName"
+        @enter="focusEditor"
+      />
       <UEditor
         ref="editorRef"
         v-slot="{ editor }"

@@ -8,10 +8,15 @@ import { addCollection } from "@iconify/vue";
 import aiSvg from "./assets/icons/hume-ai.svg?raw";
 import { registerIcons } from "@lib/register-icons.js";
 import { patchFetchForTauri } from "@lib/tauri-fetch.js";
+import { initializeEditorStore } from "@/composables/useEditor";
 
 patchFetchForTauri();
 
 registerIcons();
+
+await initializeEditorStore().catch((error) => {
+  console.error("Failed to initialize editor persistence:", error);
+});
 
 addCollection({
   prefix: "icons",

@@ -1,5 +1,8 @@
 use tauri::{Emitter, Manager};
 use tauri_plugin_deep_link::DeepLinkExt;
+use tauri_plugin_sql::{Migration, MigrationKind};
+
+const EDITOR_DB_URL: &str = "sqlite:fylepad-zen.db";
 
 #[tauri::command]
 fn greet(name: &str) -> String {
@@ -8,7 +11,38 @@ fn greet(name: &str) -> String {
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    let migrations = vec![Migration {
+        version: 1,
+        description: "create_collections_and_editor_tabs",
+        sql: r#"
+            CREATE TABLE IF NOT EXISTS collections (
+                id TEXT PRIMARY KEY NOT NULL,
+                name TEXT NOT NULL UNIQUE
+            );
+
+            INSERT OR IGNORE INTO collections (id, name)
+            VALUES ('default', 'Default folder');
+
+            CREATE TABLE IF NOT EXISTS editor_tabs (
+                id TEXT PRIMARY KEY NOT NULL,
+                title TEXT NOT NULL,
+                collection_id TEXT NOT NULL DEFAULT 'default',
+                content TEXT NOT NULL,
+                metadata TEXT,
+                FOREIGN KEY (collection_id) REFERENCES collections(id) ON DELETE RESTRICT
+            );
+
+            CREATE INDEX IF NOT EXISTS idx_editor_tabs_collection_id ON editor_tabs(collection_id);
+        "#,
+        kind: MigrationKind::Up,
+    }];
+
     tauri::Builder::default()
+        .plugin(
+            tauri_plugin_sql::Builder::default()
+                .add_migrations(EDITOR_DB_URL, migrations)
+                .build(),
+        )
         .plugin(tauri_plugin_single_instance::init(|app, args, _cwd| {
             println!("Single instance args: {:?}", args);
 

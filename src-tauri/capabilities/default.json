@@ -27,6 +27,8 @@
       ]
     },
     "core:webview:allow-set-webview-zoom",
+    "sql:default",
+    "sql:allow-execute",
     {
       "identifier": "http:default",
       "allow": [
