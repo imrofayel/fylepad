@@ -1,5 +1,9 @@
 import Database from "@tauri-apps/plugin-sql";
 import type { JSONContent } from "@tiptap/core";
+import { get, set } from "idb-keyval";
+
+export const IS_TAURI = "__TAURI_INTERNALS__" in window;
+const BROWSER_STORAGE_KEY = "fylepad_editor_tabs";
 
 export const EDITOR_DB_URL = "sqlite:fylepad-zen.db";
 export const DEFAULT_COLLECTION_ID = "default";
@@ -45,6 +49,10 @@ const getDatabase = () => {
 };
 
 export const ensureEditorSchema = async () => {
+  if (!IS_TAURI) {
+    // We don't need a schema for IndexedDB
+    return;
+  }
   const database = await getDatabase();
   await database.execute(
     "CREATE TABLE IF NOT EXISTS collections (id TEXT PRIMARY KEY NOT NULL, name TEXT NOT NULL UNIQUE)",
@@ -132,6 +140,20 @@ export const createEmptyTabRecord = (id: string): EditorTabRecord => ({
 });
 
 export const loadEditorTabs = async (): Promise<EditorTabRecord[]> => {
+  if (!IS_TAURI) {
+    const tabs = await get<EditorTabRecord[]>(BROWSER_STORAGE_KEY);
+    if (!tabs) return [];
+
+    return tabs.map((tab) => ({
+      id: tab.id,
+      title: tab.title || "Untitled",
+      collectionId: tab.collectionId || DEFAULT_COLLECTION_ID,
+      collectionName: tab.collectionName || DEFAULT_COLLECTION_NAME,
+      content: normalizeContent(JSON.stringify(tab.content)),
+      metadata: normalizeMetadata(JSON.stringify(tab.metadata)),
+    }));
+  }
+
   const database = await getDatabase();
   await ensureEditorSchema();
   const rows = await database.select<EditorTabRow[]>(
@@ -151,6 +173,19 @@ export const loadEditorTabs = async (): Promise<EditorTabRecord[]> => {
 };
 
 export const saveEditorTab = async (tab: EditorTabRecord) => {
+  if (!IS_TAURI) {
+    const tabs = (await get<EditorTabRecord[]>(BROWSER_STORAGE_KEY)) || [];
+    const index = tabs.findIndex((t) => t.id === tab.id);
+    if (index >= 0) {
+      tabs[index] = tab;
+    } else {
+      tabs.push(tab);
+    }
+    // Fix clone issue by stripping Vue proxies before saving to IndexedDB
+    await set(BROWSER_STORAGE_KEY, JSON.parse(JSON.stringify(tabs)));
+    return;
+  }
+
   const database = await getDatabase();
   await ensureEditorSchema();
 
@@ -178,6 +213,13 @@ export const saveEditorTab = async (tab: EditorTabRecord) => {
 };
 
 export const deleteEditorTab = async (tabId: string) => {
+  if (!IS_TAURI) {
+    const tabs = (await get<EditorTabRecord[]>(BROWSER_STORAGE_KEY)) || [];
+    const filtered = tabs.filter((t) => t.id !== tabId);
+    await set(BROWSER_STORAGE_KEY, JSON.parse(JSON.stringify(filtered)));
+    return;
+  }
+
   const database = await getDatabase();
   await ensureEditorSchema();
   await database.execute("DELETE FROM editor_tabs WHERE id = $1", [tabId]);
