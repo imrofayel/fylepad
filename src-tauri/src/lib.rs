@@ -38,6 +38,8 @@ pub fn run() {
     }];
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_fs::init())
+        .plugin(tauri_plugin_dialog::init())
         .plugin(
             tauri_plugin_sql::Builder::default()
                 .add_migrations(EDITOR_DB_URL, migrations)
@@ -66,10 +68,7 @@ pub fn run() {
             {
                 let handle = app.handle().clone();
                 app.deep_link().on_open_url(move |event| {
-                    let urls: Vec<String> = event.urls()
-                        .iter()
-                        .map(|u| u.to_string())
-                        .collect();
+                    let urls: Vec<String> = event.urls().iter().map(|u| u.to_string()).collect();
 
                     println!("🔗 Deep link URLs: {:?}", urls);
 

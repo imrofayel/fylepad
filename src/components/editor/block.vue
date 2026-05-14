@@ -21,7 +21,14 @@ const props = defineProps<{
 }>();
 
 const editorRef = useTemplateRef<{ editor: Editor | undefined }>("editorRef");
-const { getTab, registerEditor, unregisterEditor, updateTabContent, updateTabTitle } = useEditor();
+const {
+  getTab,
+  registerEditor,
+  unregisterEditor,
+  updateTabContent,
+  updateTabMetadata,
+  updateTabTitle,
+} = useEditor();
 
 const currentTab = computed(() => getTab(props.tabId));
 
@@ -44,7 +51,19 @@ watch(
     const tab = currentTab.value;
 
     if (tab) {
-      editor.commands.setContent(tab.content ?? EMPTY_DOC, { emitUpdate: false });
+      if (tab.metadata && (tab.metadata as any).rawMarkdown) {
+        // Hydrate markdown string into the editor using the markdown extension
+        const raw = (tab.metadata as any).rawMarkdown as string;
+        editor.commands.setContent(raw, { emitUpdate: false });
+
+        // Update the stored JSON content in DB and clear the rawMarkdown marker
+        updateTabContent(props.tabId, editor.getJSON());
+        const newMeta = { ...tab.metadata } as Record<string, unknown>;
+        delete newMeta.rawMarkdown;
+        updateTabMetadata(props.tabId, newMeta as any);
+      } else {
+        editor.commands.setContent(tab.content ?? EMPTY_DOC, { emitUpdate: false });
+      }
     }
 
     const handleUpdate = () => {
@@ -194,7 +213,7 @@ const focusEditor = () => {
           @update:open="(value: boolean) => (mathPopoverOpen = value)"
           @update:latex="(value: string) => (mathLatex = value)"
           @apply="applyMathUpdate(editor)"
-        />
+        />lass="no-scrollbar"
 
         <UEditorSuggestionMenu :editor="editor" :items="suggestionMenu" />
       </UEditor>

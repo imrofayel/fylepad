@@ -16,6 +16,7 @@ import { TwoslashExtension } from "@lib/extensions/TwoslashExtension";
 import Image from "@tiptap/extension-image";
 import Highlight from "@tiptap/extension-highlight";
 import { FontFamily, FontSize, LineHeight, TextStyle } from "@tiptap/extension-text-style";
+import { Markdown } from "tiptap-markdown";
 
 type TipTapExtensionsOptions = {
   onTocUpdate: (anchors: unknown[]) => void;
@@ -29,6 +30,7 @@ type TipTapExtensionsOptions = {
 const lowlight = createLowlight();
 
 export const TipTapExtensions = ({ onTocUpdate, openMathPopover }: TipTapExtensionsOptions) => [
+  Markdown,
   Image.configure({
     resize: {
       enabled: true,
