@@ -1,5 +1,6 @@
 import type { Editor } from "@tiptap/core";
 import { computed, markRaw, ref, shallowReactive } from "vue";
+import { useStorage } from "@vueuse/core";
 import {
   createEmptyTabRecord,
   deleteEditorTab,
@@ -16,7 +17,7 @@ const tabs = ref<EditorTab[]>([]);
 const isReady = ref(false);
 let initializationPromise: Promise<void> | null = null;
 
-const activeTabId = ref("");
+const activeTabId = useStorage("active-tab-id", "");
 const editors = shallowReactive(new Map<string, Editor>());
 const pendingSaveTimers = new Map<string, ReturnType<typeof setTimeout>>();
 
@@ -155,7 +156,9 @@ export const initializeEditorStore = async () => {
         await saveEditorTab(tab);
       } else {
         tabs.value = persistedTabs;
-        activeTabId.value = persistedTabs[0]?.id ?? "";
+        if (!tabs.value.some((t) => t.id === activeTabId.value)) {
+          activeTabId.value = persistedTabs[0]?.id ?? "";
+        }
       }
     } catch (error) {
       console.error("Failed to initialize the editor store:", error);
