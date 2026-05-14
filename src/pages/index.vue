@@ -13,10 +13,7 @@ const isLoading = computed(() => tabs.value.length === 0 && !isReady.value);
     <AppHeader v-if="!isLoading" />
 
     <!-- Empty State -->
-    <div
-      v-else-if="tabs.length === 0"
-      class="flex items-center justify-center min-h-[calc(100vh-80px)]"
-    >
+    <div v-if="tabs.length === 0" class="flex items-center justify-center min-h-[calc(100vh-80px)]">
       <img
         src="../../src/assets/icons/icon.svg"
         alt="fylepad logo"
