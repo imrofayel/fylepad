@@ -213,7 +213,7 @@ const focusEditor = () => {
           @update:open="(value: boolean) => (mathPopoverOpen = value)"
           @update:latex="(value: string) => (mathLatex = value)"
           @apply="applyMathUpdate(editor)"
-        />lass="no-scrollbar"
+        />
 
         <UEditorSuggestionMenu :editor="editor" :items="suggestionMenu" />
       </UEditor>
