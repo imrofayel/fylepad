@@ -53,6 +53,7 @@
     "state": "link:@tiptap/pm/state",
     "tailwindcss": "^4.2.2",
     "tiptap-extension-code-block-shiki": "^1.1.0",
+    "tiptap-markdown": "^0.9.0",
     "twoslash-cdn": "^0.3.8",
     "view": "link:@tiptap/pm/view",
     "vue": "^3.5.32",
