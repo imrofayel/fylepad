@@ -17,7 +17,7 @@ const handleCloseTab = (id: string, event: Event) => {
 <template>
   <div class="flex justify-between w-full items-center">
     <div class="flex gap-2.5 items-center">
-      <img src="/favicon.svg" alt="fylepad logo" class="w-6 h-6" />
+      <img src="../../assets/icons/icon.svg" alt="fylepad logo" class="w-6 h-6" />
       <ButtonWithTooltip
         text="New Tab"
         variant="link"

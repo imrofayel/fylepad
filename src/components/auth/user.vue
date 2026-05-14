@@ -1,8 +1,10 @@
 <script setup lang="ts">
+import { useRouter } from "vue-router";
 import { useAuth } from "@/composables/useAuth";
 import { ICONS } from "@/lib/constants/icons";
 
 const { user, loading, signInWithGoogle, logout } = useAuth();
+const router = useRouter();
 </script>
 
 <template>
@@ -27,7 +29,7 @@ const { user, loading, signInWithGoogle, logout } = useAuth();
             color="neutral"
             :icon="ICONS.settings"
             class="p-2 py-1.5"
-            href="/settings"
+            @click="router.push('/settings')"
           />
           <UButton
             label="Logout"

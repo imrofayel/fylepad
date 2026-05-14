@@ -16,6 +16,9 @@ export default defineConfig(async () => ({
     },
   },
 
+  // ensure relative asset paths when built for Tauri bundles (robust check)
+  base: process.env.TAURI_BUILD || process.env.NODE_ENV === "production" ? "./" : "/",
+
   optimizeDeps: {
     include: [
       "@nuxt/ui > prosemirror-state",
