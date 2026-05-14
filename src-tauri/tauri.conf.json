@@ -30,8 +30,9 @@
       }
     ],
     "security": {
-      "csp": "default-src 'self' asset: https://asset.localhost; script-src 'self' 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval' https://typescriptlang.org; style-src 'self' 'unsafe-inline'; img-src 'self' asset: data: https://kroki.io; font-src 'self' asset: data: https://asset.localhost; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://open.spotify.com https://spotify.com; connect-src 'self' https: http: tauri: ipc: ipc://localhost;"
-    }
+      "dangerousDisableAssetCspModification": false,
+  "csp": "default-src 'self' data: blob: asset: https://asset.localhost tauri: ipc: http://ipc.localhost https: http:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';"
+}
   },
   "bundle": {
     "active": true,
