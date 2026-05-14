@@ -12,16 +12,6 @@ const isLoading = computed(() => tabs.value.length === 0 && !isReady.value);
   <div class="mx-auto min-h-screen w-full z-100 sm:px-3 pt-2 px-2 bg-default">
     <AppHeader v-if="!isLoading" />
 
-    <!-- Loading State -->
-    <div v-if="isLoading" class="flex items-center justify-center min-h-screen flex-col gap-4">
-      <img
-        src="../../src/assets/icons/icon.svg"
-        alt="fylepad logo"
-        class="w-16 h-16 animate-pulse"
-      />
-      <p class="text-sm text-neutral-500">Loading workspace...</p>
-    </div>
-
     <!-- Empty State -->
     <div
       v-else-if="tabs.length === 0"
