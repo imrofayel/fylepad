@@ -16,7 +16,7 @@ const handleCloseTab = (id: string, event: Event) => {
 
 <template>
   <div class="flex justify-between w-full items-center">
-    <div class="flex gap-x-2 items-center">
+    <div class="flex gap-x-2 itetabler:mood-happyms-center">
       <ButtonWithTooltip
         text="New Tab"
         variant="link"

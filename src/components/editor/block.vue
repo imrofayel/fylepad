@@ -155,7 +155,7 @@ const focusEditor = () => {
 <template>
   <div
     class="grid grid-cols-1 gap-8 max-w-3xl mx-auto"
-    :class="tocAnchors.length !== 0 && 'xl:grid-cols-[minmax(0,1fr)_17rem]'"
+    :class="tocAnchors.length !== 0 && 'xl:grid-cols-[minmax(0,1fr)_17rem] max-w-5xl!'"
   >
     <div>
       <EditorHead
@@ -182,8 +182,8 @@ const focusEditor = () => {
           layout="bubble"
           :should-show="shouldShowToolbar"
           :ui="{
-            root: 'z-130!',
-            base: 'p-px dark:bg-neutral-800! pr-0! gap-1 pl-px',
+            root: 'z-130! blur-[0.01px]',
+            base: 'p-px rounded-sm dark:bg-neutral-800! pr-0! gap-1 pl-px',
             group: '[&>button]:dark:hover:bg-neutral-700!',
             separator: 'dark:bg-neutral-700!',
           }"

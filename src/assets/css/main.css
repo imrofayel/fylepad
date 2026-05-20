@@ -596,10 +596,10 @@ html.dark .tiptap .twoslash .twoslash-popup-code .shiki span {
 }
 
 .v3-emoji-picker {
-  @apply rounded-md! font-medium! text-default! bg-transparent;
+  @apply rounded-md! shadow-none font-medium! text-default! bg-transparent;
 
   .v3-sticky {
-    @apply dark:bg-neutral-800! bg-neutral-100! text-sm!;
+    @apply dark:bg-neutral-800! bg-white! text-sm!;
   }
 
   .v3-skin-tones {

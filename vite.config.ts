@@ -50,14 +50,15 @@ export default defineConfig(async () => ({
           neutral: "neutral",
         },
         icons: {
-          light: "tabler:moon-filled",
+          light: "tabler:moon",
           dark: "tabler:sun",
           loading: "svg-spinners:tadpole",
         },
         tooltip: {
           slots: {
-            content: "p-2 h-7",
+            content: "p-2 h-7 bg-white! dark:bg-neutral-800! z-[100]",
             text: "text-default text-[14px]",
+            arrow: "dark:fill-neutral-800! fill-background!",
           },
         },
         slideover: {

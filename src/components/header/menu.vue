@@ -10,8 +10,8 @@ const { openFileDialog, saveActiveToDisk } = useEditor();
   <UPopover
     arrow
     :ui="{
-      content: 'dark:bg-neutral-800!',
-      arrow: 'dark:fill-neutral-800!',
+      content: 'bg-white dark:bg-neutral-800!',
+      arrow: 'fill-background! dark:fill-neutral-800!',
     }"
   >
     <ButtonWithTooltip text="Menu" :icon="ICONS.menu" />
