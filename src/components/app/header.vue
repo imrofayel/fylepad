@@ -23,7 +23,6 @@ const handleCloseTab = (id: string, event: Event) => {
         color="neutral"
         :icon="ICONS.newTab"
         @click="createTab"
-        size="sm"
       />
 
       <div class="flex gap-x-1 z-10">
