@@ -1,17 +1,38 @@
 <script setup lang="ts">
 import { ICONS } from "@/lib/constants/icons";
 import type { Editor } from "@tiptap/vue-3";
-import { computed, ref } from "vue";
+import { computed, onBeforeUnmount, ref, watch } from "vue";
 import { useEditorCompletion } from "@/composables/useEditorCompletion";
+import { breakpointsTailwind, useBreakpoints } from "@vueuse/core";
+
+const breakpoints = useBreakpoints(breakpointsTailwind);
 
 const props = defineProps<{
   editor: Editor;
   autoOpen?: boolean;
+  open?: boolean;
 }>();
 
-const open = ref(false);
+const emit = defineEmits<{
+  (event: "update:open", value: boolean): void;
+  (event: "update:loading", value: boolean | undefined): void;
+}>();
+
+const internalOpen = ref(false);
 const prompt = ref("");
 const selectedText = ref("");
+
+const open = computed({
+  get: () => props.open ?? internalOpen.value,
+  set: (value: boolean) => {
+    if (props.open === undefined) {
+      internalOpen.value = value;
+      return;
+    }
+
+    emit("update:open", value);
+  },
+});
 
 const editorRefProxy = computed(() => ({
   editor: props.editor,
@@ -37,10 +58,40 @@ function captureSelection() {
   selectedText.value = props.editor.state.doc.textBetween(selection.from, selection.to);
 }
 
+// manual outside-click handler since we use :dismissible="false"
+function onDocumentPointerDown(event: PointerEvent) {
+  const target = event.target as HTMLElement;
+  if (target.closest(".ai-popover-content")) return;
+  if (target.closest(".ai-popover-trigger")) return;
+  open.value = false;
+}
+
+watch(open, (isOpen) => {
+  if (isOpen) {
+    if (!selectedText.value) {
+      captureSelection();
+    }
+    // add listener after current event cycle so it doesn't catch the opening click
+    requestAnimationFrame(() => {
+      document.addEventListener("pointerdown", onDocumentPointerDown);
+    });
+  } else {
+    document.removeEventListener("pointerdown", onDocumentPointerDown);
+    selectedText.value = "";
+  }
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener("pointerdown", onDocumentPointerDown);
+});
+
 function handleKeyDown(event: KeyboardEvent) {
   if (event.key === "Enter") {
     event.preventDefault();
     applyPrompt();
+  }
+  if (event.key === "Escape") {
+    open.value = false;
   }
 }
 
@@ -55,36 +106,29 @@ function applyPrompt() {
   });
   selectedText.value = "";
 }
+
+watch(isLoading, (val: boolean | undefined) => {
+  emit("update:loading", val);
+});
 </script>
 
 <template>
-  <UPopover v-model:open="open" :ui="{ content: 'p-0.5 dark:bg-neutral-800!' }">
-    <UTooltip text="Custom Prompt" arrow>
+  <UPopover
+    v-model:open="open"
+    :dismissible="false"
+    :ui="{ content: 'p-px py-0.5 dark:bg-neutral-800! mt-1 ai-popover-content' }"
+  >
+    <span class="ai-popover-trigger">
       <UButton
         color="neutral"
         variant="ghost"
-        size="md"
+        class="p-0"
+        size="xs"
         :active="!disabled"
         :disabled="disabled"
-        :loading="isLoading"
         @mousedown="captureSelection"
-      >
-        <template #leading>
-          <span class="ai-gradient-icon size-5.5 shrink-0">
-            <svg width="0" height="0" class="absolute">
-              <defs>
-                <linearGradient id="ai-icon-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stop-color="#FFF1BF" />
-                  <stop offset="47.8365%" stop-color="#EC458D" />
-                  <stop offset="100%" stop-color="#474ED7" />
-                </linearGradient>
-              </defs>
-            </svg>
-            <UIcon :name="isLoading ? ICONS.loader : ICONS.aiText" class="size-5" />
-          </span>
-        </template>
-      </UButton>
-    </UTooltip>
+      />
+    </span>
 
     <template #content>
       <UInput
@@ -93,6 +137,8 @@ function applyPrompt() {
         name="prompt"
         type="text"
         variant="none"
+        :size="breakpoints.greater('sm').value ? 'md' : 'sm'"
+        s
         placeholder="Enter a prompt..."
         :ui="{
           base: 'focus-visible:ring-0!',
@@ -100,12 +146,11 @@ function applyPrompt() {
         @keydown="handleKeyDown"
       >
         <template #trailing>
-          <div class="flex items-center mr-0.5">
+          <div class="flex items-center">
             <ButtonWithTooltip
               text="Apply Prompt"
               :icon="ICONS.arrowBack"
               size="md"
-              class="px-1"
               :disabled="!prompt"
               title="Apply prompt"
               @click="applyPrompt"

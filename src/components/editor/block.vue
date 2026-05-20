@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import type { Editor } from "@tiptap/core";
-import { computed, onBeforeUnmount, ref, useTemplateRef, watch } from "vue";
+import { computed, nextTick, ref, useTemplateRef, watch } from "vue";
 import { useEditorCompletion } from "@/composables/useEditorCompletion";
 import { useEditorMathPopover } from "@/composables/useEditorMathPopover";
 import { useEditorToc } from "@/composables/useEditorToc";
 import { useEditor } from "@/composables/useEditor";
+import { EMPTY_DOC } from "@/lib/editorDb";
 import { TipTapExtensions } from "@/lib/extensions";
 import {
   suggestionMenu,
@@ -20,7 +21,14 @@ const props = defineProps<{
 }>();
 
 const editorRef = useTemplateRef<{ editor: Editor | undefined }>("editorRef");
-const { getTab, registerEditor, unregisterEditor, updateTabTitle } = useEditor();
+const {
+  getTab,
+  registerEditor,
+  unregisterEditor,
+  updateTabContent,
+  updateTabMetadata,
+  updateTabTitle,
+} = useEditor();
 
 const currentTab = computed(() => getTab(props.tabId));
 
@@ -31,21 +39,47 @@ const tabTitle = computed({
 
 watch(
   () => editorRef.value?.editor,
-  (editor, previousEditor) => {
+  (editor, previousEditor, onCleanup) => {
     if (previousEditor && previousEditor !== editor) {
       unregisterEditor(props.tabId);
     }
 
-    if (editor) {
-      registerEditor(props.tabId, editor);
+    if (!editor) {
+      return;
     }
+
+    const tab = currentTab.value;
+
+    if (tab) {
+      if (tab.metadata && (tab.metadata as any).rawMarkdown) {
+        // Hydrate markdown string into the editor using the markdown extension
+        const raw = (tab.metadata as any).rawMarkdown as string;
+        editor.commands.setContent(raw, { emitUpdate: false });
+
+        // Update the stored JSON content in DB and clear the rawMarkdown marker
+        updateTabContent(props.tabId, editor.getJSON());
+        const newMeta = { ...tab.metadata } as Record<string, unknown>;
+        delete newMeta.rawMarkdown;
+        updateTabMetadata(props.tabId, newMeta as any);
+      } else {
+        editor.commands.setContent(tab.content ?? EMPTY_DOC, { emitUpdate: false });
+      }
+    }
+
+    const handleUpdate = () => {
+      updateTabContent(props.tabId, editor.getJSON());
+    };
+
+    editor.on("update", handleUpdate);
+    registerEditor(props.tabId, editor);
+
+    onCleanup(() => {
+      editor.off("update", handleUpdate);
+      unregisterEditor(props.tabId);
+    });
   },
   { immediate: true },
 );
-
-onBeforeUnmount(() => {
-  unregisterEditor(props.tabId);
-});
 
 const {
   extension: completionExtension,
@@ -60,9 +94,9 @@ const {
   trapTab: true,
 });
 
-const toolBarItems = computed(() => buildToolbarItems(aiLoading.value));
-
 const value = ref("");
+
+const aiPopoverOpen = ref(false);
 
 const { tocAnchors, updateTocAnchors, goToTocAnchor } = useEditorToc();
 
@@ -76,8 +110,21 @@ const tipTapExtensions = TipTapExtensions({
 
 const customHandlers = createEditorCustomHandlers(aiHandlers);
 
+const onCustomPromptClick = () => {
+  nextTick(() => {
+    aiPopoverOpen.value = true;
+  });
+};
+
+const handleAiPopoverOpenUpdate = (value: boolean) => {
+  aiPopoverOpen.value = value;
+};
+
 const shouldShowToolbar = ({ editor, state, view }: any) => {
   const { selection } = state;
+
+  if (aiPopoverOpen.value) return true;
+
   return (
     view.hasFocus() &&
     (editor.isActive("table") ||
@@ -87,14 +134,18 @@ const shouldShowToolbar = ({ editor, state, view }: any) => {
   );
 };
 
+const aiPopoverLoading = ref(false);
+
+const isLoading = computed(() => aiLoading.value || aiPopoverLoading.value);
+
 const getToolbarItems = (editor: any) =>
   editor.isActive("image")
     ? imageToolbar(editor)
     : editor.isActive("table")
-      ? [...tableItems, ...toolBarItems.value]
+      ? [...tableItems, ...buildToolbarItems(isLoading.value, editor, onCustomPromptClick)]
       : editor.isActive("codeBlock")
         ? codeToolbar(editor)
-        : toolBarItems.value;
+        : buildToolbarItems(isLoading.value, editor, onCustomPromptClick);
 
 const focusEditor = () => {
   editorRef.value?.editor?.commands.focus();
@@ -103,11 +154,15 @@ const focusEditor = () => {
 
 <template>
   <div
-    class="grid grid-cols-1 gap-8"
-    :class="tocAnchors.length !== 0 && 'xl:grid-cols-[minmax(0,1fr)_17rem]'"
+    class="grid grid-cols-1 gap-8 max-w-3xl mx-auto"
+    :class="tocAnchors.length !== 0 && 'xl:grid-cols-[minmax(0,1fr)_17rem] max-w-5xl!'"
   >
     <div>
-      <EditorHead v-model="tabTitle" @enter="focusEditor" />
+      <EditorHead
+        v-model="tabTitle"
+        :folder-label="currentTab?.collectionName"
+        @enter="focusEditor"
+      />
       <UEditor
         ref="editorRef"
         v-slot="{ editor }"
@@ -117,7 +172,7 @@ const focusEditor = () => {
         :extensions="[...tipTapExtensions, completionExtension]"
         class="py-2 min-h-21"
         :ui="{
-          base: 'sm:px-0! text-[17.8px] w-full px-0!',
+          base: 'sm:px-0! cursor-auto! text-[17.5px] w-full px-0!',
         }"
         textDirection="auto"
       >
@@ -127,8 +182,10 @@ const focusEditor = () => {
           layout="bubble"
           :should-show="shouldShowToolbar"
           :ui="{
-            root: 'z-130!',
-            base: 'p-0.5',
+            root: 'z-130! blur-[0.01px]',
+            base: 'p-px rounded-sm dark:bg-neutral-800! pr-0! gap-1 pl-px',
+            group: '[&>button]:dark:hover:bg-neutral-700!',
+            separator: 'dark:bg-neutral-700!',
           }"
         >
           <template #link>
@@ -138,7 +195,13 @@ const focusEditor = () => {
             <EditorCodePopover :editor="editor" />
           </template>
           <template #prompt>
-            <EditorAiPopover :editor="editor" auto-open />
+            <EditorAiPopover
+              :editor="editor"
+              :open="aiPopoverOpen"
+              @update:open="handleAiPopoverOpenUpdate"
+              @update:loading="(val: boolean | undefined) => (aiPopoverLoading = val ?? false)"
+              auto-open
+            />
           </template>
         </UEditorToolbar>
 

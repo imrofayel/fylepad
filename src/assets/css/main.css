@@ -43,13 +43,21 @@ body {
   --highlight-purple: #e6ddff;
 }
 
+* {
+  @apply antialiased subpixel-antialiased
+}
+
+p, input, button {
+  @apply blur-[0.001px]
+}
+
 .light {
-  --ui-text: var(--ui-color-neutral-500);
+  --ui-text: var(--ui-color-neutral-800);
   --ui-bg: white;
 }
 
 .dark {
-  --ui-text: var(--ui-color-neutral-400);
+  --ui-text: var(--ui-color-neutral-200);
   --ui-bg: var(--ui-color-neutral-900);
   --color-green: #188744;
 
@@ -62,7 +70,7 @@ body {
 }
 
 .text-clear {
-  color: light-dark(var(--ui-color-neutral-950), var(--ui-color-neutral-50));
+  color: light-dark(var(--ui-color-neutral-800), var(--ui-color-neutral-50));
 }
 
 * {
@@ -86,23 +94,7 @@ body {
   }
 }
 
-.v3-emoji-picker {
-  @apply rounded-md! dark:bg-neutral-900! font-medium! text-default!;
 
-  .v3-sticky {
-    @apply dark:bg-neutral-900! text-sm!;
-  }
-
-  .v3-skin-tones {
-    @apply bg-transparent!;
-  }
-
-  .v3-search {
-    input {
-      @apply text-sm! h-8! font-medium!;
-    }
-  }
-}
 
 .completion-suggestion {
   color: light-dark(var(--ui-color-neutral-400), var(--ui-color-neutral-500));
@@ -604,10 +596,10 @@ html.dark .tiptap .twoslash .twoslash-popup-code .shiki span {
 }
 
 .v3-emoji-picker {
-  @apply rounded-md! dark:bg-neutral-900! font-medium! text-default!;
+  @apply rounded-md! shadow-none font-medium! text-default! bg-transparent;
 
   .v3-sticky {
-    @apply dark:bg-neutral-900! text-sm!;
+    @apply dark:bg-neutral-800! bg-white! text-sm!;
   }
 
   .v3-skin-tones {
@@ -723,4 +715,8 @@ h4,
 h5,
 h6 {
   @apply text-default!;
+}
+
+html, button {
+  cursor: url('../icons/xfce/cursor.svg'), auto !important;
 }

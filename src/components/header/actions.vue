@@ -9,13 +9,18 @@ const { activeTabId } = useEditor();
 <template>
   <div class="flex items-center gap-2.5" v-if="activeTabId">
     <EmojiPicker />
-    <EditorCustomize />
-    <ButtonWithTooltip text="Search (Ctrl + F)" :icon="ICONS.search" />
+    <!-- <EditorCustomize /> -->
+    <ButtonWithTooltip text="Search" :icon="ICONS.search" />
 
     <HeaderMenu />
+    <AuthUser />
   </div>
 
-  <UTooltip :text="value === 'light' ? 'Dark mode' : 'Light mode'" arrow v-if="!activeTabId">
-    <UColorModeButton variant="link" color="neutral" />
-  </UTooltip>
+  <div class="flex gap-2.5" v-if="!activeTabId">
+    <UTooltip :text="value === 'light' ? 'Dark mode' : 'Light mode'" arrow>
+      <UColorModeButton variant="link" color="neutral" />
+    </UTooltip>
+
+    <AuthUser />
+  </div>
 </template>

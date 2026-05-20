@@ -25,7 +25,13 @@ const emojiTheme = computed(() => (colorMode.value === "dark" ? "dark" : "light"
 </script>
 
 <template>
-  <UPopover arrow>
+  <UPopover
+    arrow
+    :ui="{
+      content: 'bg-white dark:bg-neutral-800!',
+      arrow: 'dark:fill-neutral-800! fill-background!',
+    }"
+  >
     <ButtonWithTooltip text="Emoji" :icon="ICONS.emoji" />
     <template #content>
       <EmojiPicker :native="true" :theme="emojiTheme" :display-recent="true" @select="onSelect" />

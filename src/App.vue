@@ -15,7 +15,7 @@ useHead(SEO);
       delayDuration: 30,
     }"
   >
-    <div class="bg-default" data-vaul-drawer-wrapper>
+    <div class="min-h-screen bg-default" data-vaul-drawer-wrapper>
       <RouterView />
     </div>
   </UApp>

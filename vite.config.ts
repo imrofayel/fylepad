@@ -12,9 +12,13 @@ export default defineConfig(async () => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
       "@lib": path.resolve(__dirname, "./src/lib"),
+      "@assets": path.resolve(__dirname, "./src/assets"),
       "@utils": path.resolve(__dirname, "./src/utils"),
     },
   },
+
+  // ensure relative asset paths when built for Tauri bundles (robust check)
+  base: process.env.TAURI_BUILD || process.env.NODE_ENV === "production" ? "./" : "/",
 
   optimizeDeps: {
     include: [
@@ -28,9 +32,7 @@ export default defineConfig(async () => ({
   },
 
   plugins: [
-    VueRouter({
-      /* options */
-    }),
+    VueRouter(),
     vue(),
     ui({
       icon: {
@@ -54,8 +56,9 @@ export default defineConfig(async () => ({
         },
         tooltip: {
           slots: {
-            content: "p-2 h-7",
-            text: "dark:text-neutral-300 text-neutral-600 font-medium! text-[13px]",
+            content: "p-2 h-7 bg-white! dark:bg-neutral-800! z-[100]",
+            text: "text-default text-[14px]",
+            arrow: "dark:fill-neutral-800! fill-background!",
           },
         },
         slideover: {
@@ -82,11 +85,14 @@ export default defineConfig(async () => ({
           },
         },
         button: {
+          slots: {
+            base: "focus:ring-0!",
+          },
           compoundVariants: [
             {
               color: "neutral",
               variant: "link",
-              class: "hover:text-neutral-600 dark:hover:text-neutral-300 px-0",
+              class: "hover:text-neutral-600 text-default dark:hover:text-neutral-300 px-0",
             },
             {
               color: "neutral",

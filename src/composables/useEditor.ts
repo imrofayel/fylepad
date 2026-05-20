@@ -1,18 +1,120 @@
 import type { Editor } from "@tiptap/core";
 import { computed, markRaw, ref, shallowReactive } from "vue";
+import { useFileSystemAccess, useMagicKeys, useStorage, whenever } from "@vueuse/core";
+import {
+  createEmptyTabRecord,
+  deleteEditorTab,
+  ensureEditorSchema,
+  IS_TAURI,
+  loadEditorTabs,
+  saveEditorTab,
+  type EditorMetadata,
+  type EditorTabRecord,
+} from "@/lib/editorDb";
 
-export type EditorTab = {
-  id: string;
-  title: string;
+export type EditorTab = EditorTabRecord;
+
+const tabs = ref<EditorTab[]>([]);
+const isReady = ref(false);
+let initializationPromise: Promise<void> | null = null;
+
+const activeTabId = useStorage("active-tab-id", "");
+const editors = shallowReactive(new Map<string, Editor>());
+const pendingSaveTimers = new Map<string, ReturnType<typeof setTimeout>>();
+const markdownFileType = {
+  description: "Markdown",
+  accept: {
+    "text/markdown": [".md", ".markdown", ".txt"],
+  },
 };
 
-const tabs = ref<EditorTab[]>([{ id: "notes", title: "Untitled" }]);
-let tabCounter = 1;
+const markdownDialogFilters = [
+  {
+    name: "Markdown",
+    extensions: ["md", "markdown", "txt"],
+  },
+];
 
-const activeTabId = ref(tabs.value[0]?.id ?? "");
-const editors = shallowReactive(new Map<string, Editor>());
+const browserFileSystemAccess = useFileSystemAccess({
+  dataType: "Text",
+  types: [markdownFileType],
+});
+const {
+  data: browserFileData,
+  fileName: browserFileName,
+  open: openBrowserFile,
+  save: saveBrowserFile,
+} = browserFileSystemAccess;
 
 const getTab = (tabId: string) => tabs.value.find((tab) => tab.id === tabId);
+
+const parseFrontmatter = (content: string) => {
+  const frontmatterRegex = /^---\n([\s\S]*?)\n---\n?([\s\S]*)$/;
+  const match = content.match(frontmatterRegex);
+
+  if (!match) return { frontmatter: null, body: content };
+
+  return { frontmatter: match[1], body: match[2] };
+};
+
+const extractTitleFromFrontmatter = (fm: string | null) => {
+  if (!fm) return null;
+  const titleMatch = fm.match(/^title:\s*["']?([^"'\n]+)["']?$/m);
+  return titleMatch ? titleMatch[1].trim() : null;
+};
+
+const buildFrontmatter = (title: string) => `---\ntitle: "${title.replace(/"/g, '\\"')}"\n---\n\n`;
+
+const normalizeTabTitle = (value: string) => value.trim() || "Untitled";
+
+const getSourceNameFromPath = (sourcePathOrName: string) =>
+  sourcePathOrName.split(/[\\/]/).pop() || sourcePathOrName;
+
+const getMarkdownFromEditor = (editor: Editor | undefined, tab: EditorTabRecord) => {
+  if (editor && typeof (editor as any).storage?.markdown?.getMarkdown === "function") {
+    return (editor as any).storage.markdown.getMarkdown() as string;
+  }
+
+  if (typeof (tab.metadata as any)?.rawMarkdown === "string") {
+    return (tab.metadata as any).rawMarkdown as string;
+  }
+
+  return "";
+};
+
+const persistTab = async (tabId: string) => {
+  const tab = getTab(tabId);
+
+  if (!tab) {
+    return;
+  }
+
+  const editor = editors.get(tabId);
+
+  if (editor) {
+    tab.content = editor.getJSON();
+  }
+
+  await saveEditorTab(tab);
+};
+
+const scheduleTabSave = (tabId: string) => {
+  const existingTimer = pendingSaveTimers.get(tabId);
+
+  if (existingTimer) {
+    clearTimeout(existingTimer);
+  }
+
+  const timer = setTimeout(() => {
+    pendingSaveTimers.delete(tabId);
+
+    void persistTab(tabId).catch((error) => {
+      console.error(`Failed to persist tab ${tabId}:`, error);
+    });
+  }, 250);
+
+  pendingSaveTimers.set(tabId, timer);
+};
 
 const updateTabTitle = (tabId: string, title: string) => {
   const tab = getTab(tabId);
@@ -22,25 +124,40 @@ const updateTabTitle = (tabId: string, title: string) => {
   }
 
   tab.title = title.trim() || "Untitled";
+  scheduleTabSave(tabId);
+};
+
+const updateTabMetadata = (tabId: string, metadata: EditorMetadata) => {
+  const tab = getTab(tabId);
+
+  if (!tab) {
+    return;
+  }
+
+  tab.metadata = metadata;
+  scheduleTabSave(tabId);
+};
+
+const updateTabContent = (tabId: string, content: EditorTab["content"]) => {
+  const tab = getTab(tabId);
+
+  if (!tab) {
+    return;
+  }
+
+  tab.content = content;
+  scheduleTabSave(tabId);
 };
 
 const createTab = () => {
-  let id = `tab-${tabCounter}`;
-
-  while (tabs.value.some((tab) => tab.id === id)) {
-    tabCounter += 1;
-    id = `tab-${tabCounter}`;
-  }
-
-  tabCounter += 1;
-
-  const tab: EditorTab = {
-    id,
-    title: "Untitled",
-  };
+  const tab = createEmptyTabRecord(globalThis.crypto.randomUUID());
 
   tabs.value = [...tabs.value, tab];
   activeTabId.value = tab.id;
+
+  void saveEditorTab(tab).catch((error) => {
+    console.error(`Failed to create tab ${tab.id}:`, error);
+  });
 
   return tab;
 };
@@ -54,7 +171,18 @@ const closeTab = (tabId: string) => {
 
   tabs.value = tabs.value.filter((tab) => tab.id !== tabId);
 
+  const timer = pendingSaveTimers.get(tabId);
+
+  if (timer) {
+    clearTimeout(timer);
+    pendingSaveTimers.delete(tabId);
+  }
+
   editors.delete(tabId);
+
+  void deleteEditorTab(tabId).catch((error) => {
+    console.error(`Failed to delete tab ${tabId}:`, error);
+  });
 
   if (activeTabId.value === tabId) {
     if (tabs.value.length > 0) {
@@ -66,7 +194,69 @@ const closeTab = (tabId: string) => {
   }
 };
 
+export const initializeEditorStore = async () => {
+  if (isReady.value) {
+    return;
+  }
+
+  if (initializationPromise) {
+    return initializationPromise;
+  }
+
+  initializationPromise = (async () => {
+    try {
+      await ensureEditorSchema();
+      const persistedTabs = await loadEditorTabs();
+
+      if (persistedTabs.length === 0) {
+        const tab = createEmptyTabRecord(globalThis.crypto.randomUUID());
+        tabs.value = [tab];
+        activeTabId.value = tab.id;
+        await saveEditorTab(tab);
+      } else {
+        tabs.value = persistedTabs;
+        if (!tabs.value.some((t) => t.id === activeTabId.value)) {
+          activeTabId.value = persistedTabs[0]?.id ?? "";
+        }
+      }
+    } catch (error) {
+      console.error("Failed to initialize the editor store:", error);
+
+      if (tabs.value.length === 0) {
+        const tab = createEmptyTabRecord(globalThis.crypto.randomUUID());
+        tabs.value = [tab];
+        activeTabId.value = tab.id;
+      }
+    } finally {
+      isReady.value = true;
+    }
+  })();
+
+  return initializationPromise;
+};
+
 export function useEditor() {
+  const keys = useMagicKeys({
+    passive: false,
+    onEventFired(event) {
+      if (
+        (event.ctrlKey || event.metaKey) &&
+        (event.key === "s" || event.key === "S") &&
+        event.type === "keydown"
+      ) {
+        event.preventDefault();
+      }
+
+      if (
+        (event.ctrlKey || event.metaKey) &&
+        (event.key === "o" || event.key === "O") &&
+        event.type === "keydown"
+      ) {
+        event.preventDefault();
+      }
+    },
+  });
+
   const activeEditor = computed(() => editors.get(activeTabId.value));
 
   const registerEditor = (tabId: string, editor: Editor) => {
@@ -80,20 +270,141 @@ export function useEditor() {
   const getEditor = (tabId: string = activeTabId.value) => editors.get(tabId);
 
   const setActiveTab = (tabId: string) => {
-    activeTabId.value = tabId;
+    if (!tabId || tabs.value.some((tab) => tab.id === tabId)) {
+      activeTabId.value = tabId;
+    }
   };
+
+  const openFileDialog = async () => {
+    if (IS_TAURI) {
+      const { open } = await import("@tauri-apps/plugin-dialog");
+      const { readTextFile } = await import("@tauri-apps/plugin-fs");
+
+      const selectedPath = await open({
+        multiple: false,
+        directory: false,
+        filters: markdownDialogFilters,
+      });
+
+      if (!selectedPath || Array.isArray(selectedPath)) {
+        return;
+      }
+
+      const content = await readTextFile(selectedPath);
+      await handleImportedContent(content, selectedPath);
+      return;
+    }
+
+    if (!browserFileSystemAccess.isSupported.value) {
+      console.warn("File System Access API is not supported in this browser.");
+      return;
+    }
+
+    await openBrowserFile({ types: [markdownFileType] });
+
+    if (typeof browserFileData.value === "string" && browserFileData.value) {
+      await handleImportedContent(browserFileData.value, browserFileName.value || undefined);
+    }
+  };
+
+  const handleImportedContent = async (text: string, sourcePathOrName?: string) => {
+    const { frontmatter, body } = parseFrontmatter(text);
+    const titleFromFm = extractTitleFromFrontmatter(frontmatter);
+    const defaultTitle =
+      titleFromFm ||
+      (typeof sourcePathOrName === "string"
+        ? String(sourcePathOrName).replace(/\.(md|markdown|txt)$/, "")
+        : "Untitled");
+
+    const tab = createEmptyTabRecord(globalThis.crypto.randomUUID());
+    tab.title = normalizeTabTitle(defaultTitle);
+    tab.metadata = {
+      rawMarkdown: body,
+      origin: "external_file",
+      sourceName: sourcePathOrName ? getSourceNameFromPath(sourcePathOrName) : undefined,
+      sourcePath: sourcePathOrName,
+    } as EditorMetadata;
+
+    tabs.value = [...tabs.value, tab];
+    activeTabId.value = tab.id;
+
+    try {
+      await saveEditorTab(tab);
+    } catch (err) {
+      console.error("Failed to save imported tab to DB:", err);
+    }
+  };
+
+  const exportActiveToMarkdown = async () => {
+    const tab = getTab(activeTabId.value);
+    const editor = editors.get(activeTabId.value);
+
+    if (!tab) return "";
+
+    const markdown = getMarkdownFromEditor(editor, tab);
+
+    const title = tab.title || "Untitled";
+    return buildFrontmatter(title) + markdown;
+  };
+
+  const saveActiveToDisk = async () => {
+    const tab = getTab(activeTabId.value);
+
+    if (!tab) {
+      return;
+    }
+
+    const fullMarkdown = await exportActiveToMarkdown();
+
+    if (IS_TAURI) {
+      const { save } = await import("@tauri-apps/plugin-dialog");
+      const { writeTextFile } = await import("@tauri-apps/plugin-fs");
+
+      const targetPath = await save({ filters: markdownDialogFilters });
+
+      if (!targetPath || Array.isArray(targetPath)) {
+        return;
+      }
+
+      await writeTextFile(targetPath, fullMarkdown);
+
+      return;
+    }
+
+    if (!browserFileSystemAccess.isSupported.value) {
+      console.warn("File System Access API is not supported in this browser.");
+      return;
+    }
+
+    browserFileData.value = fullMarkdown;
+    await saveBrowserFile({ suggestedName: `${normalizeTabTitle(tab.title)}.md` });
+  };
+
+  whenever(
+    () => keys.ctrl_o?.value || keys.meta_o?.value,
+    () => {
+      void openFileDialog();
+    },
+  );
 
   return {
     activeEditor,
     activeTabId,
     closeTab,
     createTab,
+    initializeEditorStore,
     editors,
     getEditor,
     getTab,
+    isReady,
     registerEditor,
     setActiveTab,
+    updateTabContent,
+    updateTabMetadata,
     updateTabTitle,
+    openFileDialog,
+    exportActiveToMarkdown,
+    saveActiveToDisk,
     tabs,
     unregisterEditor,
   };

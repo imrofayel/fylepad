@@ -2,6 +2,24 @@ import { EditorSuggestionMenuItem, EditorToolbarItem } from "@nuxt/ui";
 import { Editor } from "@tiptap/core";
 import { ICONS } from "./constants/icons";
 
+const getHighlightColorStyle = (editor: Editor | undefined): { style?: Record<string, string> } => {
+  if (!editor) return {};
+
+  let highlightColor = "var(--highlight-yellow)";
+
+  const isHighlighted = editor.isActive("highlight");
+
+  if (isHighlighted) {
+    highlightColor = editor.getAttributes("highlight").color || highlightColor;
+  }
+
+  return {
+    style: {
+      color: highlightColor,
+    },
+  };
+};
+
 const highlightPalette = [
   {
     label: "Default Yellow",
@@ -128,7 +146,11 @@ const suggestionMenu: EditorSuggestionMenuItem[][] = [
   ],
 ];
 
-const buildToolbarItems = (aiLoading: boolean | undefined): EditorToolbarItem[][] => {
+const buildToolbarItems = (
+  aiLoading: boolean | undefined,
+  editor?: Editor,
+  onCustomPromptClick?: () => void,
+): EditorToolbarItem[][] => {
   return [
     [
       {
@@ -160,17 +182,8 @@ const buildToolbarItems = (aiLoading: boolean | undefined): EditorToolbarItem[][
         tooltip: { text: "Strikethrough", arrow: true },
       },
       {
-        kind: "mark",
-        size: "md",
-        mark: "code",
-        icon: ICONS.code,
-        tooltip: { text: "Code", arrow: true },
-      },
-      {
         slot: "link" as const,
       },
-    ],
-    [
       {
         icon: ICONS.alignLeft,
         size: "md",
@@ -205,11 +218,11 @@ const buildToolbarItems = (aiLoading: boolean | undefined): EditorToolbarItem[][
           },
         ],
       },
-    ],
-    [
       {
-        icon: ICONS.style,
+        icon: ICONS.highlight,
         size: "md",
+        ...getHighlightColorStyle(editor),
+        class: "scale-110 p-1 relative top-px",
         tooltip: { text: "Highlight", arrow: true },
         content: {
           align: "start",
@@ -235,19 +248,20 @@ const buildToolbarItems = (aiLoading: boolean | undefined): EditorToolbarItem[][
     ],
     [
       {
-        slot: "prompt" as const,
-      },
-    ],
-    [
-      {
         icon: ICONS.ai,
         size: "md",
+        class: "relative right-0.5",
         loading: aiLoading,
         content: {
           align: "start",
         },
         tooltip: { text: "Assistant", arrow: true },
         items: [
+          {
+            icon: ICONS.ai,
+            label: "Custom prompt",
+            onClick: onCustomPromptClick,
+          },
           {
             kind: "aiFix",
             icon: ICONS.aiSpellcheck,
@@ -280,6 +294,9 @@ const buildToolbarItems = (aiLoading: boolean | undefined): EditorToolbarItem[][
           },
         ],
       },
+      {
+        slot: "prompt" as const,
+      },
     ],
   ];
 };
@@ -288,7 +305,7 @@ const tableItems: EditorToolbarItem[][] = [
   [
     {
       icon: ICONS.table,
-      label: "Table",
+      tooltip: { text: "Table", arrow: true },
       content: {
         align: "start",
       },

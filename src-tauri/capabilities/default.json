@@ -2,19 +2,61 @@
   "$schema": "../gen/schemas/desktop-schema.json",
   "identifier": "default",
   "description": "Capability for the main window",
-  "windows": ["main"],
+  "windows": [
+    "main"
+  ],
+  "webviews": [
+    "main"
+  ],
+  "platforms": [
+    "linux",
+    "windows",
+    "macOS"
+  ],
   "permissions": [
     "core:default",
-    "opener:default",
+    {
+      "identifier": "opener:allow-open-url",
+      "allow": [
+        {
+          "url": "https://*"
+        },
+        {
+          "url": "http://*"
+        }
+      ]
+    },
     "core:webview:allow-set-webview-zoom",
+    "sql:default",
+    "sql:allow-execute",
     {
       "identifier": "http:default",
       "allow": [
-        { "url": "https://kroki.io**" },
-        { "url": "https://typescriptlang.org**" },
-        { "url": "https://youtube.com**" },
-        { "url": "https://spotify.com**" }
+        {
+          "url": "http://127.0.0.1:1420/**"
+        },
+        {
+          "url": "http://localhost:1420/**"
+        },
+        {
+          "url": "https://kroki.io**"
+        },
+        {
+          "url": "https://typescriptlang.org**"
+        },
+        {
+          "url": "https://youtube.com**"
+        },
+        {
+          "url": "https://spotify.com**"
+        }
       ]
-    }
+    },
+    "deep-link:default",
+    "dialog:default",
+    "fs:default",
+    "fs:allow-read",
+    "fs:allow-write",
+    "fs:allow-write-text-file"
   ]
 }
