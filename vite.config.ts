@@ -12,6 +12,7 @@ export default defineConfig(async () => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
       "@lib": path.resolve(__dirname, "./src/lib"),
+      "@assets": path.resolve(__dirname, "./src/assets"),
       "@utils": path.resolve(__dirname, "./src/utils"),
     },
   },
@@ -56,7 +57,7 @@ export default defineConfig(async () => ({
         tooltip: {
           slots: {
             content: "p-2 h-7",
-            text: "dark:text-neutral-300 text-neutral-600 font-medium! text-[13px]",
+            text: "text-default text-[14px]",
           },
         },
         slideover: {
@@ -90,12 +91,7 @@ export default defineConfig(async () => ({
             {
               color: "neutral",
               variant: "link",
-              class: "hover:text-neutral-600 dark:hover:text-neutral-300 px-0",
-            },
-            {
-              color: "neutral",
-              variant: "link",
-              class: "hover:text-neutral-600 dark:hover:text-neutral-300 px-0",
+              class: "hover:text-neutral-600 text-default dark:hover:text-neutral-300 px-0",
             },
             {
               color: "neutral",

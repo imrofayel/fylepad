@@ -9,6 +9,7 @@ import aiSvg from "./assets/icons/hume-ai.svg?raw";
 import { registerIcons } from "@lib/register-icons.js";
 import { patchFetchForTauri } from "@lib/tauri-fetch.js";
 import { initializeEditorStore } from "@/composables/useEditor";
+import "@lib/xfce-icons";
 
 patchFetchForTauri();
 

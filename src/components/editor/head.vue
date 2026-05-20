@@ -18,7 +18,7 @@ const normalizeTabTitle = () => {
     placeholder="Untitled"
     class="w-full"
     :ui="{
-      base: 'ring-0 px-0 text-2xl! tracking-tight shadow-none mt-2.5 focus-visible:ring-0!',
+      base: 'ring-0 px-0 text-2xl! font-normal tracking-tight shadow-none mt-2.5 mb-2 focus-visible:ring-0!',
     }"
     @keydown.enter.prevent="emits('enter')"
     @blur="normalizeTabTitle"

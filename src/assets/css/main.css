@@ -43,13 +43,21 @@ body {
   --highlight-purple: #e6ddff;
 }
 
+* {
+  @apply antialiased subpixel-antialiased
+}
+
+p, input, button {
+  @apply blur-[0.001px]
+}
+
 .light {
-  --ui-text: var(--ui-color-neutral-500);
+  --ui-text: var(--ui-color-neutral-800);
   --ui-bg: white;
 }
 
 .dark {
-  --ui-text: var(--ui-color-neutral-400);
+  --ui-text: var(--ui-color-neutral-200);
   --ui-bg: var(--ui-color-neutral-900);
   --color-green: #188744;
 
@@ -707,4 +715,8 @@ h4,
 h5,
 h6 {
   @apply text-default!;
+}
+
+html, button {
+  cursor: url('../icons/xfce/cursor.svg'), auto !important;
 }
