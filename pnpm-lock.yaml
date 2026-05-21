@@ -153,9 +153,6 @@ importers:
       vue-router:
         specifier: ^5.0.4
         version: 5.0.4(@vue/compiler-sfc@3.5.32)(vue@3.5.32(typescript@5.6.3))
-      vue3-emoji-picker:
-        specifier: ^1.1.8
-        version: 1.1.8(typescript@5.6.3)
     devDependencies:
       '@iconify-json/logos':
         specifier: ^1.2.11
@@ -924,9 +921,6 @@ packages:
 
   '@polka/url@1.0.0-next.29':
     resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
-
-  '@popperjs/core@2.11.8':
-    resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
 
   '@prerenderer/prerenderer@0.7.2':
     resolution: {integrity: sha512-zWG3uFnrQWDJQoSzGB8bOnNhJCgIiylVYDFBP7Nw2LqngHOqwvpdBtGSjfajC8+fdR/iB2FqMqe27cfdmf/8TQ==}
@@ -2941,9 +2935,6 @@ packages:
   idb-keyval@6.2.2:
     resolution: {integrity: sha512-yjD9nARJ/jb1g+CvD0tlhUHOrJ9Sy0P8T9MF3YaLlHnSRpwPfpTX0XIvpmw3gAJUmEu3FiICLBDPXVwyEvrleg==}
 
-  idb@7.1.1:
-    resolution: {integrity: sha512-gchesWBzyvGHRO9W8tzUWFDycow5gwjvFKfyV9FF32Y7F50yZMp7mP+T2mJIWFx49zicqyC4uefHM17o6xKIVQ==}
-
   ignore@7.0.5:
     resolution: {integrity: sha512-Hs59xBNfUIunMFgWAbGX5cq6893IbWg4KnrjbYwX3tx0ztorVgTDA6B2sxf8ejHJ4wz8BqGUMYlnzNBer5NvGg==}
     engines: {node: '>= 4'}
@@ -4267,10 +4258,6 @@ packages:
     peerDependencies:
       typescript: '>=5.0.0'
 
-  vue3-emoji-picker@1.1.8:
-    resolution: {integrity: sha512-k9tVHeQEBVLzVCLYAkFaI1nib3FJFQwdPhWD5khJkhks3ktg3g12z5wPGOSDpIuSLNtelRGvq1qdmZuJu5khfA==}
-    engines: {node: '>=16.0.0'}
-
   vue@3.5.32:
     resolution: {integrity: sha512-vM4z4Q9tTafVfMAK7IVzmxg34rSzTFMyIe0UUEijUCkn9+23lj0WRfA83dg7eQZIUlgOSGrkViIaCfqSAUXsMw==}
     peerDependencies:
@@ -5035,8 +5022,6 @@ snapshots:
     optional: true
 
   '@polka/url@1.0.0-next.29': {}
-
-  '@popperjs/core@2.11.8': {}
 
   '@prerenderer/prerenderer@0.7.2(debug@4.4.3)':
     dependencies:
@@ -7107,8 +7092,6 @@ snapshots:
 
   idb-keyval@6.2.2: {}
 
-  idb@7.1.1: {}
-
   ignore@7.0.5: {}
 
   inflight@1.0.6:
@@ -8529,14 +8512,6 @@ snapshots:
       '@volar/typescript': 2.4.15
       '@vue/language-core': 2.2.12(typescript@5.6.3)
       typescript: 5.6.3
-
-  vue3-emoji-picker@1.1.8(typescript@5.6.3):
-    dependencies:
-      '@popperjs/core': 2.11.8
-      idb: 7.1.1
-      vue: 3.5.32(typescript@5.6.3)
-    transitivePeerDependencies:
-      - typescript
 
   vue@3.5.32(typescript@5.6.3):
     dependencies:

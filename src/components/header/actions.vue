@@ -8,8 +8,6 @@ const { activeTabId } = useEditor();
 </script>
 <template>
   <div class="flex items-center gap-2.5" v-if="activeTabId">
-    <EmojiPicker />
-    <!-- <EditorCustomize /> -->
     <ButtonWithTooltip text="Search" :icon="ICONS.search" />
 
     <HeaderMenu />
