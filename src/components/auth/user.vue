@@ -11,27 +11,40 @@ const show = import.meta.env.VITE_SHOW_USER === "true";
 
 <template>
   <div v-if="show">
-    <USkeleton class="h-8 w-8 rounded-full bg-accented" v-if="loading" />
+    <USkeleton class="h-7 w-7 rounded-full bg-accented" v-if="loading" />
 
     <div v-else-if="user">
-      <UPopover arrow>
-        <UAvatar :src="user.image" :alt="user.name" class="w-8 h-8" />
+      <UPopover
+        arrow
+        :ui="{
+          content: 'bg-white dark:bg-neutral-800!',
+          arrow: 'fill-background! dark:fill-neutral-800!',
+        }"
+      >
+        <UAvatar :src="user.image" :alt="user.name" class="w-7 h-7" />
 
         <template #content>
-          <div class="flex flex-col p-0.5 py-1 gap-0.5 w-42">
+          <div class="flex flex-col p-0.5 py-1 w-42">
             <UButton
               label="Catelog"
               variant="link"
               color="neutral"
               :icon="ICONS.home"
-              class="p-2 py-1.5"
+              class="p-2 py-1.5 font-normal text-[15px]"
+              :ui="{
+                leadingIcon: 'size-4.5',
+              }"
             />
             <UButton
               label="Settings"
               variant="link"
               color="neutral"
               :icon="ICONS.settings"
-              class="p-2 py-1.5"
+              class="p-2 py-1.5 font-normal text-[15px]"
+              :ui="{
+                leadingIcon: 'size-4.5',
+              }"
+              `
               @click="router.push('/settings')"
             />
             <UButton
@@ -39,7 +52,10 @@ const show = import.meta.env.VITE_SHOW_USER === "true";
               variant="link"
               color="error"
               :icon="ICONS.logout"
-              class="p-2 py-1.5"
+              class="p-2 py-1.5 font-normal text-[15px]"
+              :ui="{
+                leadingIcon: 'size-4.5',
+              }"
               @click="logout"
             />
           </div>
@@ -48,13 +64,7 @@ const show = import.meta.env.VITE_SHOW_USER === "true";
     </div>
 
     <div v-else>
-      <UButton
-        label="Login"
-        :ui="{
-          base: 'py-1! px-2 cursor-pointer',
-        }"
-        @click="signInWithGoogle"
-      />
+      <ButtonWithTooltip text="Login" :icon="ICONS.login" @click="signInWithGoogle" />
     </div>
   </div>
 </template>

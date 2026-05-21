@@ -17,14 +17,17 @@ const { openFileDialog, saveActiveToDisk } = useEditor();
     <ButtonWithTooltip text="Menu" :icon="ICONS.menu" />
 
     <template #content>
-      <div class="flex flex-col p-0.5 py-1 gap-0.5 w-42">
+      <div class="flex flex-col p-0.5 py-1 w-42">
         <UButton
-          label="Save file (Ctrl + S)"
+          label="Save file"
           variant="link"
           color="neutral"
           :icon="ICONS.markdown"
-          class="p-2 py-1.5"
+          class="p-2 py-1.5 font-normal text-[15px]"
           @click="saveActiveToDisk"
+          :ui="{
+            leadingIcon: 'size-4.5',
+          }"
         />
 
         <UButton
@@ -32,15 +35,21 @@ const { openFileDialog, saveActiveToDisk } = useEditor();
           variant="link"
           color="neutral"
           :icon="ICONS.folderOpen"
-          class="p-2 py-1.5"
+          class="p-2 py-1.5 font-normal text-[15px]"
           @click="openFileDialog"
+          :ui="{
+            leadingIcon: 'size-4.5',
+          }"
         />
 
         <UColorModeButton
           variant="link"
           color="neutral"
           :label="color === 'light' ? 'Dark mode' : 'Light mode'"
-          class="p-2 py-1.5"
+          class="p-2 py-1.5 font-normal text-[15px]"
+          :ui="{
+            leadingIcon: 'size-4.5',
+          }"
         />
 
         <UButton
@@ -48,7 +57,10 @@ const { openFileDialog, saveActiveToDisk } = useEditor();
           variant="link"
           color="neutral"
           :icon="ICONS.info"
-          class="p-2 py-1.5"
+          class="p-2 py-1.5 font-normal text-[15px]"
+          :ui="{
+            leadingIcon: 'size-4.5',
+          }"
         />
       </div>
     </template>

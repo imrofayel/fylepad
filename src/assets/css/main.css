@@ -3,7 +3,6 @@
 @import "katex/dist/katex.min.css";
 @import "@shikijs/twoslash/style-rich.css";
 @import "./fonts.css";
-@import "vue3-emoji-picker/css";
 
 @theme {
   --color-green: #1bda67;
@@ -545,6 +544,10 @@ html.dark .tiptap .twoslash .twoslash-popup-code .shiki span {
   padding: 0 !important;
 }
 
+.twoslash-error-line {
+  @apply max-w-full! leading-normal
+}
+
 .tiptap .tiptap-mathematics-render--editable {
   cursor: pointer;
 }
@@ -592,24 +595,6 @@ html.dark .tiptap .twoslash .twoslash-popup-code .shiki span {
 
   &.resize-cursor {
     @apply cursor-ew-resize;
-  }
-}
-
-.v3-emoji-picker {
-  @apply rounded-md! shadow-none font-medium! text-default! bg-transparent;
-
-  .v3-sticky {
-    @apply dark:bg-neutral-800! bg-white! text-sm!;
-  }
-
-  .v3-skin-tones {
-    @apply bg-transparent!;
-  }
-
-  .v3-search {
-    input {
-      @apply text-sm! h-8! font-medium!;
-    }
   }
 }
 
