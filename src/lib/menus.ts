@@ -150,7 +150,63 @@ const buildToolbarItems = (
   aiLoading: boolean | undefined,
   editor?: Editor,
   onCustomPromptClick?: () => void,
+  showAiActions: boolean = true,
 ): EditorToolbarItem[][] => {
+  const aiRow: EditorToolbarItem[] = showAiActions
+    ? [
+        {
+          icon: ICONS.ai,
+          size: "md",
+          class: "relative right-0.5",
+          loading: aiLoading,
+          content: {
+            align: "start",
+          },
+          tooltip: { text: "Assistant", arrow: true },
+          items: [
+            {
+              icon: ICONS.ai,
+              label: "Custom prompt",
+              onClick: onCustomPromptClick,
+            },
+            {
+              kind: "aiFix",
+              icon: ICONS.aiSpellcheck,
+              label: "Fix spelling & grammar",
+            },
+            {
+              kind: "aiExtend",
+              icon: ICONS.arrowAutofitWidth,
+              label: "Extend text",
+            },
+            {
+              kind: "aiReduce",
+              icon: ICONS.arrowsDiagonalMinimize,
+              label: "Reduce text",
+            },
+            {
+              kind: "aiSimplify",
+              icon: ICONS.bulb,
+              label: "Simplify text",
+            },
+            {
+              kind: "aiContinue",
+              icon: ICONS.trackNext,
+              label: "Continue sentence",
+            },
+            {
+              kind: "aiSummarize",
+              icon: ICONS.menu,
+              label: "Summarize",
+            },
+          ],
+        },
+        {
+          slot: "prompt" as const,
+        },
+      ]
+    : [];
+
   return [
     [
       {
@@ -246,58 +302,7 @@ const buildToolbarItems = (
         ],
       },
     ],
-    [
-      {
-        icon: ICONS.ai,
-        size: "md",
-        class: "relative right-0.5",
-        loading: aiLoading,
-        content: {
-          align: "start",
-        },
-        tooltip: { text: "Assistant", arrow: true },
-        items: [
-          {
-            icon: ICONS.ai,
-            label: "Custom prompt",
-            onClick: onCustomPromptClick,
-          },
-          {
-            kind: "aiFix",
-            icon: ICONS.aiSpellcheck,
-            label: "Fix spelling & grammar",
-          },
-          {
-            kind: "aiExtend",
-            icon: ICONS.arrowAutofitWidth,
-            label: "Extend text",
-          },
-          {
-            kind: "aiReduce",
-            icon: ICONS.arrowsDiagonalMinimize,
-            label: "Reduce text",
-          },
-          {
-            kind: "aiSimplify",
-            icon: ICONS.bulb,
-            label: "Simplify text",
-          },
-          {
-            kind: "aiContinue",
-            icon: ICONS.trackNext,
-            label: "Continue sentence",
-          },
-          {
-            kind: "aiSummarize",
-            icon: ICONS.menu,
-            label: "Summarize",
-          },
-        ],
-      },
-      {
-        slot: "prompt" as const,
-      },
-    ],
+    ...(showAiActions ? [aiRow] : []),
   ];
 };
 

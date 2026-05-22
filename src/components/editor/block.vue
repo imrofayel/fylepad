@@ -2,6 +2,7 @@
 import type { Editor } from "@tiptap/core";
 import { computed, nextTick, ref, useTemplateRef, watch } from "vue";
 import { useEditorCompletion } from "@/composables/useEditorCompletion";
+import { useAuth } from "@/composables/useAuth";
 import { useEditorMathPopover } from "@/composables/useEditorMathPopover";
 import { useEditorToc } from "@/composables/useEditorToc";
 import { useEditor } from "@/composables/useEditor";
@@ -29,6 +30,7 @@ const {
   updateTabMetadata,
   updateTabTitle,
 } = useEditor();
+const { isAuthenticated } = useAuth();
 
 const currentTab = computed(() => getTab(props.tabId));
 
@@ -110,6 +112,8 @@ const tipTapExtensions = TipTapExtensions({
 
 const customHandlers = createEditorCustomHandlers(aiHandlers);
 
+const showAiActions = computed(() => isAuthenticated.value);
+
 const onCustomPromptClick = () => {
   nextTick(() => {
     aiPopoverOpen.value = true;
@@ -142,10 +146,17 @@ const getToolbarItems = (editor: any) =>
   editor.isActive("image")
     ? imageToolbar(editor)
     : editor.isActive("table")
-      ? [...tableItems, ...buildToolbarItems(isLoading.value, editor, onCustomPromptClick)]
+      ? [
+          ...tableItems,
+          ...buildToolbarItems(isLoading.value, editor, onCustomPromptClick, showAiActions.value),
+        ]
       : editor.isActive("codeBlock")
         ? codeToolbar(editor)
-        : buildToolbarItems(isLoading.value, editor, onCustomPromptClick);
+        : buildToolbarItems(isLoading.value, editor, onCustomPromptClick, showAiActions.value);
+
+const editorExtensions = computed(() =>
+  showAiActions.value ? [...tipTapExtensions, completionExtension] : tipTapExtensions,
+);
 
 const focusEditor = () => {
   editorRef.value?.editor?.commands.focus();
@@ -169,7 +180,7 @@ const focusEditor = () => {
         v-model="value"
         placeholder="Write / for commands..."
         :handlers="customHandlers"
-        :extensions="[...tipTapExtensions, completionExtension]"
+        :extensions="editorExtensions"
         class="py-2 min-h-21"
         :ui="{
           base: 'sm:px-0! cursor-auto! text-[17.5px] w-full px-0!',
