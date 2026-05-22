@@ -14,6 +14,9 @@ useHead(SEO);
       },
       delayDuration: 30,
     }"
+    :toaster="{
+      position: 'top-right',
+    }"
   >
     <div class="min-h-screen bg-default" data-vaul-drawer-wrapper>
       <RouterView />

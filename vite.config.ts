@@ -54,6 +54,14 @@ export default defineConfig(async () => ({
           dark: "tabler:sun",
           loading: "svg-spinners:tadpole",
         },
+        toast: {
+          slots: {
+            root: "relative group overflow-hidden bg-default shadow-sm rounded-sm ring ring-default p-3 flex gap-2.5 focus:outline-none",
+            wrapper: "w-0 flex-1 flex flex-col",
+            title: "text-[15px] font-normal text-default",
+            icon: "size-4.5",
+          },
+        },
         tooltip: {
           slots: {
             content: "p-2 h-7 bg-white! dark:bg-neutral-800! z-[100]",
