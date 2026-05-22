@@ -2,7 +2,7 @@
 import { ICONS } from "@/lib/constants/icons";
 import { useEditor } from "@/composables/useEditor";
 
-const { closeTab, createTab, setActiveTab, tabs } = useEditor();
+const { closeTab, createTab, setActiveTab, tabs, activeTabId } = useEditor();
 
 const selectTab = (id: string) => {
   setActiveTab(id);
@@ -30,10 +30,13 @@ const handleCloseTab = (id: string, event: Event) => {
           v-for="tab in tabs"
           :key="tab.id"
           :label="tab.title"
-          variant="outline"
+          variant="link"
           class="text-[17px] relative"
           :ui="{
-            base: ['py-0 px-2 font-normal'],
+            base: [
+              'py-0 px-2 font-normal',
+              activeTabId === tab.id && 'bg-neutral-100 dark:bg-neutral-800!',
+            ],
           }"
           @click="selectTab(tab.id)"
         >

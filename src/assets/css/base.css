@@ -1,0 +1,40 @@
+/* base.css - global resets and typography */
+body {
+  @apply bg-neutral-100! dark:bg-neutral-800!;
+}
+
+* {
+  @apply antialiased subpixel-antialiased;
+}
+
+p, input, button {
+  @apply blur-[0.001px];
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-display: swap;
+  scrollbar-color: var(--ui-color-neutral-400) transparent;
+  scrollbar-width: thin;
+}
+
+.dark {
+  * {
+    scrollbar-color: var(--ui-color-neutral-600) transparent;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply text-default!;
+}
+
+html, button {
+  cursor: url('../icons/xfce/cursor.svg'), auto !important;
+}

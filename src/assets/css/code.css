@@ -1,0 +1,100 @@
+.codeblock-with-copy {
+  position: relative;
+}
+
+.codeblock-copy-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.3rem;
+  height: 2.3rem;
+  padding: 0;
+  border: 0;
+  @apply rounded-full bg-neutral-200/50 dark:bg-neutral-900;
+  color: var(--ui-text);
+  opacity: 100;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+  transition:
+    opacity 120ms ease,
+    background-color 120ms ease,
+    transform 120ms ease;
+}
+
+.codeblock-copy-button svg {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.codeblock-copy-button:hover {
+  @apply opacity-80!;
+}
+
+pre.codeblock-with-copy:hover .codeblock-copy-button,
+pre.codeblock-with-copy:focus-within .codeblock-copy-button {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.codeblock-copy-button:hover {
+  background: color-mix(in srgb, var(--ui-bg) 88%, transparent);
+}
+
+.codeblock-copy-button[data-state="error"] {
+  color: #dc2626;
+}
+
+.tiptap pre,
+.tiptap code,
+.tiptap .shiki {
+  font-family: var(--font-mono) !important;
+  font-size: 1rem;
+  line-height: 2;
+}
+
+.twoslash-container {
+  margin: 0.15rem 0 0.45rem;
+  position: relative;
+  overflow: visible;
+}
+
+.twoslash-container pre {
+  margin: 0;
+  border-radius: 0.55rem;
+  overflow-x: auto;
+  overflow-y: visible;
+}
+
+.twoslash-container .shiki {
+  overflow: visible;
+}
+
+.twoslash-container.is-editing {
+  display: none;
+}
+
+.twoslash-error {
+  margin: 0;
+  color: #dc2626;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+html.dark .tiptap .shiki,
+html.dark .tiptap .shiki span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--color-neutral-800) !important;
+}
+
+html.dark .tiptap .twoslash .twoslash-popup-code .shiki,
+html.dark .tiptap .twoslash .twoslash-popup-code .shiki span {
+  background-color: transparent !important;
+}
+
+.twoslash-error-line {
+  @apply max-w-full! leading-normal;
+}
