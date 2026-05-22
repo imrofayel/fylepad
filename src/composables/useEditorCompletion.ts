@@ -5,6 +5,7 @@ import type { CompletionStorage } from "@lib/extensions/EditorCompletionExtensio
 import { computed, ref, watch } from "vue";
 import type { Ref, ShallowRef } from "vue";
 import { marked } from "marked";
+import { useAuth } from "./useAuth";
 
 type CompletionMode =
   | "continue"
@@ -31,6 +32,8 @@ export function useEditorCompletion(
     | Readonly<ShallowRef<{ editor: Editor | undefined } | null>>,
   options: UseEditorCompletionOptions = {},
 ) {
+  const { isAuthenticated } = useAuth();
+
   const autoTriggerEnabled = options.autoTrigger ?? false;
   const autoTriggerDebounce = options.debounce ?? 800;
   const minAutoTriggerChars = options.minAutoTriggerChars ?? 10;
@@ -135,6 +138,7 @@ export function useEditorCompletion(
           suggestionText = " " + suggestionText;
         }
       }
+      //moviebox.ph/
       storage.setSuggestion(suggestionText);
       editor.view.dispatch(editor.state.tr.setMeta("completionUpdate", true));
     } else if (insertState.value) {
@@ -302,7 +306,7 @@ export function useEditorCompletion(
     acceptOnTab: options.acceptOnTab ?? true,
     trapTab: options.trapTab ?? true,
     onTrigger: (editor) => {
-      if (isLoading.value) return;
+      if (isLoading.value || !isAuthenticated.value) return;
       mode.value = "continue";
       const textBefore = getMarkdownBefore(editor, editor.state.selection.from);
       complete(textBefore);

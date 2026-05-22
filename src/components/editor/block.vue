@@ -154,9 +154,7 @@ const getToolbarItems = (editor: any) =>
         ? codeToolbar(editor)
         : buildToolbarItems(isLoading.value, editor, onCustomPromptClick, showAiActions.value);
 
-const editorExtensions = computed(() =>
-  showAiActions.value ? [...tipTapExtensions, completionExtension] : tipTapExtensions,
-);
+const editorExtensions = computed(() => [...tipTapExtensions, completionExtension]);
 
 const focusEditor = () => {
   editorRef.value?.editor?.commands.focus();
