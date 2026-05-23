@@ -13,44 +13,9 @@
 }
 
 @font-face {
-  font-family: "Open Runde";
-  src: url("../fonts/OpenRunde/OpenRunde-Semibold.woff2") format("woff2");
-  font-weight: 600;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Open Runde";
-  src: url("../fonts/OpenRunde/OpenRunde-Bold.woff2") format("woff2");
-  font-weight: 700;
-  font-style: normal;
-}
-
-@font-face {
   font-family: "JetBrains Mono";
   src: url("../fonts/JetBrainsMono-Regular.woff2") format("woff2");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
-}
-
-@font-face {
-  font-family: "EB Garamond";
-  src: url("../fonts/EBGaramond.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Noto Nastaliq Urdu";
-  src: url("../fonts/NotoNastaliqUrdu.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Patrick Hand";
-  src: url("../fonts/PatrickHand.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
 }

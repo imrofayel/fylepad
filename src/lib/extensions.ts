@@ -15,7 +15,7 @@ import ImageUpload from "@lib/extensions/EditorImageUploadExtension";
 import { TwoslashExtension } from "@lib/extensions/TwoslashExtension";
 import Image from "@tiptap/extension-image";
 import Highlight from "@tiptap/extension-highlight";
-import { FontFamily, FontSize, LineHeight, TextStyle } from "@tiptap/extension-text-style";
+import { TextStyle } from "@tiptap/extension-text-style";
 import { Markdown } from "tiptap-markdown";
 
 type TipTapExtensionsOptions = {
@@ -32,6 +32,7 @@ const lowlight = createLowlight();
 export const TipTapExtensions = ({ onTocUpdate, openMathPopover }: TipTapExtensionsOptions) => [
   Markdown,
   Image.configure({
+    allowBase64: true,
     resize: {
       enabled: true,
       alwaysPreserveAspectRatio: true,
@@ -95,15 +96,6 @@ export const TipTapExtensions = ({ onTocUpdate, openMathPopover }: TipTapExtensi
     enableEmoticons: true,
   }),
   TextStyle,
-  FontFamily.configure({
-    types: ["textStyle"],
-  }),
-  FontSize.configure({
-    types: ["textStyle"],
-  }),
-  LineHeight.configure({
-    types: ["textStyle"],
-  }),
   TextAlign.configure({
     types: ["heading", "paragraph"],
   }),
