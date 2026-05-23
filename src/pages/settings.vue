@@ -5,7 +5,6 @@ import { ref } from "vue";
 
 const items = ref([
   { label: "General", value: "general", icon: "tabler:layers-union", slot: "general" },
-  { label: "Account", value: "account", icon: "tabler:brand-google-filled", slot: "account" },
   { label: "AI", value: "ai", icon: ICONS.ai, slot: "ai" },
 ]);
 
@@ -48,9 +47,6 @@ const value = useColorMode();
       >
         <template #general>
           <SettingsGeneral />
-        </template>
-        <template #account>
-          <SettingsAccount />
         </template>
 
         <template #ai>
