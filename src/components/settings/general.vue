@@ -2,6 +2,7 @@
 import { useAuth } from "@/composables/useAuth";
 import { ICONS } from "@/lib/constants/icons";
 import { ref } from "vue";
+import { useToast } from "@nuxt/ui/composables/useToast";
 
 const { user, updatePhoto } = useAuth();
 
