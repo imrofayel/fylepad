@@ -5,12 +5,10 @@ import { ICONS } from "@/lib/constants/icons";
 
 const { user, loading, signInWithGoogle, logout } = useAuth();
 const router = useRouter();
-
-const show = import.meta.env.VITE_SHOW_USER === "true";
 </script>
 
 <template>
-  <div v-if="show">
+  <div>
     <USkeleton class="h-7 w-7 rounded-full bg-accented" v-if="loading" />
 
     <div v-else-if="user">
