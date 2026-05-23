@@ -19,7 +19,7 @@ const router = useRouter();
           arrow: 'fill-background! dark:fill-neutral-800!',
         }"
       >
-        <UAvatar :src="user.image" :alt="user.name" class="w-7 h-7" />
+        <UAvatar :src="user.image" :alt="user.name" size="md" />
 
         <template #content>
           <div class="flex flex-col p-0.5 py-1 w-42">
@@ -42,7 +42,6 @@ const router = useRouter();
               :ui="{
                 leadingIcon: 'size-4.5',
               }"
-              `
               @click="router.push('/settings')"
             />
             <UButton
