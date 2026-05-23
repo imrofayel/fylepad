@@ -53,7 +53,7 @@ async function handlePhotoChange(event: Event) {
   <div class="flex flex-col gap-3 scale-[99%]">
     <div class="flex gap-4 items-center">
       <div class="relative shrink-0">
-        <UAvatar :name="user?.name" :src="user?.image" size="3xl" />
+        <UAvatar :name="user?.name" :src="user?.image" class="size-12" />
 
         <div
           v-if="uploading"

@@ -144,6 +144,11 @@ export function useAuth() {
       throw new Error("Upload succeeded, but no image URL was returned");
     }
 
+    if (user.value) {
+      const separator = payload.url.includes("?") ? "&" : "?";
+      user.value.image = `${payload.url}${separator}t=${Date.now()}`;
+    }
+
     return payload.url;
   }
 
