@@ -26,7 +26,8 @@
         "title": "fylepad-zen",
         "width": 800,
         "height": 600,
-        "zoomHotkeysEnabled": true
+        "zoomHotkeysEnabled": true,
+        "devtools": true
       }
     ],
     "security": {
