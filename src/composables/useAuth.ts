@@ -14,24 +14,46 @@ export const authClient = createAuthClient({
 const user = ref<any>(null);
 const loading = ref(false);
 const initialized = ref(false);
-const sessionToken = ref<string | null>(localStorage.getItem("session_token"));
+const sessionToken = ref<string | null>(IS_TAURI ? localStorage.getItem("session_token") : null);
 
-watch(sessionToken, (val) => {
-  if (val) localStorage.setItem("session_token", val);
-  else localStorage.removeItem("session_token");
-});
+if (IS_TAURI) {
+  watch(sessionToken, (val) => {
+    if (val) localStorage.setItem("session_token", val);
+    else localStorage.removeItem("session_token");
+  });
+}
+
+function getBearerAuthOptions(token?: string | null) {
+  const t = token ?? sessionToken.value;
+
+  if (!t) return undefined;
+
+  return {
+    fetchOptions: {
+      headers: {
+        Authorization: `Bearer ${t}`,
+      },
+    },
+  };
+}
+
+function getProfileRequestInit(): RequestInit {
+  if (IS_TAURI) {
+    const authOptions = getBearerAuthOptions();
+    return authOptions ? authOptions.fetchOptions : {};
+  }
+
+  return {
+    credentials: "include",
+  };
+}
 
 async function fetchUserInternal(token?: string | null) {
   loading.value = true;
   try {
-    const t = token ?? sessionToken.value;
-    const options = t ? { fetchOptions: { headers: { Authorization: `Bearer ${t}` } } } : {};
-
-    console.log("fetchUserInternal with token:", t);
-    console.log("getSession options:", JSON.stringify(options));
+    const options = IS_TAURI ? getBearerAuthOptions(token) : undefined;
 
     const { data, error } = await authClient.getSession(options);
-    console.log("getSession result:", data, error);
     user.value = error ? null : (data?.user ?? null);
   } finally {
     loading.value = false;
@@ -96,11 +118,46 @@ export function useAuth() {
     }
   }
 
+  async function updatePhoto(file: File) {
+    const formData = new FormData();
+    formData.append("photo", file);
+
+    const response = await fetch(`${API}/me/profile`, {
+      method: "POST",
+      ...getProfileRequestInit(),
+      body: formData,
+    });
+
+    let payload: { url?: string; error?: string; details?: string } | null = null;
+
+    try {
+      payload = await response.json();
+    } catch {
+      payload = null;
+    }
+
+    if (!response.ok) {
+      throw new Error(payload?.details || payload?.error || `Upload failed (${response.status})`);
+    }
+
+    if (!payload?.url) {
+      throw new Error("Upload succeeded, but no image URL was returned");
+    }
+
+    return payload.url;
+  }
+
   async function logout() {
-    await authClient.signOut();
+    if (IS_TAURI) {
+      await authClient.signOut(getBearerAuthOptions());
+      sessionToken.value = null;
+      localStorage.removeItem("session_token");
+    } else {
+      await authClient.signOut();
+    }
+
     sessionToken.value = null;
     user.value = null;
-    localStorage.removeItem("session_token");
   }
 
   const isAuthenticated = computed(() => !!user.value);
@@ -115,6 +172,7 @@ export function useAuth() {
     initialized,
     isAuthenticated,
     fetchUser: fetchUserInternal,
+    updatePhoto,
     signInWithGoogle: () => signIn("google"),
     logout,
   };
