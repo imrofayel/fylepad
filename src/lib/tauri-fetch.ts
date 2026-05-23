@@ -14,6 +14,21 @@ function isAiRequest(input: RequestInfo | URL) {
   }
 }
 
+function getTauriBearerToken() {
+  try {
+    return window.localStorage.getItem("session_token");
+  } catch {
+    return null;
+  }
+}
+
+function normalizeHeaders(headers?: HeadersInit) {
+  const normalized = new Headers(headers);
+  normalized.delete("user-agent");
+  normalized.delete("User-Agent");
+  return normalized;
+}
+
 export function patchFetchForTauri() {
   if (!isTauri()) return;
 
@@ -21,18 +36,17 @@ export function patchFetchForTauri() {
 
   window.fetch = function (input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
     if (isAiRequest(input)) {
+      const headers = normalizeHeaders(init?.headers);
+      const token = getTauriBearerToken();
+
+      if (token && !headers.has("Authorization") && !headers.has("authorization")) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
+
       const newInit: RequestInit = {
         ...init,
-        headers: {
-          ...init?.headers,
-        },
+        headers,
       };
-
-      if (newInit.headers && typeof newInit.headers === "object") {
-        const headers = newInit.headers as Record<string, string>;
-        delete headers["user-agent"];
-        delete headers["User-Agent"];
-      }
 
       return originalFetch(input, newInit);
     }
