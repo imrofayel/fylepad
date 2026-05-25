@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { defineAsyncComponent, computed } from "vue";
 import { useEditor } from "@/composables/useEditor";
+import { useAuth } from "@/composables/useAuth";
 import { ICONS } from "@/lib/constants/icons";
 
 const EditorBlock = defineAsyncComponent(() => import("@/components/editor/block.vue"));
+useAuth();
 const { activeTabId, tabs, isReady, isOffline, conflictedTabs, reloadTab } = useEditor();
 
-const isLoading = computed(() => tabs.value.length === 0 && !isReady.value);
+const isLoading = computed(() => !isReady.value);
 
 const activeTabConflicted = computed(() => conflictedTabs.value.has(activeTabId.value));
 

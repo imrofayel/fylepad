@@ -2,7 +2,7 @@ import { ref, computed, watch } from "vue";
 import { createAuthClient } from "better-auth/vue";
 import { bearer } from "better-auth/plugins";
 import { setCloudMode, IS_TAURI } from "@/lib/editorDb";
-import { reinitializeEditorStore } from "@/composables/useEditor";
+import { initializeEditorStore, reinitializeEditorStore } from "@/composables/useEditor";
 
 const API = import.meta.env.VITE_BACKEND_API;
 
@@ -61,12 +61,24 @@ async function fetchUserInternal(token?: string | null) {
 
     user.value = newUser;
 
-    // Switch storage mode on auth state change (browser only)
+    // On initial load (browser): set cloud mode based on auth, then init editor store once
+    // On login transition: switch to cloud mode and reinitialize
+    // On Tauri: just initialize (always local SQLite)
     if (!IS_TAURI) {
       if (!wasAuthenticated && isNowAuthenticated) {
         setCloudMode(true);
+      }
+
+      if (!initialized.value) {
+        // First load — init editor store after auth is known
+        await initializeEditorStore();
+      } else if (!wasAuthenticated && isNowAuthenticated) {
+        // Login transition — reinitialize from cloud
         await reinitializeEditorStore();
       }
+    } else if (!initialized.value) {
+      // Tauri: init editor store on first load
+      await initializeEditorStore();
     }
   } finally {
     loading.value = false;

@@ -271,26 +271,19 @@ export const initializeEditorStore = async () => {
       }
 
       const persistedTabs = await loadEditorTabs();
+      tabs.value = persistedTabs;
 
-      if (persistedTabs.length === 0) {
-        const tab = createEmptyTabRecord(globalThis.crypto.randomUUID());
-        tabs.value = [tab];
-        activeTabId.value = tab.id;
-        await createEditorTab(tab);
-      } else {
-        tabs.value = persistedTabs;
+      if (persistedTabs.length > 0) {
         if (!tabs.value.some((t) => t.id === activeTabId.value)) {
           activeTabId.value = persistedTabs[0]?.id ?? "";
         }
+      } else {
+        activeTabId.value = "";
       }
     } catch (error) {
       console.error("Failed to initialize the editor store:", error);
-
-      if (tabs.value.length === 0) {
-        const tab = createEmptyTabRecord(globalThis.crypto.randomUUID());
-        tabs.value = [tab];
-        activeTabId.value = tab.id;
-      }
+      tabs.value = [];
+      activeTabId.value = "";
     } finally {
       isReady.value = true;
     }
