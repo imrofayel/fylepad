@@ -245,18 +245,25 @@ export async function createNote(
     await ensureEditorSchema();
     const colId = collectionId || DEFAULT_COLLECTION_ID;
     await db.execute(
-      `INSERT INTO editor_tabs (id, title, collection_id, content, metadata, created_at)
-       VALUES ($1, $2, $3, $4, $5, $6)`,
-      [id, title, colId, JSON.stringify(EMPTY_DOC), null, now],
+      `INSERT INTO editor_tabs (id, title, collection_id, content, metadata, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+      [id, title, colId, JSON.stringify(EMPTY_DOC), null, now, now],
     );
+    // Look up actual collection name
+    const colRows = await db.select<{ name: string }[]>(
+      "SELECT name FROM collections WHERE id = $1",
+      [colId],
+    );
+    const colName = colRows[0]?.name || DEFAULT_COLLECTION_NAME;
     return {
       id,
       title,
       collectionId: colId,
-      collectionName: DEFAULT_COLLECTION_NAME,
+      collectionName: colName,
       content: EMPTY_DOC,
       metadata: null,
       createdAt: now,
+      updatedAt: now,
     };
   }
 
@@ -273,14 +280,21 @@ export async function createNote(
   }
 
   // idb-keyval
+  const colId = collectionId || DEFAULT_COLLECTION_ID;
+  // Look up the collection name from stored collections
+  const cols = (await get<CollectionRecord[]>(BROWSER_COLLECTIONS_KEY)) || [];
+  const matchedCol = cols.find((c) => c.id === colId);
+  const colName = matchedCol?.name || DEFAULT_COLLECTION_NAME;
+
   const note: EditorTabRecord = {
     id,
     title,
-    collectionId: DEFAULT_COLLECTION_ID,
-    collectionName: DEFAULT_COLLECTION_NAME,
+    collectionId: colId,
+    collectionName: colName,
     content: EMPTY_DOC,
     metadata: null,
     createdAt: now,
+    updatedAt: now,
   };
   const all = await getAllLocalNotes();
   all.push(note);

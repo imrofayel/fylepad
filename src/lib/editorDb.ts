@@ -6,7 +6,7 @@ import { cloudLoadTabs, cloudSaveTab, cloudCreateTab, cloudDeleteTab } from "./c
 export const IS_TAURI = "__TAURI_INTERNALS__" in window;
 const BROWSER_STORAGE_KEY = "fylepad_editor_tabs";
 
-export const EDITOR_DB_URL = "sqlite:fylepad-zen.db";
+export const EDITOR_DB_URL = "sqlite:fylepad.db";
 export const DEFAULT_COLLECTION_ID = "default";
 export const DEFAULT_COLLECTION_NAME = "Default folder";
 
@@ -86,6 +86,9 @@ export const ensureEditorSchema = async () => {
       title TEXT NOT NULL,
       collection_id TEXT NOT NULL DEFAULT 'default',
       content TEXT NOT NULL,
+      created_at TEXT,
+      deleted_at TEXT,
+      updated_at TEXT,
       metadata TEXT,
       FOREIGN KEY (collection_id) REFERENCES collections(id) ON DELETE RESTRICT
     )`,
@@ -97,18 +100,6 @@ export const ensureEditorSchema = async () => {
     DEFAULT_COLLECTION_ID,
     DEFAULT_COLLECTION_NAME,
   ]);
-
-  // Migrate: add created_at and deleted_at columns if missing
-  try {
-    await database.execute("ALTER TABLE editor_tabs ADD COLUMN created_at TEXT");
-  } catch {
-    /* column already exists */
-  }
-  try {
-    await database.execute("ALTER TABLE editor_tabs ADD COLUMN deleted_at TEXT");
-  } catch {
-    /* column already exists */
-  }
 };
 
 const createEmptyContent = (): JSONContent => ({
@@ -226,6 +217,7 @@ export const saveEditorTab = async (tab: EditorTabRecord) => {
 
   // Local browser mode
   if (!IS_TAURI) {
+    tab.updatedAt = new Date().toISOString();
     const tabs = (await get<EditorTabRecord[]>(BROWSER_STORAGE_KEY)) || [];
     const index = tabs.findIndex((t) => t.id === tab.id);
     if (index >= 0) {
@@ -248,19 +240,21 @@ export const saveEditorTab = async (tab: EditorTabRecord) => {
   ]);
 
   await database.execute(
-    `INSERT INTO editor_tabs (id, title, collection_id, content, metadata)
-     VALUES ($1, $2, $3, $4, $5)
+    `INSERT INTO editor_tabs (id, title, collection_id, content, metadata, updated_at)
+     VALUES ($1, $2, $3, $4, $5, $6)
      ON CONFLICT(id) DO UPDATE SET
        title = excluded.title,
        collection_id = excluded.collection_id,
        content = excluded.content,
-       metadata = excluded.metadata`,
+       metadata = excluded.metadata,
+       updated_at = excluded.updated_at`,
     [
       tab.id,
       tab.title,
       tab.collectionId,
       JSON.stringify(tab.content),
       tab.metadata === null ? null : JSON.stringify(tab.metadata),
+      new Date().toISOString(),
     ],
   );
 };
