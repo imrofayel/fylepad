@@ -282,7 +282,7 @@ export async function createNote(
   // idb-keyval
   const colId = collectionId || DEFAULT_COLLECTION_ID;
   // Look up the collection name from stored collections
-  const cols = (await get<CollectionRecord[]>(BROWSER_COLLECTIONS_KEY)) || [];
+  const cols = await loadCollections();
   const matchedCol = cols.find((c) => c.id === colId);
   const colName = matchedCol?.name || DEFAULT_COLLECTION_NAME;
 
@@ -391,6 +391,9 @@ export async function moveNote(noteId: string, collectionId: string): Promise<vo
   const note = all.find((n) => n.id === noteId);
   if (note) {
     note.collectionId = collectionId;
+    const cols = await loadCollections();
+    const matchedCol = cols.find((c) => c.id === collectionId);
+    note.collectionName = matchedCol?.name || DEFAULT_COLLECTION_NAME;
     await saveAllLocalNotes(all);
   }
 }
