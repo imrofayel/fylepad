@@ -19,7 +19,15 @@ export type EditorTabRecord = {
   collectionName: string;
   content: JSONContent;
   metadata: EditorMetadata;
+  createdAt?: string;
   updatedAt?: string;
+  deletedAt?: string | null;
+};
+
+export type CollectionRecord = {
+  id: string;
+  name: string;
+  isSystem: boolean;
 };
 
 type EditorTabRow = {
@@ -55,7 +63,7 @@ export function isCloudMode(): boolean {
 // ─── Tauri SQLite helpers ────────────────────────────────────────────────────
 let databasePromise: Promise<Database> | null = null;
 
-const getDatabase = () => {
+export const getDatabase = () => {
   if (!databasePromise) {
     databasePromise = Database.load(EDITOR_DB_URL);
   }
@@ -88,6 +96,18 @@ export const ensureEditorSchema = async () => {
     DEFAULT_COLLECTION_ID,
     DEFAULT_COLLECTION_NAME,
   ]);
+
+  // Migrate: add created_at and deleted_at columns if missing
+  try {
+    await database.execute("ALTER TABLE editor_tabs ADD COLUMN created_at TEXT");
+  } catch {
+    /* column already exists */
+  }
+  try {
+    await database.execute("ALTER TABLE editor_tabs ADD COLUMN deleted_at TEXT");
+  } catch {
+    /* column already exists */
+  }
 };
 
 const createEmptyContent = (): JSONContent => ({

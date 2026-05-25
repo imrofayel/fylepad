@@ -4,15 +4,14 @@ import { useFileSystemAccess, useMagicKeys, useStorage, whenever } from "@vueuse
 import {
   createEmptyTabRecord,
   createEditorTab,
-  deleteEditorTab,
   ensureEditorSchema,
   IS_TAURI,
   isCloudMode,
-  loadEditorTabs,
   saveEditorTab,
   type EditorMetadata,
   type EditorTabRecord,
 } from "@/lib/editorDb";
+import { loadNotesByIds, createNote as dbCreateNote } from "@/lib/notesDb";
 import { cloudReloadNote, ApiError } from "@/lib/cloudDb";
 import { isOffline, registerOfflineListeners, clearQueue } from "@/lib/offlineQueue";
 
@@ -23,6 +22,7 @@ const isReady = ref(false);
 let initializationPromise: Promise<void> | null = null;
 
 const activeTabId = useStorage("active-tab-id", "");
+const openTabIds = useStorage<string[]>("open-tab-ids", []);
 const editors = shallowReactive(new Map<string, Editor>());
 const pendingSaveTimers = new Map<string, ReturnType<typeof setTimeout>>();
 const conflictedTabs = ref(new Set<string>());
@@ -187,17 +187,28 @@ const updateTabContent = (tabId: string, content: EditorTab["content"]) => {
   scheduleTabSave(tabId);
 };
 
-const createTab = () => {
-  const tab = createEmptyTabRecord(globalThis.crypto.randomUUID());
+const createTab = async () => {
+  const note = await dbCreateNote("Untitled");
 
-  tabs.value = [...tabs.value, tab];
-  activeTabId.value = tab.id;
+  tabs.value = [...tabs.value, note];
+  activeTabId.value = note.id;
+  openTabIds.value = [...openTabIds.value, note.id];
 
-  void createEditorTab(tab).catch((error) => {
-    console.error(`Failed to create tab ${tab.id}:`, error);
-  });
+  return note;
+};
 
-  return tab;
+const openNote = (note: EditorTabRecord) => {
+  const existing = tabs.value.find((t) => t.id === note.id);
+  if (existing) {
+    activeTabId.value = note.id;
+    return;
+  }
+
+  tabs.value = [...tabs.value, note];
+  activeTabId.value = note.id;
+  if (!openTabIds.value.includes(note.id)) {
+    openTabIds.value = [...openTabIds.value, note.id];
+  }
 };
 
 const closeTab = (tabId: string) => {
@@ -207,21 +218,18 @@ const closeTab = (tabId: string) => {
     return;
   }
 
-  tabs.value = tabs.value.filter((tab) => tab.id !== tabId);
-
+  // Flush any pending save before closing
   const timer = pendingSaveTimers.get(tabId);
-
   if (timer) {
     clearTimeout(timer);
     pendingSaveTimers.delete(tabId);
+    void persistTab(tabId).catch(() => {});
   }
 
+  tabs.value = tabs.value.filter((tab) => tab.id !== tabId);
   editors.delete(tabId);
   conflictedTabs.value.delete(tabId);
-
-  void deleteEditorTab(tabId).catch((error) => {
-    console.error(`Failed to delete tab ${tabId}:`, error);
-  });
+  openTabIds.value = openTabIds.value.filter((id) => id !== tabId);
 
   if (activeTabId.value === tabId) {
     if (tabs.value.length > 0) {
@@ -270,14 +278,21 @@ export const initializeEditorStore = async () => {
         registerOfflineListeners();
       }
 
-      const persistedTabs = await loadEditorTabs();
-      tabs.value = persistedTabs;
+      // Load only notes that are currently open as tabs
+      const ids = openTabIds.value;
+      if (ids.length > 0) {
+        const loaded = await loadNotesByIds(ids);
+        tabs.value = loaded;
 
-      if (persistedTabs.length > 0) {
+        // Clean up stale IDs (notes that were deleted while editor was closed)
+        const loadedIds = new Set(loaded.map((t) => t.id));
+        openTabIds.value = ids.filter((id) => loadedIds.has(id));
+
         if (!tabs.value.some((t) => t.id === activeTabId.value)) {
-          activeTabId.value = persistedTabs[0]?.id ?? "";
+          activeTabId.value = loaded[0]?.id ?? "";
         }
       } else {
+        tabs.value = [];
         activeTabId.value = "";
       }
     } catch (error) {
@@ -307,6 +322,7 @@ export const reinitializeEditorStore = async () => {
   isReady.value = false;
   initializationPromise = null;
   activeTabId.value = "";
+  openTabIds.value = [];
 
   // Re-initialize from the new storage backend
   await initializeEditorStore();
@@ -476,6 +492,7 @@ export function useEditor() {
     getTab,
     isOffline,
     isReady,
+    openNote,
     registerEditor,
     reloadTab,
     setActiveTab,

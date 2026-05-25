@@ -85,6 +85,15 @@ export const ICONS = {
   settings: "tabler:settings",
   google: "logos:google-icon",
   github: "akar-icons:github-fill",
+  folder: "tabler:folder",
+  folderPlus: "tabler:folder-plus",
+  dots: "tabler:dots",
+  restore: "tabler:arrow-back-up",
+  trashX: "tabler:trash-x",
+  edit: "tabler:edit",
+  arrowRight: "tabler:arrow-right",
+  plus: "tabler:plus",
+  notePlus: "tabler:file-plus",
 
   // Terminal & Scripting
   terminal: "vscode-icons:file-type-shell",

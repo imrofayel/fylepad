@@ -18,6 +18,13 @@ const handleCloseTab = (id: string, event: Event) => {
   <div class="flex w-full items-center justify-between gap-4">
     <div class="flex min-w-0 flex-1 items-center gap-x-2">
       <ButtonWithTooltip
+        text="Home"
+        variant="link"
+        color="neutral"
+        :icon="ICONS.home"
+        @click="$router.push('/')"
+      />
+      <ButtonWithTooltip
         text="New Tab"
         variant="link"
         color="neutral"

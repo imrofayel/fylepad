@@ -32,6 +32,7 @@ const router = useRouter();
               :ui="{
                 leadingIcon: 'size-4.5',
               }"
+              @click="router.push('/')"
             />
             <UButton
               label="Settings"
