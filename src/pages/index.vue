@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useNotes } from "@/composables/useNotes";
 import { useEditor } from "@/composables/useEditor";
@@ -16,6 +16,7 @@ const {
   activeCollectionId,
   searchQuery,
   loading,
+  syncing,
   showCollections,
   noteCountByCollection,
   refresh,
@@ -45,16 +46,21 @@ const deleteCollectionModal = ref(false);
 const deleteCollectionId = ref("");
 const deleteCollectionMode = ref<"move" | "delete">("move");
 
+const isRecoveredCollection = computed(() => {
+  if (activeCollectionId.value === "all") return false;
+  const col = collections.value.find((c) => c.id === activeCollectionId.value);
+  return col?.name?.toLowerCase() === "recovered";
+});
+
 // ─── Actions ──────────────────────────────────────────
 function handleOpenNote(note: EditorTabRecord) {
+  if (note.id.startsWith("temp-")) return;
   openNote(note);
   router.push(`/note/${note.id}`);
 }
 
 async function handleCreateNote() {
-  const note = await createNewNote();
-  openNote(note);
-  router.push(`/note/${note.id}`);
+  await createNewNote();
 }
 
 function openRenameNote(note: EditorTabRecord) {
@@ -96,6 +102,7 @@ function openDeleteCollection(col: CollectionRecord) {
 async function confirmDeleteCollection() {
   await removeCollection(deleteCollectionId.value, deleteCollectionMode.value);
   deleteCollectionModal.value = false;
+  router.push({ query: {} });
 }
 
 async function confirmNewCollection() {
@@ -203,10 +210,14 @@ watch(
           class="max-w-sm flex-1"
           :ui="{ base: 'text-[15px]' }"
         />
+        <!-- Sync indicator -->
+        <UTooltip v-if="syncing" text="Saving to cloud..." arrow>
+          <UIcon :name="ICONS.loader" class="size-4 text-neutral-400" />
+        </UTooltip>
       </div>
       <div class="flex items-center gap-2.5">
         <UButton
-          v-if="activeCollectionId !== 'recovered'"
+          v-if="!isRecoveredCollection"
           label="New note"
           :icon="ICONS.notePlus"
           variant="soft"
@@ -314,7 +325,7 @@ watch(
             {{ searchQuery ? "No notes match your search" : "No notes yet" }}
           </p>
           <UButton
-            v-if="!searchQuery && activeCollectionId !== 'recovered'"
+            v-if="!searchQuery && !isRecoveredCollection"
             label="Create your first note"
             :icon="ICONS.notePlus"
             variant="soft"
@@ -328,6 +339,7 @@ watch(
             v-for="note in filteredNotes"
             :key="note.id"
             class="group relative border border-neutral-200 dark:border-neutral-800 rounded-lg p-4 hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors cursor-pointer"
+            :class="note.id.startsWith('temp-') && 'opacity-60 pointer-events-none animate-pulse'"
             @click="handleOpenNote(note)"
           >
             <div class="flex items-start justify-between gap-2">

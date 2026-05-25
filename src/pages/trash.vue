@@ -5,8 +5,15 @@ import { useAuth } from "@/composables/useAuth";
 import { ICONS } from "@/lib/constants/icons";
 
 const { initialized, user } = useAuth();
-const { trashedNotes, loading, refreshTrash, restoreNotes, permanentlyDeleteNotes, emptyTrash } =
-  useNotes();
+const {
+  trashedNotes,
+  loading,
+  syncing,
+  refreshTrash,
+  restoreNotes,
+  permanentlyDeleteNotes,
+  emptyTrash,
+} = useNotes();
 
 const selectedIds = ref<Set<string>>(new Set());
 const confirmEmptyModal = ref(false);
@@ -85,6 +92,10 @@ watch(
           <UIcon :name="ICONS.trash" class="size-5 text-neutral-400" />
           <h1 class="text-lg font-medium">Trash</h1>
         </div>
+        <!-- Sync indicator -->
+        <UTooltip v-if="syncing" text="Saving to cloud..." arrow>
+          <UIcon :name="ICONS.loader" class="size-4 text-neutral-400" />
+        </UTooltip>
       </div>
 
       <div class="flex items-center gap-2">
