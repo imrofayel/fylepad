@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import { useRouter } from "vue-router";
+import { onMounted, ref, watch } from "vue";
+import { useRouter, useRoute } from "vue-router";
 import { useNotes } from "@/composables/useNotes";
 import { useEditor } from "@/composables/useEditor";
 import { useAuth } from "@/composables/useAuth";
@@ -8,7 +8,8 @@ import { ICONS } from "@/lib/constants/icons";
 import type { EditorTabRecord, CollectionRecord } from "@/lib/editorDb";
 
 const router = useRouter();
-useAuth();
+const route = useRoute();
+const { initialized, user } = useAuth();
 const {
   filteredNotes,
   collections,
@@ -47,13 +48,13 @@ const deleteCollectionMode = ref<"move" | "delete">("move");
 // ─── Actions ──────────────────────────────────────────
 function handleOpenNote(note: EditorTabRecord) {
   openNote(note);
-  router.push("/editor");
+  router.push(`/note/${note.id}`);
 }
 
 async function handleCreateNote() {
   const note = await createNewNote();
   openNote(note);
-  router.push("/editor");
+  router.push(`/note/${note.id}`);
 }
 
 function openRenameNote(note: EditorTabRecord) {
@@ -160,9 +161,31 @@ function formatDate(dateStr?: string | null) {
   return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
-onMounted(() => {
-  refresh();
-});
+// Sync activeCollectionId with URL query param
+watch(
+  () => route.query.c,
+  (c) => {
+    activeCollectionId.value = (c as string) || "all";
+  },
+  { immediate: true },
+);
+
+function selectCollection(id: string) {
+  if (id === "all") {
+    router.push({ query: {} });
+  } else {
+    router.push({ query: { c: id } });
+  }
+}
+
+// Wait for auth to initialize before fetching notes, and refetch if user changes
+watch(
+  [initialized, user],
+  ([isInit]) => {
+    if (isInit) refresh();
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
@@ -183,6 +206,7 @@ onMounted(() => {
       </div>
       <div class="flex items-center gap-2.5">
         <UButton
+          v-if="activeCollectionId !== 'recovered'"
           label="New note"
           :icon="ICONS.notePlus"
           variant="soft"
@@ -203,7 +227,7 @@ onMounted(() => {
     </div>
 
     <!-- Loading -->
-    <div v-if="loading && !isReady" class="flex items-center justify-center py-32">
+    <div v-if="loading || !initialized" class="flex items-center justify-center py-32">
       <UIcon :name="ICONS.loader" class="size-6 text-neutral-400" />
     </div>
 
@@ -234,7 +258,7 @@ onMounted(() => {
             color="neutral"
             class="w-full justify-start px-2 py-1.5 text-[14px] font-normal"
             :class="activeCollectionId === 'all' && 'bg-neutral-100 dark:bg-neutral-800'"
-            @click="activeCollectionId = 'all'"
+            @click="selectCollection('all')"
           >
             <template #trailing>
               <UBadge
@@ -255,7 +279,7 @@ onMounted(() => {
               :class="activeCollectionId === col.id && 'bg-neutral-100 dark:bg-neutral-800'"
               :icon="ICONS.folder"
               :ui="{ leadingIcon: 'size-3.5 opacity-50' }"
-              @click="activeCollectionId = col.id"
+              @click="selectCollection(col.id)"
             >
               <template #trailing>
                 <UBadge
@@ -290,7 +314,7 @@ onMounted(() => {
             {{ searchQuery ? "No notes match your search" : "No notes yet" }}
           </p>
           <UButton
-            v-if="!searchQuery"
+            v-if="!searchQuery && activeCollectionId !== 'recovered'"
             label="Create your first note"
             :icon="ICONS.notePlus"
             variant="soft"

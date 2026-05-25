@@ -21,8 +21,8 @@ const tabs = ref<EditorTab[]>([]);
 const isReady = ref(false);
 let initializationPromise: Promise<void> | null = null;
 
-const activeTabId = useStorage("active-tab-id", "");
-const openTabIds = useStorage<string[]>("open-tab-ids", []);
+const activeTabId = IS_TAURI ? useStorage("active-tab-id", "") : ref("");
+const openTabIds = IS_TAURI ? useStorage<string[]>("open-tab-ids", []) : ref<string[]>([]);
 const editors = shallowReactive(new Map<string, Editor>());
 const pendingSaveTimers = new Map<string, ReturnType<typeof setTimeout>>();
 const conflictedTabs = ref(new Set<string>());

@@ -1,5 +1,5 @@
 import "./assets/css/main.css";
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHistory, createWebHashHistory } from "vue-router";
 import { routes } from "vue-router/auto-routes";
 import { createApp } from "vue";
 import App from "./App.vue";
@@ -11,6 +11,8 @@ import { patchFetchForTauri } from "@lib/tauri-fetch.js";
 import "@lib/xfce-icons";
 
 patchFetchForTauri();
+
+const IS_TAURI = "__TAURI_INTERNALS__" in window;
 
 addCollection({
   prefix: "icons",
@@ -29,7 +31,7 @@ addCollection({
 });
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: IS_TAURI ? createWebHashHistory() : createWebHistory(),
   routes,
 });
 

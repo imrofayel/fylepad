@@ -50,14 +50,15 @@ export const EMPTY_DOC: JSONContent = {
 
 // ─── Cloud mode bridge ───────────────────────────────────────────────────────
 // Set by useAuth when the user logs in/out (browser only)
-let _cloudMode = false;
+import { ref as vueRef } from "vue";
+const _cloudMode = vueRef(false);
 
 export function setCloudMode(enabled: boolean) {
-  _cloudMode = enabled;
+  _cloudMode.value = enabled;
 }
 
 export function isCloudMode(): boolean {
-  return !IS_TAURI && _cloudMode;
+  return !IS_TAURI && _cloudMode.value;
 }
 
 // ─── Tauri SQLite helpers ────────────────────────────────────────────────────

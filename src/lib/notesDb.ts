@@ -57,8 +57,9 @@ function apiNoteToRecord(note: ApiNote, collectionName: string): EditorTabRecord
     title: note.title || "Untitled",
     collectionId: note.collectionId,
     collectionName,
-    content: parseJSON<JSONContent>(note.content, EMPTY_DOC),
-    metadata: parseJSON<EditorMetadata>(note.metadata, null),
+    content:
+      note.content !== undefined ? parseJSON<JSONContent>(note.content, EMPTY_DOC) : EMPTY_DOC,
+    metadata: note.metadata !== undefined ? parseJSON<EditorMetadata>(note.metadata, null) : null,
     createdAt: note.createdAt,
     updatedAt: note.updatedAt,
     deletedAt: note.deletedAt,
@@ -85,26 +86,24 @@ export async function loadAllNotes(): Promise<EditorTabRecord[]> {
         title: string;
         collection_id: string;
         collection_name: string | null;
-        content: string;
-        metadata: string | null;
         created_at: string | null;
         deleted_at: string | null;
       }[]
     >(
       `SELECT e.id, e.title, e.collection_id, c.name AS collection_name,
-              e.content, e.metadata, e.created_at, e.deleted_at
+              e.created_at, e.deleted_at
        FROM editor_tabs e
        LEFT JOIN collections c ON c.id = e.collection_id
        WHERE e.deleted_at IS NULL
-       ORDER BY e.rowid ASC`,
+       ORDER BY e.updated_at DESC`,
     );
     return rows.map((r) => ({
       id: r.id,
       title: r.title || "Untitled",
       collectionId: r.collection_id || DEFAULT_COLLECTION_ID,
       collectionName: r.collection_name || DEFAULT_COLLECTION_NAME,
-      content: parseJSON<JSONContent>(r.content, EMPTY_DOC),
-      metadata: parseJSON<EditorMetadata>(r.metadata, null),
+      content: EMPTY_DOC,
+      metadata: null,
       createdAt: r.created_at || undefined,
       deletedAt: null,
     }));
@@ -135,14 +134,12 @@ export async function loadTrashedNotes(): Promise<EditorTabRecord[]> {
         title: string;
         collection_id: string;
         collection_name: string | null;
-        content: string;
-        metadata: string | null;
         created_at: string | null;
         deleted_at: string | null;
       }[]
     >(
       `SELECT e.id, e.title, e.collection_id, c.name AS collection_name,
-              e.content, e.metadata, e.created_at, e.deleted_at
+              e.created_at, e.deleted_at
        FROM editor_tabs e
        LEFT JOIN collections c ON c.id = e.collection_id
        WHERE e.deleted_at IS NOT NULL
@@ -153,8 +150,8 @@ export async function loadTrashedNotes(): Promise<EditorTabRecord[]> {
       title: r.title || "Untitled",
       collectionId: r.collection_id || DEFAULT_COLLECTION_ID,
       collectionName: r.collection_name || DEFAULT_COLLECTION_NAME,
-      content: parseJSON<JSONContent>(r.content, EMPTY_DOC),
-      metadata: parseJSON<EditorMetadata>(r.metadata, null),
+      content: EMPTY_DOC,
+      metadata: null,
       createdAt: r.created_at || undefined,
       deletedAt: r.deleted_at,
     }));
@@ -407,7 +404,7 @@ export async function renameNote(noteId: string, title: string): Promise<void> {
 
 // ─── Public: Collections ─────────────────────────────────────────────────────
 export function hasCollections(): boolean {
-  return IS_TAURI || isCloudMode();
+  return true;
 }
 
 export async function loadCollections(): Promise<CollectionRecord[]> {

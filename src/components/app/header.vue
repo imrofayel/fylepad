@@ -1,16 +1,30 @@
 <script setup lang="ts">
 import { ICONS } from "@/lib/constants/icons";
 import { useEditor } from "@/composables/useEditor";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const { closeTab, createTab, setActiveTab, tabs, activeTabId } = useEditor();
 
 const selectTab = (id: string) => {
   setActiveTab(id);
+  router.replace(`/note/${id}`);
+};
+
+const handleCreateTab = async () => {
+  const note = await createTab();
+  router.push(`/note/${note.id}`);
 };
 
 const handleCloseTab = (id: string, event: Event) => {
   event.stopPropagation();
   closeTab(id);
+  // After closing, navigate to the next active tab or home
+  if (tabs.value.length > 0) {
+    router.replace(`/note/${activeTabId.value}`);
+  } else {
+    router.push("/");
+  }
 };
 </script>
 
@@ -29,7 +43,7 @@ const handleCloseTab = (id: string, event: Event) => {
         variant="link"
         color="neutral"
         :icon="ICONS.newTab"
-        @click="createTab"
+        @click="handleCreateTab"
       />
 
       <div

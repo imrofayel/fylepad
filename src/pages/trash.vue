@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { onMounted, ref, computed } from "vue";
+import { onMounted, ref, computed, watch } from "vue";
 import { useNotes } from "@/composables/useNotes";
 import { useAuth } from "@/composables/useAuth";
 import { ICONS } from "@/lib/constants/icons";
 
-useAuth();
+const { initialized, user } = useAuth();
 const { trashedNotes, loading, refreshTrash, restoreNotes, permanentlyDeleteNotes, emptyTrash } =
   useNotes();
 
@@ -58,9 +58,13 @@ function formatDate(dateStr?: string | null) {
   return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
-onMounted(() => {
-  refreshTrash();
-});
+watch(
+  [initialized, user],
+  ([isInit]) => {
+    if (isInit) refreshTrash();
+  },
+  { immediate: true },
+);
 </script>
 
 <template>
@@ -115,7 +119,7 @@ onMounted(() => {
     </div>
 
     <!-- Loading -->
-    <div v-if="loading" class="flex items-center justify-center py-32">
+    <div v-if="loading || !initialized" class="flex items-center justify-center py-32">
       <UIcon :name="ICONS.loader" class="size-6 text-neutral-400" />
     </div>
 

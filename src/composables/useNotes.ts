@@ -15,6 +15,7 @@ import {
   renameCollection as _renameCollection,
   deleteCollection as _deleteCollection,
 } from "@/lib/notesDb";
+import { useEditor } from "@/composables/useEditor";
 
 const notes = ref<EditorTabRecord[]>([]);
 const trashedNotes = ref<EditorTabRecord[]>([]);
@@ -83,6 +84,7 @@ export function useNotes() {
   async function deleteNote(noteId: string) {
     await softDeleteNote(noteId);
     notes.value = notes.value.filter((n) => n.id !== noteId);
+    useEditor().closeTab(noteId);
   }
 
   async function permanentlyDeleteNotes(noteIds: string[]) {
@@ -134,6 +136,17 @@ export function useNotes() {
 
   async function removeCollection(colId: string, mode: "move" | "delete" = "move") {
     await _deleteCollection(colId, mode);
+
+    // If mode is delete, we need to close all tabs that were in this collection
+    if (mode === "delete") {
+      const { closeTab } = useEditor();
+      for (const note of notes.value) {
+        if (note.collectionId === colId) {
+          closeTab(note.id);
+        }
+      }
+    }
+
     collections.value = collections.value.filter((c) => c.id !== colId);
     if (activeCollectionId.value === colId) activeCollectionId.value = "all";
     await refresh();
