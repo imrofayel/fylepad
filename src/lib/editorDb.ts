@@ -1,6 +1,7 @@
 import Database from "@tauri-apps/plugin-sql";
 import type { JSONContent } from "@tiptap/core";
 import { get, set } from "idb-keyval";
+import { cloudLoadTabs, cloudSaveTab, cloudCreateTab, cloudDeleteTab } from "./cloudDb";
 
 export const IS_TAURI = "__TAURI_INTERNALS__" in window;
 const BROWSER_STORAGE_KEY = "fylepad_editor_tabs";
@@ -18,6 +19,7 @@ export type EditorTabRecord = {
   collectionName: string;
   content: JSONContent;
   metadata: EditorMetadata;
+  updatedAt?: string;
 };
 
 type EditorTabRow = {
@@ -38,6 +40,19 @@ export const EMPTY_DOC: JSONContent = {
   ],
 };
 
+// ─── Cloud mode bridge ───────────────────────────────────────────────────────
+// Set by useAuth when the user logs in/out (browser only)
+let _cloudMode = false;
+
+export function setCloudMode(enabled: boolean) {
+  _cloudMode = enabled;
+}
+
+export function isCloudMode(): boolean {
+  return !IS_TAURI && _cloudMode;
+}
+
+// ─── Tauri SQLite helpers ────────────────────────────────────────────────────
 let databasePromise: Promise<Database> | null = null;
 
 const getDatabase = () => {
@@ -50,7 +65,6 @@ const getDatabase = () => {
 
 export const ensureEditorSchema = async () => {
   if (!IS_TAURI) {
-    // We don't need a schema for IndexedDB
     return;
   }
   const database = await getDatabase();
@@ -139,7 +153,15 @@ export const createEmptyTabRecord = (id: string): EditorTabRecord => ({
   metadata: null,
 });
 
+// ─── Main API ────────────────────────────────────────────────────────────────
+
 export const loadEditorTabs = async (): Promise<EditorTabRecord[]> => {
+  // Cloud mode (browser + authenticated)
+  if (isCloudMode()) {
+    return cloudLoadTabs();
+  }
+
+  // Local browser mode (idb-keyval)
   if (!IS_TAURI) {
     const tabs = await get<EditorTabRecord[]>(BROWSER_STORAGE_KEY);
     if (!tabs) return [];
@@ -154,6 +176,7 @@ export const loadEditorTabs = async (): Promise<EditorTabRecord[]> => {
     }));
   }
 
+  // Tauri mode (SQLite)
   const database = await getDatabase();
   await ensureEditorSchema();
   const rows = await database.select<EditorTabRow[]>(
@@ -173,6 +196,14 @@ export const loadEditorTabs = async (): Promise<EditorTabRecord[]> => {
 };
 
 export const saveEditorTab = async (tab: EditorTabRecord) => {
+  // Cloud mode
+  if (isCloudMode()) {
+    const result = await cloudSaveTab(tab);
+    tab.updatedAt = result.updatedAt;
+    return;
+  }
+
+  // Local browser mode
   if (!IS_TAURI) {
     const tabs = (await get<EditorTabRecord[]>(BROWSER_STORAGE_KEY)) || [];
     const index = tabs.findIndex((t) => t.id === tab.id);
@@ -186,6 +217,7 @@ export const saveEditorTab = async (tab: EditorTabRecord) => {
     return;
   }
 
+  // Tauri mode
   const database = await getDatabase();
   await ensureEditorSchema();
 
@@ -212,7 +244,25 @@ export const saveEditorTab = async (tab: EditorTabRecord) => {
   );
 };
 
+export const createEditorTab = async (tab: EditorTabRecord) => {
+  // Cloud mode — use the dedicated create endpoint
+  if (isCloudMode()) {
+    return cloudCreateTab(tab);
+  }
+
+  // For local/tauri, save is upsert so reuse it
+  await saveEditorTab(tab);
+  return tab;
+};
+
 export const deleteEditorTab = async (tabId: string) => {
+  // Cloud mode
+  if (isCloudMode()) {
+    await cloudDeleteTab(tabId);
+    return;
+  }
+
+  // Local browser mode
   if (!IS_TAURI) {
     const tabs = (await get<EditorTabRecord[]>(BROWSER_STORAGE_KEY)) || [];
     const filtered = tabs.filter((t) => t.id !== tabId);
@@ -220,6 +270,7 @@ export const deleteEditorTab = async (tabId: string) => {
     return;
   }
 
+  // Tauri mode
   const database = await getDatabase();
   await ensureEditorSchema();
   await database.execute("DELETE FROM editor_tabs WHERE id = $1", [tabId]);

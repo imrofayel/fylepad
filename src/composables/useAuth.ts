@@ -1,9 +1,10 @@
 import { ref, computed, watch } from "vue";
 import { createAuthClient } from "better-auth/vue";
 import { bearer } from "better-auth/plugins";
+import { setCloudMode, IS_TAURI } from "@/lib/editorDb";
+import { reinitializeEditorStore } from "@/composables/useEditor";
 
 const API = import.meta.env.VITE_BACKEND_API;
-const IS_TAURI = "__TAURI_INTERNALS__" in window;
 
 export const authClient = createAuthClient({
   baseURL: API,
@@ -54,7 +55,19 @@ async function fetchUserInternal(token?: string | null) {
     const options = IS_TAURI ? getBearerAuthOptions(token) : undefined;
 
     const { data, error } = await authClient.getSession(options);
-    user.value = error ? null : (data?.user ?? null);
+    const newUser = error ? null : (data?.user ?? null);
+    const wasAuthenticated = !!user.value;
+    const isNowAuthenticated = !!newUser;
+
+    user.value = newUser;
+
+    // Switch storage mode on auth state change (browser only)
+    if (!IS_TAURI) {
+      if (!wasAuthenticated && isNowAuthenticated) {
+        setCloudMode(true);
+        await reinitializeEditorStore();
+      }
+    }
   } finally {
     loading.value = false;
     initialized.value = true;
@@ -159,6 +172,10 @@ export function useAuth() {
       localStorage.removeItem("session_token");
     } else {
       await authClient.signOut();
+
+      // Switch back to local storage mode
+      setCloudMode(false);
+      await reinitializeEditorStore();
     }
 
     sessionToken.value = null;

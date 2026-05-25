@@ -3,14 +3,18 @@ import { computed, markRaw, ref, shallowReactive } from "vue";
 import { useFileSystemAccess, useMagicKeys, useStorage, whenever } from "@vueuse/core";
 import {
   createEmptyTabRecord,
+  createEditorTab,
   deleteEditorTab,
   ensureEditorSchema,
   IS_TAURI,
+  isCloudMode,
   loadEditorTabs,
   saveEditorTab,
   type EditorMetadata,
   type EditorTabRecord,
 } from "@/lib/editorDb";
+import { cloudReloadNote, ApiError } from "@/lib/cloudDb";
+import { isOffline, registerOfflineListeners, clearQueue } from "@/lib/offlineQueue";
 
 export type EditorTab = EditorTabRecord;
 
@@ -21,6 +25,8 @@ let initializationPromise: Promise<void> | null = null;
 const activeTabId = useStorage("active-tab-id", "");
 const editors = shallowReactive(new Map<string, Editor>());
 const pendingSaveTimers = new Map<string, ReturnType<typeof setTimeout>>();
+const conflictedTabs = ref(new Set<string>());
+
 const markdownFileType = {
   description: "Markdown",
   accept: {
@@ -89,28 +95,60 @@ const persistTab = async (tabId: string) => {
     return;
   }
 
+  if (conflictedTabs.value.has(tabId)) {
+    return;
+  }
+
   const editor = editors.get(tabId);
 
   if (editor) {
     tab.content = editor.getJSON();
   }
 
-  await saveEditorTab(tab);
+  try {
+    await saveEditorTab(tab);
+  } catch (err) {
+    if (err instanceof ApiError && err.isConflict) {
+      conflictedTabs.value.add(tabId);
+      throw err;
+    }
+    throw err;
+  }
 };
 
+const savesInFlight = new Set<string>();
+
 const scheduleTabSave = (tabId: string) => {
+  if (conflictedTabs.value.has(tabId)) {
+    return;
+  }
+
   const existingTimer = pendingSaveTimers.get(tabId);
 
   if (existingTimer) {
     clearTimeout(existingTimer);
   }
 
-  const timer = setTimeout(() => {
+  const timer = setTimeout(async () => {
     pendingSaveTimers.delete(tabId);
 
-    void persistTab(tabId).catch((error) => {
+    if (savesInFlight.has(tabId)) {
+      scheduleTabSave(tabId);
+      return;
+    }
+
+    savesInFlight.add(tabId);
+    try {
+      await persistTab(tabId);
+    } catch (error) {
+      if (error instanceof ApiError && error.isConflict) {
+        console.warn(`Conflict on tab ${tabId} — reload required`);
+        return;
+      }
       console.error(`Failed to persist tab ${tabId}:`, error);
-    });
+    } finally {
+      savesInFlight.delete(tabId);
+    }
   }, 250);
 
   pendingSaveTimers.set(tabId, timer);
@@ -155,7 +193,7 @@ const createTab = () => {
   tabs.value = [...tabs.value, tab];
   activeTabId.value = tab.id;
 
-  void saveEditorTab(tab).catch((error) => {
+  void createEditorTab(tab).catch((error) => {
     console.error(`Failed to create tab ${tab.id}:`, error);
   });
 
@@ -179,6 +217,7 @@ const closeTab = (tabId: string) => {
   }
 
   editors.delete(tabId);
+  conflictedTabs.value.delete(tabId);
 
   void deleteEditorTab(tabId).catch((error) => {
     console.error(`Failed to delete tab ${tabId}:`, error);
@@ -194,6 +233,26 @@ const closeTab = (tabId: string) => {
   }
 };
 
+const reloadTab = async (tabId: string): Promise<boolean> => {
+  if (!isCloudMode()) return false;
+
+  const reloaded = await cloudReloadNote(tabId);
+  if (!reloaded) return false;
+
+  const index = tabs.value.findIndex((t) => t.id === tabId);
+  if (index < 0) return false;
+
+  tabs.value[index] = reloaded;
+  conflictedTabs.value.delete(tabId);
+
+  const editor = editors.get(tabId);
+  if (editor) {
+    editor.commands.setContent(reloaded.content, { emitUpdate: false });
+  }
+
+  return true;
+};
+
 export const initializeEditorStore = async () => {
   if (isReady.value) {
     return;
@@ -206,13 +265,18 @@ export const initializeEditorStore = async () => {
   initializationPromise = (async () => {
     try {
       await ensureEditorSchema();
+
+      if (isCloudMode()) {
+        registerOfflineListeners();
+      }
+
       const persistedTabs = await loadEditorTabs();
 
       if (persistedTabs.length === 0) {
         const tab = createEmptyTabRecord(globalThis.crypto.randomUUID());
         tabs.value = [tab];
         activeTabId.value = tab.id;
-        await saveEditorTab(tab);
+        await createEditorTab(tab);
       } else {
         tabs.value = persistedTabs;
         if (!tabs.value.some((t) => t.id === activeTabId.value)) {
@@ -233,6 +297,26 @@ export const initializeEditorStore = async () => {
   })();
 
   return initializationPromise;
+};
+
+export const reinitializeEditorStore = async () => {
+  // Clear all pending saves
+  for (const [, timer] of pendingSaveTimers) {
+    clearTimeout(timer);
+  }
+  pendingSaveTimers.clear();
+  editors.clear();
+  conflictedTabs.value.clear();
+  clearQueue();
+
+  // Reset state
+  tabs.value = [];
+  isReady.value = false;
+  initializationPromise = null;
+  activeTabId.value = "";
+
+  // Re-initialize from the new storage backend
+  await initializeEditorStore();
 };
 
 export function useEditor() {
@@ -329,7 +413,7 @@ export function useEditor() {
     activeTabId.value = tab.id;
 
     try {
-      await saveEditorTab(tab);
+      await createEditorTab(tab);
     } catch (err) {
       console.error("Failed to save imported tab to DB:", err);
     }
@@ -391,13 +475,16 @@ export function useEditor() {
     activeEditor,
     activeTabId,
     closeTab,
+    conflictedTabs,
     createTab,
     initializeEditorStore,
     editors,
     getEditor,
     getTab,
+    isOffline,
     isReady,
     registerEditor,
+    reloadTab,
     setActiveTab,
     updateTabContent,
     updateTabMetadata,
