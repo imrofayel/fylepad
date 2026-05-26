@@ -57,9 +57,16 @@ const isRecoveredCollection = computed(() => {
   return activeCollection.value?.name?.toLowerCase() === "recovered";
 });
 
+// Find the default collection (isSystem + name "default")
+const defaultCollection = computed(() =>
+  collections.value.find((c) => c.isSystem && c.name.toLowerCase().startsWith("default")),
+);
+
 // Notes in the default collection (shown on home)
 const defaultNotes = computed(() => {
-  let result = notes.value.filter((n) => n.collectionId === "default");
+  const defId = defaultCollection.value?.id;
+  if (!defId) return [];
+  let result = notes.value.filter((n) => n.collectionId === defId);
   if (searchQuery.value.trim()) {
     const q = searchQuery.value.trim().toLowerCase();
     result = result.filter((n) => n.title.toLowerCase().includes(q));
@@ -68,7 +75,9 @@ const defaultNotes = computed(() => {
 });
 
 // Non-default collections (hide default box from home)
-const nonDefaultCollections = computed(() => collections.value.filter((c) => c.id !== "default"));
+const nonDefaultCollections = computed(() =>
+  collections.value.filter((c) => !(c.isSystem && c.name.toLowerCase().startsWith("default"))),
+);
 
 // ─── Actions ──────────────────────────────────────────
 function handleOpenNote(note: EditorTabRecord) {
