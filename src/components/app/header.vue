@@ -8,12 +8,12 @@ const { closeTab, createTab, setActiveTab, tabs, activeTabId } = useEditor();
 
 const selectTab = (id: string) => {
   setActiveTab(id);
-  router.replace(`/note/${id}`);
+  router.replace({ path: "/editor", query: { id } });
 };
 
 const handleCreateTab = async () => {
   const note = await createTab();
-  router.push(`/note/${note.id}`);
+  router.push({ path: "/editor", query: { id: note.id } });
 };
 
 const handleCloseTab = (id: string, event: Event) => {
@@ -21,7 +21,7 @@ const handleCloseTab = (id: string, event: Event) => {
   closeTab(id);
   // After closing, navigate to the next active tab or home
   if (tabs.value.length > 0) {
-    router.replace(`/note/${activeTabId.value}`);
+    router.replace({ path: "/editor", query: { id: activeTabId.value } });
   } else {
     router.push("/");
   }

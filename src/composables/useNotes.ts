@@ -317,6 +317,7 @@ export function useNotes() {
     activeCollectionId,
     searchQuery,
     loading,
+    syncing,
     filteredNotes,
     noteCountByCollection,
     showCollections,

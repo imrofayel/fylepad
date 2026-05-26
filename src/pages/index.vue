@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { onMounted, ref, watch, computed } from "vue";
+import { ref, watch, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useNotes } from "@/composables/useNotes";
 import { useEditor } from "@/composables/useEditor";
 import { useAuth } from "@/composables/useAuth";
 import { ICONS } from "@/lib/constants/icons";
 import type { EditorTabRecord, CollectionRecord } from "@/lib/editorDb";
+import { useColorMode } from "@vueuse/core";
 
 const router = useRouter();
 const route = useRoute();
@@ -28,7 +29,7 @@ const {
   editCollection,
   removeCollection,
 } = useNotes();
-const { openNote, isReady } = useEditor();
+const { openNote } = useEditor();
 
 // ─── Modals ───────────────────────────────────────────
 const renameNoteModal = ref(false);
@@ -56,7 +57,7 @@ const isRecoveredCollection = computed(() => {
 function handleOpenNote(note: EditorTabRecord) {
   if (note.id.startsWith("temp-")) return;
   openNote(note);
-  router.push(`/note/${note.id}`);
+  router.push({ path: "/editor", query: { id: note.id } });
 }
 
 async function handleCreateNote() {
@@ -193,11 +194,12 @@ watch(
   },
   { immediate: true },
 );
+
+const { value } = useColorMode();
 </script>
 
 <template>
   <div class="min-h-screen bg-default">
-    <!-- Top bar -->
     <div
       class="flex items-center justify-between px-4 py-3 border-b border-neutral-200 dark:border-neutral-800"
     >
@@ -225,13 +227,8 @@ watch(
           class="text-[14px]"
           @click="handleCreateNote"
         />
-        <UTooltip text="Trash" arrow>
-          <UButton
-            :icon="ICONS.trash"
-            variant="link"
-            color="neutral"
-            @click="$router.push('/trash')"
-          />
+        <UTooltip :text="value === 'light' ? 'Dark mode' : 'Light mode'" arrow>
+          <UColorModeButton variant="link" color="neutral" />
         </UTooltip>
         <AuthUser />
       </div>

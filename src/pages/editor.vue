@@ -1,14 +1,30 @@
 <script setup lang="ts">
-import { defineAsyncComponent, computed } from "vue";
+import { defineAsyncComponent, computed, onMounted, ref, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
 import { useEditor } from "@/composables/useEditor";
 import { useAuth } from "@/composables/useAuth";
 import { ICONS } from "@/lib/constants/icons";
+import { loadNotesByIds } from "@/lib/notesDb";
 
 const EditorBlock = defineAsyncComponent(() => import("@/components/editor/block.vue"));
-useAuth();
-const { activeTabId, tabs, isReady, isOffline, conflictedTabs, reloadTab } = useEditor();
 
-const isLoading = computed(() => !isReady.value);
+const route = useRoute();
+const router = useRouter();
+useAuth();
+const {
+  activeTabId,
+  tabs,
+  isReady,
+  isOffline,
+  conflictedTabs,
+  reloadTab,
+  openNote,
+  createTab,
+  initializeEditorStore,
+} = useEditor();
+
+const noteId = computed(() => (route.query.id as string) || "");
+const notFound = ref(false);
 
 const activeTabConflicted = computed(() => conflictedTabs.value.has(activeTabId.value));
 
@@ -16,6 +32,55 @@ const handleReload = async () => {
   if (!activeTabId.value) return;
   await reloadTab(activeTabId.value);
 };
+
+const handleCreateNote = async () => {
+  const note = await createTab();
+  router.replace({ path: "/editor", query: { id: note.id } });
+};
+
+// Open a note by ID (from query param)
+async function openNoteById(id: string) {
+  notFound.value = false;
+
+  // Check if already open as a tab
+  const existing = tabs.value.find((t) => t.id === id);
+  if (existing) {
+    activeTabId.value = id;
+    return;
+  }
+
+  // Load the note and open it
+  try {
+    const notes = await loadNotesByIds([id]);
+    if (notes.length > 0) {
+      openNote(notes[0]);
+    } else {
+      notFound.value = true;
+    }
+  } catch (err) {
+    console.error("Failed to load note:", err);
+    notFound.value = true;
+  }
+}
+
+onMounted(async () => {
+  await initializeEditorStore();
+
+  if (noteId.value) {
+    // URL has ?id=xxx — open that note
+    await openNoteById(noteId.value);
+  } else if (tabs.value.length > 0) {
+    // No id in URL but tabs exist — redirect to the first tab
+    router.replace({ path: "/editor", query: { id: tabs.value[0].id } });
+  }
+  // else: no tabs, no id → show empty state
+});
+
+// Watch for query param changes (e.g. tab switching updates the URL)
+watch(noteId, async (newId) => {
+  if (!newId || !isReady.value) return;
+  await openNoteById(newId);
+});
 </script>
 
 <template>
@@ -52,39 +117,66 @@ const handleReload = async () => {
       </div>
     </Transition>
 
-    <AppHeader v-if="!isLoading" />
-
     <!-- Loading State -->
-    <div v-if="isLoading" class="flex items-center justify-center min-h-[calc(100vh-80px)]">
+    <div v-if="!isReady" class="flex items-center justify-center min-h-[calc(100vh-80px)]">
       <UIcon :name="ICONS.loader" class="size-6 text-neutral-400" />
     </div>
 
-    <!-- Empty State -->
+    <!-- Not Found -->
     <div
-      v-else-if="tabs.length === 0"
+      v-else-if="notFound"
       class="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] gap-4"
     >
-      <img src="../../src/assets/icons/icon.svg" alt="fylepad logo" class="w-16 h-16 opacity-30" />
-      <p class="text-neutral-400 text-sm">Open a note from the home page</p>
+      <UIcon name="tabler:file-off" class="size-10 text-neutral-300 dark:text-neutral-600" />
+      <p class="text-neutral-400 text-sm">Note not found or has been deleted</p>
       <UButton
         label="Go to Home"
         variant="soft"
         color="neutral"
         :icon="ICONS.home"
-        @click="$router.push('/')"
+        @click="router.push('/')"
       />
     </div>
 
+    <!-- Empty State: No tabs at all -->
+    <div
+      v-else-if="tabs.length === 0"
+      class="flex flex-col items-center justify-center min-h-[calc(100vh-80px)] gap-4"
+    >
+      <img src="../../src/assets/icons/icon.svg" alt="fylepad logo" class="w-16 h-16 opacity-30" />
+      <p class="text-neutral-400 text-sm">No notes open</p>
+      <div class="flex gap-2">
+        <UButton
+          label="Create a new note"
+          variant="soft"
+          color="primary"
+          :icon="ICONS.newTab"
+          @click="handleCreateNote"
+        />
+        <UButton
+          label="Go to Home"
+          variant="soft"
+          color="neutral"
+          :icon="ICONS.home"
+          @click="$router.push('/')"
+        />
+      </div>
+    </div>
+
     <!-- Editor State -->
-    <Suspense v-else>
-      <template #default>
-        <div>
-          <div v-for="tab in tabs" :key="tab.id" v-show="tab.id === activeTabId">
-            <EditorBlock :tab-id="tab.id" />
+    <template v-else>
+      <AppHeader />
+
+      <Suspense>
+        <template #default>
+          <div>
+            <div v-for="tab in tabs" :key="tab.id" v-show="tab.id === activeTabId">
+              <EditorBlock :tab-id="tab.id" />
+            </div>
           </div>
-        </div>
-      </template>
-    </Suspense>
+        </template>
+      </Suspense>
+    </template>
   </div>
 </template>
 

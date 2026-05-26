@@ -24,17 +24,6 @@ const router = useRouter();
         <template #content>
           <div class="flex flex-col p-0.5 py-1 w-42">
             <UButton
-              label="Catelog"
-              variant="link"
-              color="neutral"
-              :icon="ICONS.home"
-              class="p-2 py-1.5 font-normal text-[15px]"
-              :ui="{
-                leadingIcon: 'size-4.5',
-              }"
-              @click="router.push('/')"
-            />
-            <UButton
               label="Settings"
               variant="link"
               color="neutral"

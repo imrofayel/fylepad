@@ -34,13 +34,6 @@ declare module "vue-router/auto-routes" {
       Record<never, never>,
       never
     >;
-    "/note/[id]": RouteRecordInfo<
-      "/note/[id]",
-      "/note/:id",
-      { id: ParamValue<true> },
-      { id: ParamValue<false> },
-      never
-    >;
     "/settings": RouteRecordInfo<
       "/settings",
       "/settings",
@@ -74,10 +67,6 @@ declare module "vue-router/auto-routes" {
     };
     "src/pages/editor.vue": {
       routes: "/editor";
-      views: never;
-    };
-    "src/pages/note/[id].vue": {
-      routes: "/note/[id]";
       views: never;
     };
     "src/pages/settings.vue": {
