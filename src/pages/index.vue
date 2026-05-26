@@ -200,72 +200,58 @@ const { value } = useColorMode();
 </script>
 
 <template>
-  <div class="min-h-screen bg-default">
-    <div class="flex items-center justify-end sm:px-3 pt-2 px-2">
-      <div class="flex items-center gap-2.5">
-        <Menu is-home />
-      </div>
+  <div class="mx-auto min-h-screen w-full z-100 sm:px-3 pt-3 px-2 bg-default">
+    <div class="flex items-center justify-end">
+      <Menu is-home />
     </div>
-
-    <!-- Loading -->
     <div v-if="loading || !initialized" class="flex items-center justify-center py-32">
-      <UIcon :name="ICONS.loader" class="size-6 text-neutral-400" />
+      <UIcon :name="ICONS.loader" class="size-7 text-neutral-400" />
     </div>
-
-    <!-- Main content -->
-    <div v-else class="flex">
-      <!-- Sidebar: collections -->
-      <aside
-        v-if="showCollections"
-        class="w-56 shrink-0 border-r border-neutral-200 dark:border-neutral-800 p-3 min-h-[calc(100vh-57px)]"
-      >
-        <div class="flex items-center justify-between mb-3">
-          <span class="text-xs font-semibold text-neutral-400 uppercase tracking-wider"
-            >Folders</span
-          >
-          <UButton
-            :icon="ICONS.folderPlus"
-            size="xs"
-            variant="link"
-            color="neutral"
-            @click="newCollectionModal = true"
-          />
-        </div>
-
-        <div class="flex flex-col gap-0.5">
-          <UButton
-            label="All Notes"
-            variant="link"
-            color="neutral"
-            class="w-full justify-start px-2 py-1.5 text-[14px] font-normal"
-            :class="activeCollectionId === 'all' && 'bg-neutral-100 dark:bg-neutral-800'"
-            @click="selectCollection('all')"
-          >
-            <template #trailing>
-              <UBadge
-                :label="String(filteredNotes.length)"
-                size="sm"
-                variant="subtle"
-                color="neutral"
-              />
-            </template>
-          </UButton>
-
-          <div v-for="col in collections" :key="col.id" class="group flex items-center">
+    <div v-else>
+      <img src="/favicon.svg" class="w-10 h-10 w-full my-6" />
+      <div class="w-full flex justify-center items-center">
+        <UInput
+          v-model="searchQuery"
+          placeholder="Find notes..."
+          :ui="{
+            base: 'bg-neutral-100 dark:bg-neutral-800 pl-7!',
+            leading: 'p-1.5 pr-0!',
+            leadingIcon: 'size-4',
+          }"
+          class="w-50 mb-4"
+          icon="i-lucide-search"
+        />
+      </div>
+      <div class="flex">
+        <aside
+          v-if="showCollections"
+          class="w-56 shrink-0 border-r border-neutral-200 dark:border-neutral-800 p-3 min-h-[calc(100vh-57px)]"
+        >
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-xs font-semibold text-neutral-400 uppercase tracking-wider"
+              >Folders</span
+            >
             <UButton
-              :label="col.name"
+              :icon="ICONS.folderPlus"
+              size="xs"
               variant="link"
               color="neutral"
-              class="flex-1 justify-start px-2 py-1.5 text-[14px] font-normal truncate"
-              :class="activeCollectionId === col.id && 'bg-neutral-100 dark:bg-neutral-800'"
-              :icon="ICONS.folder"
-              :ui="{ leadingIcon: 'size-3.5 opacity-50' }"
-              @click="selectCollection(col.id)"
+              @click="newCollectionModal = true"
+            />
+          </div>
+
+          <div class="flex flex-col gap-0.5">
+            <UButton
+              label="All Notes"
+              variant="link"
+              color="neutral"
+              class="w-full justify-start px-2 py-1.5 text-[14px] font-normal"
+              :class="activeCollectionId === 'all' && 'bg-neutral-100 dark:bg-neutral-800'"
+              @click="selectCollection('all')"
             >
               <template #trailing>
                 <UBadge
-                  v-if="noteCountByCollection.get(col.id)"
-                  :label="String(noteCountByCollection.get(col.id) || 0)"
+                  :label="String(filteredNotes.length)"
                   size="sm"
                   variant="subtle"
                   color="neutral"
@@ -273,75 +259,98 @@ const { value } = useColorMode();
               </template>
             </UButton>
 
-            <UDropdownMenu
-              v-if="!col.isSystem"
-              :items="collectionDropdownItems(col)"
-              class="opacity-0 group-hover:opacity-100 transition-opacity"
-            >
-              <UButton :icon="ICONS.dots" size="xs" variant="link" color="neutral" />
-            </UDropdownMenu>
-          </div>
-        </div>
-      </aside>
+            <div v-for="col in collections" :key="col.id" class="group flex items-center">
+              <UButton
+                :label="col.name"
+                variant="link"
+                color="neutral"
+                class="flex-1 justify-start px-2 py-1.5 text-[14px] font-normal truncate"
+                :class="activeCollectionId === col.id && 'bg-neutral-100 dark:bg-neutral-800'"
+                :icon="ICONS.folder"
+                :ui="{ leadingIcon: 'size-3.5 opacity-50' }"
+                @click="selectCollection(col.id)"
+              >
+                <template #trailing>
+                  <UBadge
+                    v-if="noteCountByCollection.get(col.id)"
+                    :label="String(noteCountByCollection.get(col.id) || 0)"
+                    size="sm"
+                    variant="subtle"
+                    color="neutral"
+                  />
+                </template>
+              </UButton>
 
-      <!-- Notes grid -->
-      <main class="flex-1 p-4">
-        <div
-          v-if="filteredNotes.length === 0"
-          class="flex flex-col items-center justify-center py-24 gap-3"
-        >
-          <UIcon name="tabler:notes-off" class="size-10 text-neutral-300 dark:text-neutral-600" />
-          <p class="text-neutral-400 text-sm">
-            {{ searchQuery ? "No notes match your search" : "No notes yet" }}
-          </p>
-          <UButton
-            v-if="!searchQuery && !isRecoveredCollection"
-            label="Create your first note"
-            :icon="ICONS.notePlus"
-            variant="soft"
-            color="neutral"
-            @click="handleCreateNote"
-          />
-        </div>
-
-        <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
-          <div
-            v-for="note in filteredNotes"
-            :key="note.id"
-            class="group relative border border-neutral-200 dark:border-neutral-800 rounded-lg p-4 hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors cursor-pointer"
-            :class="note.id.startsWith('temp-') && 'opacity-60 pointer-events-none animate-pulse'"
-            @click="handleOpenNote(note)"
-          >
-            <div class="flex items-start justify-between gap-2">
-              <h3 class="text-[15px] font-medium truncate flex-1">
-                {{ note.title || "Untitled" }}
-              </h3>
-              <UDropdownMenu :items="noteDropdownItems(note)">
-                <UButton
-                  :icon="ICONS.dots"
-                  size="xs"
-                  variant="link"
-                  color="neutral"
-                  class="opacity-0 group-hover:opacity-100 shrink-0"
-                  @click.stop
-                />
+              <UDropdownMenu
+                v-if="!col.isSystem"
+                :items="collectionDropdownItems(col)"
+                class="opacity-0 group-hover:opacity-100 transition-opacity"
+              >
+                <UButton :icon="ICONS.dots" size="xs" variant="link" color="neutral" />
               </UDropdownMenu>
             </div>
+          </div>
+        </aside>
 
-            <div class="flex items-center gap-3 mt-3 text-xs text-neutral-400">
-              <span v-if="note.collectionName && showCollections" class="flex items-center gap-1">
-                <UIcon :name="ICONS.folder" class="size-3" />
-                {{ note.collectionName }}
-              </span>
-              <span>{{ formatDate(note.createdAt) }}</span>
-            </div>
+        <!-- Notes grid -->
+        <main class="flex-1 p-4">
+          <div
+            v-if="filteredNotes.length === 0"
+            class="flex flex-col items-center justify-center py-24 gap-3"
+          >
+            <UIcon name="tabler:notes-off" class="size-10 text-neutral-300 dark:text-neutral-600" />
+            <p class="text-neutral-400 text-sm">
+              {{ searchQuery ? "No notes match your search" : "No notes yet" }}
+            </p>
+            <UButton
+              v-if="!searchQuery && !isRecoveredCollection"
+              label="Create your first note"
+              :icon="ICONS.notePlus"
+              variant="soft"
+              color="neutral"
+              @click="handleCreateNote"
+            />
+          </div>
 
-            <div v-if="note.updatedAt" class="mt-1 text-xs text-neutral-400">
-              Updated {{ formatDate(note.updatedAt) }}
+          <div v-else class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
+            <div
+              v-for="note in filteredNotes"
+              :key="note.id"
+              class="group relative border border-neutral-200 dark:border-neutral-800 rounded-lg p-4 hover:border-neutral-400 dark:hover:border-neutral-600 transition-colors cursor-pointer"
+              :class="note.id.startsWith('temp-') && 'opacity-60 pointer-events-none animate-pulse'"
+              @click="handleOpenNote(note)"
+            >
+              <div class="flex items-start justify-between gap-2">
+                <h3 class="text-[15px] font-medium truncate flex-1">
+                  {{ note.title || "Untitled" }}
+                </h3>
+                <UDropdownMenu :items="noteDropdownItems(note)">
+                  <UButton
+                    :icon="ICONS.dots"
+                    size="xs"
+                    variant="link"
+                    color="neutral"
+                    class="opacity-0 group-hover:opacity-100 shrink-0"
+                    @click.stop
+                  />
+                </UDropdownMenu>
+              </div>
+
+              <div class="flex items-center gap-3 mt-3 text-xs text-neutral-400">
+                <span v-if="note.collectionName && showCollections" class="flex items-center gap-1">
+                  <UIcon :name="ICONS.folder" class="size-3" />
+                  {{ note.collectionName }}
+                </span>
+                <span>{{ formatDate(note.createdAt) }}</span>
+              </div>
+
+              <div v-if="note.updatedAt" class="mt-1 text-xs text-neutral-400">
+                Updated {{ formatDate(note.updatedAt) }}
+              </div>
             </div>
           </div>
-        </div>
-      </main>
+        </main>
+      </div>
     </div>
 
     <!-- Rename note modal -->
