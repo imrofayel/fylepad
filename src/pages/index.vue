@@ -7,6 +7,7 @@ import { useAuth } from "@/composables/useAuth";
 import { ICONS } from "@/lib/constants/icons";
 import type { EditorTabRecord, CollectionRecord } from "@/lib/editorDb";
 import { useColorMode } from "@vueuse/core";
+import Menu from "@/components/header/menu.vue";
 
 const router = useRouter();
 const route = useRoute();
@@ -200,37 +201,9 @@ const { value } = useColorMode();
 
 <template>
   <div class="min-h-screen bg-default">
-    <div
-      class="flex items-center justify-between px-4 py-3 border-b border-neutral-200 dark:border-neutral-800"
-    >
-      <div class="flex items-center gap-3 flex-1">
-        <img src="../../src/assets/icons/icon.svg" alt="fylepad" class="w-6 h-6" />
-        <UInput
-          v-model="searchQuery"
-          :icon="ICONS.search"
-          placeholder="Search notes..."
-          class="max-w-sm flex-1"
-          :ui="{ base: 'text-[15px]' }"
-        />
-        <!-- Sync indicator -->
-        <UTooltip v-if="syncing" text="Saving to cloud..." arrow>
-          <UIcon :name="ICONS.loader" class="size-4 text-neutral-400" />
-        </UTooltip>
-      </div>
+    <div class="flex items-center justify-end sm:px-3 pt-2 px-2">
       <div class="flex items-center gap-2.5">
-        <UButton
-          v-if="!isRecoveredCollection"
-          label="New note"
-          :icon="ICONS.notePlus"
-          variant="soft"
-          color="neutral"
-          class="text-[14px]"
-          @click="handleCreateNote"
-        />
-        <UTooltip :text="value === 'light' ? 'Dark mode' : 'Light mode'" arrow>
-          <UColorModeButton variant="link" color="neutral" />
-        </UTooltip>
-        <AuthUser />
+        <Menu is-home />
       </div>
     </div>
 

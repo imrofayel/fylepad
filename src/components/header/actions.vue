@@ -10,15 +10,12 @@ const { activeTabId } = useEditor();
   <div class="flex items-center gap-2.5" v-if="activeTabId">
     <ButtonWithTooltip text="Search" :icon="ICONS.search" />
 
-    <HeaderMenu />
-    <AuthUser />
+    <HeaderMenu :is-home="false" />
   </div>
 
   <div class="flex gap-2.5" v-if="!activeTabId">
     <UTooltip :text="value === 'light' ? 'Dark mode' : 'Light mode'" arrow>
       <UColorModeButton variant="link" color="neutral" />
     </UTooltip>
-
-    <AuthUser />
   </div>
 </template>

@@ -81,7 +81,7 @@ export const ICONS = {
   aiText: "tabler:bolt-filled",
   logout: "tabler:logout",
   user: "tabler:user",
-  home: "tabler:home",
+  home: "tabler:book-filled",
   settings: "tabler:settings",
   google: "logos:google-icon",
   github: "akar-icons:github-fill",

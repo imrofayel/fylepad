@@ -30,7 +30,7 @@ const handleCloseTab = (id: string, event: Event) => {
 
 <template>
   <div class="flex w-full items-center justify-between gap-4">
-    <div class="flex min-w-0 flex-1 items-center gap-x-2">
+    <div class="flex min-w-0 flex-1 items-center gap-x-3">
       <ButtonWithTooltip
         text="Home"
         variant="link"
@@ -47,7 +47,7 @@ const handleCloseTab = (id: string, event: Event) => {
       />
 
       <div
-        class="no-scrollbar flex min-w-0 max-w-full flex-1 gap-x-1 overflow-x-auto overflow-y-hidden whitespace-nowrap"
+        class="no-scrollbar flex min-w-0 max-w-full flex-1 overflow-x-auto overflow-y-hidden whitespace-nowrap"
       >
         <UButton
           v-for="tab in tabs"
