@@ -86,6 +86,7 @@ export const ICONS = {
   google: "logos:google-icon",
   github: "akar-icons:github-fill",
   folder: "tabler:folder-filled",
+  folderMove: "tabler:folder-symlink",
   folderPlus: "tabler:folder-plus",
   dots: "tabler:dots",
   dotsCircle: "tabler:dots-vertical",

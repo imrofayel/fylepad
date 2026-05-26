@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, computed } from "vue";
+import { ref, watch, computed, h } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useNotes } from "@/composables/useNotes";
 import { useEditor } from "@/composables/useEditor";
@@ -151,29 +151,29 @@ async function confirmNewCollection() {
 function noteDropdownItems(note: EditorTabRecord) {
   const moveItems = showCollections.value
     ? collections.value
-        .filter((c) => c.id !== note.collectionId)
+        .filter((c) => c.id !== note.collectionId && c.name?.toLowerCase() !== "recovered")
         .map((c) => ({
           label: c.name,
-          icon: ICONS.folder,
           onSelect: () => moveNoteToCollection(note.id, c.id),
         }))
     : [];
 
   const items: any[][] = [
-    [
-      { label: "Open", icon: ICONS.arrowRight, onSelect: () => handleOpenNote(note) },
-      { label: "Rename", icon: ICONS.edit, onSelect: () => openRenameNote(note) },
-    ],
+    [{ label: "Rename", icon: ICONS.edit, onSelect: () => openRenameNote(note) }],
   ];
 
   if (moveItems.length > 0) {
-    items.push(moveItems.map((m) => ({ ...m, label: `Move to ${m.label}` })));
+    items[0].push({
+      label: "Move to",
+      icon: ICONS.folderMove,
+      children: [moveItems],
+    });
   }
-
+  ``;
   items.push([
     {
       label: "Delete",
-      icon: ICONS.trash,
+      icon: ICONS.trashFilled,
       color: "error" as const,
       onSelect: () => handleDeleteNote(note.id),
     },
@@ -273,19 +273,19 @@ watch(
       <!-- ════════ INSIDE A COLLECTION ════════ -->
       <div v-if="isInsideCollection" class="max-w-2xl mx-auto">
         <!-- Back + collection name + add -->
-        <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center justify-between my-4">
           <div class="flex items-center gap-2">
-            <UButton
-              :icon="ICONS.arrowBack"
-              size="xs"
-              variant="ghost"
+            <ButtonWithTooltip
+              text="Go Back"
+              :icon="ICONS.arrowBackFilled"
+              size="lg"
               color="neutral"
               @click="goBack"
             />
             <h2 class="text-lg font-semibold">{{ activeCollection?.name || "Collection" }}</h2>
             <UBadge
               :label="String(filteredNotes.length)"
-              size="sm"
+              size="md"
               variant="subtle"
               color="neutral"
             />
@@ -324,24 +324,23 @@ watch(
           <div
             v-for="note in filteredNotes"
             :key="note.id"
-            class="group flex items-center justify-between py-3.5 px-1 border-b border-neutral-100 dark:border-neutral-800/60 cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-800/30 transition-colors"
+            class="group flex items-center justify-between py-3.5 px-1"
             :class="note.id.startsWith('temp-') && 'opacity-50 pointer-events-none animate-pulse'"
             @click="handleOpenNote(note)"
           >
-            <span class="text-[15px] font-medium truncate flex-1">
+            <span class="text-base max-w-80 font-medium truncate flex-1">
               {{ note.title || "Untitled" }}
             </span>
             <div class="flex items-center gap-2">
-              <span class="text-xs text-neutral-400 whitespace-nowrap">
+              <span class="text-base font-medium text-neutral-400 whitespace-nowrap">
                 {{ formatDate(note.updatedAt || note.createdAt) }}
               </span>
               <UDropdownMenu :items="noteDropdownItems(note)">
                 <UButton
-                  :icon="ICONS.dots"
+                  :icon="ICONS.dotsCircle"
                   size="xs"
                   variant="link"
                   color="neutral"
-                  class="opacity-0 group-hover:opacity-100"
                   @click.stop
                 />
               </UDropdownMenu>
@@ -423,7 +422,12 @@ watch(
               <span class="text-[15.5px] font-medium text-neutral-400 whitespace-nowrap">
                 {{ formatDate(note.updatedAt || note.createdAt) }}
               </span>
-              <UDropdownMenu :items="noteDropdownItems(note)">
+              <UDropdownMenu
+                :items="noteDropdownItems(note)"
+                :ui="{
+                  content: 'w-40',
+                }"
+              >
                 <UButton
                   :icon="ICONS.dotsCircle"
                   size="sm"
