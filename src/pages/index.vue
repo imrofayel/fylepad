@@ -189,7 +189,7 @@ function collectionDropdownItems(col: CollectionRecord) {
       { label: "Rename", icon: ICONS.edit, onSelect: () => openRenameCollection(col) },
       {
         label: "Delete",
-        icon: ICONS.trash,
+        icon: ICONS.trashFilled,
         color: "error" as const,
         onSelect: () => openDeleteCollection(col),
       },
@@ -236,8 +236,6 @@ watch(
   },
   { immediate: true },
 );
-
-const { value } = useColorMode();
 </script>
 
 <template>
@@ -267,7 +265,7 @@ const { value } = useColorMode();
             leading: 'p-1.5 pr-0!',
             leadingIcon: 'size-4',
           }"
-          class="w-50 mb-6"
+          class="w-50 mb-2"
           icon="i-lucide-search"
         />
       </div>
@@ -355,37 +353,40 @@ const { value } = useColorMode();
       <!-- ════════ HOME VIEW (all collections + notes) ════════ -->
       <div v-else class="max-w-2xl mx-auto">
         <!-- Header with Add dropdown -->
-        <div class="flex items-center justify-between mb-4">
-          <h2 class="text-lg font-semibold">Notes</h2>
+        <div class="flex items-center justify-end mb-4">
           <UDropdownMenu :items="addDropdownItems">
-            <UButton :icon="ICONS.plus" size="sm" variant="soft" color="neutral" />
+            <ButtonWithTooltip :icon="ICONS.plus" size="lg" text="Create" />
           </UDropdownMenu>
         </div>
 
         <!-- Collection cards -->
         <div
           v-if="showCollections && collections.length > 0 && !searchQuery"
-          class="grid grid-cols-2 sm:grid-cols-3 gap-2.5 mb-6"
+          class="flex flex-wrap gap-2.5 mb-6"
         >
           <div
             v-for="col in nonDefaultCollections"
             :key="col.id"
-            class="group relative flex items-center gap-3 p-3.5 rounded-xl border border-neutral-200 dark:border-neutral-800 hover:border-neutral-400 dark:hover:border-neutral-600 cursor-pointer transition-colors bg-white dark:bg-neutral-900"
+            class="group relative min-w-40 flex flex-col overflow-hidden gap-3 p-3 px-4 rounded-sm bg-neutral-100 dark:bg-neutral-800"
             @click="openCollection(col.id)"
           >
-            <UIcon :name="ICONS.folder" class="size-5 text-neutral-400 shrink-0" />
-            <div class="min-w-0 flex-1">
-              <p class="text-[14px] font-medium truncate">{{ col.name }}</p>
-              <p class="text-xs text-neutral-400">
-                {{ noteCountByCollection.get(col.id) || 0 }} notes
+            <UIcon
+              :name="ICONS.folder"
+              class="size-25 -rotate-16 absolute -bottom-8 -right-5 text-neutral-200 dark:text-neutral-600 shrink-0"
+              :class="col.name?.toLowerCase() === 'recovered' && 'text-yellow-200!'"
+            />
+            <div class="w-35 h-25">
+              <p class="text-base w-25 font-medium truncate">{{ col.name }}</p>
+              <p class="text-[15.5px] font-medium text-neutral-400 absolute bottom-2">
+                {{ noteCountByCollection.get(col.id) || 0 }}
               </p>
             </div>
             <UDropdownMenu
               v-if="!col.isSystem"
               :items="collectionDropdownItems(col)"
-              class="opacity-0 group-hover:opacity-100 transition-opacity"
+              class="absolute right-2.5 top-2"
             >
-              <UButton :icon="ICONS.dots" size="xs" variant="link" color="neutral" @click.stop />
+              <UButton :icon="ICONS.dots" size="sm" variant="link" color="neutral" @click.stop />
             </UDropdownMenu>
           </div>
         </div>
@@ -411,24 +412,24 @@ const { value } = useColorMode();
           <div
             v-for="note in defaultNotes"
             :key="note.id"
-            class="group flex items-center justify-between py-3.5 px-1 border-b border-neutral-100 dark:border-neutral-800/60 cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-800/30 transition-colors"
+            class="group flex items-center justify-between py-3.5 px-1 cursor-pointer transition-colors"
             :class="note.id.startsWith('temp-') && 'opacity-50 pointer-events-none animate-pulse'"
             @click="handleOpenNote(note)"
           >
-            <span class="text-[15px] font-medium truncate flex-1">
+            <span class="text-lg max-w-80 font-medium truncate flex-1">
               {{ note.title || "Untitled" }}
             </span>
             <div class="flex items-center gap-2">
-              <span class="text-xs text-neutral-400 whitespace-nowrap">
+              <span class="text-[15.5px] font-medium text-neutral-400 whitespace-nowrap">
                 {{ formatDate(note.updatedAt || note.createdAt) }}
               </span>
               <UDropdownMenu :items="noteDropdownItems(note)">
                 <UButton
-                  :icon="ICONS.dots"
-                  size="xs"
+                  :icon="ICONS.dotsCircle"
+                  size="sm"
                   variant="link"
                   color="neutral"
-                  class="opacity-0 group-hover:opacity-100"
+                  class="cursor-pointer!"
                   @click.stop
                 />
               </UDropdownMenu>

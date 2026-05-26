@@ -85,14 +85,15 @@ export const ICONS = {
   settings: "tabler:settings",
   google: "logos:google-icon",
   github: "akar-icons:github-fill",
-  folder: "tabler:folder",
+  folder: "tabler:folder-filled",
   folderPlus: "tabler:folder-plus",
   dots: "tabler:dots",
+  dotsCircle: "tabler:dots-vertical",
   restore: "tabler:arrow-back-up",
   trashX: "tabler:trash-x",
-  edit: "tabler:edit",
+  edit: "tabler:pencil",
   arrowRight: "tabler:arrow-right",
-  plus: "tabler:plus",
+  plus: "tabler:circle-plus-filled",
   notePlus: "tabler:file-plus",
 
   // Terminal & Scripting
