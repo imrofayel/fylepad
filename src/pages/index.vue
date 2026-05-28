@@ -169,7 +169,6 @@ function noteDropdownItems(note: EditorTabRecord) {
       children: [moveItems],
     });
   }
-  ``;
   items.push([
     {
       label: "Delete",
@@ -210,9 +209,9 @@ const addDropdownItems = computed(() => {
   }
   return [
     [
-      { label: "New Note", icon: ICONS.notePlus, onSelect: () => handleCreateNote() },
+      { label: "Note", icon: ICONS.notePlus, onSelect: () => handleCreateNote() },
       {
-        label: "New Collection",
+        label: "Collection",
         icon: ICONS.folderPlus,
         onSelect: () => (newCollectionModal.value = true),
       },
@@ -285,9 +284,10 @@ watch(
             <h2 class="text-lg font-semibold">{{ activeCollection?.name || "Collection" }}</h2>
             <UBadge
               :label="String(filteredNotes.length)"
-              size="md"
-              variant="subtle"
+              size="lg"
+              variant="outline"
               color="neutral"
+              class="rounded-full font-medium"
             />
           </div>
           <div class="flex items-center gap-1">
@@ -305,10 +305,7 @@ watch(
 
         <!-- Notes list -->
         <div v-if="filteredNotes.length === 0" class="flex flex-col items-center py-20 gap-3">
-          <UIcon name="tabler:notes-off" class="size-8 text-neutral-300 dark:text-neutral-600" />
-          <p class="text-neutral-400 text-sm">
-            {{ searchQuery ? "No notes match your search" : "No notes in this collection" }}
-          </p>
+          <UIcon name="tabler:notes-off" class="size-10 text-neutral-300 dark:text-neutral-600" />
           <UButton
             v-if="!searchQuery && !isRecoveredCollection"
             label="Create a note"
@@ -324,15 +321,15 @@ watch(
           <div
             v-for="note in filteredNotes"
             :key="note.id"
-            class="group flex items-center justify-between py-3.5 px-1"
+            class="group flex items-center justify-between py-2 px-1"
             :class="note.id.startsWith('temp-') && 'opacity-50 pointer-events-none animate-pulse'"
             @click="handleOpenNote(note)"
           >
-            <span class="text-base max-w-80 font-medium truncate flex-1">
+            <span class="text-lg max-w-80 font-medium truncate flex-1">
               {{ note.title || "Untitled" }}
             </span>
             <div class="flex items-center gap-2">
-              <span class="text-base font-medium text-neutral-400 whitespace-nowrap">
+              <span class="text-[15.5px] font-medium text-neutral-400 whitespace-nowrap">
                 {{ formatDate(note.updatedAt || note.createdAt) }}
               </span>
               <UDropdownMenu :items="noteDropdownItems(note)">
@@ -411,7 +408,7 @@ watch(
           <div
             v-for="note in defaultNotes"
             :key="note.id"
-            class="group flex items-center justify-between py-3.5 px-1 cursor-pointer transition-colors"
+            class="group flex items-center justify-between py-2 px-1 cursor-pointer transition-colors"
             :class="note.id.startsWith('temp-') && 'opacity-50 pointer-events-none animate-pulse'"
             @click="handleOpenNote(note)"
           >
