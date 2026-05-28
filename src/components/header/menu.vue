@@ -47,7 +47,11 @@ defineProps<{
           color="neutral"
           :icon="ICONS.folderOpen"
           class="p-2 py-1.5 font-normal text-[15px]"
-          @click="openFileDialog"
+          @click="
+            () => {
+              openFileDialog();
+            }
+          "
           :ui="{
             leadingIcon: 'size-4.5',
           }"

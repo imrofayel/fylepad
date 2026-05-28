@@ -3,7 +3,6 @@ import { computed, markRaw, ref, shallowReactive } from "vue";
 import { useFileSystemAccess, useMagicKeys, useStorage, whenever } from "@vueuse/core";
 import {
   createEmptyTabRecord,
-  createEditorTab,
   ensureEditorSchema,
   IS_TAURI,
   isCloudMode,
@@ -11,7 +10,11 @@ import {
   type EditorMetadata,
   type EditorTabRecord,
 } from "@/lib/editorDb";
-import { loadNotesByIds, createNote as dbCreateNote } from "@/lib/notesDb";
+import {
+  loadNotesByIds,
+  createNote as dbCreateNote,
+  importNote as dbImportNote,
+} from "@/lib/notesDb";
 import { cloudReloadNote, ApiError } from "@/lib/cloudDb";
 import { isOffline, registerOfflineListeners, clearQueue } from "@/lib/offlineQueue";
 
@@ -368,7 +371,7 @@ export function useEditor() {
     }
   };
 
-  const openFileDialog = async () => {
+  const openFileDialog = async (collectionId?: string) => {
     if (IS_TAURI) {
       const { open } = await import("@tauri-apps/plugin-dialog");
       const { readTextFile } = await import("@tauri-apps/plugin-fs");
@@ -380,27 +383,35 @@ export function useEditor() {
       });
 
       if (!selectedPath || Array.isArray(selectedPath)) {
-        return;
+        return null;
       }
 
       const content = await readTextFile(selectedPath);
-      await handleImportedContent(content, selectedPath);
-      return;
+      return await handleImportedContent(content, selectedPath, collectionId);
     }
 
     if (!browserFileSystemAccess.isSupported.value) {
       console.warn("File System Access API is not supported in this browser.");
-      return;
+      return null;
     }
 
     await openBrowserFile({ types: [markdownFileType] });
 
     if (typeof browserFileData.value === "string" && browserFileData.value) {
-      await handleImportedContent(browserFileData.value, browserFileName.value || undefined);
+      return await handleImportedContent(
+        browserFileData.value,
+        browserFileName.value || undefined,
+        collectionId,
+      );
     }
+    return null;
   };
 
-  const handleImportedContent = async (text: string, sourcePathOrName?: string) => {
+  const handleImportedContent = async (
+    text: string,
+    sourcePathOrName?: string,
+    collectionId?: string,
+  ) => {
     const { frontmatter, body } = parseFrontmatter(text);
     const titleFromFm = extractTitleFromFrontmatter(frontmatter);
     const defaultTitle =
@@ -409,22 +420,30 @@ export function useEditor() {
         ? String(sourcePathOrName).replace(/\.(md|markdown|txt)$/, "")
         : "Untitled");
 
-    const tab = createEmptyTabRecord(globalThis.crypto.randomUUID());
-    tab.title = normalizeTabTitle(defaultTitle);
-    tab.metadata = {
+    const title = normalizeTabTitle(defaultTitle);
+    const metadata = {
       rawMarkdown: body,
       origin: "external_file",
       sourceName: sourcePathOrName ? getSourceNameFromPath(sourcePathOrName) : undefined,
       sourcePath: sourcePathOrName,
     } as EditorMetadata;
 
-    tabs.value = [...tabs.value, tab];
-    activeTabId.value = tab.id;
-
     try {
-      await createEditorTab(tab);
+      const note = await dbImportNote(
+        title,
+        createEmptyTabRecord("").content,
+        metadata,
+        collectionId,
+      );
+      tabs.value = [...tabs.value, note];
+      activeTabId.value = note.id;
+      if (!openTabIds.value.includes(note.id)) {
+        openTabIds.value = [...openTabIds.value, note.id];
+      }
+      return note;
     } catch (err) {
-      console.error("Failed to save imported tab to DB:", err);
+      console.error("Failed to save imported file to DB:", err);
+      return null;
     }
   };
 

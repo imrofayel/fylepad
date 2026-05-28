@@ -118,6 +118,25 @@ export function useNotes() {
     }
   }
 
+  async function importFile() {
+    const colId = activeCollectionId.value !== "all" ? activeCollectionId.value : undefined;
+    syncing.value = true;
+
+    try {
+      const { openFileDialog } = useEditor();
+      const note = await openFileDialog(colId);
+      if (note) {
+        notes.value = [...notes.value, note];
+        return note;
+      }
+    } catch (err: any) {
+      toast.add({ title: "Failed to import file", description: err.message, color: "error" });
+      throw err;
+    } finally {
+      syncing.value = false;
+    }
+  }
+
   async function deleteNote(noteId: string) {
     const noteIndex = notes.value.findIndex((n) => n.id === noteId);
     if (noteIndex === -1) return;
@@ -324,6 +343,7 @@ export function useNotes() {
     refresh,
     refreshTrash,
     createNewNote,
+    importFile,
     deleteNote,
     permanentlyDeleteNotes,
     emptyTrash,

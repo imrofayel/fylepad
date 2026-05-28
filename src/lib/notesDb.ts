@@ -302,6 +302,85 @@ export async function createNote(
   return note;
 }
 
+export async function importNote(
+  title: string,
+  content: JSONContent,
+  metadata: EditorMetadata,
+  collectionId?: string,
+): Promise<EditorTabRecord> {
+  const id = globalThis.crypto.randomUUID();
+  const now = new Date().toISOString();
+
+  if (IS_TAURI) {
+    const db = await getDatabase();
+    await ensureEditorSchema();
+    const colId = collectionId || DEFAULT_COLLECTION_ID;
+    await db.execute(
+      `INSERT INTO editor_tabs (id, title, collection_id, content, metadata, created_at, updated_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+      [
+        id,
+        title,
+        colId,
+        JSON.stringify(content),
+        metadata ? JSON.stringify(metadata) : null,
+        now,
+        now,
+      ],
+    );
+    const colRows = await db.select<{ name: string }[]>(
+      "SELECT name FROM collections WHERE id = $1",
+      [colId],
+    );
+    const colName = colRows[0]?.name || DEFAULT_COLLECTION_NAME;
+    return {
+      id,
+      title,
+      collectionId: colId,
+      collectionName: colName,
+      content,
+      metadata,
+      createdAt: now,
+      updatedAt: now,
+    };
+  }
+
+  if (isCloudMode()) {
+    const result = await api.post<ApiNote>("/api/notes", {
+      id,
+      title,
+      content: JSON.stringify(content),
+      metadata: metadata ? JSON.stringify(metadata) : null,
+      collectionId: collectionId || undefined,
+    });
+    const collections = await api.get<ApiCollection[]>("/api/collections");
+    const colMap = new Map<string, string>();
+    for (const c of collections) colMap.set(c.id, c.name);
+    return apiNoteToRecord(result, colMap.get(result.collectionId) || "default");
+  }
+
+  // idb-keyval
+  const colId = collectionId || DEFAULT_COLLECTION_ID;
+  const cols = await loadCollections();
+  const matchedCol = cols.find((c) => c.id === colId);
+  const colName = matchedCol?.name || DEFAULT_COLLECTION_NAME;
+
+  const note: EditorTabRecord = {
+    id,
+    title,
+    collectionId: colId,
+    collectionName: colName,
+    content,
+    metadata,
+    createdAt: now,
+    updatedAt: now,
+  };
+  const all = await getAllLocalNotes();
+  all.push(note);
+  await saveAllLocalNotes(all);
+  return note;
+}
+
 export async function softDeleteNote(noteId: string): Promise<void> {
   const now = new Date().toISOString();
 

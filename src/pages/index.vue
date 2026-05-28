@@ -24,6 +24,7 @@ const {
   noteCountByCollection,
   refresh,
   createNewNote,
+  importFile,
   deleteNote,
   moveNoteToCollection,
   renameNoteTitle,
@@ -88,6 +89,10 @@ function handleOpenNote(note: EditorTabRecord) {
 
 async function handleCreateNote() {
   await createNewNote();
+}
+
+async function handleImportFile() {
+  await importFile();
 }
 
 function goBack() {
@@ -205,11 +210,17 @@ function formatDate(dateStr?: string | null) {
 // Dropdown items for the Add button
 const addDropdownItems = computed(() => {
   if (isInsideCollection.value) {
-    return [[{ label: "New Note", icon: ICONS.notePlus, onSelect: () => handleCreateNote() }]];
+    return [
+      [
+        { label: "New Note", icon: ICONS.notePlus, onSelect: () => handleCreateNote() },
+        { label: "Open File", icon: ICONS.folderOpen, onSelect: () => handleImportFile() },
+      ],
+    ];
   }
   return [
     [
       { label: "Note", icon: ICONS.notePlus, onSelect: () => handleCreateNote() },
+      { label: "Open File", icon: ICONS.folderOpen, onSelect: () => handleImportFile() },
       {
         label: "Collection",
         icon: ICONS.folderPlus,
@@ -298,7 +309,7 @@ watch(
               <UButton :icon="ICONS.dots" size="xs" variant="ghost" color="neutral" />
             </UDropdownMenu>
             <UDropdownMenu v-if="!isRecoveredCollection" :items="addDropdownItems">
-              <UButton :icon="ICONS.plus" size="sm" variant="soft" color="neutral" />
+              <ButtonWithTooltip :icon="ICONS.plus" size="md" text="Create note" />
             </UDropdownMenu>
           </div>
         </div>
