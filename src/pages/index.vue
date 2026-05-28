@@ -295,10 +295,10 @@ watch(
             <h2 class="text-lg font-semibold">{{ activeCollection?.name || "Collection" }}</h2>
             <UBadge
               :label="String(filteredNotes.length)"
-              size="lg"
+              size="md"
               variant="outline"
               color="neutral"
-              class="rounded-full font-medium"
+              class="font-medium"
             />
           </div>
           <div class="flex items-center gap-1">
