@@ -13,9 +13,7 @@
   "plugins": {
     "deep-link": {
       "desktop": {
-        "schemes": [
-          "fylepad"
-        ]
+        "schemes": ["fylepad"]
       }
     }
   },
@@ -31,8 +29,8 @@
     ],
     "security": {
       "dangerousDisableAssetCspModification": false,
-  "csp": "default-src 'self' data: blob: asset: https://asset.localhost tauri: ipc: http://ipc.localhost https: http:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';"
-}
+      "csp": "default-src 'self' data: blob: asset: https://asset.localhost tauri: ipc: http://ipc.localhost https: http:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';"
+    }
   },
   "bundle": {
     "active": true,

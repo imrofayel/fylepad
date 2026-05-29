@@ -46,6 +46,7 @@ pre.codeblock-with-copy:focus-within .codeblock-copy-button {
   font-family: var(--font-mono) !important;
   font-size: 1rem;
   line-height: 2;
+  @apply bg-neutral-100;
 }
 
 .twoslash-container {
@@ -88,5 +89,5 @@ html.dark .tiptap .twoslash .twoslash-popup-code .shiki span {
 }
 
 .twoslash-error-line {
-  @apply max-w-full ! leading-normal;
+  @apply max-w-full! leading-normal;
 }

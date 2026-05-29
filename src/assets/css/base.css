@@ -1,6 +1,6 @@
 /* base.css - global resets and typography */
 body {
-  @apply bg-neutral-100 ! dark:bg-neutral-800 !;
+  @apply bg-neutral-100! dark:bg-neutral-800!;
 }
 
 * {
@@ -34,7 +34,7 @@ h3,
 h4,
 h5,
 h6 {
-  @apply text-default !;
+  @apply text-default!;
 }
 
 html,

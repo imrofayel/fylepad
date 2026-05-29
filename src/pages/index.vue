@@ -274,14 +274,14 @@ watch(
             leadingIcon: 'size-4',
           }"
           class="w-50 mb-2"
-          icon="i-lucide-search"
+          :icon="ICONS.search"
         />
       </div>
 
       <!-- ════════ INSIDE A COLLECTION ════════ -->
       <div v-if="isInsideCollection" class="max-w-2xl mx-auto">
         <!-- Back + collection name + add -->
-        <div class="flex items-center justify-between my-4">
+        <div class="flex items-center justify-between my-4 mb-2">
           <div class="flex items-center gap-2">
             <ButtonWithTooltip
               text="Go Back"
@@ -290,21 +290,14 @@ watch(
               color="neutral"
               @click="goBack"
             />
-            <h2 class="text-lg font-semibold">{{ activeCollection?.name || "Collection" }}</h2>
-            <UBadge
-              :label="String(filteredNotes.length)"
-              size="md"
-              variant="outline"
-              color="neutral"
-              class="font-medium"
-            />
+            <h2 class="text-xl font-medium">{{ activeCollection?.name || "Collection" }}</h2>
           </div>
           <div class="flex items-center gap-1">
             <UDropdownMenu
               v-if="activeCollection && !activeCollection.isSystem"
               :items="collectionDropdownItems(activeCollection)"
             >
-              <UButton :icon="ICONS.dots" size="xs" variant="ghost" color="neutral" />
+              <UButton :icon="ICONS.dots" size="lg" variant="ghost" color="neutral" />
             </UDropdownMenu>
             <UDropdownMenu v-if="!isRecoveredCollection" :items="addDropdownItems">
               <ButtonWithTooltip :icon="ICONS.plus" size="md" text="Create note" />
@@ -334,7 +327,7 @@ watch(
             :class="note.id.startsWith('temp-') && 'opacity-50 pointer-events-none animate-pulse'"
             @click="handleOpenNote(note)"
           >
-            <span class="text-lg max-w-80 font-medium truncate flex-1">
+            <span class="text-[17px] max-w-80 font-medium truncate flex-1">
               {{ note.title || "Untitled" }}
             </span>
             <div class="flex items-center gap-2">
@@ -342,13 +335,7 @@ watch(
                 {{ formatDate(note.updatedAt || note.createdAt) }}
               </span>
               <UDropdownMenu :items="noteDropdownItems(note)">
-                <UButton
-                  :icon="ICONS.dotsCircle"
-                  size="xs"
-                  variant="link"
-                  color="neutral"
-                  @click.stop
-                />
+                <UButton :icon="ICONS.dots" size="lg" variant="link" color="neutral" @click.stop />
               </UDropdownMenu>
             </div>
           </div>
@@ -391,7 +378,13 @@ watch(
               :items="collectionDropdownItems(col)"
               class="absolute right-2.5 top-2"
             >
-              <UButton :icon="ICONS.dots" size="sm" variant="link" color="neutral" @click.stop />
+              <UButton
+                :icon="ICONS.dotsCircle"
+                size="md"
+                variant="link"
+                color="neutral"
+                @click.stop
+              />
             </UDropdownMenu>
           </div>
         </div>
@@ -421,7 +414,7 @@ watch(
             :class="note.id.startsWith('temp-') && 'opacity-50 pointer-events-none animate-pulse'"
             @click="handleOpenNote(note)"
           >
-            <span class="text-lg max-w-80 font-medium truncate flex-1">
+            <span class="text-[17px] max-w-80 font-medium truncate flex-1">
               {{ note.title || "Untitled" }}
             </span>
             <div class="flex items-center gap-2">
@@ -435,8 +428,8 @@ watch(
                 }"
               >
                 <UButton
-                  :icon="ICONS.dotsCircle"
-                  size="sm"
+                  :icon="ICONS.dots"
+                  size="lg"
                   variant="link"
                   color="neutral"
                   class="cursor-pointer!"
@@ -452,24 +445,40 @@ watch(
     <!-- ═══════════════ MODALS ═══════════════ -->
 
     <!-- Rename note -->
-    <UModal v-model:open="renameNoteModal">
+    <UModal
+      v-model:open="renameNoteModal"
+      :ui="{
+        overlay: 'bg-black/5',
+        content: 'bg-white/40 p-4! pr-2! py-1.5! shadow-none backdrop-blur-sm',
+      }"
+    >
       <template #content>
-        <div class="p-5">
-          <h3 class="text-lg font-medium mb-4">Rename note</h3>
+        <div>
           <UInput
             v-model="renameNoteValue"
             placeholder="Note title"
             class="mb-4"
+            :ui="{
+              base: 'bg-transparent! ring-0! focus:ring-0! focus:outline-none! focus-visible:ring-0! focus-visible:outline-none! font-normal! text-xl! px-0 shadow-none!',
+            }"
+            size="xl"
             @keydown.enter="confirmRenameNote"
           />
-          <div class="flex justify-end gap-2">
+          <div class="flex justify-end gap-2 mb-1">
             <UButton
-              label="Cancel"
+              label="Close"
+              :icon="ICONS.close"
               variant="soft"
-              color="neutral"
+              color="error"
               @click="renameNoteModal = false"
             />
-            <UButton label="Rename" variant="solid" @click="confirmRenameNote" />
+            <UButton
+              label="Rename"
+              :icon="ICONS.pen"
+              variant="soft"
+              color="success"
+              @click="confirmRenameNote"
+            />
           </div>
         </div>
       </template>
