@@ -256,7 +256,6 @@ export function useEditorCompletion(
           suggestionText = " " + suggestionText;
         }
       }
-      //moviebox.ph/
       storage.setSuggestion(suggestionText);
       editor.view.dispatch(editor.state.tr.setMeta("completionUpdate", true));
     } else if (insertState.value) {

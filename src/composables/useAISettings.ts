@@ -7,7 +7,7 @@ export interface AIModel {
   id: string;
   name: string;
   description: string;
-  type: string;
+  modelType: string;
   pricing?: {
     input?: string;
     output?: string;
@@ -40,7 +40,12 @@ export function useAISettings() {
       const data = await response.json();
       if (data && Array.isArray(data.data)) {
         // Filter only language models
-        models.value = data.data.filter((model: any) => model.type === "language");
+        models.value = data.data
+          .map((model: any) => ({
+            ...model,
+            modelType: model.type,
+          }))
+          .filter((model: any) => model.modelType === "language");
       }
     } catch (error) {
       console.error("Failed to fetch AI models:", error);
