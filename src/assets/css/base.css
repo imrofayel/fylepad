@@ -1,13 +1,15 @@
 /* base.css - global resets and typography */
 body {
-  @apply bg-neutral-100! dark:bg-neutral-800!;
+  @apply bg-neutral-100 ! dark:bg-neutral-800 !;
 }
 
 * {
   @apply antialiased subpixel-antialiased;
 }
 
-p, input, button {
+p,
+input,
+button {
   @apply blur-[0.001px];
 }
 
@@ -32,9 +34,10 @@ h3,
 h4,
 h5,
 h6 {
-  @apply text-default!;
+  @apply text-default !;
 }
 
-html, button {
+html,
+button {
   cursor: url('../icons/xfce/cursor.svg'), auto !important;
 }

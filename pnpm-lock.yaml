@@ -160,6 +160,9 @@ importers:
       '@iconify-json/material-icon-theme':
         specifier: ^1.2.61
         version: 1.2.61
+      '@iconify-json/ph':
+        specifier: ^1.2.2
+        version: 1.2.2
       '@iconify-json/tabler':
         specifier: ^1.2.33
         version: 1.2.33
@@ -517,6 +520,9 @@ packages:
 
   '@iconify-json/material-icon-theme@1.2.61':
     resolution: {integrity: sha512-g/JUDumQ0h7wdUffYSmeMP8qSi+iKRK9DUtIttHG9gIlz2KJFbu1bakx9B2qzk8n3mw7FE/tZPMNCwIPksVr0g==}
+
+  '@iconify-json/ph@1.2.2':
+    resolution: {integrity: sha512-PgkEZNtqa8hBGjHXQa4pMwZa93hmfu8FUSjs/nv4oUU6yLsgv+gh9nu28Kqi8Fz9CCVu4hj1MZs9/60J57IzFw==}
 
   '@iconify-json/tabler@1.2.33':
     resolution: {integrity: sha512-q9nUQfE/cjIrGh5bAKHTphitAZpT0kX9SxDgZo3Sx8ofeDTsaHVdRwrn+CfKiJ5vQ1b1btqVwizXzIgz9KEPjA==}
@@ -4568,6 +4574,10 @@ snapshots:
       '@iconify/types': 2.0.0
 
   '@iconify-json/material-icon-theme@1.2.61':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/ph@1.2.2':
     dependencies:
       '@iconify/types': 2.0.0
 
