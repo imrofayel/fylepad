@@ -96,6 +96,7 @@ export const ICONS = {
   arrowRight: "ph:arrow-left-duotone",
   plus: "ph:plus-duotone",
   notePlus: "ph:plus-square-duotone",
+  check: "ph:check-duotone",
 
   // Terminal & Scripting
   terminal: "vscode-icons:file-type-shell",

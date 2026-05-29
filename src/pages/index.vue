@@ -445,37 +445,30 @@ watch(
     <!-- ═══════════════ MODALS ═══════════════ -->
 
     <!-- Rename note -->
-    <UModal
-      v-model:open="renameNoteModal"
-      :ui="{
-        overlay: 'bg-black/5',
-        content: 'bg-white/40 p-4! pr-2! py-1.5! shadow-none backdrop-blur-sm',
-      }"
-    >
+    <UModal v-model:open="renameNoteModal">
       <template #content>
         <div>
           <UInput
             v-model="renameNoteValue"
             placeholder="Note title"
-            class="mb-4"
+            class="mb-0"
             :ui="{
               base: 'bg-transparent! ring-0! focus:ring-0! focus:outline-none! focus-visible:ring-0! focus-visible:outline-none! font-normal! text-xl! px-0 shadow-none!',
             }"
             size="xl"
             @keydown.enter="confirmRenameNote"
           />
-          <div class="flex justify-end gap-2 mb-1">
-            <UButton
-              label="Close"
+          <div class="flex justify-end gap-2.5">
+            <ButtonWithTooltip
+              text="Close"
               :icon="ICONS.close"
-              variant="soft"
-              color="error"
+              size="xl"
               @click="renameNoteModal = false"
             />
-            <UButton
-              label="Rename"
-              :icon="ICONS.pen"
-              variant="soft"
+            <ButtonWithTooltip
+              text="Confirm"
+              :icon="ICONS.check"
+              size="xl"
               color="success"
               @click="confirmRenameNote"
             />
@@ -487,22 +480,31 @@ watch(
     <!-- Rename collection -->
     <UModal v-model:open="renameCollectionModal">
       <template #content>
-        <div class="p-5">
-          <h3 class="text-lg font-medium mb-4">Rename folder</h3>
+        <div>
           <UInput
             v-model="renameCollectionValue"
             placeholder="Folder name"
-            class="mb-4"
+            class="mb-0"
+            :ui="{
+              base: 'bg-transparent! ring-0! focus:ring-0! focus:outline-none! focus-visible:ring-0! focus-visible:outline-none! font-normal! text-xl! px-0 shadow-none!',
+            }"
+            size="xl"
             @keydown.enter="confirmRenameCollection"
           />
-          <div class="flex justify-end gap-2">
-            <UButton
-              label="Cancel"
-              variant="soft"
-              color="neutral"
+          <div class="flex justify-end gap-2.5">
+            <ButtonWithTooltip
+              text="Close"
+              :icon="ICONS.close"
+              size="xl"
               @click="renameCollectionModal = false"
             />
-            <UButton label="Rename" variant="solid" @click="confirmRenameCollection" />
+            <ButtonWithTooltip
+              text="Confirm"
+              :icon="ICONS.check"
+              size="xl"
+              color="success"
+              @click="confirmRenameCollection"
+            />
           </div>
         </div>
       </template>
@@ -511,42 +513,52 @@ watch(
     <!-- New collection -->
     <UModal v-model:open="newCollectionModal">
       <template #content>
-        <div class="p-5">
-          <h3 class="text-lg font-medium mb-4">New folder</h3>
+        <div>
           <UInput
             v-model="newCollectionName"
-            placeholder="Folder name"
-            class="mb-4"
+            placeholder="Collection name"
+            class="mb-0"
+            :ui="{
+              base: 'bg-transparent! ring-0! focus:ring-0! focus:outline-none! focus-visible:ring-0! focus-visible:outline-none! font-normal! text-xl! px-0 shadow-none!',
+            }"
+            size="xl"
             @keydown.enter="confirmNewCollection"
           />
-          <div class="flex justify-end gap-2">
-            <UButton
-              label="Cancel"
-              variant="soft"
-              color="neutral"
+          <div class="flex justify-end gap-2.5">
+            <ButtonWithTooltip
+              text="Close"
+              :icon="ICONS.close"
+              size="xl"
               @click="newCollectionModal = false"
             />
-            <UButton label="Create" variant="solid" @click="confirmNewCollection" />
+            <ButtonWithTooltip
+              text="Confirm"
+              :icon="ICONS.check"
+              size="xl"
+              color="success"
+              @click="confirmNewCollection"
+            />
           </div>
         </div>
       </template>
     </UModal>
 
     <!-- Delete collection -->
-    <UModal v-model:open="deleteCollectionModal">
+    <UModal
+      v-model:open="deleteCollectionModal"
+      :ui="{
+        content: 'p-0!',
+      }"
+    >
       <template #content>
-        <div class="p-5">
-          <h3 class="text-lg font-medium mb-1">Delete folder</h3>
-          <p class="text-sm text-neutral-500 mb-5">
-            Choose what happens to the notes inside this folder.
-          </p>
-          <div class="flex flex-col gap-2 mb-5">
+        <div>
+          <div class="flex flex-col gap-2 m-2">
             <label
-              class="flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition-colors"
+              class="flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors"
               :class="
                 deleteCollectionMode === 'move'
-                  ? 'border-neutral-400 dark:border-neutral-500 bg-neutral-50 dark:bg-neutral-800/50'
-                  : 'border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700'
+                  ? 'bg-neutral-50 dark:bg-neutral-800/70'
+                  : 'bg-neutral-50 dark:bg-neutral-800/50'
               "
               @click="deleteCollectionMode = 'move'"
             >
@@ -558,18 +570,15 @@ watch(
                 class="mt-0.5 accent-neutral-800 dark:accent-neutral-200"
               />
               <div>
-                <span class="text-sm font-medium">Move notes to Default</span>
-                <p class="text-xs text-neutral-400 mt-0.5">
-                  Keep the notes safe in your Default folder
-                </p>
+                <span class="text-[15.5px] font-medium">Move notes to Default</span>
               </div>
             </label>
             <label
-              class="flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition-colors"
+              class="flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors"
               :class="
                 deleteCollectionMode === 'delete'
-                  ? 'border-red-300 dark:border-red-800 bg-red-50 dark:bg-red-900/10'
-                  : 'border-neutral-200 dark:border-neutral-800 hover:border-neutral-300 dark:hover:border-neutral-700'
+                  ? 'bg-red-200/70 dark:bg-red-900/40'
+                  : 'bg-red-100 dark:bg-red-900/20'
               "
               @click="deleteCollectionMode = 'delete'"
             >
@@ -581,26 +590,21 @@ watch(
                 class="mt-0.5 accent-red-600"
               />
               <div>
-                <span class="text-sm font-medium text-red-600 dark:text-red-400"
-                  >Trash all notes</span
-                >
-                <p class="text-xs text-neutral-400 mt-0.5">
-                  Send all notes to trash (can be restored later)
-                </p>
+                <span class="text-[15.5px] font-medium text-red-400">Delete all notes</span>
               </div>
             </label>
           </div>
-          <div class="flex justify-end gap-2">
-            <UButton
-              label="Cancel"
-              variant="soft"
-              color="neutral"
+          <div class="flex justify-end gap-3 px-2.5">
+            <ButtonWithTooltip
+              text="Close"
+              :icon="ICONS.close"
+              size="xl"
               @click="deleteCollectionModal = false"
             />
-            <UButton
-              label="Delete folder"
-              variant="solid"
-              color="error"
+            <ButtonWithTooltip
+              text="Delete folder"
+              :icon="ICONS.trash"
+              size="xl"
               @click="confirmDeleteCollection"
             />
           </div>

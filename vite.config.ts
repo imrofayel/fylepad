@@ -54,6 +54,13 @@ export default defineConfig(async () => ({
           dark: "ph:sun-dim-duotone",
           loading: "ph:spinner-gap-duotone",
         },
+        modal: {
+          slots: {
+            overlay: "bg-transparent!",
+            content:
+              "bg-neutral-100 dark:bg-neutral-700 ring-0! p-4! py-1.5! shadow-none backdrop-blur-sm",
+          },
+        },
         toast: {
           slots: {
             root: "relative group overflow-hidden bg-default shadow-sm rounded-sm ring ring-default p-3 flex gap-2.5 focus:outline-none",
