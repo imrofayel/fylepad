@@ -198,7 +198,26 @@ export function useNotes() {
     const oldNotes = [...notes.value];
 
     trashedNotes.value = trashedNotes.value.filter((n) => !noteIds.includes(n.id));
-    notes.value = [...notes.value, ...restored.map((n) => ({ ...n, deletedAt: null }))];
+
+    const validColIds = new Set(collections.value.map((c) => c.id));
+    validColIds.add("default");
+    validColIds.add("recovered");
+
+    const toRestore = restored.map((n) => {
+      const restoredNote = { ...n, deletedAt: null };
+      if (!validColIds.has(n.collectionId)) {
+        restoredNote.collectionId = "recovered";
+        restoredNote.collectionName = "Recovered";
+
+        // Also ensure the recovered collection is in collections.value so it shows up immediately
+        if (!collections.value.some((c) => c.id === "recovered")) {
+          collections.value.push({ id: "recovered", name: "Recovered", isSystem: true });
+        }
+      }
+      return restoredNote;
+    });
+
+    notes.value = [...notes.value, ...toRestore];
     syncing.value = true;
 
     try {

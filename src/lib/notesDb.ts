@@ -17,6 +17,9 @@ import type { JSONContent } from "@tiptap/core";
 const BROWSER_STORAGE_KEY = "fylepad_editor_tabs";
 const BROWSER_COLLECTIONS_KEY = "fylepad_collections";
 
+export const RECOVERED_COLLECTION_ID = "recovered";
+export const RECOVERED_COLLECTION_NAME = "Recovered";
+
 // ─── API response types ──────────────────────────────────────────────────────
 type ApiNote = {
   id: string;
@@ -442,12 +445,37 @@ export async function restoreNotes(noteIds: string[]): Promise<void> {
   // idb-keyval
   const all = await getAllLocalNotes();
   const idSet = new Set(noteIds);
+
+  const cols = (await get<CollectionRecord[]>(BROWSER_COLLECTIONS_KEY)) || [];
+  const validColIds = new Set(cols.map((c) => c.id));
+  validColIds.add(DEFAULT_COLLECTION_ID);
+  validColIds.add(RECOVERED_COLLECTION_ID);
+
+  let needsColsSave = false;
+
   for (const note of all) {
     if (idSet.has(note.id)) {
       note.deletedAt = null;
+      if (!validColIds.has(note.collectionId)) {
+        note.collectionId = RECOVERED_COLLECTION_ID;
+        note.collectionName = RECOVERED_COLLECTION_NAME;
+
+        if (!cols.some((c) => c.id === RECOVERED_COLLECTION_ID)) {
+          cols.push({
+            id: RECOVERED_COLLECTION_ID,
+            name: RECOVERED_COLLECTION_NAME,
+            isSystem: true,
+          });
+          needsColsSave = true;
+        }
+      }
     }
   }
   await saveAllLocalNotes(all);
+
+  if (needsColsSave) {
+    await set(BROWSER_COLLECTIONS_KEY, JSON.parse(JSON.stringify(cols)));
+  }
 }
 
 export async function moveNote(noteId: string, collectionId: string): Promise<void> {
@@ -520,9 +548,26 @@ export async function loadCollections(): Promise<CollectionRecord[]> {
 
   // idb-keyval — basic collection support
   const cols = (await get<CollectionRecord[]>(BROWSER_COLLECTIONS_KEY)) || [];
+  let needsSave = false;
+
   if (!cols.some((c) => c.id === DEFAULT_COLLECTION_ID)) {
     cols.unshift({ id: DEFAULT_COLLECTION_ID, name: DEFAULT_COLLECTION_NAME, isSystem: true });
+    needsSave = true;
   }
+
+  // Ensure Recovered collection exists if any notes are in it, or just make it available
+  if (!cols.some((c) => c.id === RECOVERED_COLLECTION_ID)) {
+    const all = await getAllLocalNotes();
+    if (all.some((n) => n.collectionId === RECOVERED_COLLECTION_ID)) {
+      cols.push({ id: RECOVERED_COLLECTION_ID, name: RECOVERED_COLLECTION_NAME, isSystem: true });
+      needsSave = true;
+    }
+  }
+
+  if (needsSave) {
+    await set(BROWSER_COLLECTIONS_KEY, JSON.parse(JSON.stringify(cols)));
+  }
+
   return cols;
 }
 
@@ -567,10 +612,20 @@ export async function renameCollection(colId: string, name: string): Promise<voi
     col.name = name;
     await set(BROWSER_COLLECTIONS_KEY, JSON.parse(JSON.stringify(cols)));
   }
-}
 
-export const RECOVERED_COLLECTION_ID = "recovered";
-export const RECOVERED_COLLECTION_NAME = "Recovered";
+  // Update notes collectionName to match the renamed collection
+  const all = await getAllLocalNotes();
+  let updated = false;
+  for (const n of all) {
+    if (n.collectionId === colId) {
+      n.collectionName = name;
+      updated = true;
+    }
+  }
+  if (updated) {
+    await saveAllLocalNotes(all);
+  }
+}
 
 export async function deleteCollection(
   colId: string,
