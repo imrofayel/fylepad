@@ -3,6 +3,8 @@ import { defineAsyncComponent, computed, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useEditor } from "@/composables/useEditor";
 import { useAuth } from "@/composables/useAuth";
+import { useAISettings } from "@/composables/useAISettings";
+import { isCloudMode } from "@/lib/editorDb";
 import { ICONS } from "@/lib/constants/icons";
 import { loadNotesByIds } from "@/lib/notesDb";
 
@@ -11,6 +13,9 @@ const EditorBlock = defineAsyncComponent(() => import("@/components/editor/block
 const route = useRoute();
 const router = useRouter();
 useAuth();
+const aiSettings = useAISettings();
+const cloudMode = isCloudMode();
+
 const {
   activeTabId,
   tabs,
@@ -113,6 +118,48 @@ watch(noteId, async (newId) => {
           color="error"
           :icon="ICONS.arrowBack"
           @click="handleReload"
+        />
+      </div>
+    </Transition>
+
+    <!-- AI Missing Key banner -->
+    <Transition name="slide-down">
+      <div
+        v-if="!cloudMode && aiSettings.aiEnabled.value && !aiSettings.apiKey.value"
+        class="flex items-center justify-between gap-2 py-2 px-4 mb-2 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 text-sm font-medium"
+      >
+        <div class="flex items-center gap-2">
+          <UIcon name="tabler:key" class="size-4" />
+          <span>AI features require an API key</span>
+        </div>
+        <UButton
+          label="Settings"
+          size="xs"
+          variant="soft"
+          color="warning"
+          :icon="ICONS.settings"
+          @click="router.push('/settings')"
+        />
+      </div>
+    </Transition>
+
+    <!-- AI Error banner -->
+    <Transition name="slide-down">
+      <div
+        v-if="aiSettings.aiError.value"
+        class="flex items-center justify-between gap-2 py-2 px-4 mb-2 rounded-lg bg-red-500/10 text-red-600 dark:text-red-400 text-sm font-medium"
+      >
+        <div class="flex items-center gap-2">
+          <UIcon name="tabler:alert-triangle" class="size-4" />
+          <span>{{ aiSettings.aiError.value }}</span>
+        </div>
+        <UButton
+          label="Dismiss"
+          size="xs"
+          variant="soft"
+          color="error"
+          :icon="ICONS.close"
+          @click="aiSettings.clearError()"
         />
       </div>
     </Transition>

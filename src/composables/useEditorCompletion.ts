@@ -1,11 +1,12 @@
-import { useCompletion } from "@ai-sdk/vue";
 import type { Editor } from "@tiptap/core";
 import { Completion } from "@lib/extensions/EditorCompletionExtension";
 import type { CompletionStorage } from "@lib/extensions/EditorCompletionExtension";
-import { computed, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import type { Ref, ShallowRef } from "vue";
 import { marked } from "marked";
-import { useAuth } from "./useAuth";
+import { useAISettings } from "./useAISettings";
+import { isCloudMode } from "@/lib/editorDb";
+import { getSystemPrompt, DEFAULT_MODEL } from "@/lib/ai";
 
 type CompletionMode =
   | "continue"
@@ -32,7 +33,7 @@ export function useEditorCompletion(
     | Readonly<ShallowRef<{ editor: Editor | undefined } | null>>,
   options: UseEditorCompletionOptions = {},
 ) {
-  const { isAuthenticated } = useAuth();
+  const aiSettings = useAISettings();
 
   const autoTriggerEnabled = options.autoTrigger ?? false;
   const autoTriggerDebounce = options.debounce ?? 800;
@@ -59,29 +60,144 @@ export function useEditorCompletion(
     return storage?.completion;
   }
 
-  const { completion, complete, isLoading, stop, setCompletion } = useCompletion({
-    api: options.api || import.meta.env.VITE_AI_BACKEND_API || "http://localhost:3008/ai",
-    streamProtocol: "text",
-    credentials: "include",
-    body: computed(() => ({
-      mode: mode.value,
-      language: language.value,
-      ...(mode.value === "user" && customPrompt.value ? { prompt: customPrompt.value } : {}),
-    })),
-    onFinish: (_prompt, completionText) => {
-      // For inline suggestion mode, don't clear - let user accept with Tab
+  const completion = ref("");
+  const isLoading = ref(false);
+  let abortController: AbortController | null = null;
+
+  function setCompletion(text: string) {
+    completion.value = text;
+  }
+
+  function stop() {
+    if (abortController) {
+      abortController.abort();
+      abortController = null;
+    }
+    isLoading.value = false;
+  }
+
+  async function complete(prompt: string) {
+    if (isLoading.value) stop();
+
+    isLoading.value = true;
+    completion.value = "";
+    abortController = new AbortController();
+
+    try {
+      let res: Response;
+
+      if (isCloudMode()) {
+        const apiEndpoint =
+          options.api || import.meta.env.VITE_AI_BACKEND_API || "http://localhost:3008/ai";
+        res = await window.fetch(apiEndpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            prompt,
+            mode: mode.value,
+            language: language.value,
+            ...(mode.value === "user" && customPrompt.value ? { prompt: customPrompt.value } : {}),
+          }),
+          signal: abortController.signal,
+        });
+
+        if (!res.ok) {
+          throw new Error(`Cloud API error: ${res.statusText}`);
+        }
+      } else {
+        if (!aiSettings.apiKey.value) {
+          aiSettings.setError("AI features require an API key — Set up in Settings");
+          throw new Error("Missing API key");
+        }
+
+        const systemPromptConfig = getSystemPrompt(mode.value, language.value);
+
+        let userContent = prompt;
+        if (mode.value === "user" && customPrompt.value) {
+          userContent = `Instruction: ${customPrompt.value}\n\nText:\n${prompt}`;
+        }
+
+        const openaiBody = {
+          model: aiSettings.selectedModel.value || DEFAULT_MODEL,
+          messages: [
+            { role: "system", content: systemPromptConfig.system },
+            { role: "user", content: userContent },
+          ],
+          stream: true,
+          ...(systemPromptConfig.maxOutputTokens
+            ? { max_tokens: systemPromptConfig.maxOutputTokens }
+            : {}),
+        };
+
+        const headers = new Headers();
+        headers.set("Content-Type", "application/json");
+        headers.set("Authorization", `Bearer ${aiSettings.apiKey.value}`);
+
+        res = await window.fetch("https://ai-gateway.vercel.sh/v1/chat/completions", {
+          method: "POST",
+          headers,
+          body: JSON.stringify(openaiBody),
+          signal: abortController.signal,
+        });
+
+        if (!res.ok) {
+          if (res.status === 401 || res.status === 403) {
+            aiSettings.setError("Invalid API key — check your AI Gateway key in Settings");
+          } else {
+            aiSettings.setError(`Failed to reach AI service: ${res.statusText}`);
+          }
+          throw new Error("AI service error");
+        }
+      }
+
+      const reader = res.body?.getReader();
+      if (!reader) throw new Error("No response body");
+
+      const decoder = new TextDecoder("utf-8");
+      let buffer = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+
+        if (isCloudMode()) {
+          completion.value += chunk;
+        } else {
+          buffer += chunk;
+          const lines = buffer.split("\n");
+          buffer = lines.pop() || "";
+
+          for (const line of lines) {
+            const trimmed = line.trim();
+            if (trimmed.startsWith("data: ")) {
+              const data = trimmed.slice(6);
+              if (data === "[DONE]") continue;
+              try {
+                const parsed = JSON.parse(data);
+                const text = parsed.choices?.[0]?.delta?.content ?? "";
+                if (text) {
+                  completion.value += text;
+                }
+              } catch {}
+            }
+          }
+        }
+      }
+
+      // onFinish logic
       const storage = getCompletionStorage();
       if (mode.value === "continue" && storage?.visible) {
         return;
       }
 
-      // For transform modes, replace raw text with parsed markdown
       const transformModes = ["fix", "extend", "reduce", "simplify", "summarize", "translate"];
       const userModes = ["user"];
       if (
         (transformModes.includes(mode.value) || userModes.includes(mode.value)) &&
         insertState.value &&
-        completionText
+        completion.value
       ) {
         const editor = editorRef.value?.editor;
         if (editor) {
@@ -94,8 +210,7 @@ export function useEditorCompletion(
             editor.chain().focus().deleteRange(range).run();
           }
 
-          // Parse markdown and insert formatted version
-          const html = marked.parse(completionText) as string;
+          const html = marked.parse(completion.value) as string;
           editor
             .chain()
             .focus()
@@ -110,14 +225,17 @@ export function useEditorCompletion(
 
       insertState.value = undefined;
       renderedState.value = undefined;
-    },
-    onError: (error) => {
+    } catch (error: any) {
+      if (error.name === "AbortError") return;
       console.error("AI completion error:", error);
       insertState.value = undefined;
       renderedState.value = undefined;
       getCompletionStorage()?.clearSuggestion();
-    },
-  });
+    } finally {
+      isLoading.value = false;
+      abortController = null;
+    }
+  }
 
   // Watch completion for inline suggestion updates
   watch(completion, (newCompletion, oldCompletion) => {
@@ -306,7 +424,7 @@ export function useEditorCompletion(
     acceptOnTab: options.acceptOnTab ?? true,
     trapTab: options.trapTab ?? true,
     onTrigger: (editor) => {
-      if (isLoading.value || !isAuthenticated.value) return;
+      if (isLoading.value || !aiSettings.isConfigured.value) return;
       mode.value = "continue";
       const textBefore = getMarkdownBefore(editor, editor.state.selection.from);
       complete(textBefore);

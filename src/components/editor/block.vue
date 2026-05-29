@@ -2,7 +2,7 @@
 import type { Editor } from "@tiptap/core";
 import { computed, nextTick, ref, useTemplateRef, watch } from "vue";
 import { useEditorCompletion } from "@/composables/useEditorCompletion";
-import { useAuth } from "@/composables/useAuth";
+import { useAISettings } from "@/composables/useAISettings";
 import { useEditorMathPopover } from "@/composables/useEditorMathPopover";
 import { useEditorToc } from "@/composables/useEditorToc";
 import { useEditor } from "@/composables/useEditor";
@@ -30,7 +30,7 @@ const {
   updateTabMetadata,
   updateTabTitle,
 } = useEditor();
-const { isAuthenticated } = useAuth();
+const aiSettings = useAISettings();
 
 const currentTab = computed(() => getTab(props.tabId));
 
@@ -112,7 +112,7 @@ const tipTapExtensions = TipTapExtensions({
 
 const customHandlers = createEditorCustomHandlers(aiHandlers);
 
-const showAiActions = computed(() => isAuthenticated.value);
+const showAiActions = computed(() => aiSettings.isConfigured.value);
 
 const onCustomPromptClick = () => {
   nextTick(() => {

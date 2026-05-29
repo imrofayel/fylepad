@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { ref, watch, computed, h } from "vue";
+import { ref, watch, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useNotes } from "@/composables/useNotes";
 import { useEditor } from "@/composables/useEditor";
 import { useAuth } from "@/composables/useAuth";
 import { ICONS } from "@/lib/constants/icons";
 import type { EditorTabRecord, CollectionRecord } from "@/lib/editorDb";
-import { useColorMode } from "@vueuse/core";
 import Menu from "@/components/header/menu.vue";
 
 const router = useRouter();
@@ -19,7 +18,6 @@ const {
   activeCollectionId,
   searchQuery,
   loading,
-  syncing,
   showCollections,
   noteCountByCollection,
   refresh,
