@@ -2,9 +2,12 @@
 import { ICONS } from "@/lib/constants/icons";
 import { useColorMode } from "@vueuse/core";
 import { ref } from "vue";
+import { isCloudMode } from "@/lib/editorDb";
 
 const items = ref([
-  { label: "General", value: "general", icon: "tabler:layers-union", slot: "general" },
+  ...(isCloudMode()
+    ? [{ label: "General", value: "general", icon: "ph:squares-four-duotone", slot: "general" }]
+    : []),
   { label: "AI", value: "ai", icon: ICONS.ai, slot: "ai" },
 ]);
 
@@ -43,7 +46,7 @@ const value = useColorMode();
           trigger:
             'text-md dark:data-[state=active]:bg-neutral-800 data-[state=active]:bg-neutral-100 p-2.5 pr-20 py-1.5 hover:opacity-90',
         }"
-        default-value="general"
+        :default-value="isCloudMode() ? 'general' : 'ai'"
       >
         <template #general>
           <SettingsGeneral />

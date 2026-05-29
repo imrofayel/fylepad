@@ -323,7 +323,7 @@ watch(
           <div
             v-for="note in filteredNotes"
             :key="note.id"
-            class="group flex items-center justify-between py-2 px-1"
+            class="group flex items-center justify-between py-1 px-1"
             :class="note.id.startsWith('temp-') && 'opacity-50 pointer-events-none animate-pulse'"
             @click="handleOpenNote(note)"
           >
@@ -410,7 +410,7 @@ watch(
           <div
             v-for="note in defaultNotes"
             :key="note.id"
-            class="group flex items-center justify-between py-2 px-1 cursor-pointer transition-colors"
+            class="group flex items-center justify-between py-1 px-1 cursor-pointer transition-colors"
             :class="note.id.startsWith('temp-') && 'opacity-50 pointer-events-none animate-pulse'"
             @click="handleOpenNote(note)"
           >
