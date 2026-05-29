@@ -97,7 +97,8 @@ export const ICONS = {
   plus: "ph:plus-duotone",
   notePlus: "ph:plus-square-duotone",
   check: "ph:check-duotone",
-
+  key: "ph:key-duotone",
+  llm: "ph:question-mark-duotone",
   // Terminal & Scripting
   terminal: "vscode-icons:file-type-shell",
 

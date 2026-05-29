@@ -4,6 +4,7 @@ import { ICONS } from "@lib/constants/icons";
 import { useColorMode } from "@vueuse/core";
 import { useRouter } from "vue-router";
 import { useAuth } from "@/composables/useAuth";
+import { isCloudMode } from "@/lib/editorDb";
 
 const { user, signInWithGoogle, logout } = useAuth();
 const router = useRouter();
@@ -114,7 +115,7 @@ defineProps<{
             leadingIcon: 'size-4.5',
           }"
           @click="signInWithGoogle"
-          v-if="!user"
+          v-if="!user && isCloudMode()"
         />
       </div>
     </template>

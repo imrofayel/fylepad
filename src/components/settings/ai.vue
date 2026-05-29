@@ -7,7 +7,6 @@ import { ICONS } from "@/lib/constants/icons";
 const { aiEnabled, apiKey, selectedModel, models, fetchModels, isFetchingModels } = useAISettings();
 const cloudMode = isCloudMode();
 
-const showKey = ref(false);
 const isEditingKey = ref(false);
 
 onMounted(() => {
@@ -25,40 +24,15 @@ const handleToggleAI = (val: boolean) => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-8 max-w-2xl">
+  <div class="flex flex-col gap-2 max-w-2xl">
     <div>
-      <h3 class="text-lg font-medium text-neutral-900 dark:text-white">AI Assistant</h3>
-      <p class="text-sm text-neutral-500 mt-1">
-        Configure the AI assistant features and integration.
-      </p>
-    </div>
-
-    <!-- Global Toggle -->
-    <div class="flex items-center justify-between">
-      <div>
-        <h4 class="text-sm font-medium text-neutral-900 dark:text-white">Enable AI Features</h4>
-        <p class="text-sm text-neutral-500 mt-1">
-          Turns on AI autocomplete, actions, and features throughout the app.
-        </p>
+      <div class="flex justify-between items-center">
+        <h3 class="text-xl font-medium text-neutral-900 dark:text-white">AI</h3>
+        <USwitch v-model="aiEnabled" color="info" @update:modelValue="handleToggleAI" />
       </div>
-      <button
-        type="button"
-        role="switch"
-        :aria-checked="aiEnabled"
-        @click="handleToggleAI(!aiEnabled)"
-        class="relative inline-flex h-5 w-9 shrink-0 cursor-pointer items-center rounded-full transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500"
-        :class="aiEnabled ? 'bg-neutral-900 dark:bg-white' : 'bg-neutral-200 dark:bg-neutral-700'"
-      >
-        <span class="sr-only">Enable AI Features</span>
-        <span
-          class="pointer-events-none inline-block h-4 w-4 transform rounded-full shadow ring-0 transition duration-200 ease-in-out"
-          :class="[
-            aiEnabled
-              ? 'translate-x-4 bg-white dark:bg-neutral-900'
-              : 'translate-x-0.5 bg-white dark:bg-neutral-500',
-          ]"
-        />
-      </button>
+      <p class="mt-3 text-[16px]">
+        Integrate AI Assistant to supercharge your note-taking experience.
+      </p>
     </div>
 
     <!-- Local/Tauri BYOK Settings -->
@@ -67,42 +41,47 @@ const handleToggleAI = (val: boolean) => {
 
       <!-- API Key -->
       <UFormField
-        label="AI Gateway API Key"
+        label="API Key"
         description="Provide your AI Gateway API key. This key is stored locally and never sent to our servers."
+        :ui="{
+          label: 'text-[15.5px]',
+          description: 'text-[15px] mb-3 text-default',
+        }"
       >
+        <template #label>
+          <div class="flex items-center gap-2 mb-2.5">
+            <UIcon :name="ICONS.key" class="text-xl!" />API Key
+          </div>
+        </template>
         <div
           v-if="!isEditingKey"
-          class="flex items-center justify-between p-2 px-3 border border-neutral-200 dark:border-neutral-700 rounded-md bg-neutral-50 dark:bg-neutral-800/50 min-h-[36px] w-full cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+          class="flex items-center bg-neutral-100 justify-between p-0 px-2 pr-1 dark:bg-neutral-800 rounded-sm min-h-[30px] w-full cursor-pointer"
           @click="isEditingKey = true"
         >
-          <span class="text-neutral-600 dark:text-neutral-400 font-mono text-sm">
-            {{ apiKey ? "••••••••••••••••••••••••" : "No key provided" }}
+          <span class="text-neutral-600 dark:text-neutral-400 font-mono text-xs">
+            {{ apiKey ? "* * * * * * * * * * * * * * * *" : "No key provided" }}
           </span>
-          <UButton color="neutral" variant="ghost" icon="tabler:edit" size="sm" :padded="false" />
+          <UButton color="neutral" variant="ghost" :icon="ICONS.edit" size="md" :padded="false" />
         </div>
         <UInput
           v-else
           v-model="apiKey"
-          :type="showKey ? 'text' : 'password'"
-          placeholder="sk_..."
+          type="text"
+          placeholder="vck_..."
           class="w-full"
+          :ui="{
+            base: 'bg-neutral-100 dark:bg-neutral-800 justify-between p-1.5 focus:ring-0! focus:outline-none! focus-visible:ring-0! focus-visible:outline-none! outline-0! px-2 pr-1 rounded-sm',
+            trailing: 'p-0!',
+          }"
           autofocus
         >
           <template #trailing>
-            <div class="flex items-center gap-1 pr-1">
-              <UButton
-                color="neutral"
-                variant="ghost"
-                :icon="showKey ? 'tabler:eye-off' : 'tabler:eye'"
-                size="sm"
-                :padded="false"
-                @click="showKey = !showKey"
-              />
+            <div class="flex items-center gap-1">
               <UButton
                 color="primary"
                 variant="ghost"
-                icon="tabler:check"
-                size="sm"
+                :icon="ICONS.check"
+                size="lg"
                 :padded="false"
                 @click="isEditingKey = false"
               />
@@ -113,9 +92,18 @@ const handleToggleAI = (val: boolean) => {
 
       <!-- Model Selection -->
       <UFormField
-        label="Preferred Model"
         description="Select the AI model you'd like to use. Some models may have different capabilities or pricing."
+        class="mt-5"
+        :ui="{
+          label: 'text-[15.5px]',
+          description: 'text-[15px] mb-3 text-default',
+        }"
       >
+        <template #label>
+          <div class="flex items-center gap-2 mb-2.5">
+            <UIcon :name="ICONS.llm" class="text-xl!" />Preferred Model
+          </div>
+        </template>
         <USelectMenu
           v-model="selectedModel"
           :items="models"
@@ -124,13 +112,19 @@ const handleToggleAI = (val: boolean) => {
           placeholder="Select an AI model..."
           :loading="isFetchingModels"
           class="w-full"
+          :ui="{
+            base: 'bg-neutral-100 justify-between p-2 rounded-sm ring-0 text-[15.5px]! px-2 pr-1 dark:bg-neutral-800',
+            content: 'bg-neutral-100 dark:bg-neutral-800',
+            input:
+              'text-[15.5px]! border-b-0 focus:ring-0 focus:outline-none focus-visible:ring-0 focus-visible:outline-none! outline-0',
+          }"
         >
           <template #item="{ item }">
             <div class="flex flex-col gap-1 py-1">
-              <span class="font-medium text-sm">{{
+              <span class="font-medium text-[15.5px]">{{
                 (item as AIModel).name || (item as AIModel).id
               }}</span>
-              <span class="text-xs text-neutral-500">{{ (item as AIModel).id }}</span>
+              <span class="text-[15px] text-neutral-500">{{ (item as AIModel).id }}</span>
             </div>
           </template>
         </USelectMenu>
