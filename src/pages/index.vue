@@ -255,7 +255,7 @@ watch(
 
     <!-- Loading -->
     <div v-if="loading || !initialized" class="flex items-center justify-center py-32">
-      <UIcon :name="ICONS.loader" class="size-7 text-neutral-400" />
+      <UIcon :name="ICONS.loader" class="size-7 animate-spin text-neutral-400" />
     </div>
 
     <!-- Main content -->

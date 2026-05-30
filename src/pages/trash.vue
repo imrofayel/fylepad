@@ -90,7 +90,7 @@ function goBack() {
     </div>
 
     <div v-if="loading || !initialized" class="flex items-center justify-center py-32">
-      <UIcon :name="ICONS.loader" class="size-7 text-neutral-400" />
+      <UIcon :name="ICONS.loader" class="size-7 animate-spin text-neutral-400" />
     </div>
 
     <div v-else>
@@ -167,108 +167,105 @@ function goBack() {
           </div>
         </div>
       </div>
-    </div>
-    <div class="max-w-2xl mx-auto">
-      <!-- Loading -->
-      <div v-if="loading || !initialized" class="flex items-center justify-center py-32">
-        <UIcon :name="ICONS.loader" class="size-6 text-neutral-400" />
-      </div>
 
-      <!-- Empty state -->
-      <div
-        v-else-if="trashedNotes.length === 0"
-        class="flex flex-col items-center justify-center py-32 gap-3"
-      >
-        <UIcon :name="ICONS.trash" class="size-10 text-neutral-300 dark:text-neutral-600" />
-      </div>
+      <div class="max-w-2xl mx-auto">
+        <!-- Empty state -->
+        <div
+          v-if="trashedNotes.length === 0"
+          class="flex flex-col items-center justify-center py-32 gap-3"
+        >
+          <UIcon :name="ICONS.trash" class="size-10 text-neutral-300 dark:text-neutral-600" />
+        </div>
 
-      <!-- Trash list -->
-      <div v-else class="max-w-3xl mx-auto mt-3">
-        <div class="flex flex-col gap-1">
-          <div
-            v-for="note in trashedNotes"
-            :key="note.id"
-            class="flex items-center gap-3 py-1 cursor-pointer"
-            :class="selectedIds.has(note.id) && 'bg-neutral-100 dark:bg-neutral-800'"
-            @click="toggleSelect(note.id)"
-          >
+        <!-- Trash list -->
+        <div v-else class="max-w-3xl mx-auto mt-3">
+          <div class="flex flex-col gap-1">
             <div
-              class="size-4 rounded border border-neutral-300 dark:border-neutral-600 flex items-center justify-center shrink-0"
-              :class="
-                selectedIds.has(note.id) && 'bg-neutral-800 dark:bg-neutral-200 border-transparent'
-              "
+              v-for="note in trashedNotes"
+              :key="note.id"
+              class="flex items-center gap-3 py-1 cursor-pointer"
+              :class="selectedIds.has(note.id) && 'bg-neutral-100 dark:bg-neutral-800'"
+              @click="toggleSelect(note.id)"
             >
-              <UIcon
-                v-if="selectedIds.has(note.id)"
-                name="tabler:check"
-                class="size-3 text-white dark:text-neutral-900"
-              />
-            </div>
-
-            <div class="flex-1 min-w-0">
-              <span class="text-[16.5px] truncate block">{{ note.title || "Untitled" }}</span>
-            </div>
-
-            <span class="text-[15.5px] font-medium text-neutral-400 shrink-0">
-              {{ formatDate(note.deletedAt) }}
-            </span>
-
-            <div class="flex items-center gap-1 shrink-0" @click.stop>
-              <UTooltip text="Restore" arrow>
-                <UButton
-                  :icon="ICONS.restore"
-                  size="md"
-                  variant="link"
-                  color="neutral"
-                  @click="restoreNotes([note.id])"
+              <div
+                class="size-4 rounded border border-neutral-300 dark:border-neutral-600 flex items-center justify-center shrink-0"
+                :class="
+                  selectedIds.has(note.id) &&
+                  'bg-neutral-800 dark:bg-neutral-200 border-transparent'
+                "
+              >
+                <UIcon
+                  v-if="selectedIds.has(note.id)"
+                  name="tabler:check"
+                  class="size-3 text-white dark:text-neutral-900"
                 />
-              </UTooltip>
-              <UTooltip text="Delete forever" arrow>
-                <UButton
-                  :icon="ICONS.trash"
-                  size="md"
-                  variant="link"
-                  color="error"
-                  @click="permanentlyDeleteNotes([note.id])"
-                />
-              </UTooltip>
+              </div>
+
+              <div class="flex-1 min-w-0">
+                <span class="text-[16.5px] truncate block">{{ note.title || "Untitled" }}</span>
+              </div>
+
+              <span class="text-[15.5px] font-medium text-neutral-400 shrink-0">
+                {{ formatDate(note.deletedAt) }}
+              </span>
+
+              <div class="flex items-center gap-1 shrink-0" @click.stop>
+                <UTooltip text="Restore" arrow>
+                  <UButton
+                    :icon="ICONS.restore"
+                    size="md"
+                    variant="link"
+                    color="neutral"
+                    @click="restoreNotes([note.id])"
+                  />
+                </UTooltip>
+                <UTooltip text="Delete forever" arrow>
+                  <UButton
+                    :icon="ICONS.trash"
+                    size="md"
+                    variant="link"
+                    color="error"
+                    @click="permanentlyDeleteNotes([note.id])"
+                  />
+                </UTooltip>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Confirm empty trash modal -->
-      <UModal
-        v-model:open="confirmEmptyModal"
-        :ui="{
-          content: 'bg-red-100 dark:bg-red-950',
-        }"
-      >
-        <template #content>
-          <div class="pt-2">
-            <p class="text-[15.5px]! text-red-500! dark:text-red-100! mb-6">
-              All {{ trashedNotes.length }} note{{ trashedNotes.length > 1 ? "s" : "" }} will be
-              permanently deleted. This cannot be undone.
-            </p>
-            <div class="flex justify-end gap-2">
-              <ButtonWithTooltip
-                text="Cancel"
-                variant="soft"
-                color="neutral"
-                :icon="ICONS.close"
-                @click="confirmEmptyModal = false"
-              />
-              <ButtonWithTooltip
-                text="Empty Trash"
-                :icon="ICONS.trash"
-                variant="solid"
-                color="error"
-                @click="handleEmptyTrash"
-              />
+        <!-- Confirm empty trash modal -->
+        <UModal
+          v-model:open="confirmEmptyModal"
+          :ui="{
+            content: 'bg-red-100 dark:bg-red-950',
+          }"
+        >
+          <template #content>
+            <div class="pt-2">
+              <p class="text-[15.5px]! text-red-500! dark:text-red-100! mb-6">
+                All {{ trashedNotes.length }} note{{ trashedNotes.length > 1 ? "s" : "" }} will be
+                permanently deleted. This cannot be undone.
+              </p>
+              <div class="flex justify-end gap-2">
+                <ButtonWithTooltip
+                  text="Cancel"
+                  variant="soft"
+                  color="neutral"
+                  :icon="ICONS.close"
+                  @click="confirmEmptyModal = false"
+                />
+                <ButtonWithTooltip
+                  text="Empty Trash"
+                  :icon="ICONS.trash"
+                  variant="solid"
+                  color="error"
+                  @click="handleEmptyTrash"
+                />
+              </div>
             </div>
-          </div>
-        </template>
-      </UModal>
+          </template>
+        </UModal>
+      </div>
     </div>
   </div>
 </template>
