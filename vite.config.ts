@@ -58,7 +58,7 @@ export default defineConfig(async () => ({
           slots: {
             overlay: "bg-transparent!",
             content:
-              "bg-neutral-100 dark:bg-neutral-700 ring-0! p-4! py-1.5! shadow-none backdrop-blur-sm",
+              "bg-neutral-100 dark:bg-neutral-700 ring-0! p-4! py-1.5! shadow-none! backdrop-blur-sm",
           },
         },
         toast: {

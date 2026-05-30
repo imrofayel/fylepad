@@ -331,7 +331,7 @@ watch(
               {{ note.title || "Untitled" }}
             </span>
             <div class="flex items-center gap-2">
-              <span class="text-[15.5px] font-medium text-neutral-400 whitespace-nowrap">
+              <span class="text-[16.5px] font-medium text-neutral-400 whitespace-nowrap">
                 {{ formatDate(note.updatedAt || note.createdAt) }}
               </span>
               <UDropdownMenu :items="noteDropdownItems(note)">
@@ -414,7 +414,7 @@ watch(
             :class="note.id.startsWith('temp-') && 'opacity-50 pointer-events-none animate-pulse'"
             @click="handleOpenNote(note)"
           >
-            <span class="text-[17px] max-w-80 font-medium truncate flex-1">
+            <span class="text-[16.5px] font-medium max-w-80 truncate flex-1">
               {{ note.title || "Untitled" }}
             </span>
             <div class="flex items-center gap-2">

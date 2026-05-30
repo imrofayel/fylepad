@@ -99,6 +99,8 @@ export const ICONS = {
   check: "ph:check-duotone",
   key: "ph:key-duotone",
   llm: "ph:question-mark-duotone",
+  selectAll: "ph:selection-all-duotone",
+  unselect: "ph:selection-slash-duotone",
   // Terminal & Scripting
   terminal: "vscode-icons:file-type-shell",
 

@@ -14,6 +14,7 @@ const { openFileDialog, saveActiveToDisk } = useEditor();
 
 defineProps<{
   isHome: boolean;
+  isTrash?: boolean;
 }>();
 </script>
 <template>
@@ -90,6 +91,21 @@ defineProps<{
           :ui="{
             leadingIcon: 'size-4.5',
           }"
+          v-if="isHome"
+        />
+
+        <UButton
+          label="Trash"
+          variant="link"
+          color="error"
+          to="/trash"
+          :icon="ICONS.trash"
+          class="p-2 py-1.5 mt-1 font-normal text-[15px]"
+          :ui="{
+            base: 'border-t dark:border-neutral-600! border-neutral-200 rounded-t-none',
+            leadingIcon: 'size-4.5',
+          }"
+          v-if="isHome && !isTrash"
         />
 
         <UButton
