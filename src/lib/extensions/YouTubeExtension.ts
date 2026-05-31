@@ -185,7 +185,7 @@ const createYouTubePlugin = ({
       liveIds.add(key);
       positionByKey.set(key, pos);
 
-      const isEditing = editingId === key;
+      const isEditing = editingId === key && !!activeView?.hasFocus();
       const container = containers.get(key) ?? createContainer(key);
       containers.set(key, container);
 

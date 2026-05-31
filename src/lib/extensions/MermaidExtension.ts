@@ -99,11 +99,20 @@ const createMermaidPlugin = ({
   const renderTokens = new Map<string, number>();
   const containers = new Map<string, MermaidContainer>();
   const positionByKey = new Map<string, number>();
+  const renderModeByKey = new Map<string, "fallback" | "mermaid">();
+  const renderVersionByKey = new Map<string, number>();
   let activeTheme = resolveMermaidTheme();
 
   mermaid.initialize(buildMermaidConfig(activeTheme, mermaidConfig));
 
   let activeView: EditorView | null = null;
+
+  const requestRefresh = () => {
+    if (!activeView) {
+      return;
+    }
+    activeView.dispatch(activeView.state.tr.setMeta(MERMAID_PLUGIN_KEY, { refresh: true }));
+  };
 
   const createContainer = (key: string) => {
     const container = document.createElement("div") as MermaidContainer;
@@ -156,12 +165,20 @@ const createMermaidPlugin = ({
       if (svgElement) {
         container.appendChild(svgElement);
       }
+
+      renderModeByKey.set(key, "mermaid");
+      renderVersionByKey.set(key, (renderVersionByKey.get(key) || 0) + 1);
+      requestRefresh();
     } catch (error) {
       if (renderTokens.get(key) !== token) {
         return;
       }
 
       renderError(container, error);
+
+      renderModeByKey.set(key, "fallback");
+      renderVersionByKey.set(key, (renderVersionByKey.get(key) || 0) + 1);
+      requestRefresh();
     } finally {
       renderTimers.delete(key);
     }
@@ -191,11 +208,14 @@ const createMermaidPlugin = ({
       liveIds.add(key);
       positionByKey.set(key, pos);
 
-      const isEditing = editingId === key;
+      const isEditing = editingId === key && !!activeView?.hasFocus();
+      const hasRendered = renderModeByKey.get(key) === "mermaid";
+      const showPreview = !isEditing && hasRendered;
+
       const container = containers.get(key) ?? createContainer(key);
       containers.set(key, container);
 
-      container.classList.toggle("is-editing", isEditing);
+      container.classList.toggle("is-editing", !showPreview);
 
       if (!container.__bound) {
         container.addEventListener("click", () => {
@@ -222,22 +242,33 @@ const createMermaidPlugin = ({
 
       decorations.push(
         Decoration.node(pos, pos + node.nodeSize, {
-          class: isEditing
-            ? "mermaid-source mermaid-source--editing"
-            : "mermaid-source mermaid-source--hidden",
+          class: showPreview
+            ? "mermaid-source mermaid-source--hidden"
+            : "mermaid-source mermaid-source--editing",
         }),
       );
 
+      const version = renderVersionByKey.get(key) || 0;
       decorations.push(
         Decoration.widget(pos + node.nodeSize, container, {
           side: 1,
+          key: `${key}_${version}`,
         }),
       );
 
-      if (sourceCache.get(key) === source && themeCache.get(key) === currentTheme) {
+      if (!activeView) {
         return;
       }
 
+      if (
+        sourceCache.get(key) === source &&
+        themeCache.get(key) === currentTheme &&
+        (hasRendered || renderModeByKey.has(key))
+      ) {
+        return;
+      }
+
+      renderModeByKey.set(key, "fallback");
       sourceCache.set(key, source);
       themeCache.set(key, currentTheme);
 
@@ -312,6 +343,12 @@ const createMermaidPlugin = ({
     },
     view: (view) => {
       activeView = view;
+
+      setTimeout(() => {
+        if (activeView) {
+          activeView.dispatch(activeView.state.tr.setMeta(MERMAID_PLUGIN_KEY, { refresh: true }));
+        }
+      }, 50);
 
       const themeObserver = new MutationObserver(() => {
         const viewRef = activeView;
