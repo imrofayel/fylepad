@@ -39,6 +39,6 @@ const app = createApp(App);
 app.use(router);
 app.use(ui);
 
-app.mount("#app");
-
 registerIcons();
+
+app.mount("#app");

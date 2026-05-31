@@ -154,6 +154,9 @@ importers:
         specifier: ^5.0.4
         version: 5.0.4(@vue/compiler-sfc@3.5.32)(vue@3.5.32(typescript@5.6.3))
     devDependencies:
+      '@iconify-json/akar-icons':
+        specifier: ^1.2.7
+        version: 1.2.7
       '@iconify-json/logos':
         specifier: ^1.2.11
         version: 1.2.11
@@ -514,6 +517,9 @@ packages:
 
   '@floating-ui/vue@1.1.11':
     resolution: {integrity: sha512-HzHKCNVxnGS35r9fCHBc3+uCnjw9IWIlCPL683cGgM9Kgj2BiAl8x1mS7vtvP6F9S/e/q4O6MApwSHj8hNLGfw==}
+
+  '@iconify-json/akar-icons@1.2.7':
+    resolution: {integrity: sha512-cw44dCnZgGhm6Tywxm0WALAnDB9AyGkDk7kiLMo2B/Ayt7duZu/uyrsqb55weWUN8Ge2sQAOl8MRtT6bFcLzPg==}
 
   '@iconify-json/logos@1.2.11':
     resolution: {integrity: sha512-fOo4pGEatuyuCFNL+cwquYMa2Im0oJHRHV7lt/Qqs5Ode/lPImHCQcfTtPzZj7qYMPb/h8YHN3TG54uEowrjNQ==}
@@ -4568,6 +4574,10 @@ snapshots:
     transitivePeerDependencies:
       - '@vue/composition-api'
       - vue
+
+  '@iconify-json/akar-icons@1.2.7':
+    dependencies:
+      '@iconify/types': 2.0.0
 
   '@iconify-json/logos@1.2.11':
     dependencies:
