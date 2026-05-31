@@ -13,3 +13,11 @@
 ul {
   list-style-type: square !important;
 }
+
+.search-result {
+  background-color: rgba(255, 217, 0, 0.5);
+}
+
+.search-result-current {
+  background-color: rgba(13, 255, 0, 0.5);
+}
