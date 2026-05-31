@@ -30,6 +30,11 @@ const editors = shallowReactive(new Map<string, Editor>());
 const pendingSaveTimers = new Map<string, ReturnType<typeof setTimeout>>();
 const conflictedTabs = ref(new Set<string>());
 
+const isSearchOpen = ref(false);
+const toggleSearch = () => {
+  isSearchOpen.value = !isSearchOpen.value;
+};
+
 const markdownFileType = {
   description: "Markdown",
   accept: {
@@ -523,5 +528,7 @@ export function useEditor() {
     saveActiveToDisk,
     tabs,
     unregisterEditor,
+    isSearchOpen,
+    toggleSearch,
   };
 }

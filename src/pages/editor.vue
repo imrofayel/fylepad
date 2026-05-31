@@ -9,6 +9,7 @@ import { ICONS } from "@/lib/constants/icons";
 import { loadNotesByIds } from "@/lib/notesDb";
 
 const EditorBlock = defineAsyncComponent(() => import("@/components/editor/block.vue"));
+const SearchBar = defineAsyncComponent(() => import("@/components/editor/SearchBar.vue"));
 
 const route = useRoute();
 const router = useRouter();

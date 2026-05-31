@@ -101,6 +101,10 @@ export const ICONS = {
   llm: "ph:question-mark-duotone",
   selectAll: "ph:selection-all-duotone",
   unselect: "ph:selection-slash-duotone",
+  arrowLeftCircle: "ph:arrow-circle-left-duotone",
+  arrowRightCircle: "ph:arrow-circle-right-duotone",
+  arrowDownCirlce: "ph:arrow-circle-down-duotone",
+  replaceAll: "ph:caret-double-left-duotone",
   // Terminal & Scripting
   terminal: "vscode-icons:file-type-shell",
 

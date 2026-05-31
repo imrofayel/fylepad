@@ -93,6 +93,7 @@ export const TwoslashExtension = Extension.create<TwoslashExtensionOptions>({
     const containers = new Map<string, TwoslashContainer>();
     const positionByKey = new Map<string, number>();
     const renderModeByKey = new Map<string, "twoslash" | "fallback" | "error">();
+    const renderVersionByKey = new Map<string, number>();
 
     let activeView: EditorView | null = null;
     let activeTheme: "light" | "dark" = resolveTheme();
@@ -227,12 +228,14 @@ export const TwoslashExtension = Extension.create<TwoslashExtensionOptions>({
 
         if (!hasTwoslashMarkup) {
           renderModeByKey.set(key, "fallback");
+          renderVersionByKey.set(key, (renderVersionByKey.get(key) || 0) + 1);
           container.replaceChildren();
           requestRefresh();
           return;
         }
 
         renderModeByKey.set(key, "twoslash");
+        renderVersionByKey.set(key, (renderVersionByKey.get(key) || 0) + 1);
 
         container.replaceChildren();
         if (shikiNode) {
@@ -247,6 +250,7 @@ export const TwoslashExtension = Extension.create<TwoslashExtensionOptions>({
 
         try {
           renderModeByKey.set(key, "fallback");
+          renderVersionByKey.set(key, (renderVersionByKey.get(key) || 0) + 1);
           container.replaceChildren();
           requestRefresh();
         } catch {
@@ -282,7 +286,7 @@ export const TwoslashExtension = Extension.create<TwoslashExtensionOptions>({
         liveKeys.add(key);
         positionByKey.set(key, pos);
 
-        const isEditing = editingKey === key;
+        const isEditing = editingKey === key && !!activeView?.hasFocus();
         const hasRenderedTwoslash = renderModeByKey.get(key) === "twoslash";
         const showPreview = !isEditing && hasRenderedTwoslash;
         const container = containers.get(key) ?? createContainer(key);
@@ -326,11 +330,17 @@ export const TwoslashExtension = Extension.create<TwoslashExtensionOptions>({
           }),
         );
 
+        const version = renderVersionByKey.get(key) || 0;
         decorations.push(
           Decoration.widget(pos + node.nodeSize, container, {
             side: 1,
+            key: `${key}_${version}`,
           }),
         );
+
+        if (!activeView) {
+          return;
+        }
 
         if (
           sourceCache.get(key) === source &&
@@ -383,6 +393,7 @@ export const TwoslashExtension = Extension.create<TwoslashExtensionOptions>({
         renderTokens.delete(key);
         positionByKey.delete(key);
         renderModeByKey.delete(key);
+        renderVersionByKey.delete(key);
       }
 
       return DecorationSet.create(doc, decorations);
@@ -427,6 +438,14 @@ export const TwoslashExtension = Extension.create<TwoslashExtensionOptions>({
         },
         view: (view) => {
           activeView = view;
+
+          setTimeout(() => {
+            if (activeView) {
+              activeView.dispatch(
+                activeView.state.tr.setMeta(TWOSLASH_PLUGIN_KEY, { refresh: true }),
+              );
+            }
+          }, 50);
 
           const observer = new MutationObserver(() => {
             const nextTheme = resolveTheme();

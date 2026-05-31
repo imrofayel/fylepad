@@ -13,6 +13,7 @@ import { CodeBlockLowlightSpotify } from "@lib/extensions/SpotifyExtension";
 import { CodeBlockLowlightYouTube } from "@lib/extensions/YouTubeExtension";
 import ImageUpload from "@lib/extensions/EditorImageUploadExtension";
 import { TwoslashExtension } from "@lib/extensions/TwoslashExtension";
+import { SearchAndReplace } from "@lib/extensions/SearchAndReplaceExtension";
 import Image from "@tiptap/extension-image";
 import Highlight from "@tiptap/extension-highlight";
 import { TextStyle } from "@tiptap/extension-text-style";
@@ -102,4 +103,5 @@ export const TipTapExtensions = ({ onTocUpdate, openMathPopover }: TipTapExtensi
   Highlight.configure({
     multicolor: true,
   }),
+  SearchAndReplace.configure(),
 ];
