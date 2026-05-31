@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { useEditor } from "@/composables/useEditor";
 import { ICONS } from "@lib/constants/icons";
-import { useColorMode } from "@vueuse/core";
+import { useColorMode, useOnline } from "@vueuse/core";
 import { useRouter } from "vue-router";
 import { useAuth } from "@/composables/useAuth";
-import { isCloudMode } from "@/lib/editorDb";
 
 const { user, signInWithGoogle, logout } = useAuth();
 const router = useRouter();
 
 const color = useColorMode();
+const isOnline = useOnline();
 const { openFileDialog, saveActiveToDisk } = useEditor();
 
 defineProps<{
@@ -131,7 +131,7 @@ defineProps<{
             leadingIcon: 'size-4.5',
           }"
           @click="signInWithGoogle"
-          v-if="!user && isCloudMode()"
+          v-if="!user && isOnline"
         />
       </div>
     </template>

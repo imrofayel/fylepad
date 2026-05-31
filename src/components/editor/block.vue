@@ -163,8 +163,8 @@ const focusEditor = () => {
 
 <template>
   <div
-    class="grid grid-cols-1 gap-8 max-w-3xl mx-auto"
-    :class="tocAnchors.length !== 0 && 'xl:grid-cols-[minmax(0,1fr)_17rem] max-w-5xl!'"
+    class="grid grid-cols-1 gap-16 max-w-3xl mx-auto"
+    :class="tocAnchors.length !== 0 && 'xl:grid-cols-[minmax(0,1fr)_18rem] max-w-5xl!'"
   >
     <div>
       <EditorHead
