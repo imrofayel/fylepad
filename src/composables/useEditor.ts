@@ -3,14 +3,20 @@ import { computed, markRaw, ref, shallowReactive } from "vue";
 import { useFileSystemAccess, useMagicKeys, useStorage, whenever } from "@vueuse/core";
 import {
   createEmptyTabRecord,
-  deleteEditorTab,
   ensureEditorSchema,
   IS_TAURI,
-  loadEditorTabs,
+  isCloudMode,
   saveEditorTab,
   type EditorMetadata,
   type EditorTabRecord,
 } from "@/lib/editorDb";
+import {
+  loadNotesByIds,
+  createNote as dbCreateNote,
+  importNote as dbImportNote,
+} from "@/lib/notesDb";
+import { cloudReloadNote, ApiError } from "@/lib/cloudDb";
+import { isOffline, registerOfflineListeners, clearQueue } from "@/lib/offlineQueue";
 
 export type EditorTab = EditorTabRecord;
 
@@ -18,9 +24,12 @@ const tabs = ref<EditorTab[]>([]);
 const isReady = ref(false);
 let initializationPromise: Promise<void> | null = null;
 
-const activeTabId = useStorage("active-tab-id", "");
+const activeTabId = IS_TAURI ? useStorage("active-tab-id", "") : ref("");
+const openTabIds = IS_TAURI ? useStorage<string[]>("open-tab-ids", []) : ref<string[]>([]);
 const editors = shallowReactive(new Map<string, Editor>());
 const pendingSaveTimers = new Map<string, ReturnType<typeof setTimeout>>();
+const conflictedTabs = ref(new Set<string>());
+
 const markdownFileType = {
   description: "Markdown",
   accept: {
@@ -89,28 +98,60 @@ const persistTab = async (tabId: string) => {
     return;
   }
 
+  if (conflictedTabs.value.has(tabId)) {
+    return;
+  }
+
   const editor = editors.get(tabId);
 
   if (editor) {
     tab.content = editor.getJSON();
   }
 
-  await saveEditorTab(tab);
+  try {
+    await saveEditorTab(tab);
+  } catch (err) {
+    if (err instanceof ApiError && err.isConflict) {
+      conflictedTabs.value.add(tabId);
+      throw err;
+    }
+    throw err;
+  }
 };
 
+const savesInFlight = new Set<string>();
+
 const scheduleTabSave = (tabId: string) => {
+  if (conflictedTabs.value.has(tabId)) {
+    return;
+  }
+
   const existingTimer = pendingSaveTimers.get(tabId);
 
   if (existingTimer) {
     clearTimeout(existingTimer);
   }
 
-  const timer = setTimeout(() => {
+  const timer = setTimeout(async () => {
     pendingSaveTimers.delete(tabId);
 
-    void persistTab(tabId).catch((error) => {
+    if (savesInFlight.has(tabId)) {
+      scheduleTabSave(tabId);
+      return;
+    }
+
+    savesInFlight.add(tabId);
+    try {
+      await persistTab(tabId);
+    } catch (error) {
+      if (error instanceof ApiError && error.isConflict) {
+        console.warn(`Conflict on tab ${tabId} — reload required`);
+        return;
+      }
       console.error(`Failed to persist tab ${tabId}:`, error);
-    });
+    } finally {
+      savesInFlight.delete(tabId);
+    }
   }, 250);
 
   pendingSaveTimers.set(tabId, timer);
@@ -149,17 +190,28 @@ const updateTabContent = (tabId: string, content: EditorTab["content"]) => {
   scheduleTabSave(tabId);
 };
 
-const createTab = () => {
-  const tab = createEmptyTabRecord(globalThis.crypto.randomUUID());
+const createTab = async () => {
+  const note = await dbCreateNote("Untitled");
 
-  tabs.value = [...tabs.value, tab];
-  activeTabId.value = tab.id;
+  tabs.value = [...tabs.value, note];
+  activeTabId.value = note.id;
+  openTabIds.value = [...openTabIds.value, note.id];
 
-  void saveEditorTab(tab).catch((error) => {
-    console.error(`Failed to create tab ${tab.id}:`, error);
-  });
+  return note;
+};
 
-  return tab;
+const openNote = (note: EditorTabRecord) => {
+  const existing = tabs.value.find((t) => t.id === note.id);
+  if (existing) {
+    activeTabId.value = note.id;
+    return;
+  }
+
+  tabs.value = [...tabs.value, note];
+  activeTabId.value = note.id;
+  if (!openTabIds.value.includes(note.id)) {
+    openTabIds.value = [...openTabIds.value, note.id];
+  }
 };
 
 const closeTab = (tabId: string) => {
@@ -169,20 +221,18 @@ const closeTab = (tabId: string) => {
     return;
   }
 
-  tabs.value = tabs.value.filter((tab) => tab.id !== tabId);
-
+  // Flush any pending save before closing
   const timer = pendingSaveTimers.get(tabId);
-
   if (timer) {
     clearTimeout(timer);
     pendingSaveTimers.delete(tabId);
+    void persistTab(tabId).catch(() => {});
   }
 
+  tabs.value = tabs.value.filter((tab) => tab.id !== tabId);
   editors.delete(tabId);
-
-  void deleteEditorTab(tabId).catch((error) => {
-    console.error(`Failed to delete tab ${tabId}:`, error);
-  });
+  conflictedTabs.value.delete(tabId);
+  openTabIds.value = openTabIds.value.filter((id) => id !== tabId);
 
   if (activeTabId.value === tabId) {
     if (tabs.value.length > 0) {
@@ -192,6 +242,26 @@ const closeTab = (tabId: string) => {
       activeTabId.value = "";
     }
   }
+};
+
+const reloadTab = async (tabId: string): Promise<boolean> => {
+  if (!isCloudMode()) return false;
+
+  const reloaded = await cloudReloadNote(tabId);
+  if (!reloaded) return false;
+
+  const index = tabs.value.findIndex((t) => t.id === tabId);
+  if (index < 0) return false;
+
+  tabs.value[index] = reloaded;
+  conflictedTabs.value.delete(tabId);
+
+  const editor = editors.get(tabId);
+  if (editor) {
+    editor.commands.setContent(reloaded.content, { emitUpdate: false });
+  }
+
+  return true;
 };
 
 export const initializeEditorStore = async () => {
@@ -206,33 +276,59 @@ export const initializeEditorStore = async () => {
   initializationPromise = (async () => {
     try {
       await ensureEditorSchema();
-      const persistedTabs = await loadEditorTabs();
 
-      if (persistedTabs.length === 0) {
-        const tab = createEmptyTabRecord(globalThis.crypto.randomUUID());
-        tabs.value = [tab];
-        activeTabId.value = tab.id;
-        await saveEditorTab(tab);
-      } else {
-        tabs.value = persistedTabs;
+      if (isCloudMode()) {
+        registerOfflineListeners();
+      }
+
+      // Load only notes that are currently open as tabs
+      const ids = openTabIds.value;
+      if (ids.length > 0) {
+        const loaded = await loadNotesByIds(ids);
+        tabs.value = loaded;
+
+        // Clean up stale IDs (notes that were deleted while editor was closed)
+        const loadedIds = new Set(loaded.map((t) => t.id));
+        openTabIds.value = ids.filter((id) => loadedIds.has(id));
+
         if (!tabs.value.some((t) => t.id === activeTabId.value)) {
-          activeTabId.value = persistedTabs[0]?.id ?? "";
+          activeTabId.value = loaded[0]?.id ?? "";
         }
+      } else {
+        tabs.value = [];
+        activeTabId.value = "";
       }
     } catch (error) {
       console.error("Failed to initialize the editor store:", error);
-
-      if (tabs.value.length === 0) {
-        const tab = createEmptyTabRecord(globalThis.crypto.randomUUID());
-        tabs.value = [tab];
-        activeTabId.value = tab.id;
-      }
+      tabs.value = [];
+      activeTabId.value = "";
     } finally {
       isReady.value = true;
     }
   })();
 
   return initializationPromise;
+};
+
+export const reinitializeEditorStore = async () => {
+  // Clear all pending saves
+  for (const [, timer] of pendingSaveTimers) {
+    clearTimeout(timer);
+  }
+  pendingSaveTimers.clear();
+  editors.clear();
+  conflictedTabs.value.clear();
+  clearQueue();
+
+  // Reset state
+  tabs.value = [];
+  isReady.value = false;
+  initializationPromise = null;
+  activeTabId.value = "";
+  openTabIds.value = [];
+
+  // Re-initialize from the new storage backend
+  await initializeEditorStore();
 };
 
 export function useEditor() {
@@ -275,7 +371,7 @@ export function useEditor() {
     }
   };
 
-  const openFileDialog = async () => {
+  const openFileDialog = async (collectionId?: string) => {
     if (IS_TAURI) {
       const { open } = await import("@tauri-apps/plugin-dialog");
       const { readTextFile } = await import("@tauri-apps/plugin-fs");
@@ -287,27 +383,35 @@ export function useEditor() {
       });
 
       if (!selectedPath || Array.isArray(selectedPath)) {
-        return;
+        return null;
       }
 
       const content = await readTextFile(selectedPath);
-      await handleImportedContent(content, selectedPath);
-      return;
+      return await handleImportedContent(content, selectedPath, collectionId);
     }
 
     if (!browserFileSystemAccess.isSupported.value) {
       console.warn("File System Access API is not supported in this browser.");
-      return;
+      return null;
     }
 
     await openBrowserFile({ types: [markdownFileType] });
 
     if (typeof browserFileData.value === "string" && browserFileData.value) {
-      await handleImportedContent(browserFileData.value, browserFileName.value || undefined);
+      return await handleImportedContent(
+        browserFileData.value,
+        browserFileName.value || undefined,
+        collectionId,
+      );
     }
+    return null;
   };
 
-  const handleImportedContent = async (text: string, sourcePathOrName?: string) => {
+  const handleImportedContent = async (
+    text: string,
+    sourcePathOrName?: string,
+    collectionId?: string,
+  ) => {
     const { frontmatter, body } = parseFrontmatter(text);
     const titleFromFm = extractTitleFromFrontmatter(frontmatter);
     const defaultTitle =
@@ -316,22 +420,30 @@ export function useEditor() {
         ? String(sourcePathOrName).replace(/\.(md|markdown|txt)$/, "")
         : "Untitled");
 
-    const tab = createEmptyTabRecord(globalThis.crypto.randomUUID());
-    tab.title = normalizeTabTitle(defaultTitle);
-    tab.metadata = {
+    const title = normalizeTabTitle(defaultTitle);
+    const metadata = {
       rawMarkdown: body,
       origin: "external_file",
       sourceName: sourcePathOrName ? getSourceNameFromPath(sourcePathOrName) : undefined,
       sourcePath: sourcePathOrName,
     } as EditorMetadata;
 
-    tabs.value = [...tabs.value, tab];
-    activeTabId.value = tab.id;
-
     try {
-      await saveEditorTab(tab);
+      const note = await dbImportNote(
+        title,
+        createEmptyTabRecord("").content,
+        metadata,
+        collectionId,
+      );
+      tabs.value = [...tabs.value, note];
+      activeTabId.value = note.id;
+      if (!openTabIds.value.includes(note.id)) {
+        openTabIds.value = [...openTabIds.value, note.id];
+      }
+      return note;
     } catch (err) {
-      console.error("Failed to save imported tab to DB:", err);
+      console.error("Failed to save imported file to DB:", err);
+      return null;
     }
   };
 
@@ -391,13 +503,17 @@ export function useEditor() {
     activeEditor,
     activeTabId,
     closeTab,
+    conflictedTabs,
     createTab,
     initializeEditorStore,
     editors,
     getEditor,
     getTab,
+    isOffline,
     isReady,
+    openNote,
     registerEditor,
+    reloadTab,
     setActiveTab,
     updateTabContent,
     updateTabMetadata,

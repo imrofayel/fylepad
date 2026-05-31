@@ -27,9 +27,23 @@ declare module "vue-router/auto-routes" {
    */
   export interface RouteNamedMap {
     "/": RouteRecordInfo<"/", "/", Record<never, never>, Record<never, never>, never>;
+    "/editor": RouteRecordInfo<
+      "/editor",
+      "/editor",
+      Record<never, never>,
+      Record<never, never>,
+      never
+    >;
     "/settings": RouteRecordInfo<
       "/settings",
       "/settings",
+      Record<never, never>,
+      Record<never, never>,
+      never
+    >;
+    "/trash": RouteRecordInfo<
+      "/trash",
+      "/trash",
       Record<never, never>,
       Record<never, never>,
       never
@@ -51,8 +65,16 @@ declare module "vue-router/auto-routes" {
       routes: "/";
       views: never;
     };
+    "src/pages/editor.vue": {
+      routes: "/editor";
+      views: never;
+    };
     "src/pages/settings.vue": {
       routes: "/settings";
+      views: never;
+    };
+    "src/pages/trash.vue": {
+      routes: "/trash";
       views: never;
     };
   }

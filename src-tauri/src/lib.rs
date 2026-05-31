@@ -2,7 +2,7 @@ use tauri::{Emitter, Manager};
 use tauri_plugin_deep_link::DeepLinkExt;
 use tauri_plugin_sql::{Migration, MigrationKind};
 
-const EDITOR_DB_URL: &str = "sqlite:fylepad-zen.db";
+const EDITOR_DB_URL: &str = "sqlite:fylepad.db";
 
 #[tauri::command]
 fn greet(name: &str) -> String {
@@ -11,10 +11,11 @@ fn greet(name: &str) -> String {
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    let migrations = vec![Migration {
-        version: 1,
-        description: "create_collections_and_editor_tabs",
-        sql: r#"
+    let migrations = vec![
+        Migration {
+            version: 1,
+            description: "create_collections_and_editor_tabs",
+            sql: r#"
             CREATE TABLE IF NOT EXISTS collections (
                 id TEXT PRIMARY KEY NOT NULL,
                 name TEXT NOT NULL UNIQUE
@@ -29,13 +30,17 @@ pub fn run() {
                 collection_id TEXT NOT NULL DEFAULT 'default',
                 content TEXT NOT NULL,
                 metadata TEXT,
+                created_at TEXT,
+                deleted_at TEXT,
+                updated_at TEXT,
                 FOREIGN KEY (collection_id) REFERENCES collections(id) ON DELETE RESTRICT
             );
 
             CREATE INDEX IF NOT EXISTS idx_editor_tabs_collection_id ON editor_tabs(collection_id);
         "#,
-        kind: MigrationKind::Up,
-    }];
+            kind: MigrationKind::Up,
+        }
+    ];
 
     tauri::Builder::default()
         .plugin(tauri_plugin_fs::init())

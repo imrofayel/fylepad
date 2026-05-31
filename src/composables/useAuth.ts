@@ -1,9 +1,10 @@
 import { ref, computed, watch } from "vue";
 import { createAuthClient } from "better-auth/vue";
 import { bearer } from "better-auth/plugins";
+import { setCloudMode, IS_TAURI } from "@/lib/editorDb";
+import { initializeEditorStore, reinitializeEditorStore } from "@/composables/useEditor";
 
 const API = import.meta.env.VITE_BACKEND_API;
-const IS_TAURI = "__TAURI_INTERNALS__" in window;
 
 export const authClient = createAuthClient({
   baseURL: API,
@@ -54,7 +55,31 @@ async function fetchUserInternal(token?: string | null) {
     const options = IS_TAURI ? getBearerAuthOptions(token) : undefined;
 
     const { data, error } = await authClient.getSession(options);
-    user.value = error ? null : (data?.user ?? null);
+    const newUser = error ? null : (data?.user ?? null);
+    const wasAuthenticated = !!user.value;
+    const isNowAuthenticated = !!newUser;
+
+    user.value = newUser;
+
+    // On initial load (browser): set cloud mode based on auth, then init editor store once
+    // On login transition: switch to cloud mode and reinitialize
+    // On Tauri: just initialize (always local SQLite)
+    if (!IS_TAURI) {
+      if (!wasAuthenticated && isNowAuthenticated) {
+        setCloudMode(true);
+      }
+
+      if (!initialized.value) {
+        // First load — init editor store after auth is known
+        await initializeEditorStore();
+      } else if (!wasAuthenticated && isNowAuthenticated) {
+        // Login transition — reinitialize from cloud
+        await reinitializeEditorStore();
+      }
+    } else if (!initialized.value) {
+      // Tauri: init editor store on first load
+      await initializeEditorStore();
+    }
   } finally {
     loading.value = false;
     initialized.value = true;
@@ -159,6 +184,10 @@ export function useAuth() {
       localStorage.removeItem("session_token");
     } else {
       await authClient.signOut();
+
+      // Switch back to local storage mode
+      setCloudMode(false);
+      await reinitializeEditorStore();
     }
 
     sessionToken.value = null;

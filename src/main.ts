@@ -1,5 +1,5 @@
 import "./assets/css/main.css";
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHistory, createWebHashHistory } from "vue-router";
 import { routes } from "vue-router/auto-routes";
 import { createApp } from "vue";
 import App from "./App.vue";
@@ -8,10 +8,11 @@ import { addCollection } from "@iconify/vue";
 import aiSvg from "./assets/icons/hume-ai.svg?raw";
 import { registerIcons } from "@lib/register-icons.js";
 import { patchFetchForTauri } from "@lib/tauri-fetch.js";
-import { initializeEditorStore } from "@/composables/useEditor";
 import "@lib/xfce-icons";
 
 patchFetchForTauri();
+
+const IS_TAURI = "__TAURI_INTERNALS__" in window;
 
 addCollection({
   prefix: "icons",
@@ -30,7 +31,7 @@ addCollection({
 });
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: IS_TAURI ? createWebHashHistory() : createWebHistory(),
   routes,
 });
 
@@ -38,11 +39,6 @@ const app = createApp(App);
 app.use(router);
 app.use(ui);
 
-app.mount("#app");
-
 registerIcons();
 
-// initialize DB in background so UI paints immediately
-initializeEditorStore().catch((error) => {
-  console.error("Failed to initialize editor persistence:", error);
-});
+app.mount("#app");

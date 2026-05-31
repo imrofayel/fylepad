@@ -24,11 +24,6 @@ const languages: Language[] = [
   // Core
   { label: "Plain Text", value: "txt", icon: ICONS.languages.plainText },
   { label: "Markdown", value: "md", icon: ICONS.languages.markdown },
-  { label: "JSON", value: "json", icon: ICONS.languages.json },
-  { label: "YAML", value: "yaml", icon: ICONS.languages.yaml },
-  { label: "TOML", value: "toml", icon: ICONS.languages.toml },
-  { label: "XML", value: "xml", icon: ICONS.languages.xml },
-  { label: "INI", value: "ini", icon: ICONS.languages.ini },
 
   // Web
   { label: "JavaScript", value: "js", icon: ICONS.languages.javascript },
@@ -80,6 +75,12 @@ const languages: Language[] = [
   { label: "NGINX", value: "nginx", icon: ICONS.languages.nginx },
   { label: "Makefile", value: "makefile", icon: ICONS.languages.makefile },
   { label: "CMake", value: "cmake", icon: ICONS.languages.cmake },
+
+  { label: "JSON", value: "json", icon: ICONS.languages.json },
+  { label: "YAML", value: "yaml", icon: ICONS.languages.yaml },
+  { label: "TOML", value: "toml", icon: ICONS.languages.toml },
+  { label: "XML", value: "xml", icon: ICONS.languages.xml },
+  { label: "INI", value: "ini", icon: ICONS.languages.ini },
 
   // Other
   { label: "Assembly", value: "asm", icon: ICONS.languages.assembly },
@@ -171,7 +172,7 @@ function getIcon(value?: string) {
     placeholder="Select language"
     :ui="{
       root: 'max-w-40!',
-      base: 'ring-0 py-1! px-8! bg-transparent text-default! text-[16px]!',
+      base: 'ring-0 py-1! px-8! bg-transparent text-default! text-[15.5px]!',
       leading: 'ps-1!',
       trailing: 'pe-1!',
     }"

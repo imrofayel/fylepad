@@ -1,32 +1,53 @@
 <script setup lang="ts">
 import { ICONS } from "@/lib/constants/icons";
 import { useEditor } from "@/composables/useEditor";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const { closeTab, createTab, setActiveTab, tabs, activeTabId } = useEditor();
 
 const selectTab = (id: string) => {
   setActiveTab(id);
+  router.replace({ path: "/editor", query: { id } });
+};
+
+const handleCreateTab = async () => {
+  const note = await createTab();
+  router.push({ path: "/editor", query: { id: note.id } });
 };
 
 const handleCloseTab = (id: string, event: Event) => {
   event.stopPropagation();
   closeTab(id);
+  // After closing, navigate to the next active tab or home
+  if (tabs.value.length > 0) {
+    router.replace({ path: "/editor", query: { id: activeTabId.value } });
+  } else {
+    router.push("/");
+  }
 };
 </script>
 
 <template>
   <div class="flex w-full items-center justify-between gap-4">
-    <div class="flex min-w-0 flex-1 items-center gap-x-2">
+    <div class="flex min-w-0 flex-1 items-center gap-x-3">
+      <ButtonWithTooltip
+        text="Home"
+        variant="link"
+        color="neutral"
+        :icon="ICONS.home"
+        @click="$router.push('/')"
+      />
       <ButtonWithTooltip
         text="New Tab"
         variant="link"
         color="neutral"
         :icon="ICONS.newTab"
-        @click="createTab"
+        @click="handleCreateTab"
       />
 
       <div
-        class="no-scrollbar flex min-w-0 max-w-full flex-1 gap-x-1 overflow-x-auto overflow-y-hidden whitespace-nowrap"
+        class="no-scrollbar flex min-w-0 max-w-full flex-1 overflow-x-auto overflow-y-hidden whitespace-nowrap"
       >
         <UButton
           v-for="tab in tabs"

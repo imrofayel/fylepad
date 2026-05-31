@@ -7,7 +7,9 @@ body {
   @apply antialiased subpixel-antialiased;
 }
 
-p, input, button {
+p,
+input,
+button {
   @apply blur-[0.001px];
 }
 
@@ -35,6 +37,7 @@ h6 {
   @apply text-default!;
 }
 
-html, button {
+html,
+button {
   cursor: url('../icons/xfce/cursor.svg'), auto !important;
 }

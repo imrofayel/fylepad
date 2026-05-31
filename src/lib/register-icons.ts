@@ -4,6 +4,8 @@ import tabler from "@iconify-json/tabler/icons.json";
 import vscode from "@iconify-json/vscode-icons/icons.json";
 import logos from "@iconify-json/logos/icons.json";
 import material from "@iconify-json/material-icon-theme/icons.json";
+import ph from "@iconify-json/ph/icons.json";
+import akar from "@iconify-json/akar-icons/icons.json";
 import { ICONS } from "./constants/icons";
 
 function getIcons(obj: unknown): string[] {
@@ -48,9 +50,11 @@ export function registerIcons() {
 
   const collections = {
     tabler,
+    ph,
     "vscode-icons": vscode,
     logos,
     "material-icon-theme": material,
+    "akar-icons": akar,
   };
 
   for (const [prefix, names] of Object.entries(grouped)) {

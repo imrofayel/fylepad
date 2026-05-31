@@ -50,9 +50,16 @@ export default defineConfig(async () => ({
           neutral: "neutral",
         },
         icons: {
-          light: "tabler:moon",
-          dark: "tabler:sun",
-          loading: "svg-spinners:tadpole",
+          light: "ph:moon-duotone",
+          dark: "ph:sun-dim-duotone",
+          loading: "ph:spinner-gap-duotone",
+        },
+        modal: {
+          slots: {
+            overlay: "bg-transparent!",
+            content:
+              "bg-neutral-100 dark:bg-neutral-700 ring-0! p-4! py-1.5! shadow-none! backdrop-blur-sm",
+          },
         },
         toast: {
           slots: {

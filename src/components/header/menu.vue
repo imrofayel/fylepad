@@ -2,9 +2,20 @@
 import { useEditor } from "@/composables/useEditor";
 import { ICONS } from "@lib/constants/icons";
 import { useColorMode } from "@vueuse/core";
+import { useRouter } from "vue-router";
+import { useAuth } from "@/composables/useAuth";
+import { isCloudMode } from "@/lib/editorDb";
+
+const { user, signInWithGoogle, logout } = useAuth();
+const router = useRouter();
 
 const color = useColorMode();
 const { openFileDialog, saveActiveToDisk } = useEditor();
+
+defineProps<{
+  isHome: boolean;
+  isTrash?: boolean;
+}>();
 </script>
 <template>
   <UPopover
@@ -14,7 +25,8 @@ const { openFileDialog, saveActiveToDisk } = useEditor();
       arrow: 'fill-background! dark:fill-neutral-800!',
     }"
   >
-    <ButtonWithTooltip text="Menu" :icon="ICONS.menu" />
+    <ButtonWithTooltip text="Menu" :icon="ICONS.menu" v-if="!user" />
+    <UAvatar v-else :src="user.image" :alt="user.name" size="xs" />
 
     <template #content>
       <div class="flex flex-col p-0.5 py-1 w-42">
@@ -28,6 +40,7 @@ const { openFileDialog, saveActiveToDisk } = useEditor();
           :ui="{
             leadingIcon: 'size-4.5',
           }"
+          v-if="!isHome"
         />
 
         <UButton
@@ -36,10 +49,27 @@ const { openFileDialog, saveActiveToDisk } = useEditor();
           color="neutral"
           :icon="ICONS.folderOpen"
           class="p-2 py-1.5 font-normal text-[15px]"
-          @click="openFileDialog"
+          @click="
+            () => {
+              openFileDialog();
+            }
+          "
           :ui="{
             leadingIcon: 'size-4.5',
           }"
+          v-if="!isHome"
+        />
+
+        <UButton
+          label="Settings"
+          variant="link"
+          color="neutral"
+          :icon="ICONS.settings"
+          class="p-2 py-1.5 font-normal text-[15px]"
+          :ui="{
+            leadingIcon: 'size-4.5',
+          }"
+          @click="router.push('/settings')"
         />
 
         <UColorModeButton
@@ -61,6 +91,47 @@ const { openFileDialog, saveActiveToDisk } = useEditor();
           :ui="{
             leadingIcon: 'size-4.5',
           }"
+          v-if="isHome"
+        />
+
+        <UButton
+          label="Trash"
+          variant="link"
+          color="error"
+          to="/trash"
+          :icon="ICONS.trash"
+          class="p-2 py-1.5 mt-1 font-normal text-[15px]"
+          :ui="{
+            base: 'border-t dark:border-neutral-600! border-neutral-200 rounded-t-none',
+            leadingIcon: 'size-4.5',
+          }"
+          v-if="isHome && !isTrash"
+        />
+
+        <UButton
+          label="Logout"
+          variant="link"
+          color="error"
+          :icon="ICONS.logout"
+          class="p-2 py-1.5 font-normal text-[15px]"
+          :ui="{
+            leadingIcon: 'size-4.5',
+          }"
+          @click="logout"
+          v-if="user"
+        />
+
+        <UButton
+          label="Login"
+          variant="link"
+          color="error"
+          :icon="ICONS.login"
+          class="p-2 py-1.5 font-normal text-[15px]"
+          :ui="{
+            leadingIcon: 'size-4.5',
+          }"
+          @click="signInWithGoogle"
+          v-if="!user && isCloudMode()"
         />
       </div>
     </template>

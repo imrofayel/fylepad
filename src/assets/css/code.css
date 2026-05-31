@@ -10,11 +10,11 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.3rem;
-  height: 2.3rem;
+  width: 2rem;
+  height: 2rem;
   padding: 0;
   border: 0;
-  @apply rounded-full bg-neutral-200/50 dark:bg-neutral-900;
+  @apply bg-transparent;
   color: var(--ui-text);
   opacity: 100;
   pointer-events: none;
@@ -26,22 +26,14 @@
 }
 
 .codeblock-copy-button svg {
-  width: 1.15rem;
-  height: 1.15rem;
-}
-
-.codeblock-copy-button:hover {
-  @apply opacity-80!;
+  width: 1.5rem !important;
+  height: 1.5rem !important;
 }
 
 pre.codeblock-with-copy:hover .codeblock-copy-button,
 pre.codeblock-with-copy:focus-within .codeblock-copy-button {
   opacity: 1;
   pointer-events: auto;
-}
-
-.codeblock-copy-button:hover {
-  background: color-mix(in srgb, var(--ui-bg) 88%, transparent);
 }
 
 .codeblock-copy-button[data-state="error"] {
