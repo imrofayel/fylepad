@@ -9,3 +9,7 @@
 @import "./code.css";
 @import "./tiptap.css";
 @import "./embeds.css";
+
+ul {
+  list-style-type: square !important;
+}
