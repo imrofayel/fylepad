@@ -12,8 +12,6 @@ import "@lib/xfce-icons";
 
 patchFetchForTauri();
 
-registerIcons();
-
 const IS_TAURI = "__TAURI_INTERNALS__" in window;
 
 addCollection({
@@ -42,3 +40,5 @@ app.use(router);
 app.use(ui);
 
 app.mount("#app");
+
+registerIcons();

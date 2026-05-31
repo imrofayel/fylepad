@@ -12,7 +12,7 @@ const EditorBlock = defineAsyncComponent(() => import("@/components/editor/block
 
 const route = useRoute();
 const router = useRouter();
-useAuth();
+const { initialized } = useAuth();
 const aiSettings = useAISettings();
 const cloudMode = isCloudMode();
 
@@ -30,6 +30,7 @@ const {
 
 const noteId = computed(() => (route.query.id as string) || "");
 const notFound = ref(false);
+const loadingNote = ref(false);
 
 const activeTabConflicted = computed(() => conflictedTabs.value.has(activeTabId.value));
 
@@ -43,14 +44,15 @@ const handleCreateNote = async () => {
   router.replace({ path: "/editor", query: { id: note.id } });
 };
 
-// Open a note by ID (from query param)
 async function openNoteById(id: string) {
   notFound.value = false;
+  loadingNote.value = true;
 
   // Check if already open as a tab
   const existing = tabs.value.find((t) => t.id === id);
   if (existing) {
     activeTabId.value = id;
+    loadingNote.value = false;
     return;
   }
 
@@ -65,10 +67,23 @@ async function openNoteById(id: string) {
   } catch (err) {
     console.error("Failed to load note:", err);
     notFound.value = true;
+  } finally {
+    loadingNote.value = false;
   }
 }
 
 onMounted(async () => {
+  if (!initialized.value) {
+    await new Promise<void>((resolve) => {
+      const unwatch = watch(initialized, (val) => {
+        if (val) {
+          unwatch();
+          resolve();
+        }
+      });
+    });
+  }
+
   await initializeEditorStore();
 
   if (noteId.value) {
@@ -165,8 +180,11 @@ watch(noteId, async (newId) => {
     </Transition>
 
     <!-- Loading State -->
-    <div v-if="!isReady" class="flex items-center justify-center min-h-[calc(100vh-80px)]">
-      <UIcon :name="ICONS.loader" class="size-6 text-neutral-400" />
+    <div
+      v-if="!isReady || loadingNote"
+      class="flex items-center justify-center min-h-[calc(100vh-80px)]"
+    >
+      <UIcon :name="ICONS.loader" class="size-6 animate-spin text-neutral-400" />
     </div>
 
     <!-- Not Found -->

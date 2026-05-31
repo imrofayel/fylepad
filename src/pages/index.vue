@@ -81,16 +81,21 @@ const nonDefaultCollections = computed(() =>
 // ─── Actions ──────────────────────────────────────────
 function handleOpenNote(note: EditorTabRecord) {
   if (note.id.startsWith("temp-")) return;
-  openNote(note);
   router.push({ path: "/editor", query: { id: note.id } });
 }
 
 async function handleCreateNote() {
-  await createNewNote();
+  const note = await createNewNote();
+  if (note) {
+    router.push({ path: "/editor", query: { id: note.id } });
+  }
 }
 
 async function handleImportFile() {
-  await importFile();
+  const note = await importFile();
+  if (note) {
+    router.push({ path: "/editor", query: { id: note.id } });
+  }
 }
 
 function goBack() {

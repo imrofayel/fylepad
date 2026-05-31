@@ -10,8 +10,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.3rem;
-  height: 2.3rem;
+  width: 2rem;
+  height: 2rem;
   padding: 0;
   border: 0;
   @apply bg-transparent;
@@ -26,8 +26,8 @@
 }
 
 .codeblock-copy-button svg {
-  width: 2rem !important;
-  height: 2rem !important;
+  width: 1.5rem !important;
+  height: 1.5rem !important;
 }
 
 pre.codeblock-with-copy:hover .codeblock-copy-button,
@@ -46,7 +46,6 @@ pre.codeblock-with-copy:focus-within .codeblock-copy-button {
   font-family: var(--font-mono) !important;
   font-size: 1rem;
   line-height: 2;
-  @apply bg-neutral-100;
 }
 
 .twoslash-container {
