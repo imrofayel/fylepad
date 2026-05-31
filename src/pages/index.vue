@@ -2,7 +2,6 @@
 import { ref, watch, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useNotes } from "@/composables/useNotes";
-import { useEditor } from "@/composables/useEditor";
 import { useAuth } from "@/composables/useAuth";
 import { ICONS } from "@/lib/constants/icons";
 import type { EditorTabRecord, CollectionRecord } from "@/lib/editorDb";
@@ -30,7 +29,6 @@ const {
   editCollection,
   removeCollection,
 } = useNotes();
-const { openNote } = useEditor();
 
 // ─── State ────────────────────────────────────────────
 const renameNoteModal = ref(false);
