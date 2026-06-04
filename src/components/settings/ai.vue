@@ -58,8 +58,11 @@ const handleToggleAI = (val: boolean) => {
           class="flex items-center bg-neutral-100 justify-between p-0 px-2 pr-1 dark:bg-neutral-800 rounded-sm min-h-[30px] w-full cursor-pointer"
           @click="isEditingKey = true"
         >
-          <span class="text-neutral-600 dark:text-neutral-400 font-mono text-xs">
-            {{ apiKey ? "* * * * * * * * * * * * * * * *" : "No key provided" }}
+          <span
+            class="text-neutral-600 dark:text-neutral-400 font-mono"
+            :class="apiKey ? 'text-xs' : 'text-sm'"
+          >
+            {{ apiKey ? "● ● ● ● ● ● ● ● ● ● ● ● ●" : "Add a key here" }}
           </span>
           <UButton color="neutral" variant="ghost" :icon="ICONS.edit" size="md" :padded="false" />
         </div>

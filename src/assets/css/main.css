@@ -32,3 +32,7 @@ li {
     @apply my-1.5!
   }
 }
+
+.blurred {
+  filter: blur(1px) !important;
+}
