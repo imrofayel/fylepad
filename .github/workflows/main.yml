@@ -75,7 +75,7 @@ jobs:
     needs: publish-tauri          # wait for every matrix leg to complete
     runs-on: ubuntu-latest
     # Only mirror on real releases, not every push to main/master
-    if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
+    # if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
     permissions:
       contents: read
 
