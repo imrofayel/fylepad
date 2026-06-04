@@ -125,11 +125,11 @@ jobs:
         run: |
           gh release view "$TAG" \
             --repo "${{ github.repository }}" \
-            --json name,body,prerelease,isDraft \
+            --json name,body,isPrerelease,isDraft \
             > /tmp/release-meta.json
 
           echo "name=$(jq -r '.name' /tmp/release-meta.json)"   >> $GITHUB_OUTPUT
-          echo "prerelease=$(jq -r '.prerelease' /tmp/release-meta.json)" >> $GITHUB_OUTPUT
+          echo "prerelease=$(jq -r '.isPrerelease' /tmp/release-meta.json)" >> $GITHUB_OUTPUT
           echo "draft=$(jq -r '.isDraft' /tmp/release-meta.json)"         >> $GITHUB_OUTPUT
 
           # Write body to file so multi-line notes survive the env variable
