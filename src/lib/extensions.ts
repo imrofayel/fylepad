@@ -18,6 +18,8 @@ import Image from "@tiptap/extension-image";
 import Highlight from "@tiptap/extension-highlight";
 import { TextStyle } from "@tiptap/extension-text-style";
 import { Markdown } from "tiptap-markdown";
+import { TaskList } from "@tiptap/extension-task-list";
+import { TaskItem } from "@tiptap/extension-task-item";
 
 type TipTapExtensionsOptions = {
   onTocUpdate: (anchors: unknown[]) => void;
@@ -32,6 +34,10 @@ const lowlight = createLowlight();
 
 export const TipTapExtensions = ({ onTocUpdate, openMathPopover }: TipTapExtensionsOptions) => [
   Markdown,
+  TaskList,
+  TaskItem.configure({
+    nested: true,
+  }),
   Image.configure({
     allowBase64: true,
     resize: {

@@ -34,6 +34,8 @@
     "@tiptap/extension-mathematics": "^3.22.4",
     "@tiptap/extension-table": "^3.22.4",
     "@tiptap/extension-table-of-contents": "^3.22.4",
+    "@tiptap/extension-task-item": "^3.25.0",
+    "@tiptap/extension-task-list": "^3.25.0",
     "@tiptap/extension-text-align": "^3.22.3",
     "@tiptap/extension-text-style": "^3.22.4",
     "@tiptap/pm": "^3.22.4",

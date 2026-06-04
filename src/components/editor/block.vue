@@ -93,7 +93,7 @@ const {
   debounce: 800,
   minAutoTriggerChars: 10,
   acceptOnTab: true,
-  trapTab: true,
+  trapTab: false,
 });
 
 const value = ref("");

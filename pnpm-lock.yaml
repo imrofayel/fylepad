@@ -75,6 +75,12 @@ importers:
       '@tiptap/extension-table-of-contents':
         specifier: ^3.22.4
         version: 3.22.4(@tiptap/core@3.22.4(@tiptap/pm@3.22.4))(@tiptap/pm@3.22.4)
+      '@tiptap/extension-task-item':
+        specifier: ^3.25.0
+        version: 3.25.0(@tiptap/extension-list@3.22.4(@tiptap/core@3.22.4(@tiptap/pm@3.22.4))(@tiptap/pm@3.22.4))
+      '@tiptap/extension-task-list':
+        specifier: ^3.25.0
+        version: 3.25.0(@tiptap/extension-list@3.22.4(@tiptap/core@3.22.4(@tiptap/pm@3.22.4))(@tiptap/pm@3.22.4))
       '@tiptap/extension-text-align':
         specifier: ^3.22.3
         version: 3.22.3(@tiptap/core@3.22.4(@tiptap/pm@3.22.4))
@@ -1442,6 +1448,16 @@ packages:
     peerDependencies:
       '@tiptap/core': 3.22.4
       '@tiptap/pm': 3.22.4
+
+  '@tiptap/extension-task-item@3.25.0':
+    resolution: {integrity: sha512-SLneMmcXltJUjuyxbthr3glCXygkBvU4OsMXWNIVvh3/oE/PDp06i6sbFLUmeBl+LJGgWBNTj2DBM2BGY7PUSg==}
+    peerDependencies:
+      '@tiptap/extension-list': 3.25.0
+
+  '@tiptap/extension-task-list@3.25.0':
+    resolution: {integrity: sha512-9cP0G7MjmFkoqkmPNRre0CklkMreNfYdm63NQJ/ZB7L+27qXuqar0MmFL38EGU+FtbMqNu9DNWvooEL5Q3UL/A==}
+    peerDependencies:
+      '@tiptap/extension-list': 3.25.0
 
   '@tiptap/extension-text-align@3.22.3':
     resolution: {integrity: sha512-dG1NHE0yGf7fYiOdabCJuecI2IJ1uogyY/QvZqvPNaxRjZDoXYuGlMtz9jEDiIdQSaPED2MSsS7KkuNFQIEMGg==}
@@ -5490,6 +5506,14 @@ snapshots:
     dependencies:
       '@tiptap/core': 3.22.4(@tiptap/pm@3.22.4)
       '@tiptap/pm': 3.22.4
+
+  '@tiptap/extension-task-item@3.25.0(@tiptap/extension-list@3.22.4(@tiptap/core@3.22.4(@tiptap/pm@3.22.4))(@tiptap/pm@3.22.4))':
+    dependencies:
+      '@tiptap/extension-list': 3.22.4(@tiptap/core@3.22.4(@tiptap/pm@3.22.4))(@tiptap/pm@3.22.4)
+
+  '@tiptap/extension-task-list@3.25.0(@tiptap/extension-list@3.22.4(@tiptap/core@3.22.4(@tiptap/pm@3.22.4))(@tiptap/pm@3.22.4))':
+    dependencies:
+      '@tiptap/extension-list': 3.22.4(@tiptap/core@3.22.4(@tiptap/pm@3.22.4))(@tiptap/pm@3.22.4)
 
   '@tiptap/extension-text-align@3.22.3(@tiptap/core@3.22.4(@tiptap/pm@3.22.4))':
     dependencies:
