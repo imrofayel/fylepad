@@ -14,10 +14,52 @@ ul {
   list-style-type: square !important;
 }
 
+li {
+  @apply marker:text-default!;
+}
+
 .search-result {
   background-color: rgba(255, 217, 0, 0.5);
 }
 
 .search-result-current {
   background-color: rgba(13, 255, 0, 0.5);
+}
+
+
+ul[data-type="taskList"] {
+  list-style: none;
+  padding: 0;
+}
+
+ul[data-type="taskList"] li {
+  align-items: center;
+  display: flex;
+  margin-bottom: 0.2rem;
+}
+
+ul[data-type="taskList"] li>label {
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+
+ul[data-type="taskList"] li[data-checked="true"] div {
+  text-decoration: line-through;
+}
+
+
+ul[data-type="taskList"] label>input[type="checkbox"] {
+  cursor: pointer;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #c6c6c4;
+  border-radius: 4px;
+  margin-right: 0.6rem;
+  position: relative;
+}
+
+ul[data-type="taskList"] label>input[type="checkbox"]:checked {
+  @apply bg-[#2383e2] border-[#2383e2];
 }
