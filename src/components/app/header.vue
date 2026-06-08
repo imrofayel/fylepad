@@ -29,7 +29,7 @@ const handleCloseTab = (id: string, event: Event) => {
 </script>
 
 <template>
-  <div class="flex w-full items-center justify-between gap-4">
+  <div class="flex w-full items-center justify-between gap-4 print:hidden">
     <div class="flex min-w-0 flex-1 items-center gap-x-3">
       <ButtonWithTooltip
         text="Home"

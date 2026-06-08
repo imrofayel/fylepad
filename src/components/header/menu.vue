@@ -16,6 +16,10 @@ defineProps<{
   isHome: boolean;
   isTrash?: boolean;
 }>();
+
+const exportToPDF = () => {
+  window.print();
+};
 </script>
 <template>
   <UPopover
@@ -39,6 +43,19 @@ defineProps<{
           @click="saveActiveToDisk"
           :ui="{
             leadingIcon: 'size-4.5',
+          }"
+          v-if="!isHome"
+        />
+
+        <UButton
+          label="Export to PDF"
+          variant="link"
+          color="neutral"
+          icon="ph:notebook-duotone"
+          class="p-2 py-1.5 font-normal text-[15px]"
+          @click="exportToPDF"
+          :ui="{
+            leadingIcon: 'size-5',
           }"
           v-if="!isHome"
         />

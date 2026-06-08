@@ -87,3 +87,46 @@ blockquote,
     opacity: 0;
   }
 }
+
+@media print {
+  /* Hide UI and navigation controls */
+  .print\:hidden,
+  button,
+  .reka-popover-content,
+  .reka-tooltip-content,
+  aside,
+  nav,
+  header,
+  footer,
+  [class*="UEditorToolbar"],
+  [class*="EditorTocSidebar"],
+  [class*="UEditorSuggestionMenu"],
+  [class*="EditorMathPopover"],
+  [class*="Menu"] {
+    display: none !important;
+  }
+
+  /* Expand the page to full printable area */
+  .grid,
+  [class*="grid"] {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .max-w-3xl,
+  .max-w-5xl,
+  .mx-auto {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding: 0 !important;
+    @apply mx-3 my-2;
+  }
+
+  body,
+  html,
+  .bg-default {
+    background: white !important;
+    color: black !important;
+  }
+}
