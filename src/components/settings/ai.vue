@@ -154,6 +154,13 @@ const selectModel = (model: AIModel) => {
         </UInput>
       </UFormField>
 
+      <p class="text-[15px] mb-3">
+        You can get your AI Gateway API key from
+        <a href="https://vercel.com/ai-gateway" target="_blank" class="text-primary-500"
+          >https://vercel.com/ai-gateway</a
+        >
+      </p>
+
       <!-- Model Selection -->
       <UFormField
         description="Choose from curated text models by OpenAI, Claude, Google, and DeepSeek."
