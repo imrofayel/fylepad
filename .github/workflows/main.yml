@@ -16,18 +16,15 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # macOS ARM — .app, .dmg
-          - platform: "macos-latest"
-            args: "--target aarch64-apple-darwin --bundles app,dmg"
-          # macOS Intel — .app, .dmg
-          - platform: "macos-latest"
-            args: "--target x86_64-apple-darwin --bundles app,dmg"
-          # Linux — .deb, .rpm, .AppImage (all three in one run)
+          - platform: "macos-latest" # for Arm based macs (M1 and above).
+            args: "--target aarch64-apple-darwin --bundles app"
+          - platform: "macos-latest" # for Intel based macs.
+            args: "--target x86_64-apple-darwin"
           - platform: "ubuntu-22.04"
-            args: "--bundles deb,rpm,appimage"
-          # Windows — .exe (NSIS installer) + .msi
+            args: ""
           - platform: "windows-latest"
-            args: "--bundles nsis,msi"
+            args: ""
+
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
@@ -43,13 +40,16 @@ jobs:
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
         with:
+          # Those targets are only used on macos runners so it's in an `if` to slightly speed up windows and linux builds.
           targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
       - name: install dependencies (ubuntu only)
-        if: matrix.platform == 'ubuntu-22.04'
+        if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
         run: |
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.0-dev libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+        # webkitgtk 4.0 is for Tauri v1 - webkitgtk 4.1 is for Tauri v2.
+        # You can remove the one that doesn't apply to your app to speed up the workflow a bit.
 
       - run: pnpm i
 
@@ -59,162 +59,9 @@ jobs:
           VITE_AI_BACKEND_API: ${{ vars.VITE_AI_BACKEND_API }}
           VITE_BACKEND_API: ${{ vars.VITE_BACKEND_API }}
         with:
-          tagName: app-v__VERSION__
+          tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
           releaseName: "App v__VERSION__"
           releaseBody: "See the assets to download this version and install."
           releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}
-
-  # ------------------------------------------------------------------ #
-  # Runs once — after ALL matrix builds finish successfully             #
-  # Mirrors the release + all built assets to the public repo          #
-  # ------------------------------------------------------------------ #
-  mirror-to-public:
-    name: Mirror release to public repo
-    needs: publish-tauri          # wait for every matrix leg to complete
-    runs-on: ubuntu-latest
-    # Only mirror on real releases, not every push to main/master
-    # if: startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
-    permissions:
-      contents: read
-
-    env:
-      PUBLIC_REPO: imrofayel/fylepad-releases  # <-- change this
-      GH_TOKEN: ${{ secrets.PUBLIC_REPO_TOKEN }} # PAT with repo scope on public repo
-
-    steps:
-      - name: Checkout private repo (for tag access)
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      # Resolve the tag name whether triggered by tag push or workflow_dispatch
-      - name: Resolve tag name
-        id: tag
-        env:
-          PRIVATE_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
-            TAG="${GITHUB_REF#refs/tags/}"
-          else
-            # workflow_dispatch: find the latest release tag on private repo
-            TAG=$(gh release list --repo "${{ github.repository }}" --limit 1 --json tagName --jq '.[0].tagName')
-          fi
-          echo "tag=$TAG" >> $GITHUB_OUTPUT
-          echo "Resolved tag: $TAG"
-
-      # Download every asset from the private release into a local folder
-      - name: Download release assets from private repo
-        env:
-          TAG: ${{ steps.tag.outputs.tag }}
-        run: |
-          mkdir -p release-assets
-          gh release download "$TAG" \
-            --repo "${{ github.repository }}" \
-            --dir release-assets \
-            --clobber
-          echo "Assets downloaded:"
-          ls -lh release-assets/
-
-      # Pull release metadata (title + notes) from the private release
-      - name: Fetch release metadata
-        id: meta
-        env:
-          TAG: ${{ steps.tag.outputs.tag }}
-        run: |
-          gh release view "$TAG" \
-            --repo "${{ github.repository }}" \
-            --json name,body,isPrerelease,isDraft \
-            > /tmp/release-meta.json
-
-          echo "name=$(jq -r '.name' /tmp/release-meta.json)"   >> $GITHUB_OUTPUT
-          echo "prerelease=$(jq -r '.isPrerelease' /tmp/release-meta.json)" >> $GITHUB_OUTPUT
-          echo "draft=$(jq -r '.isDraft' /tmp/release-meta.json)"         >> $GITHUB_OUTPUT
-
-          # Write body to file so multi-line notes survive the env variable
-          jq -r '.body' /tmp/release-meta.json > /tmp/release-notes.md
-
-          # Append download links section
-          echo "" >> /tmp/release-notes.md
-          echo "---" >> /tmp/release-notes.md
-          echo "## Downloads" >> /tmp/release-notes.md
-          echo "" >> /tmp/release-notes.md
-          echo "| Platform | File |" >> /tmp/release-notes.md
-          echo "|----------|------|" >> /tmp/release-notes.md
-
-          for f in release-assets/*; do
-            filename=$(basename "$f")
-            url="https://github.com/$PUBLIC_REPO/releases/download/$TAG/$filename"
-
-            # Friendly platform label based on file extension / name
-            case "$filename" in
-              *.dmg)        label="macOS (DMG)" ;;
-              *.app.tar.gz) label="macOS (App)" ;;
-              *.AppImage)   label="Linux (AppImage)" ;;
-              *.deb)        label="Linux (Debian)" ;;
-              *.rpm)        label="Linux (RPM)" ;;
-              *.exe|*.msi)  label="Windows" ;;
-              *.nsis.zip)   label="Windows (NSIS)" ;;
-              *)            label="$filename" ;;
-            esac
-
-            echo "| $label | [$filename]($url) |" >> /tmp/release-notes.md
-          done
-
-      # Push the tag to the public repo
-      - name: Push tag to public repo
-        env:
-          TAG: ${{ steps.tag.outputs.tag }}
-        run: |
-          git remote add public \
-            https://x-access-token:${GH_TOKEN}@github.com/${PUBLIC_REPO}.git
-          git push public "refs/tags/${TAG}" --force
-
-      # Create the release on the public repo (delete first for idempotency)
-      - name: Create public release
-        env:
-          TAG: ${{ steps.tag.outputs.tag }}
-          TITLE: ${{ steps.meta.outputs.name }}
-          PRERELEASE: ${{ steps.meta.outputs.prerelease }}
-          DRAFT: ${{ steps.meta.outputs.draft }}
-        run: |
-          FLAGS=""
-          [ "$PRERELEASE" = "true" ] && FLAGS="$FLAGS --prerelease"
-          [ "$DRAFT"      = "true" ] && FLAGS="$FLAGS --draft"
-
-          gh release delete "$TAG" --repo "$PUBLIC_REPO" --yes 2>/dev/null || true
-
-          gh release create "$TAG" \
-            --repo "$PUBLIC_REPO" \
-            --title "$TITLE" \
-            --notes-file /tmp/release-notes.md \
-            $FLAGS
-
-      # Upload all built binaries to the public release
-      - name: Upload assets to public release
-        env:
-          TAG: ${{ steps.tag.outputs.tag }}
-        run: |
-          for asset in release-assets/*; do
-            echo "Uploading: $asset"
-            gh release upload "$TAG" \
-              --repo "$PUBLIC_REPO" \
-              "$asset" \
-              --clobber
-          done
-
-      # Print a summary with direct download links
-      - name: Job summary
-        env:
-          TAG: ${{ steps.tag.outputs.tag }}
-        run: |
-          echo "### ✅ Mirrored to public repo" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Release:** https://github.com/$PUBLIC_REPO/releases/tag/$TAG" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "**Direct download links:**" >> $GITHUB_STEP_SUMMARY
-          for f in release-assets/*; do
-            filename=$(basename "$f")
-            echo "- https://github.com/$PUBLIC_REPO/releases/download/$TAG/$filename" >> $GITHUB_STEP_SUMMARY
-          done
