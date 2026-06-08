@@ -9,9 +9,14 @@
 @import "./code.css";
 @import "./tiptap.css";
 @import "./embeds.css";
+@import "./list.css";
 
 ul {
   list-style-type: square !important;
+}
+
+li {
+  @apply marker:text-default!;
 }
 
 .search-result {
@@ -20,4 +25,14 @@ ul {
 
 .search-result-current {
   background-color: rgba(13, 255, 0, 0.5);
+}
+
+li {
+  li {
+    @apply my-1.5!
+  }
+}
+
+.blurred {
+  filter: blur(1px) !important;
 }

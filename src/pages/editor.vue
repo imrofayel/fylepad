@@ -9,11 +9,10 @@ import { ICONS } from "@/lib/constants/icons";
 import { loadNotesByIds } from "@/lib/notesDb";
 
 const EditorBlock = defineAsyncComponent(() => import("@/components/editor/block.vue"));
-const SearchBar = defineAsyncComponent(() => import("@/components/editor/SearchBar.vue"));
 
 const route = useRoute();
 const router = useRouter();
-const { initialized } = useAuth();
+const { initialized, user } = useAuth();
 const aiSettings = useAISettings();
 const cloudMode = isCloudMode();
 
@@ -27,6 +26,8 @@ const {
   openNote,
   createTab,
   initializeEditorStore,
+  isFocusMode,
+  toggleFocusMode,
 } = useEditor();
 
 const noteId = computed(() => (route.query.id as string) || "");
@@ -109,7 +110,7 @@ watch(noteId, async (newId) => {
     <!-- Offline indicator -->
     <Transition name="slide-down">
       <div
-        v-if="isOffline"
+        v-if="isOffline && cloudMode"
         class="flex items-center justify-center gap-2 py-1.5 px-4 mb-2 rounded-lg bg-amber-500/10 text-amber-600 dark:text-amber-400 text-sm font-medium"
       >
         <UIcon name="tabler:wifi-off" class="size-4" />
@@ -243,6 +244,18 @@ watch(noteId, async (newId) => {
         </template>
       </Suspense>
     </template>
+
+    <!-- Focus Mode toggle button -->
+    <div
+      v-if="tabs.length > 0 && isReady && !notFound && !loadingNote"
+      class="fixed bottom-3 right-4.5 z-50 print:hidden"
+    >
+      <ButtonWithTooltip
+        :text="isFocusMode ? 'Exit focus mode' : 'Enter focus mode'"
+        :icon="isFocusMode ? 'ph:x-circle-duotone' : 'ph:book-open-duotone'"
+        @click="toggleFocusMode"
+      />
+    </div>
   </div>
 </template>
 

@@ -16,13 +16,17 @@ defineProps<{
   isHome: boolean;
   isTrash?: boolean;
 }>();
+
+const exportToPDF = () => {
+  window.print();
+};
 </script>
 <template>
   <UPopover
     arrow
     :ui="{
-      content: 'bg-white dark:bg-neutral-800!',
-      arrow: 'fill-background! dark:fill-neutral-800!',
+      content: 'bg-neutral-100 dark:bg-neutral-800!',
+      arrow: 'fill-neutral-100! dark:fill-neutral-800!',
     }"
   >
     <ButtonWithTooltip text="Menu" :icon="ICONS.menu" v-if="!user" />
@@ -39,6 +43,19 @@ defineProps<{
           @click="saveActiveToDisk"
           :ui="{
             leadingIcon: 'size-4.5',
+          }"
+          v-if="!isHome"
+        />
+
+        <UButton
+          label="Export to PDF"
+          variant="link"
+          color="neutral"
+          icon="ph:notebook-duotone"
+          class="p-2 py-1.5 font-normal text-[15px]"
+          @click="exportToPDF"
+          :ui="{
+            leadingIcon: 'size-5',
           }"
           v-if="!isHome"
         />

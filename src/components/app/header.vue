@@ -4,7 +4,7 @@ import { useEditor } from "@/composables/useEditor";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
-const { closeTab, createTab, setActiveTab, tabs, activeTabId } = useEditor();
+const { closeTab, createTab, setActiveTab, tabs, activeTabId, isFocusMode } = useEditor();
 
 const selectTab = (id: string) => {
   setActiveTab(id);
@@ -29,7 +29,7 @@ const handleCloseTab = (id: string, event: Event) => {
 </script>
 
 <template>
-  <div class="flex w-full items-center justify-between gap-4">
+  <div class="flex w-full items-center justify-between gap-4 print:hidden">
     <div class="flex min-w-0 flex-1 items-center gap-x-3">
       <ButtonWithTooltip
         text="Home"
@@ -37,6 +37,7 @@ const handleCloseTab = (id: string, event: Event) => {
         color="neutral"
         :icon="ICONS.home"
         @click="$router.push('/')"
+        v-if="!isFocusMode"
       />
       <ButtonWithTooltip
         text="New Tab"
@@ -44,6 +45,7 @@ const handleCloseTab = (id: string, event: Event) => {
         color="neutral"
         :icon="ICONS.newTab"
         @click="handleCreateTab"
+        v-if="!isFocusMode"
       />
 
       <div
@@ -63,7 +65,7 @@ const handleCloseTab = (id: string, event: Event) => {
           }"
           @click="selectTab(tab.id)"
         >
-          <template #trailing>
+          <template #trailing v-if="!isFocusMode">
             <ButtonWithTooltip
               text="Close"
               :icon="ICONS.close"
@@ -78,6 +80,6 @@ const handleCloseTab = (id: string, event: Event) => {
       </div>
     </div>
 
-    <HeaderActions />
+    <HeaderActions v-if="!isFocusMode" />
   </div>
 </template>
