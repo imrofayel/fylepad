@@ -68,6 +68,7 @@
     "@iconify-json/logos": "^1.2.11",
     "@iconify-json/material-icon-theme": "^1.2.61",
     "@iconify-json/ph": "^1.2.2",
+    "@iconify-json/simple-icons": "^1.2.86",
     "@iconify-json/tabler": "^1.2.33",
     "@iconify-json/vscode-icons": "^1.2.46",
     "@tauri-apps/cli": "^2.10.1",
