@@ -21,6 +21,9 @@ const props = defineProps<{
   tabId: string;
 }>();
 
+const characterCount = ref(0);
+const wordCount = ref(0);
+
 const editorRef = useTemplateRef<{ editor: Editor | undefined }>("editorRef");
 const {
   getTab,
@@ -29,6 +32,7 @@ const {
   updateTabContent,
   updateTabMetadata,
   updateTabTitle,
+  isFocusMode,
 } = useEditor();
 const aiSettings = useAISettings();
 
@@ -70,15 +74,31 @@ watch(
 
     const handleUpdate = () => {
       updateTabContent(props.tabId, editor.getJSON());
+      characterCount.value = editor.storage.characterCount.characters();
+      wordCount.value = editor.storage.characterCount.words();
     };
 
     editor.on("update", handleUpdate);
     registerEditor(props.tabId, editor);
 
+    // Set initial values
+    characterCount.value = editor.storage.characterCount.characters();
+    wordCount.value = editor.storage.characterCount.words();
+
     onCleanup(() => {
       editor.off("update", handleUpdate);
       unregisterEditor(props.tabId);
     });
+  },
+  { immediate: true },
+);
+
+watch(
+  [() => editorRef.value?.editor, isFocusMode],
+  ([editor, focusMode]) => {
+    if (editor) {
+      editor.setEditable(!focusMode);
+    }
   },
   { immediate: true },
 );
@@ -164,12 +184,15 @@ const focusEditor = () => {
 <template>
   <div
     class="grid grid-cols-1 gap-16 max-w-3xl mx-auto"
-    :class="tocAnchors.length !== 0 && 'xl:grid-cols-[minmax(0,1fr)_18rem] max-w-5xl!'"
+    :class="
+      !isFocusMode && tocAnchors.length !== 0 && 'xl:grid-cols-[minmax(0,1fr)_18rem] max-w-5xl!'
+    "
   >
     <div>
       <EditorHead
         v-model="tabTitle"
         :folder-label="currentTab?.collectionName"
+        :readonly="isFocusMode"
         @enter="focusEditor"
       />
       <UEditor
@@ -186,6 +209,7 @@ const focusEditor = () => {
         textDirection="auto"
       >
         <UEditorToolbar
+          v-if="!isFocusMode"
           :editor="editor"
           :items="getToolbarItems(editor)"
           layout="bubble"
@@ -215,6 +239,7 @@ const focusEditor = () => {
         </UEditorToolbar>
 
         <EditorMathPopover
+          v-if="!isFocusMode"
           :editor="editor"
           :open="mathPopoverOpen"
           :latex="mathLatex"
@@ -224,10 +249,10 @@ const focusEditor = () => {
           @apply="applyMathUpdate(editor)"
         />
 
-        <UEditorSuggestionMenu :editor="editor" :items="suggestionMenu" />
+        <UEditorSuggestionMenu v-if="!isFocusMode" :editor="editor" :items="suggestionMenu" />
       </UEditor>
     </div>
 
-    <EditorTocSidebar :toc-anchors="tocAnchors" @select="goToTocAnchor" />
+    <EditorTocSidebar v-if="!isFocusMode" :toc-anchors="tocAnchors" @select="goToTocAnchor" />
   </div>
 </template>

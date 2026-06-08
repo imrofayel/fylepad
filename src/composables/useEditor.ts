@@ -35,6 +35,11 @@ const toggleSearch = () => {
   isSearchOpen.value = !isSearchOpen.value;
 };
 
+const isFocusMode = ref(false);
+const toggleFocusMode = () => {
+  isFocusMode.value = !isFocusMode.value;
+};
+
 const markdownFileType = {
   description: "Markdown",
   accept: {
@@ -530,5 +535,7 @@ export function useEditor() {
     unregisterEditor,
     isSearchOpen,
     toggleSearch,
+    isFocusMode,
+    toggleFocusMode,
   };
 }

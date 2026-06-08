@@ -20,6 +20,7 @@ import { TextStyle } from "@tiptap/extension-text-style";
 import { Markdown } from "tiptap-markdown";
 import { TaskList } from "@tiptap/extension-task-list";
 import { TaskItem } from "@tiptap/extension-task-item";
+import { CharacterCount } from "@tiptap/extensions";
 
 type TipTapExtensionsOptions = {
   onTocUpdate: (anchors: unknown[]) => void;
@@ -110,4 +111,5 @@ export const TipTapExtensions = ({ onTocUpdate, openMathPopover }: TipTapExtensi
     multicolor: true,
   }),
   SearchAndReplace.configure(),
+  CharacterCount,
 ];

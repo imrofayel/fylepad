@@ -26,6 +26,8 @@ const {
   openNote,
   createTab,
   initializeEditorStore,
+  isFocusMode,
+  toggleFocusMode,
 } = useEditor();
 
 const noteId = computed(() => (route.query.id as string) || "");
@@ -242,6 +244,18 @@ watch(noteId, async (newId) => {
         </template>
       </Suspense>
     </template>
+
+    <!-- Focus Mode toggle button -->
+    <div
+      v-if="tabs.length > 0 && isReady && !notFound && !loadingNote"
+      class="fixed bottom-3 right-4.5 z-50 print:hidden"
+    >
+      <ButtonWithTooltip
+        :text="isFocusMode ? 'Exit focus mode' : 'Enter focus mode'"
+        :icon="isFocusMode ? 'ph:x-circle-duotone' : 'ph:book-open-duotone'"
+        @click="toggleFocusMode"
+      />
+    </div>
   </div>
 </template>
 
