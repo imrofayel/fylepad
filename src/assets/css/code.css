@@ -10,8 +10,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.15rem;
-  height: 1.15rem;
+  width: 1.25rem;
+  height: 1.25rem;
   padding: 0;
   border: 0;
   @apply bg-transparent;
@@ -26,8 +26,8 @@
 }
 
 .codeblock-copy-button svg {
-  width: 1.15rem !important;
-  height: 1.15rem !important;
+  width: 1.25rem !important;
+  height: 1.25rem !important;
 }
 
 pre.codeblock-with-copy:hover .codeblock-copy-button,

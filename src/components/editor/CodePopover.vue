@@ -172,9 +172,10 @@ function getIcon(value?: string) {
     placeholder="Select language"
     :ui="{
       root: 'max-w-40!',
-      base: 'ring-0 py-1! px-8! bg-transparent text-default! text-[15.5px]!',
+      base: 'ring-0 py-1! px-8! bg-neutral-100 dark:bg-neutral-700 text-default! text-[15.5px]!',
       leading: 'ps-1!',
       trailing: 'pe-1!',
+      content: 'bg-neutral-100 dark:bg-neutral-700',
     }"
     :content="{ hideWhenEmpty: true }"
     @update:model-value="updateLanguage"
