@@ -21,8 +21,8 @@ defineProps<{
   <UPopover
     arrow
     :ui="{
-      content: 'bg-white dark:bg-neutral-800!',
-      arrow: 'fill-background! dark:fill-neutral-800!',
+      content: 'bg-neutral-100 dark:bg-neutral-800!',
+      arrow: 'fill-neutral-100! dark:fill-neutral-800!',
     }"
   >
     <ButtonWithTooltip text="Menu" :icon="ICONS.menu" v-if="!user" />
