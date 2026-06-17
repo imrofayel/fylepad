@@ -299,10 +299,11 @@ watch(
             <UDropdownMenu
               v-if="activeCollection && !activeCollection.isSystem"
               :items="collectionDropdownItems(activeCollection)"
+              arrow
             >
               <UButton :icon="ICONS.dots" size="lg" variant="ghost" color="neutral" />
             </UDropdownMenu>
-            <UDropdownMenu v-if="!isRecoveredCollection" :items="addDropdownItems">
+            <UDropdownMenu v-if="!isRecoveredCollection" :items="addDropdownItems" arrow>
               <ButtonWithTooltip :icon="ICONS.plus" size="md" text="Create note" />
             </UDropdownMenu>
           </div>
@@ -326,7 +327,7 @@ watch(
           <div
             v-for="note in filteredNotes"
             :key="note.id"
-            class="group flex items-center justify-between py-1 px-1"
+            class="group flex items-center justify-between py-0.5 px-1"
             :class="note.id.startsWith('temp-') && 'opacity-50 pointer-events-none animate-pulse'"
             @click="handleOpenNote(note)"
           >
@@ -337,7 +338,7 @@ watch(
               <span class="text-[16.5px] font-medium text-neutral-400 whitespace-nowrap">
                 {{ formatDate(note.updatedAt || note.createdAt) }}
               </span>
-              <UDropdownMenu :items="noteDropdownItems(note)">
+              <UDropdownMenu :items="noteDropdownItems(note)" arrow>
                 <UButton :icon="ICONS.dots" size="lg" variant="link" color="neutral" @click.stop />
               </UDropdownMenu>
             </div>
@@ -349,7 +350,7 @@ watch(
       <div v-else class="max-w-2xl mx-auto">
         <!-- Header with Add dropdown -->
         <div class="flex items-center justify-end mb-4">
-          <UDropdownMenu :items="addDropdownItems">
+          <UDropdownMenu :items="addDropdownItems" arrow>
             <ButtonWithTooltip :icon="ICONS.plus" size="lg" text="Create" />
           </UDropdownMenu>
         </div>
@@ -371,8 +372,8 @@ watch(
               :class="col.name?.toLowerCase() === 'recovered' && 'text-yellow-200!'"
             />
             <div class="w-35 h-25">
-              <p class="text-base w-25 font-medium truncate">{{ col.name }}</p>
-              <p class="text-[15.5px] font-medium text-neutral-400 absolute bottom-2">
+              <p class="text-[17px] w-25 font-medium truncate">{{ col.name }}</p>
+              <p class="text-[16.5px] font-medium text-neutral-400 absolute bottom-2">
                 {{ noteCountByCollection.get(col.id) || 0 }}
               </p>
             </div>
@@ -380,6 +381,7 @@ watch(
               v-if="!col.isSystem"
               :items="collectionDropdownItems(col)"
               class="absolute right-2.5 top-2"
+              arrow
             >
               <UButton
                 :icon="ICONS.dotsCircle"
@@ -394,8 +396,8 @@ watch(
 
         <!-- Notes list -->
         <div v-if="defaultNotes.length === 0" class="flex flex-col items-center py-20 gap-3">
-          <UIcon name="tabler:notes-off" class="size-8 text-neutral-300 dark:text-neutral-600" />
-          <p class="text-neutral-400 text-sm">
+          <UIcon name="tabler:notes-off" class="size-9 text-neutral-300 dark:text-neutral-600" />
+          <p class="text-neutral-400 text-base font-medium">
             {{ searchQuery ? "No notes match your search" : "No notes yet" }}
           </p>
           <UButton
@@ -404,7 +406,7 @@ watch(
             :icon="ICONS.notePlus"
             variant="soft"
             color="neutral"
-            size="sm"
+            size="lg"
             @click="handleCreateNote"
           />
         </div>
@@ -413,11 +415,11 @@ watch(
           <div
             v-for="note in defaultNotes"
             :key="note.id"
-            class="group flex items-center justify-between py-1 px-1 cursor-pointer transition-colors"
+            class="group flex items-center justify-between py-0.5 px-1 cursor-pointer transition-colors"
             :class="note.id.startsWith('temp-') && 'opacity-50 pointer-events-none animate-pulse'"
             @click="handleOpenNote(note)"
           >
-            <span class="text-[16.5px] font-medium max-w-80 truncate flex-1">
+            <span class="text-[17px] font-medium max-w-80 truncate flex-1">
               {{ note.title || "Untitled" }}
             </span>
             <div class="flex items-center gap-2">
@@ -426,6 +428,7 @@ watch(
               </span>
               <UDropdownMenu
                 :items="noteDropdownItems(note)"
+                arrow
                 :ui="{
                   content: 'w-40',
                 }"

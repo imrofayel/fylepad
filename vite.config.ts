@@ -94,6 +94,14 @@ export default defineConfig(async () => ({
               "dark:stroke-neutral-600! dark:fill-neutral-900! fill-neutral-100! stroke-neutral-300!",
           },
         },
+        dropdownMenu: {
+          slots: {
+            content:
+              "ring-1 ring-neutral-300 dark:ring-neutral-600 bg-neutral-100 dark:bg-neutral-800!",
+            arrow:
+              "fill-neutral-100! dark:fill-neutral-800! dark:stroke-neutral-600! stroke-neutral-300!",
+          },
+        },
         input: {
           slots: {
             base: "focus-visible:ring-1! dark:focus-visible:ring-neutral-500! font-medium text-default! focus-visible:ring-neutral-400!",
