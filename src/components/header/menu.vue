@@ -5,6 +5,10 @@ import { useColorMode, useOnline } from "@vueuse/core";
 import { useRouter } from "vue-router";
 import { useAuth } from "@/composables/useAuth";
 
+function isTauri() {
+  return typeof window !== "undefined" && "__TAURI_INTERNALS__" in window;
+}
+
 const { user, signInWithGoogle, logout } = useAuth();
 const router = useRouter();
 
@@ -148,7 +152,7 @@ const exportToPDF = () => {
             leadingIcon: 'size-4.5',
           }"
           @click="signInWithGoogle"
-          v-if="!user && isOnline"
+          v-if="!user && isOnline && !isTauri()"
         />
       </div>
     </template>
