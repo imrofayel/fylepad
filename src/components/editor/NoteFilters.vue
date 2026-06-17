@@ -106,7 +106,7 @@ watch(
       arrow
       icon="ph:sort-ascending-duotone"
       :ui="{
-        base: 'bg-neutral-100 dark:bg-neutral-800',
+        base: 'bg-neutral-100 text-[15.5px]! dark:bg-neutral-800',
         itemTrailingIcon: 'size-4.5',
         trailingIcon: 'size-5',
         content:
@@ -127,6 +127,7 @@ watch(
         size="md"
         variant="soft"
         color="neutral"
+        class="text-[15.5px]! font-normal"
         :label="dateFilterLabel"
       />
       <template #content>
@@ -137,7 +138,7 @@ watch(
             color="success"
             variant="soft"
             :ui="{
-              root: 'bg-neutral-800',
+              root: 'dark:bg-neutral-800 bg-neutral-100',
             }"
           />
           <div class="flex items-center justify-end gap-2 pt-2">
