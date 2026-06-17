@@ -91,9 +91,9 @@ export default defineConfig(async () => ({
         popover: {
           slots: {
             content:
-              "ring-1 ring-neutral-300 dark:bg-neutral-900 bg-neutral-100 dark:ring-neutral-600",
+              "ring-1 ring-neutral-300 bg-neutral-100 dark:bg-neutral-800! dark:ring-neutral-600",
             arrow:
-              "dark:stroke-neutral-600! dark:fill-neutral-900! fill-neutral-100! stroke-neutral-300!",
+              "dark:stroke-neutral-600! fill-neutral-100! dark:fill-neutral-800! stroke-neutral-300!",
           },
         },
         dropdownMenu: {

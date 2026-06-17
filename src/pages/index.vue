@@ -357,13 +357,110 @@ watch(
             <h2 class="text-xl font-medium">{{ activeCollection?.name || "Collection" }}</h2>
           </div>
           <div class="flex items-center gap-1">
-            <UDropdownMenu
+            <UPopover
               v-if="activeCollection && !activeCollection.isSystem"
-              :items="collectionDropdownItems(activeCollection)"
+              :open="
+                (renameCollectionModal && renameCollectionId === activeCollection.id) ||
+                (deleteCollectionModal && deleteCollectionId === activeCollection.id)
+              "
+              @update:open="
+                (val) => {
+                  if (!val) {
+                    renameCollectionModal = false;
+                    deleteCollectionModal = false;
+                  }
+                }
+              "
               arrow
             >
-              <UButton :icon="ICONS.dots" size="lg" variant="ghost" color="neutral" />
-            </UDropdownMenu>
+              <UDropdownMenu :items="collectionDropdownItems(activeCollection)" arrow>
+                <UButton :icon="ICONS.dots" size="lg" variant="ghost" color="neutral" />
+              </UDropdownMenu>
+              <template #content>
+                <div v-if="renameCollectionModal" class="px-2">
+                  <UInput
+                    v-model="renameCollectionValue"
+                    placeholder="Folder name"
+                    class="mb-0"
+                    :ui="{
+                      base: 'bg-transparent! ring-0! focus:ring-0! focus:outline-none! focus-visible:ring-0! focus-visible:outline-none! font-normal! text-[17px]! px-0 shadow-none!',
+                    }"
+                    size="md"
+                    autofocus
+                    @keydown.enter="confirmRenameCollection"
+                  />
+                  <div class="flex justify-end gap-x-1 pb-1">
+                    <ButtonWithTooltip
+                      text="Close"
+                      :icon="ICONS.close"
+                      size="md"
+                      @click="renameCollectionModal = false"
+                    />
+                    <ButtonWithTooltip
+                      text="Confirm"
+                      :icon="ICONS.check"
+                      size="md"
+                      color="success"
+                      @click="confirmRenameCollection"
+                    />
+                  </div>
+                </div>
+                <div v-else-if="deleteCollectionModal" class="p-2 min-w-60">
+                  <div class="flex flex-col gap-2">
+                    <label
+                      class="flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors"
+                      :class="
+                        deleteCollectionMode === 'move'
+                          ? 'bg-neutral-50 dark:bg-neutral-800/70'
+                          : 'bg-neutral-50 dark:bg-neutral-800/50'
+                      "
+                      @click="deleteCollectionMode = 'move'"
+                    >
+                      <input
+                        type="radio"
+                        name="deleteMode"
+                        value="move"
+                        :checked="deleteCollectionMode === 'move'"
+                        class="mt-0.5 accent-neutral-800 dark:accent-neutral-200"
+                      />
+                      <span class="text-[15.5px] font-medium">Move notes to Default</span>
+                    </label>
+                    <label
+                      class="flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors"
+                      :class="
+                        deleteCollectionMode === 'delete'
+                          ? 'bg-red-200/70 dark:bg-red-900/40'
+                          : 'bg-red-100 dark:bg-red-900/20'
+                      "
+                      @click="deleteCollectionMode = 'delete'"
+                    >
+                      <input
+                        type="radio"
+                        name="deleteMode"
+                        value="delete"
+                        :checked="deleteCollectionMode === 'delete'"
+                        class="mt-0.5 accent-red-600"
+                      />
+                      <span class="text-[15.5px] font-medium text-red-400">Delete all notes</span>
+                    </label>
+                  </div>
+                  <div class="flex justify-end gap-3 mt-2">
+                    <ButtonWithTooltip
+                      text="Close"
+                      :icon="ICONS.close"
+                      size="xl"
+                      @click="deleteCollectionModal = false"
+                    />
+                    <ButtonWithTooltip
+                      text="Delete folder"
+                      :icon="ICONS.trash"
+                      size="xl"
+                      @click="confirmDeleteCollection"
+                    />
+                  </div>
+                </div>
+              </template>
+            </UPopover>
             <UDropdownMenu v-if="!isRecoveredCollection" :items="addDropdownItems" arrow>
               <ButtonWithTooltip :icon="ICONS.plus" size="md" text="Create note" />
             </UDropdownMenu>
@@ -381,15 +478,6 @@ watch(
           class="flex flex-col items-center py-20 gap-3"
         >
           <UIcon name="tabler:notes-off" class="size-10 text-neutral-300 dark:text-neutral-600" />
-          <UButton
-            v-if="!searchQuery && !isRecoveredCollection && !collectionHasDateFilter"
-            label="Create a note"
-            :icon="ICONS.notePlus"
-            variant="soft"
-            color="neutral"
-            size="sm"
-            @click="handleCreateNote"
-          />
         </div>
 
         <div v-else class="flex flex-col">
@@ -407,9 +495,55 @@ watch(
               <span class="text-[16.5px] font-medium text-neutral-400 whitespace-nowrap">
                 {{ formatDate(note.updatedAt || note.createdAt) }}
               </span>
-              <UDropdownMenu :items="noteDropdownItems(note)" arrow>
-                <UButton :icon="ICONS.dots" size="lg" variant="link" color="neutral" @click.stop />
-              </UDropdownMenu>
+              <UPopover
+                :open="renameNoteModal && renameNoteId === note.id"
+                @update:open="
+                  (val) => {
+                    if (!val) renameNoteModal = false;
+                  }
+                "
+                arrow
+              >
+                <UDropdownMenu :items="noteDropdownItems(note)" arrow>
+                  <UButton
+                    :icon="ICONS.dots"
+                    size="lg"
+                    variant="link"
+                    color="neutral"
+                    @click.stop
+                  />
+                </UDropdownMenu>
+                <template #content>
+                  <div class="px-2">
+                    <UInput
+                      v-model="renameNoteValue"
+                      placeholder="Note title"
+                      class="mb-0"
+                      :ui="{
+                        base: 'bg-transparent! ring-0! focus:ring-0! focus:outline-none! focus-visible:ring-0! focus-visible:outline-none! font-normal! text-[17px]! px-0 shadow-none!',
+                      }"
+                      size="md"
+                      autofocus
+                      @keydown.enter="confirmRenameNote"
+                    />
+                    <div class="flex justify-end gap-x-1 pb-1">
+                      <ButtonWithTooltip
+                        text="Close"
+                        :icon="ICONS.close"
+                        size="md"
+                        @click="renameNoteModal = false"
+                      />
+                      <ButtonWithTooltip
+                        text="Confirm"
+                        :icon="ICONS.check"
+                        size="md"
+                        color="success"
+                        @click="confirmRenameNote"
+                      />
+                    </div>
+                  </div>
+                </template>
+              </UPopover>
             </div>
           </div>
         </div>
@@ -417,9 +551,49 @@ watch(
 
       <div v-else class="max-w-2xl mx-auto">
         <div class="flex items-center justify-end mb-4">
-          <UDropdownMenu :items="addDropdownItems" arrow>
-            <ButtonWithTooltip :icon="ICONS.plus" size="lg" text="Create" />
-          </UDropdownMenu>
+          <UPopover
+            :open="newCollectionModal"
+            @update:open="
+              (val) => {
+                if (!val) newCollectionModal = false;
+              }
+            "
+            arrow
+          >
+            <UDropdownMenu :items="addDropdownItems" arrow>
+              <ButtonWithTooltip :icon="ICONS.plus" size="lg" text="Create" />
+            </UDropdownMenu>
+            <template #content>
+              <div class="px-2">
+                <UInput
+                  v-model="newCollectionName"
+                  placeholder="Collection name"
+                  class="mb-0"
+                  :ui="{
+                    base: 'bg-transparent! ring-0! focus:ring-0! focus:outline-none! focus-visible:ring-0! focus-visible:outline-none! font-normal! text-[17px]! px-0 shadow-none!',
+                  }"
+                  size="md"
+                  autofocus
+                  @keydown.enter="confirmNewCollection"
+                />
+                <div class="flex justify-end gap-x-1 pb-0.5">
+                  <ButtonWithTooltip
+                    text="Close"
+                    :icon="ICONS.close"
+                    size="md"
+                    @click="newCollectionModal = false"
+                  />
+                  <ButtonWithTooltip
+                    text="Confirm"
+                    :icon="ICONS.check"
+                    size="md"
+                    color="success"
+                    @click="confirmNewCollection"
+                  />
+                </div>
+              </div>
+            </template>
+          </UPopover>
         </div>
 
         <div
@@ -443,20 +617,112 @@ watch(
                 {{ noteCountByCollection.get(col.id) || 0 }}
               </p>
             </div>
-            <UDropdownMenu
+            <UPopover
               v-if="!col.isSystem"
-              :items="collectionDropdownItems(col)"
+              :open="
+                (renameCollectionModal && renameCollectionId === col.id) ||
+                (deleteCollectionModal && deleteCollectionId === col.id)
+              "
+              @update:open="
+                (val) => {
+                  if (!val) {
+                    renameCollectionModal = false;
+                    deleteCollectionModal = false;
+                  }
+                }
+              "
               class="absolute right-2.5 top-2"
               arrow
             >
-              <UButton
-                :icon="ICONS.dotsCircle"
-                size="md"
-                variant="link"
-                color="neutral"
-                @click.stop
-              />
-            </UDropdownMenu>
+              <UDropdownMenu :items="collectionDropdownItems(col)" arrow>
+                <UButton
+                  :icon="ICONS.dotsCircle"
+                  size="md"
+                  variant="link"
+                  color="neutral"
+                  @click.stop
+                />
+              </UDropdownMenu>
+              <template #content>
+                <div v-if="renameCollectionModal && renameCollectionId === col.id" class="px-2">
+                  <UInput
+                    v-model="renameCollectionValue"
+                    placeholder="Folder name"
+                    class="mb-0"
+                    :ui="{
+                      base: 'bg-transparent! ring-0! focus:ring-0! focus:outline-none! focus-visible:ring-0! focus-visible:outline-none! font-normal! text-[17px]! px-0 shadow-none!',
+                    }"
+                    size="md"
+                    autofocus
+                    @keydown.enter="confirmRenameCollection"
+                  />
+                  <div class="flex justify-end gap-x-1 pb-1">
+                    <ButtonWithTooltip
+                      text="Close"
+                      :icon="ICONS.close"
+                      size="md"
+                      @click="renameCollectionModal = false"
+                    />
+                    <ButtonWithTooltip
+                      text="Confirm"
+                      :icon="ICONS.check"
+                      size="md"
+                      color="success"
+                      @click="confirmRenameCollection"
+                    />
+                  </div>
+                </div>
+                <div
+                  v-else-if="deleteCollectionModal && deleteCollectionId === col.id"
+                  class="pt-3 pb-1.5"
+                >
+                  <div class="flex flex-col gap-2">
+                    <label
+                      class="flex items-center border-b pr-10 border-neutral-200 dark:border-neutral-600 pb-2 gap-3 px-4"
+                      @click="deleteCollectionMode = 'move'"
+                    >
+                      <input
+                        type="radio"
+                        name="deleteMode"
+                        value="move"
+                        :checked="deleteCollectionMode === 'move'"
+                        class="mt-0.5 accent-neutral-800 dark:accent-neutral-200"
+                      />
+                      <span class="text-[15.5px]">Move notes to Default</span>
+                    </label>
+                    <label
+                      class="flex items-center gap-3 px-4 pb-2 border-b border-neutral-200 dark:border-neutral-600"
+                      @click="deleteCollectionMode = 'delete'"
+                    >
+                      <input
+                        type="radio"
+                        name="deleteMode"
+                        value="delete"
+                        :checked="deleteCollectionMode === 'delete'"
+                        class="mt-0.5 accent-red-600"
+                      />
+                      <span class="text-[15.5px] text-red-400">Delete all notes</span>
+                    </label>
+                  </div>
+                  <div class="flex justify-end gap-0.5 mt-2">
+                    <ButtonWithTooltip
+                      text="Close"
+                      :icon="ICONS.close"
+                      size="md"
+                      color="error"
+                      @click="deleteCollectionModal = false"
+                    />
+                    <ButtonWithTooltip
+                      text="Delete folder"
+                      :icon="ICONS.trash"
+                      size="md"
+                      color="error"
+                      @click="confirmDeleteCollection"
+                    />
+                  </div>
+                </div>
+              </template>
+            </UPopover>
           </div>
         </div>
 
@@ -493,191 +759,67 @@ watch(
               <UTooltip arrow :text="formatDate(note.updatedAt || note.createdAt)">
                 <UIcon name="ph:calendar-duotone" class="size-5" />
               </UTooltip>
-              <UDropdownMenu
-                :items="noteDropdownItems(note)"
+              <UPopover
+                :open="renameNoteModal && renameNoteId === note.id"
+                @update:open="
+                  (val) => {
+                    if (!val) renameNoteModal = false;
+                  }
+                "
                 arrow
-                :ui="{
-                  content: 'w-40',
-                  group: 'dark:border-neutral-600',
-                }"
               >
-                <UButton
-                  :icon="ICONS.dots"
-                  size="lg"
-                  variant="link"
-                  color="neutral"
-                  class="cursor-pointer!"
-                  @click.stop
-                />
-              </UDropdownMenu>
+                <UDropdownMenu
+                  :items="noteDropdownItems(note)"
+                  arrow
+                  :ui="{
+                    content: 'w-40',
+                    group: 'dark:border-neutral-600',
+                  }"
+                >
+                  <UButton
+                    :icon="ICONS.dots"
+                    size="lg"
+                    variant="link"
+                    color="neutral"
+                    class="cursor-pointer!"
+                    @click.stop
+                  />
+                </UDropdownMenu>
+                <template #content>
+                  <div class="px-2">
+                    <UInput
+                      v-model="renameNoteValue"
+                      placeholder="Note title"
+                      class="mb-0"
+                      :ui="{
+                        base: 'bg-transparent! ring-0! focus:ring-0! focus:outline-none! focus-visible:ring-0! focus-visible:outline-none! font-normal! text-[17px]! px-0 shadow-none!',
+                      }"
+                      size="md"
+                      autofocus
+                      @keydown.enter="confirmRenameNote"
+                    />
+                    <div class="flex justify-end gap-x-1">
+                      <ButtonWithTooltip
+                        text="Close"
+                        :icon="ICONS.close"
+                        size="md"
+                        @click="renameNoteModal = false"
+                      />
+                      <ButtonWithTooltip
+                        text="Confirm"
+                        :icon="ICONS.check"
+                        size="md"
+                        color="success"
+                        @click="confirmRenameNote"
+                      />
+                    </div>
+                  </div>
+                </template>
+              </UPopover>
             </div>
           </div>
         </div>
       </div>
     </div>
-
-    <UModal v-model:open="renameNoteModal">
-      <template #content>
-        <div>
-          <UInput
-            v-model="renameNoteValue"
-            placeholder="Note title"
-            class="mb-0"
-            :ui="{
-              base: 'bg-transparent! ring-0! focus:ring-0! focus:outline-none! focus-visible:ring-0! focus-visible:outline-none! font-normal! text-xl! px-0 shadow-none!',
-            }"
-            size="xl"
-            @keydown.enter="confirmRenameNote"
-          />
-          <div class="flex justify-end gap-2.5">
-            <ButtonWithTooltip
-              text="Close"
-              :icon="ICONS.close"
-              size="xl"
-              @click="renameNoteModal = false"
-            />
-            <ButtonWithTooltip
-              text="Confirm"
-              :icon="ICONS.check"
-              size="xl"
-              color="success"
-              @click="confirmRenameNote"
-            />
-          </div>
-        </div>
-      </template>
-    </UModal>
-
-    <UModal v-model:open="renameCollectionModal">
-      <template #content>
-        <div>
-          <UInput
-            v-model="renameCollectionValue"
-            placeholder="Folder name"
-            class="mb-0"
-            :ui="{
-              base: 'bg-transparent! ring-0! focus:ring-0! focus:outline-none! focus-visible:ring-0! focus-visible:outline-none! font-normal! text-xl! px-0 shadow-none!',
-            }"
-            size="xl"
-            @keydown.enter="confirmRenameCollection"
-          />
-          <div class="flex justify-end gap-2.5">
-            <ButtonWithTooltip
-              text="Close"
-              :icon="ICONS.close"
-              size="xl"
-              @click="renameCollectionModal = false"
-            />
-            <ButtonWithTooltip
-              text="Confirm"
-              :icon="ICONS.check"
-              size="xl"
-              color="success"
-              @click="confirmRenameCollection"
-            />
-          </div>
-        </div>
-      </template>
-    </UModal>
-
-    <UModal v-model:open="newCollectionModal">
-      <template #content>
-        <div>
-          <UInput
-            v-model="newCollectionName"
-            placeholder="Collection name"
-            class="mb-0"
-            :ui="{
-              base: 'bg-transparent! ring-0! focus:ring-0! focus:outline-none! focus-visible:ring-0! focus-visible:outline-none! font-normal! text-xl! px-0 shadow-none!',
-            }"
-            size="xl"
-            @keydown.enter="confirmNewCollection"
-          />
-          <div class="flex justify-end gap-2.5">
-            <ButtonWithTooltip
-              text="Close"
-              :icon="ICONS.close"
-              size="xl"
-              @click="newCollectionModal = false"
-            />
-            <ButtonWithTooltip
-              text="Confirm"
-              :icon="ICONS.check"
-              size="xl"
-              color="success"
-              @click="confirmNewCollection"
-            />
-          </div>
-        </div>
-      </template>
-    </UModal>
-
-    <UModal
-      v-model:open="deleteCollectionModal"
-      :ui="{
-        content: 'p-0!',
-      }"
-    >
-      <template #content>
-        <div>
-          <div class="flex flex-col gap-2 m-2">
-            <label
-              class="flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors"
-              :class="
-                deleteCollectionMode === 'move'
-                  ? 'bg-neutral-50 dark:bg-neutral-800/70'
-                  : 'bg-neutral-50 dark:bg-neutral-800/50'
-              "
-              @click="deleteCollectionMode = 'move'"
-            >
-              <input
-                type="radio"
-                name="deleteMode"
-                value="move"
-                :checked="deleteCollectionMode === 'move'"
-                class="mt-0.5 accent-neutral-800 dark:accent-neutral-200"
-              />
-              <div>
-                <span class="text-[15.5px] font-medium">Move notes to Default</span>
-              </div>
-            </label>
-            <label
-              class="flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors"
-              :class="
-                deleteCollectionMode === 'delete'
-                  ? 'bg-red-200/70 dark:bg-red-900/40'
-                  : 'bg-red-100 dark:bg-red-900/20'
-              "
-              @click="deleteCollectionMode = 'delete'"
-            >
-              <input
-                type="radio"
-                name="deleteMode"
-                value="delete"
-                :checked="deleteCollectionMode === 'delete'"
-                class="mt-0.5 accent-red-600"
-              />
-              <div>
-                <span class="text-[15.5px] font-medium text-red-400">Delete all notes</span>
-              </div>
-            </label>
-          </div>
-          <div class="flex justify-end gap-3 px-2.5">
-            <ButtonWithTooltip
-              text="Close"
-              :icon="ICONS.close"
-              size="xl"
-              @click="deleteCollectionModal = false"
-            />
-            <ButtonWithTooltip
-              text="Delete folder"
-              :icon="ICONS.trash"
-              size="xl"
-              @click="confirmDeleteCollection"
-            />
-          </div>
-        </div>
-      </template>
-    </UModal>
   </div>
 </template>
