@@ -5,6 +5,7 @@ import { useNotes } from "@/composables/useNotes";
 import { useAuth } from "@/composables/useAuth";
 import { ICONS } from "@/lib/constants/icons";
 import type { EditorTabRecord, CollectionRecord } from "@/lib/editorDb";
+import NoteFilters from "@/components/editor/NoteFilters.vue";
 import Menu from "@/components/header/menu.vue";
 
 const router = useRouter();
@@ -42,6 +43,11 @@ const newCollectionName = ref("");
 const deleteCollectionModal = ref(false);
 const deleteCollectionId = ref("");
 const deleteCollectionMode = ref<"move" | "delete">("move");
+const homeSortOrder = ref<"desc" | "asc">("asc");
+const homeDateRange = ref<any>(null);
+const collectionSortOrder = ref<"desc" | "asc">("asc");
+const collectionDateRange = ref<any>(null);
+const localTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 const isInsideCollection = computed(() => activeCollectionId.value !== "all");
 
@@ -54,12 +60,10 @@ const isRecoveredCollection = computed(() => {
   return activeCollection.value?.name?.toLowerCase() === "recovered";
 });
 
-// Find the default collection (isSystem + name "default")
 const defaultCollection = computed(() =>
   collections.value.find((c) => c.isSystem && c.name.toLowerCase().startsWith("default")),
 );
 
-// Notes in the default collection (shown on home)
 const defaultNotes = computed(() => {
   const defId = defaultCollection.value?.id;
   if (!defId) return [];
@@ -71,12 +75,76 @@ const defaultNotes = computed(() => {
   return result;
 });
 
-// Non-default collections (hide default box from home)
 const nonDefaultCollections = computed(() =>
   collections.value.filter((c) => !(c.isSystem && c.name.toLowerCase().startsWith("default"))),
 );
 
-// ─── Actions ──────────────────────────────────────────
+function getNoteTimestamp(note: EditorTabRecord) {
+  const source = note.updatedAt || note.createdAt;
+  if (!source) return 0;
+  const timestamp = new Date(source).getTime();
+  return Number.isNaN(timestamp) ? 0 : timestamp;
+}
+
+function toRangeBoundary(value: unknown, endOfDay = false) {
+  const candidate = value as { toDate?: (timeZone: string) => Date } | Date | undefined;
+  const date =
+    candidate instanceof Date
+      ? new Date(candidate)
+      : new Date(candidate?.toDate?.(localTimeZone) || 0);
+  if (endOfDay) {
+    date.setHours(23, 59, 59, 999);
+  } else {
+    date.setHours(0, 0, 0, 0);
+  }
+  return date.getTime();
+}
+
+function toNotesInRange(notesList: EditorTabRecord[], sortOrder: "asc" | "desc", dateRange: any) {
+  let result = [...notesList];
+
+  if (dateRange?.start && dateRange?.end) {
+    const start = toRangeBoundary(dateRange.start);
+    const end = toRangeBoundary(dateRange.end, true);
+
+    result = result.filter((note) => {
+      const noteTime = getNoteTimestamp(note);
+      return noteTime >= start && noteTime <= end;
+    });
+  }
+
+  result.sort((a, b) => {
+    const aTime = getNoteTimestamp(a);
+    const bTime = getNoteTimestamp(b);
+    return sortOrder === "desc" ? bTime - aTime : aTime - bTime;
+  });
+
+  return result;
+}
+
+const homeHasDateFilter = computed(
+  () => !!homeDateRange.value?.start && !!homeDateRange.value?.end,
+);
+const collectionHasDateFilter = computed(
+  () => !!collectionDateRange.value?.start && !!collectionDateRange.value?.end,
+);
+
+const homeVisibleNotes = computed(() =>
+  toNotesInRange(defaultNotes.value, homeSortOrder.value, homeDateRange.value),
+);
+
+const collectionVisibleNotes = computed(() =>
+  toNotesInRange(filteredNotes.value, collectionSortOrder.value, collectionDateRange.value),
+);
+
+function resetHomeDateFilter() {
+  homeDateRange.value = null;
+}
+
+function resetCollectionDateFilter() {
+  collectionDateRange.value = null;
+}
+
 function handleOpenNote(note: EditorTabRecord) {
   if (note.id.startsWith("temp-")) return;
   router.push({ path: "/editor", query: { id: note.id } });
@@ -175,6 +243,7 @@ function noteDropdownItems(note: EditorTabRecord) {
       children: [moveItems],
     });
   }
+
   items.push([
     {
       label: "Delete",
@@ -208,7 +277,6 @@ function formatDate(dateStr?: string | null) {
   return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 }
 
-// Dropdown items for the Add button
 const addDropdownItems = computed(() => {
   if (isInsideCollection.value) {
     return [
@@ -218,6 +286,7 @@ const addDropdownItems = computed(() => {
       ],
     ];
   }
+
   return [
     [
       { label: "Note", icon: ICONS.notePlus, onSelect: () => handleCreateNote() },
@@ -231,7 +300,6 @@ const addDropdownItems = computed(() => {
   ];
 });
 
-// Sync activeCollectionId with URL query param
 watch(
   () => route.query.c,
   (c) => {
@@ -251,22 +319,17 @@ watch(
 
 <template>
   <div class="mx-auto min-h-screen w-full z-100 sm:px-3 pt-3 px-2 bg-default">
-    <!-- Top bar -->
     <div class="flex items-center justify-end">
       <Menu is-home />
     </div>
 
-    <!-- Loading -->
     <div v-if="loading || !initialized" class="flex items-center justify-center py-32">
       <UIcon :name="ICONS.loader" class="size-7 animate-spin text-neutral-400" />
     </div>
 
-    <!-- Main content -->
     <div v-else>
-      <!-- Logo -->
-      <img src="/favicon.svg" class="w-10 h-10 w-full my-6" />
+      <img src="/favicon.svg" class="h-10 w-full my-6" />
 
-      <!-- Search -->
       <div class="w-full flex justify-center items-center">
         <UInput
           v-model="searchQuery"
@@ -281,10 +344,8 @@ watch(
         />
       </div>
 
-      <!-- ════════ INSIDE A COLLECTION ════════ -->
       <div v-if="isInsideCollection" class="max-w-2xl mx-auto">
-        <!-- Back + collection name + add -->
-        <div class="flex items-center justify-between my-4 mb-2">
+        <div class="flex items-center justify-between my-4 mb-4">
           <div class="flex items-center gap-2">
             <ButtonWithTooltip
               text="Go Back"
@@ -309,11 +370,19 @@ watch(
           </div>
         </div>
 
-        <!-- Notes list -->
-        <div v-if="filteredNotes.length === 0" class="flex flex-col items-center py-20 gap-3">
+        <NoteFilters
+          v-model:sort-order="collectionSortOrder"
+          v-model:date-range="collectionDateRange"
+          storage-key="fylepad-zen.collection-note-filters"
+        />
+
+        <div
+          v-if="collectionVisibleNotes.length === 0"
+          class="flex flex-col items-center py-20 gap-3"
+        >
           <UIcon name="tabler:notes-off" class="size-10 text-neutral-300 dark:text-neutral-600" />
           <UButton
-            v-if="!searchQuery && !isRecoveredCollection"
+            v-if="!searchQuery && !isRecoveredCollection && !collectionHasDateFilter"
             label="Create a note"
             :icon="ICONS.notePlus"
             variant="soft"
@@ -325,7 +394,7 @@ watch(
 
         <div v-else class="flex flex-col">
           <div
-            v-for="note in filteredNotes"
+            v-for="note in collectionVisibleNotes"
             :key="note.id"
             class="group flex items-center justify-between py-0.5 px-1"
             :class="note.id.startsWith('temp-') && 'opacity-50 pointer-events-none animate-pulse'"
@@ -346,16 +415,13 @@ watch(
         </div>
       </div>
 
-      <!-- ════════ HOME VIEW (all collections + notes) ════════ -->
       <div v-else class="max-w-2xl mx-auto">
-        <!-- Header with Add dropdown -->
         <div class="flex items-center justify-end mb-4">
           <UDropdownMenu :items="addDropdownItems" arrow>
             <ButtonWithTooltip :icon="ICONS.plus" size="lg" text="Create" />
           </UDropdownMenu>
         </div>
 
-        <!-- Collection cards -->
         <div
           v-if="showCollections && collections.length > 0 && !searchQuery"
           class="flex flex-wrap gap-2.5 mb-6"
@@ -394,14 +460,16 @@ watch(
           </div>
         </div>
 
-        <!-- Notes list -->
-        <div v-if="defaultNotes.length === 0" class="flex flex-col items-center py-20 gap-3">
+        <NoteFilters
+          v-model:sort-order="homeSortOrder"
+          v-model:date-range="homeDateRange"
+          storage-key="fylepad-zen.home-note-filters"
+        />
+
+        <div v-if="homeVisibleNotes.length === 0" class="flex flex-col items-center py-20 gap-3">
           <UIcon name="tabler:notes-off" class="size-9 text-neutral-300 dark:text-neutral-600" />
-          <p class="text-neutral-400 text-base font-medium">
-            {{ searchQuery ? "No notes match your search" : "No notes yet" }}
-          </p>
           <UButton
-            v-if="!searchQuery"
+            v-if="!searchQuery && !homeHasDateFilter"
             label="Create your first note"
             :icon="ICONS.notePlus"
             variant="soft"
@@ -413,7 +481,7 @@ watch(
 
         <div v-else class="flex flex-col">
           <div
-            v-for="note in defaultNotes"
+            v-for="note in homeVisibleNotes"
             :key="note.id"
             class="group flex items-center justify-between py-0.5 px-1 cursor-pointer transition-colors"
             :class="note.id.startsWith('temp-') && 'opacity-50 pointer-events-none animate-pulse'"
@@ -431,6 +499,7 @@ watch(
                 arrow
                 :ui="{
                   content: 'w-40',
+                  group: 'dark:border-neutral-600',
                 }"
               >
                 <UButton
@@ -448,9 +517,6 @@ watch(
       </div>
     </div>
 
-    <!-- ═══════════════ MODALS ═══════════════ -->
-
-    <!-- Rename note -->
     <UModal v-model:open="renameNoteModal">
       <template #content>
         <div>
@@ -483,7 +549,6 @@ watch(
       </template>
     </UModal>
 
-    <!-- Rename collection -->
     <UModal v-model:open="renameCollectionModal">
       <template #content>
         <div>
@@ -516,7 +581,6 @@ watch(
       </template>
     </UModal>
 
-    <!-- New collection -->
     <UModal v-model:open="newCollectionModal">
       <template #content>
         <div>
@@ -549,7 +613,6 @@ watch(
       </template>
     </UModal>
 
-    <!-- Delete collection -->
     <UModal
       v-model:open="deleteCollectionModal"
       :ui="{
