@@ -40,9 +40,9 @@ pre.codeblock-with-copy:focus-within .codeblock-copy-button {
   color: #dc2626;
 }
 
-/* pre {
-  @apply drop-shadow-xs;
-} */
+pre {
+  @apply bg-neutral-100!;
+}
 
 .tiptap pre,
 .tiptap code,
