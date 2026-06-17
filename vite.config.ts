@@ -58,7 +58,7 @@ export default defineConfig(async () => ({
           slots: {
             overlay: "bg-transparent!",
             content:
-              "bg-neutral-100 dark:bg-neutral-700 ring-0! p-4! py-1.5! shadow-none! backdrop-blur-sm",
+              "bg-neutral-100 ring-1 ring-neutral-300 dark:ring-neutral-600 dark:bg-neutral-700 p-4! py-1.5! shadow-none! backdrop-blur-sm",
           },
         },
         toast: {
@@ -71,9 +71,11 @@ export default defineConfig(async () => ({
         },
         tooltip: {
           slots: {
-            content: "p-2 h-7 bg-white! dark:bg-neutral-800! z-[100]",
+            content:
+              "p-2 h-7 ring-1 ring-neutral-300 dark:ring-neutral-600 bg-neutral-100 dark:bg-neutral-800! z-[100]",
             text: "text-default text-[14px]",
-            arrow: "dark:fill-neutral-800! fill-background!",
+            arrow:
+              "fill-neutral-100! dark:fill-neutral-800! dark:stroke-neutral-600! stroke-neutral-300!",
           },
         },
         slideover: {

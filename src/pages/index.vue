@@ -422,10 +422,10 @@ watch(
             <span class="text-[17px] font-medium max-w-80 truncate flex-1">
               {{ note.title || "Untitled" }}
             </span>
-            <div class="flex items-center gap-2">
-              <span class="text-[15.5px] font-medium text-neutral-400 whitespace-nowrap">
-                {{ formatDate(note.updatedAt || note.createdAt) }}
-              </span>
+            <div class="flex items-center gap-3">
+              <UTooltip arrow :text="formatDate(note.updatedAt || note.createdAt)">
+                <UIcon name="ph:calendar-duotone" class="size-5" />
+              </UTooltip>
               <UDropdownMenu
                 :items="noteDropdownItems(note)"
                 arrow
