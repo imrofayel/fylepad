@@ -21,7 +21,7 @@ function toggleCase() {
 
 function onSearchEnter(e: KeyboardEvent) {
   e.preventDefault();
-  updateSearchReplace();
+  next();
 }
 
 const updateSearchReplace = (clearIndex: boolean = false) => {
