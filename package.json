@@ -62,16 +62,16 @@
     "twoslash-cdn": "^0.3.8",
     "view": "link:@tiptap/pm/view",
     "vue": "^3.5.32",
-    "vue-router": "^5.0.4"
-  },
-  "devDependencies": {
+    "vue-router": "^5.0.4",
     "@iconify-json/akar-icons": "^1.2.7",
     "@iconify-json/logos": "^1.2.11",
     "@iconify-json/material-icon-theme": "^1.2.61",
     "@iconify-json/ph": "^1.2.2",
     "@iconify-json/simple-icons": "^1.2.86",
     "@iconify-json/tabler": "^1.2.33",
-    "@iconify-json/vscode-icons": "^1.2.46",
+    "@iconify-json/vscode-icons": "^1.2.46"
+  },
+  "devDependencies": {
     "@tauri-apps/cli": "^2.10.1",
     "@types/node": "^25.6.0",
     "@vitejs/plugin-vue": "^5.2.4",

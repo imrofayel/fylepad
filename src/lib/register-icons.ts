@@ -8,6 +8,8 @@ import ph from "@iconify-json/ph/icons.json";
 import akar from "@iconify-json/akar-icons/icons.json";
 import { ICONS } from "./constants/icons";
 
+addCollection(ph as IconifyJSON);
+
 function getIcons(obj: unknown): string[] {
   if (typeof obj === "string") {
     return [obj];
