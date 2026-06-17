@@ -467,14 +467,13 @@ watch(
         />
 
         <div v-if="homeVisibleNotes.length === 0" class="flex flex-col items-center py-20 gap-3">
-          <UIcon name="tabler:notes-off" class="size-9 text-neutral-300 dark:text-neutral-600" />
-          <UButton
+          <ButtonWithTooltip
             v-if="!searchQuery && !homeHasDateFilter"
-            label="Create your first note"
+            text="Create your first note"
             :icon="ICONS.notePlus"
             variant="soft"
             color="neutral"
-            size="lg"
+            size="xl"
             @click="handleCreateNote"
           />
         </div>

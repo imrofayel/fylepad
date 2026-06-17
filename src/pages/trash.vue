@@ -183,7 +183,7 @@ function goBack() {
             <div
               v-for="note in trashedNotes"
               :key="note.id"
-              class="flex items-center gap-3 py-1 cursor-pointer"
+              class="flex items-center gap-3 py-1.5 cursor-pointer"
               :class="selectedIds.has(note.id) && 'bg-neutral-100 dark:bg-neutral-800'"
               @click="toggleSelect(note.id)"
             >
@@ -205,11 +205,11 @@ function goBack() {
                 <span class="text-[16.5px] truncate block">{{ note.title || "Untitled" }}</span>
               </div>
 
-              <span class="text-[15.5px] font-medium text-neutral-400 shrink-0">
-                {{ formatDate(note.deletedAt) }}
-              </span>
+              <UTooltip arrow :text="formatDate(note.deletedAt)">
+                <UIcon name="ph:calendar-duotone" class="size-5" />
+              </UTooltip>
 
-              <div class="flex items-center gap-1 shrink-0" @click.stop>
+              <!-- <div class="flex items-center gap-1 shrink-0" @click.stop>
                 <UTooltip text="Restore" arrow>
                   <UButton
                     :icon="ICONS.restore"
@@ -228,7 +228,7 @@ function goBack() {
                     @click="permanentlyDeleteNotes([note.id])"
                   />
                 </UTooltip>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
