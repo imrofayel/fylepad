@@ -131,12 +131,13 @@ watch(
         :label="dateFilterLabel"
       />
       <template #content>
-        <div class="p-2 w-84 max-w-[calc(100vw-1.5rem)]">
+        <div class="p-2">
           <UCalendar
             v-model="dateRangeProxy"
             range
-            color="success"
+            color="warning"
             variant="soft"
+            size="xs"
             :ui="{
               root: 'dark:bg-neutral-800 bg-neutral-100',
             }"
