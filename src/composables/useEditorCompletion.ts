@@ -96,6 +96,7 @@ export function useEditorCompletion(
             prompt,
             mode: mode.value,
             language: language.value,
+            model: aiSettings.selectedModel.value || DEFAULT_MODEL,
             ...(mode.value === "user" && customPrompt.value ? { prompt: customPrompt.value } : {}),
           }),
           signal: abortController.signal,

@@ -21,14 +21,14 @@ const modelPickerOpen = ref(false);
 const modelSearch = ref("");
 
 onMounted(() => {
-  if (aiEnabled.value && !cloudMode) {
+  if (aiEnabled.value) {
     fetchModels();
   }
 });
 
 const handleToggleAI = (val: boolean) => {
   aiEnabled.value = val;
-  if (val && !cloudMode) {
+  if (val) {
     fetchModels();
   }
 };
@@ -88,7 +88,9 @@ const selectModel = (model: AIModel) => {
   <div class="flex flex-col gap-2 max-w-2xl">
     <div>
       <div class="flex justify-between items-center">
-        <h3 class="text-xl font-medium text-neutral-900 dark:text-white">AI</h3>
+        <h3 class="text-xl font-medium text-neutral-900 dark:text-white">
+          {{ cloudMode ? "AI" : "AI" }}
+        </h3>
         <USwitch v-model="aiEnabled" color="info" @update:modelValue="handleToggleAI" />
       </div>
       <p class="mt-3 text-[16px]">
@@ -160,7 +162,9 @@ const selectModel = (model: AIModel) => {
           >https://vercel.com/ai-gateway</a
         >
       </p>
+    </template>
 
+    <template v-if="aiEnabled">
       <!-- Model Selection -->
       <UFormField
         description="Choose from curated text models by OpenAI, Claude, Google, and DeepSeek."
@@ -241,22 +245,6 @@ const selectModel = (model: AIModel) => {
         </UPopover>
       </UFormField>
     </template>
-
-    <div
-      v-else-if="cloudMode && aiEnabled"
-      class="bg-neutral-50 dark:bg-neutral-800/50 rounded-lg p-4 text-sm text-neutral-500"
-    >
-      <div class="flex items-start gap-3">
-        <UIcon :name="ICONS.info" class="w-5 h-5 mt-0.5 shrink-0" />
-        <div>
-          <p class="font-medium text-neutral-900 dark:text-white mb-1">Managed AI</p>
-          <p>
-            You are using Fylepad Cloud. AI models and keys are managed automatically for your
-            account.
-          </p>
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
