@@ -18,10 +18,7 @@ const initialized = ref(false);
 const sessionToken = ref<string | null>(IS_TAURI ? localStorage.getItem("session_token") : null);
 
 if (IS_TAURI) {
-  watch(sessionToken, (val) => {
-    if (val) localStorage.setItem("session_token", val);
-    else localStorage.removeItem("session_token");
-  });
+  // Session tokens are not used in local desktop mode
 }
 
 function getBearerAuthOptions(token?: string | null) {
@@ -50,11 +47,18 @@ function getProfileRequestInit(): RequestInit {
 }
 
 async function fetchUserInternal(token?: string | null) {
+  if (IS_TAURI) {
+    if (!initialized.value) {
+      await initializeEditorStore();
+      initialized.value = true;
+      loading.value = false;
+    }
+    return;
+  }
+
   loading.value = true;
   try {
-    const options = IS_TAURI ? getBearerAuthOptions(token) : undefined;
-
-    const { data, error } = await authClient.getSession(options);
+    const { data, error } = await authClient.getSession();
     const newUser = error ? null : (data?.user ?? null);
     const wasAuthenticated = !!user.value;
     const isNowAuthenticated = !!newUser;
@@ -63,22 +67,16 @@ async function fetchUserInternal(token?: string | null) {
 
     // On initial load (browser): set cloud mode based on auth, then init editor store once
     // On login transition: switch to cloud mode and reinitialize
-    // On Tauri: just initialize (always local SQLite)
-    if (!IS_TAURI) {
-      if (!wasAuthenticated && isNowAuthenticated) {
-        setCloudMode(true);
-      }
+    if (!wasAuthenticated && isNowAuthenticated) {
+      setCloudMode(true);
+    }
 
-      if (!initialized.value) {
-        // First load — init editor store after auth is known
-        await initializeEditorStore();
-      } else if (!wasAuthenticated && isNowAuthenticated) {
-        // Login transition — reinitialize from cloud
-        await reinitializeEditorStore();
-      }
-    } else if (!initialized.value) {
-      // Tauri: init editor store on first load
+    if (!initialized.value) {
+      // First load — init editor store after auth is known
       await initializeEditorStore();
+    } else if (!wasAuthenticated && isNowAuthenticated) {
+      // Login transition — reinitialize from cloud
+      await reinitializeEditorStore();
     }
   } finally {
     loading.value = false;
@@ -86,47 +84,14 @@ async function fetchUserInternal(token?: string | null) {
   }
 }
 
-function handleDeepLinkUrl(url: string) {
-  console.log("Handling deep link:", url);
-  if (!url.startsWith("fylepad://auth")) return;
-
-  const urlObj = new URL(url);
-  const token = urlObj.searchParams.get("token");
-  console.log("Token from deep link:", token);
-
-  if (token) {
-    sessionToken.value = token;
-    fetchUserInternal(token);
-  }
-}
-
-// Register listeners eagerly at module load
-if (IS_TAURI) {
-  (async () => {
-    const { onOpenUrl } = await import("@tauri-apps/plugin-deep-link");
-    const { listen } = await import("@tauri-apps/api/event");
-
-    await onOpenUrl((urls) => {
-      console.log("onOpenUrl fired:", urls);
-      handleDeepLinkUrl(urls[0]);
-    });
-
-    await listen<string[]>("deep-link-received", (event) => {
-      console.log("deep-link-received fired:", event.payload);
-      handleDeepLinkUrl(event.payload[0]);
-    });
-
-    console.log("✅ Deep link listeners registered");
-  })();
-}
+// Deep linking for auth is not required in Tauri local mode
 
 export function useAuth() {
   async function signIn(provider: "google") {
     loading.value = true;
     try {
       if (IS_TAURI) {
-        const { openUrl } = await import("@tauri-apps/plugin-opener");
-        await openUrl(`${API}/auth/desktop/google`);
+        console.warn("Authentication is not supported in local desktop mode");
       } else {
         const { data, error } = await authClient.signIn.social({
           provider,
@@ -179,9 +144,7 @@ export function useAuth() {
 
   async function logout() {
     if (IS_TAURI) {
-      await authClient.signOut(getBearerAuthOptions());
-      sessionToken.value = null;
-      localStorage.removeItem("session_token");
+      user.value = null;
     } else {
       await authClient.signOut();
 
