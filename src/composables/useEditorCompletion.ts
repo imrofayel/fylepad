@@ -91,6 +91,7 @@ export function useEditorCompletion(
           options.api || import.meta.env.VITE_AI_BACKEND_API || "http://localhost:3008/ai";
         res = await window.fetch(apiEndpoint, {
           method: "POST",
+          credentials: "include",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             prompt,
