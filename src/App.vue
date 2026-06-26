@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useHead } from "@vueuse/head";
 import { onBeforeUnmount, onMounted } from "vue";
-import { useColorMode } from "@vueuse/core";
+import { useColorMode, useOnline } from "@vueuse/core";
 import SEO from "./lib/seo";
 
 const colorMode = useColorMode();
