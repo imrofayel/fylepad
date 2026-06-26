@@ -364,7 +364,7 @@ watch(
                 (deleteCollectionModal && deleteCollectionId === activeCollection.id)
               "
               @update:open="
-                (val) => {
+                (val: boolean) => {
                   if (!val) {
                     renameCollectionModal = false;
                     deleteCollectionModal = false;
@@ -498,7 +498,7 @@ watch(
               <UPopover
                 :open="renameNoteModal && renameNoteId === note.id"
                 @update:open="
-                  (val) => {
+                  (val: boolean) => {
                     if (!val) renameNoteModal = false;
                   }
                 "
@@ -554,7 +554,7 @@ watch(
           <UPopover
             :open="newCollectionModal"
             @update:open="
-              (val) => {
+              (val: boolean) => {
                 if (!val) newCollectionModal = false;
               }
             "
@@ -603,7 +603,7 @@ watch(
           <div
             v-for="col in nonDefaultCollections"
             :key="col.id"
-            class="group relative min-w-40 flex flex-col overflow-hidden gap-3 p-3 px-4 rounded-sm bg-neutral-100 dark:bg-neutral-800"
+            class="ring-1 ring-neutral-300 dark:ring-neutral-600 group relative min-w-40 flex flex-col overflow-hidden gap-3 p-3 px-4 rounded-sm bg-neutral-100 dark:bg-neutral-800"
             @click="openCollection(col.id)"
           >
             <UIcon
@@ -624,7 +624,7 @@ watch(
                 (deleteCollectionModal && deleteCollectionId === col.id)
               "
               @update:open="
-                (val) => {
+                (val: boolean) => {
                   if (!val) {
                     renameCollectionModal = false;
                     deleteCollectionModal = false;
@@ -762,7 +762,7 @@ watch(
               <UPopover
                 :open="renameNoteModal && renameNoteId === note.id"
                 @update:open="
-                  (val) => {
+                  (val: boolean) => {
                     if (!val) renameNoteModal = false;
                   }
                 "

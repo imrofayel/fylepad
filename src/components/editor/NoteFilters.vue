@@ -135,8 +135,8 @@ watch(
           <UCalendar
             v-model="dateRangeProxy"
             range
-            color="warning"
-            variant="soft"
+            color="neutral"
+            variant="solid"
             size="xs"
             :ui="{
               root: 'dark:bg-neutral-800 bg-neutral-100',
