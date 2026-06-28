@@ -3,12 +3,8 @@ import { useAuth, authClient } from "@/composables/useAuth";
 import { ICONS } from "@/lib/constants/icons";
 import { ref } from "vue";
 import { useToast } from "@nuxt/ui/composables/useToast";
-import { useRouter } from "vue-router";
-import { setCloudMode } from "@/lib/editorDb";
-import { reinitializeEditorStore } from "@/composables/useEditor";
 
 const { user, updatePhoto, logout } = useAuth();
-const router = useRouter();
 
 const toast = useToast();
 const fileInput = ref<HTMLInputElement | null>(null);
@@ -66,16 +62,12 @@ async function confirmDeleteAccount() {
   deleting.value = true;
   try {
     await authClient.deleteUser({
+      callbackURL: "/",
       fetchOptions: {
         onSuccess: async () => {
           deletePopoverOpen.value = false;
-          showToast("Account deleted successfully");
-
-          // Transition to unauthenticated browser mode
-          setCloudMode(false);
-          await reinitializeEditorStore();
-
-          router.push("/");
+          deleteEmailInput.value = "";
+          showToast("Verification email sent, please check your inbox to confirm deletion.");
         },
         onError: (ctx: any) => {
           showToast(ctx.error?.message || "Failed to delete account", "error");
