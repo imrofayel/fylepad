@@ -5,7 +5,7 @@ import { ref } from "vue";
 import { isCloudMode } from "@/lib/editorDb";
 
 const items = ref([
-  ...(!isCloudMode()
+  ...(isCloudMode()
     ? [{ label: "General", value: "general", icon: "ph:user-circle-duotone", slot: "general" }]
     : []),
   { label: "AI", value: "ai", icon: ICONS.ai, slot: "ai" },
