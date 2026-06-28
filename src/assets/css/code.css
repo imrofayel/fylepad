@@ -41,7 +41,7 @@ pre.codeblock-with-copy:focus-within .codeblock-copy-button {
 }
 
 pre {
-  @apply bg-neutral-100!;
+  @apply bg-neutral-100! p-1! px-2!;
 }
 
 .tiptap pre,
