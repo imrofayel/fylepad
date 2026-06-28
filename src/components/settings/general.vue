@@ -62,7 +62,7 @@ async function confirmDeleteAccount() {
   deleting.value = true;
   try {
     await authClient.deleteUser({
-      callbackURL: "/",
+      callbackURL: "https://fylepad.app",
       fetchOptions: {
         onSuccess: async () => {
           deletePopoverOpen.value = false;
