@@ -405,15 +405,10 @@ watch(
                     />
                   </div>
                 </div>
-                <div v-else-if="deleteCollectionModal" class="p-2 min-w-60">
+                <div v-else-if="deleteCollectionModal" class="pt-3 pb-1.5">
                   <div class="flex flex-col gap-2">
                     <label
-                      class="flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors"
-                      :class="
-                        deleteCollectionMode === 'move'
-                          ? 'bg-neutral-50 dark:bg-neutral-800/70'
-                          : 'bg-neutral-50 dark:bg-neutral-800/50'
-                      "
+                      class="flex items-center border-b pr-10 border-neutral-200 dark:border-neutral-600 pb-2 gap-3 px-4"
                       @click="deleteCollectionMode = 'move'"
                     >
                       <input
@@ -426,12 +421,7 @@ watch(
                       <span class="text-[15.5px] font-medium">Move notes to Default</span>
                     </label>
                     <label
-                      class="flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-colors"
-                      :class="
-                        deleteCollectionMode === 'delete'
-                          ? 'bg-red-200/70 dark:bg-red-900/40'
-                          : 'bg-red-100 dark:bg-red-900/20'
-                      "
+                      class="flex items-center gap-3 px-4 pb-2 border-b border-neutral-200 dark:border-neutral-600"
                       @click="deleteCollectionMode = 'delete'"
                     >
                       <input
@@ -448,13 +438,15 @@ watch(
                     <ButtonWithTooltip
                       text="Close"
                       :icon="ICONS.close"
-                      size="xl"
+                      size="md"
+                      color="error"
                       @click="deleteCollectionModal = false"
                     />
                     <ButtonWithTooltip
                       text="Delete folder"
                       :icon="ICONS.trash"
-                      size="xl"
+                      size="md"
+                      color="error"
                       @click="confirmDeleteCollection"
                     />
                   </div>

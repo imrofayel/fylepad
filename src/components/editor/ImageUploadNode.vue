@@ -91,7 +91,7 @@ watch(file, async (newFile) => {
       v-model="file"
       accept="image/*"
       :ui="{
-        base: 'dark:bg-neutral-800/30 bg-neutral-100! dark:hover:bg-neutral-800/60',
+        base: 'dark:bg-neutral-700! bg-neutral-100! dark:hover:bg-neutral-800/60 border-none! rounded-sms ring-1 ring-neutral-300 dark:ring-neutral-600',
       }"
       :preview="false"
       class="min-h-20"

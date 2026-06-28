@@ -7,11 +7,11 @@ body {
   @apply antialiased subpixel-antialiased;
 }
 
-p,
+/* p,
 input,
 button {
   @apply blur-[0.001px];
-}
+} */
 
 * {
   -webkit-font-smoothing: antialiased;
@@ -129,4 +129,8 @@ blockquote,
     background: white !important;
     color: black !important;
   }
+}
+
+button {
+  @apply cursor-pointer!;
 }

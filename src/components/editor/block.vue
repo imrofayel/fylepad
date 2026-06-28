@@ -215,7 +215,7 @@ const focusEditor = () => {
           layout="bubble"
           :should-show="shouldShowToolbar"
           :ui="{
-            root: 'z-130! blur-[0.01px]',
+            root: 'z-130!',
             base: 'p-px rounded-sm dark:bg-neutral-800! pr-0! gap-1 pl-px',
             group: '[&>button]:dark:hover:bg-neutral-700!',
             separator: 'dark:bg-neutral-700!',
