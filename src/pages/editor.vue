@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { defineAsyncComponent, computed, onMounted, ref, watch } from "vue";
+import { defineAsyncComponent, computed, onMounted, onUnmounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useEditor } from "@/composables/useEditor";
 import { useAuth } from "@/composables/useAuth";
@@ -102,6 +102,20 @@ onMounted(async () => {
 watch(noteId, async (newId) => {
   if (!newId || !isReady.value) return;
   await openNoteById(newId);
+});
+
+// Sync browser tab title with the active note title
+const activeTab = computed(() => tabs.value.find((t) => t.id === activeTabId.value));
+watch(
+  () => activeTab.value?.title,
+  (title) => {
+    document.title = title ? `${title}` : "Untitled";
+  },
+  { immediate: true },
+);
+
+onUnmounted(() => {
+  document.title = "fylepad - a notepad of your dreams!";
 });
 </script>
 
