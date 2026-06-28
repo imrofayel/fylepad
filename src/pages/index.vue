@@ -604,7 +604,7 @@ watch(
               :class="col.name?.toLowerCase() === 'recovered' && 'text-yellow-200!'"
             />
             <div class="w-35 h-25">
-              <p class="text-[17px] w-25 font-medium truncate">{{ col.name }}</p>
+              <p class="text-[17px] w-25 font-medium capitalize truncate">{{ col.name }}</p>
               <p class="text-[16.5px] font-medium text-neutral-400 absolute bottom-2">
                 {{ noteCountByCollection.get(col.id) || 0 }}
               </p>
