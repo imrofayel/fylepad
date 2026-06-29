@@ -6,6 +6,8 @@ import { useAISettings } from "@/composables/useAISettings";
 import { useEditorMathPopover } from "@/composables/useEditorMathPopover";
 import { useEditorToc } from "@/composables/useEditorToc";
 import { useEditor } from "@/composables/useEditor";
+import { useIsMobile } from "@/composables/useIsMobile";
+import { ICONS } from "@/lib/constants/icons";
 import { EMPTY_DOC } from "@/lib/editorDb";
 import { TipTapExtensions } from "@/lib/extensions";
 import {
@@ -33,8 +35,10 @@ const {
   updateTabMetadata,
   updateTabTitle,
   isFocusMode,
+  toggleFocusMode,
 } = useEditor();
 const aiSettings = useAISettings();
+const { isMobile } = useIsMobile();
 
 const currentTab = computed(() => getTab(props.tabId));
 
@@ -202,14 +206,15 @@ const focusEditor = () => {
         placeholder="Write / for commands..."
         :handlers="customHandlers"
         :extensions="editorExtensions"
-        class="py-2 min-h-21"
+        :class="['py-2 min-h-21', isMobile && 'pb-20']"
         :ui="{
           base: 'sm:px-0! cursor-auto! text-[17.5px] w-full px-0!',
         }"
         textDirection="auto"
       >
+        <!-- Desktop: bubble toolbar near selection -->
         <UEditorToolbar
-          v-if="!isFocusMode"
+          v-if="!isFocusMode && !isMobile"
           :editor="editor"
           :items="getToolbarItems(editor)"
           layout="bubble"
@@ -238,6 +243,55 @@ const focusEditor = () => {
           </template>
         </UEditorToolbar>
 
+        <!-- Mobile: unified fixed bottom bar -->
+        <Teleport to="body">
+          <div
+            v-if="isMobile && !isFocusMode"
+            class="mobile-bottom-bar border-neutral-300! dark:border-neutral-600! bg-neutral-100! dark:bg-neutral-700!"
+          >
+            <div class="mobile-bottom-bar-inner w-full justify-between items-center">
+              <UEditorToolbar
+                :editor="editor"
+                :items="getToolbarItems(editor)"
+                layout="fixed"
+                :ui="{
+                  root: 'w-full!',
+                  base: 'p-0! gap-0.5 justify-start overflow-x-auto scrollbar-none flex-nowrap',
+                  group: '[&>button]:dark:hover:bg-neutral-700!',
+                  separator: 'dark:bg-neutral-700!',
+                }"
+              >
+                <template #link>
+                  <EditorLinkPopover :editor="editor" auto-open />
+                </template>
+                <template #codeLanguage>
+                  <EditorCodePopover :editor="editor" />
+                </template>
+                <template #prompt>
+                  <EditorAiPopover
+                    :editor="editor"
+                    :open="aiPopoverOpen"
+                    @update:open="handleAiPopoverOpenUpdate"
+                    @update:loading="
+                      (val: boolean | undefined) => (aiPopoverLoading = val ?? false)
+                    "
+                    auto-open
+                  />
+                </template>
+              </UEditorToolbar>
+
+              <UButton
+                :icon="isFocusMode ? 'ph:x-circle-duotone' : 'ph:book-open-duotone'"
+                variant="ghost"
+                color="neutral"
+                size="md"
+                class="shrink-0"
+                @click="toggleFocusMode"
+              />
+            </div>
+          </div>
+        </Teleport>
+
         <EditorMathPopover
           v-if="!isFocusMode"
           :editor="editor"
@@ -256,3 +310,48 @@ const focusEditor = () => {
     <EditorTocSidebar v-if="!isFocusMode" :toc-anchors="tocAnchors" @select="goToTocAnchor" />
   </div>
 </template>
+
+<style scoped>
+.mobile-bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 130;
+  background: var(--color-white);
+  border-top: 1px solid var(--color-neutral-200);
+  padding: 4px 6px;
+  padding-bottom: calc(6px + env(safe-area-inset-bottom, 0px));
+  print-color-adjust: exact;
+}
+
+:root.dark .mobile-bottom-bar {
+  background: var(--color-neutral-900);
+  border-top-color: var(--color-neutral-700);
+}
+
+.mobile-bottom-bar-inner {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+
+.mobile-bottom-bar-divider {
+  width: 1px;
+  height: 24px;
+  flex-shrink: 0;
+  background: var(--color-neutral-200);
+  margin: 0 2px;
+}
+
+:root.dark .mobile-bottom-bar-divider {
+  background: var(--color-neutral-700);
+}
+
+@media print {
+  .mobile-bottom-bar {
+    display: none;
+  }
+}
+</style>

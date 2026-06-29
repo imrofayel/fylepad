@@ -234,15 +234,10 @@ function goBack() {
         </div>
 
         <!-- Confirm empty trash modal -->
-        <UModal
-          v-model:open="confirmEmptyModal"
-          :ui="{
-            content: 'bg-red-100 dark:bg-red-950',
-          }"
-        >
+        <UModal v-model:open="confirmEmptyModal">
           <template #content>
             <div class="pt-2">
-              <p class="text-[15.5px]! text-red-500! dark:text-red-100! mb-6">
+              <p class="text-[15.5px]! text-red-400! dark:text-red-400! mb-6">
                 All {{ trashedNotes.length }} note{{ trashedNotes.length > 1 ? "s" : "" }} will be
                 permanently deleted. This cannot be undone.
               </p>

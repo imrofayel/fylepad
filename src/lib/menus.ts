@@ -157,7 +157,7 @@ const buildToolbarItems = (
         {
           icon: ICONS.ai,
           size: "md",
-          class: `relative right-0.5 ${aiLoading && "[&>svg]:size-5.5"}`,
+          class: `relative right-0 ${aiLoading && "[&>svg]:size-5.5"}`,
           loading: aiLoading,
           content: {
             align: "start",

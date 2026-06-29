@@ -4,6 +4,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useEditor } from "@/composables/useEditor";
 import { useAuth } from "@/composables/useAuth";
 import { useAISettings } from "@/composables/useAISettings";
+import { useIsMobile } from "@/composables/useIsMobile";
 import { isCloudMode } from "@/lib/editorDb";
 import { ICONS } from "@/lib/constants/icons";
 import { loadNotesByIds } from "@/lib/notesDb";
@@ -14,6 +15,7 @@ const route = useRoute();
 const router = useRouter();
 const { initialized, user } = useAuth();
 const aiSettings = useAISettings();
+const { isMobile } = useIsMobile();
 const cloudMode = isCloudMode();
 
 const {
@@ -259,9 +261,9 @@ onUnmounted(() => {
       </Suspense>
     </template>
 
-    <!-- Focus Mode toggle button -->
+    <!-- Focus Mode toggle button (desktop only — mobile has it in the bottom bar) -->
     <div
-      v-if="tabs.length > 0 && isReady && !notFound && !loadingNote"
+      v-if="tabs.length > 0 && isReady && !notFound && !loadingNote && !isMobile"
       class="fixed bottom-3 right-4.5 z-50 print:hidden"
     >
       <ButtonWithTooltip

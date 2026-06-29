@@ -3,6 +3,7 @@ import { ICONS } from "@/lib/constants/icons";
 import { useColorMode } from "@vueuse/core";
 import { ref } from "vue";
 import { isCloudMode } from "@/lib/editorDb";
+import { useIsMobile } from "@/composables/useIsMobile";
 
 const items = ref([
   ...(isCloudMode()
@@ -12,6 +13,7 @@ const items = ref([
 ]);
 
 const value = useColorMode();
+const { isMobile } = useIsMobile();
 </script>
 
 <template>
@@ -27,7 +29,7 @@ const value = useColorMode();
       />
       <div class="flex gap-2 items-center">
         <UTooltip :text="value === 'light' ? 'Go dark' : 'Go light'" arrow>
-          <UColorModeButton variant="link" color="neutral" class="p-2 py-1.5" />
+          <UColorModeButton variant="link" color="neutral" class="py-1.5" />
         </UTooltip>
         <AuthUser />
       </div>
@@ -39,12 +41,13 @@ const value = useColorMode();
         class="w-full"
         variant="link"
         size="lg"
-        orientation="vertical"
+        :orientation="isMobile ? 'horizontal' : 'vertical'"
         :ui="{
-          root: 'items-start gap-6',
-          list: ' border-none',
-          trigger:
-            'text-md dark:data-[state=active]:bg-neutral-800 data-[state=active]:bg-neutral-100 p-2.5 pr-20 py-1.5 hover:opacity-90',
+          root: isMobile ? 'gap-4' : 'items-start gap-6',
+          list: 'border-none',
+          trigger: isMobile
+            ? 'text-md dark:data-[state=active]:bg-neutral-800 data-[state=active]:bg-neutral-100 p-2.5 py-1.5 hover:opacity-90'
+            : 'text-md dark:data-[state=active]:bg-neutral-800 data-[state=active]:bg-neutral-100 p-2.5 pr-20 py-1.5 hover:opacity-90',
         }"
         :default-value="isCloudMode() ? 'general' : 'ai'"
       >
