@@ -104,7 +104,7 @@ jobs:
             --repo "$PUBLIC_REPO" \
             --title "${{ steps.meta.outputs.title }}" \
             --notes-file /tmp/notes.md \
-            --target-commitish "$(gh api repos/$PUBLIC_REPO --jq .default_branch)" \
+            --target "$(gh api repos/$PUBLIC_REPO --jq .default_branch)" \
             $FLAGS
 
       - name: Upload assets to public release
