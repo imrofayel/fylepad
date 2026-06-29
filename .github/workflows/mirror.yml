@@ -28,11 +28,9 @@ jobs:
           fetch-depth: 0
           persist-credentials: false   # 🔥 IMPORTANT FIX
 
-      - name: Configure git auth for pushing
-        run: |
-          git config --global url."https://x-access-token:${GH_TOKEN}@github.com/".insteadOf "https://github.com/"
-
       # ❌ DO NOT use gh auth login (GH_TOKEN already handles it)
+      # ❌ DO NOT push the git tag to the public repo — that pushes source code too.
+      #     The public repo only needs a release + binaries, not the underlying commit/tree.
 
       - name: Resolve tag
         run: |
@@ -94,11 +92,6 @@ jobs:
             echo "| $label | [$filename]($url) |" >> /tmp/notes.md
           done
 
-      - name: Push tag to public repo
-        run: |
-          git remote add public "https://github.com/${PUBLIC_REPO}.git"
-          git push public "refs/tags/${TAG}" --force
-
       - name: Create public release
         run: |
           FLAGS=""
@@ -111,6 +104,7 @@ jobs:
             --repo "$PUBLIC_REPO" \
             --title "${{ steps.meta.outputs.title }}" \
             --notes-file /tmp/notes.md \
+            --target-commitish "$(gh api repos/$PUBLIC_REPO --jq .default_branch)" \
             $FLAGS
 
       - name: Upload assets to public release
