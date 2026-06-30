@@ -62,7 +62,7 @@ const {
   data: browserFileData,
   fileName: browserFileName,
   open: openBrowserFile,
-  save: saveBrowserFile,
+  saveAs: saveBrowserFile,
 } = browserFileSystemAccess;
 
 const getTab = (tabId: string) => tabs.value.find((tab) => tab.id === tabId);
