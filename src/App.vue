@@ -46,7 +46,7 @@ useHead(SEO);
       position: 'top-right',
     }"
   >
-    <div class="min-h-screen bg-default" data-vaul-drawer-wrapper>
+    <div class="min-h-screen px-1 bg-default" data-vaul-drawer-wrapper>
       <RouterView />
     </div>
   </UApp>

@@ -199,6 +199,13 @@ const focusEditor = () => {
         :readonly="isFocusMode"
         @enter="focusEditor"
       />
+
+      <EditorTocSidebar
+        v-if="isMobile && !isFocusMode"
+        :toc-anchors="tocAnchors"
+        :is-mobile="true"
+        @select="goToTocAnchor"
+      />
       <UEditor
         ref="editorRef"
         v-slot="{ editor }"

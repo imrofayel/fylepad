@@ -341,10 +341,17 @@ export const reinitializeEditorStore = async () => {
   await initializeEditorStore();
 };
 
+let lastProcessedEvent: KeyboardEvent | null = null;
+let tabSwitchBuffer = "";
+let tabSwitchTimeout: ReturnType<typeof setTimeout> | null = null;
+
 export function useEditor() {
   const keys = useMagicKeys({
     passive: false,
     onEventFired(event) {
+      if (event === lastProcessedEvent) return;
+      lastProcessedEvent = event;
+
       if (
         (event.ctrlKey || event.metaKey) &&
         (event.key === "s" || event.key === "S") &&
@@ -359,6 +366,27 @@ export function useEditor() {
         event.type === "keydown"
       ) {
         event.preventDefault();
+      }
+
+      if ((event.ctrlKey || event.metaKey) && event.type === "keydown") {
+        if (/^[0-9]$/.test(event.key)) {
+          event.preventDefault();
+
+          if (tabSwitchTimeout) {
+            clearTimeout(tabSwitchTimeout);
+          }
+
+          tabSwitchBuffer += event.key;
+          const targetIndex = parseInt(tabSwitchBuffer, 10) - 1;
+
+          if (!isNaN(targetIndex) && targetIndex >= 0 && targetIndex < tabs.value.length) {
+            activeTabId.value = tabs.value[targetIndex].id;
+          }
+
+          tabSwitchTimeout = setTimeout(() => {
+            tabSwitchBuffer = "";
+          }, 400);
+        }
       }
     },
   });
