@@ -65,7 +65,7 @@ const emit = defineEmits<{
             size="lg"
             class="w-full transition-colors"
             :ui="{
-              base: 'text-left font-normal py-1 text-[16.5px]',
+              base: 'text-left font-normal py-1 text-[17px]',
             }"
             :style="{ paddingLeft: `${Math.max(anchor.level - 1, 0) * 0.8 + 0.5}rem` }"
             @click="emit('select', anchor)"
