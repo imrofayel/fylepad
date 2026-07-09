@@ -1,0 +1,38 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+@import "katex/dist/katex.min.css";
+@import "@shikijs/twoslash/style-rich.css";
+@import "./fonts.css";
+@import "./base.css";
+@import "./theme.css";
+@import "./utilities.css";
+@import "./code.css";
+@import "./tiptap.css";
+@import "./embeds.css";
+@import "./list.css";
+
+ul {
+  list-style-type: square !important;
+}
+
+li {
+  @apply marker:text-default!;
+}
+
+.search-result {
+  background-color: rgba(255, 217, 0, 0.5);
+}
+
+.search-result-current {
+  background-color: rgba(13, 255, 0, 0.5);
+}
+
+li {
+  li {
+    @apply my-1.5!
+  }
+}
+
+.blurred {
+  filter: blur(1px) !important;
+}

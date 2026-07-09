@@ -1,0 +1,102 @@
+.codeblock-with-copy {
+  position: relative;
+}
+
+.codeblock-copy-button {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  padding: 0;
+  border: 0;
+  @apply bg-transparent;
+  color: var(--ui-text);
+  opacity: 100;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+  transition:
+    opacity 120ms ease,
+    background-color 120ms ease,
+    transform 120ms ease;
+}
+
+.codeblock-copy-button svg {
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+}
+
+pre.codeblock-with-copy:hover .codeblock-copy-button,
+pre.codeblock-with-copy:focus-within .codeblock-copy-button {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.codeblock-copy-button[data-state="error"] {
+  color: #dc2626;
+}
+
+pre {
+  @apply bg-neutral-100! p-1! px-2!;
+}
+
+.tiptap pre,
+.tiptap code,
+.tiptap .shiki {
+  font-family: var(--font-mono) !important;
+  font-size: 1rem;
+  line-height: 2;
+  @apply p-2;
+}
+
+.twoslash-container {
+  margin: 0.15rem 0 0.45rem;
+  position: relative;
+  overflow: visible;
+}
+
+.twoslash-container pre {
+  margin: 0;
+  border-radius: 0.55rem;
+  overflow-x: auto;
+  overflow-y: visible;
+    font-size: 0.95rem;
+}
+
+.twoslash-container .shiki {
+  overflow: visible;
+}
+
+.twoslash-container.is-editing {
+  display: none;
+}
+
+.twoslash-error {
+  margin: 0;
+  color: #dc2626;
+  font-size: 0.95rem !important;
+  line-height: 1.4;
+}
+
+.tiptap .twoslash, .tiptap .twoslash code, .tiptap .twoslash .shiki {
+   font-size: 0.95rem !important; 
+}
+
+html.dark .tiptap .shiki,
+html.dark .tiptap .shiki span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--color-neutral-800) !important;
+}
+
+html.dark .tiptap .twoslash .twoslash-popup-code .shiki,
+html.dark .tiptap .twoslash .twoslash-popup-code .shiki span {
+  background-color: transparent !important;
+}
+
+.twoslash-error-line {
+  @apply max-w-full! leading-normal;
+}

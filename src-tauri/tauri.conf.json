@@ -1,68 +1,46 @@
 {
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "fylepad-zen",
+  "version": "0.1.0",
+  "identifier": "com.naveed-azhar.fylepad-zen",
   "build": {
-    "beforeBuildCommand": "pnpm run generate",
     "beforeDevCommand": "pnpm run dev",
+    "devUrl": "http://localhost:1420",
+    "beforeBuildCommand": "pnpm run build",
     "frontendDist": "../dist",
-    "devUrl": "http://localhost:3000"
+    "removeUnusedCommands": true
+  },
+  "plugins": {
+    "deep-link": {
+      "desktop": {
+        "schemes": ["fylepad"]
+      }
+    }
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "main",
+        "title": "fylepad-zen",
+        "width": 800,
+        "height": 600,
+        "zoomHotkeysEnabled": true
+      }
+    ],
+    "security": {
+      "dangerousDisableAssetCspModification": false,
+      "csp": "default-src 'self' data: blob: asset: https://asset.localhost tauri: ipc: http://ipc.localhost https: http:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';"
+    }
   },
   "bundle": {
     "active": true,
-    "category": "DeveloperTool",
-    "copyright": "",
-    "targets": [
-      "dmg",
-      "deb",
-      "msi"
-    ],
-    "externalBin": [],
+    "targets": "all",
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ],
-    "windows": {
-      "certificateThumbprint": null,
-      "digestAlgorithm": "sha256",
-      "timestampUrl": ""
-    },
-    "longDescription": "",
-    "macOS": {
-      "entitlements": null,
-      "exceptionDomain": "",
-      "frameworks": [],
-      "providerShortName": null,
-      "signingIdentity": null
-    },
-    "resources": [],
-    "shortDescription": "",
-    "linux": {
-      "deb": {
-        "depends": []
-      }
-    }
-  },
-  "productName": "fylepad",
-  "mainBinaryName": "fylepad",
-  "version": "3.0.0",
-  "identifier": "com.fylepad.dev",
-  "plugins": {},
-  "app": {
-    "windows": [
-      {
-        "fullscreen": false,
-        "height": 600,
-        "resizable": true,
-        "title": "fylepad - a notepad of your dreams.",
-        "width": 800,
-        "minHeight": 600,
-        "minWidth": 600,
-        "useHttpsScheme": true
-      }
-    ],
-    "security": {
-      "csp": null
-    }
+    ]
   }
 }

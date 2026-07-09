@@ -8,9 +8,6 @@ on:
       - "v*"
   workflow_dispatch:
 
-# This is the example from the readme.
-# On each push to the `release` branch it will create or update a GitHub release, build your app, and upload the artifacts to the release.
-
 jobs:
   publish-tauri:
     permissions:
@@ -23,7 +20,7 @@ jobs:
             args: "--target aarch64-apple-darwin --bundles app"
           - platform: "macos-latest" # for Intel based macs.
             args: "--target x86_64-apple-darwin"
-          - platform: "ubuntu-22.04" # for Tauri v1 you could replace this with ubuntu-20.04.
+          - platform: "ubuntu-22.04"
             args: ""
           - platform: "windows-latest"
             args: ""
@@ -34,8 +31,6 @@ jobs:
 
       - name: install pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 10.x.x
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -56,14 +51,13 @@ jobs:
         # webkitgtk 4.0 is for Tauri v1 - webkitgtk 4.1 is for Tauri v2.
         # You can remove the one that doesn't apply to your app to speed up the workflow a bit.
 
-      - name: install frontend dependencies
-        run: printf "@tiptap-pro:registry=https://registry.tiptap.dev/\n//registry.tiptap.dev/:_authToken=${{secrets.NPM_TOKEN}}" > .npmrc
-
       - run: pnpm i
 
       - uses: tauri-apps/tauri-action@dev
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VITE_AI_BACKEND_API: ${{ vars.VITE_AI_BACKEND_API }}
+          VITE_BACKEND_API: ${{ vars.VITE_BACKEND_API }}
         with:
           tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
           releaseName: "App v__VERSION__"

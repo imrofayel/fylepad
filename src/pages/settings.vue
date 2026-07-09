@@ -1,0 +1,64 @@
+<script setup lang="ts">
+import { ICONS } from "@/lib/constants/icons";
+import { useColorMode } from "@vueuse/core";
+import { ref } from "vue";
+import { isCloudMode } from "@/lib/editorDb";
+import { useIsMobile } from "@/composables/useIsMobile";
+
+const items = ref([
+  ...(isCloudMode()
+    ? [{ label: "General", value: "general", icon: "ph:user-circle-duotone", slot: "general" }]
+    : []),
+  { label: "AI", value: "ai", icon: ICONS.ai, slot: "ai" },
+]);
+
+const value = useColorMode();
+const { isMobile } = useIsMobile();
+</script>
+
+<template>
+  <div class="flex flex-col h-screen p-3">
+    <div class="flex items-center justify-between">
+      <ButtonWithTooltip
+        text="Go back"
+        variant="link"
+        color="neutral"
+        class="p-2 py-1.5"
+        @click="$router.push('/')"
+        :icon="ICONS.arrowBackFilled"
+      />
+      <div class="flex gap-2 items-center">
+        <UTooltip :text="value === 'light' ? 'Go dark' : 'Go light'" arrow>
+          <UColorModeButton variant="link" color="neutral" class="py-1.5" />
+        </UTooltip>
+        <AuthUser />
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <UTabs
+        :items="items"
+        class="w-full"
+        variant="link"
+        size="lg"
+        :orientation="isMobile ? 'horizontal' : 'vertical'"
+        :ui="{
+          root: isMobile ? 'gap-4' : 'items-start gap-6',
+          list: 'border-none',
+          trigger: isMobile
+            ? 'text-md dark:data-[state=active]:bg-neutral-800 data-[state=active]:bg-neutral-100 p-2.5 py-1.5 hover:opacity-90'
+            : 'text-md dark:data-[state=active]:bg-neutral-800 data-[state=active]:bg-neutral-100 p-2.5 pr-20 py-1.5 hover:opacity-90',
+        }"
+        :default-value="isCloudMode() ? 'general' : 'ai'"
+      >
+        <template #general>
+          <SettingsGeneral />
+        </template>
+
+        <template #ai>
+          <SettingsAi />
+        </template>
+      </UTabs>
+    </div>
+  </div>
+</template>

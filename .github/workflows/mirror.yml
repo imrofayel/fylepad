@@ -1,0 +1,124 @@
+name: Mirror Release to Public
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to mirror (e.g. app-v0.1.0)"
+        required: true
+
+jobs:
+  mirror-to-public:
+    name: Mirror release to public repo
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    env:
+      PUBLIC_REPO: imrofayel/fylepad-releases
+      GH_TOKEN: ${{ secrets.PUBLIC_REPO_TOKEN }}
+
+    steps:
+      - name: Checkout private repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false   # 🔥 IMPORTANT FIX
+
+      # ❌ DO NOT use gh auth login (GH_TOKEN already handles it)
+      # ❌ DO NOT push the git tag to the public repo — that pushes source code too.
+      #     The public repo only needs a release + binaries, not the underlying commit/tree.
+
+      - name: Resolve tag
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            TAG="${{ github.event.inputs.tag }}"
+          else
+            TAG="${{ github.event.release.tag_name }}"
+          fi
+
+          echo "TAG=$TAG" >> $GITHUB_ENV
+          echo "Resolved tag: $TAG"
+
+      - name: Download release assets from private repo
+        run: |
+          mkdir -p release-assets
+
+          gh release download "$TAG" \
+            --repo "${{ github.repository }}" \
+            --dir release-assets \
+            --clobber
+
+          ls -lh release-assets/
+
+      - name: Build release notes with download links
+        id: meta
+        run: |
+          gh release view "$TAG" \
+            --repo "${{ github.repository }}" \
+            --json name,body,isPrerelease,isDraft \
+            > /tmp/meta.json
+
+          echo "title=$(jq -r '.name' /tmp/meta.json)" >> $GITHUB_OUTPUT
+          echo "prerelease=$(jq -r '.isPrerelease' /tmp/meta.json)" >> $GITHUB_OUTPUT
+          echo "draft=$(jq -r '.isDraft' /tmp/meta.json)" >> $GITHUB_OUTPUT
+
+          jq -r '.body' /tmp/meta.json > /tmp/notes.md
+
+          echo "" >> /tmp/notes.md
+          echo "---" >> /tmp/notes.md
+          echo "## Downloads" >> /tmp/notes.md
+          echo "" >> /tmp/notes.md
+          echo "| Platform | File |" >> /tmp/notes.md
+          echo "|----------|------|" >> /tmp/notes.md
+
+          for f in release-assets/*; do
+            filename=$(basename "$f")
+            url="https://github.com/$PUBLIC_REPO/releases/download/$TAG/$filename"
+
+            case "$filename" in
+              *.dmg)        label="macOS (DMG)" ;;
+              *.app.tar.gz) label="macOS (App)" ;;
+              *.AppImage)   label="Linux (AppImage)" ;;
+              *.deb)        label="Linux (Debian)" ;;
+              *.rpm)        label="Linux (RPM)" ;;
+              *.exe|*.msi)  label="Windows" ;;
+              *)            label="$filename" ;;
+            esac
+
+            echo "| $label | [$filename]($url) |" >> /tmp/notes.md
+          done
+
+      - name: Create public release
+        run: |
+          FLAGS=""
+          [ "${{ steps.meta.outputs.prerelease }}" = "true" ] && FLAGS="$FLAGS --prerelease"
+          [ "${{ steps.meta.outputs.draft }}" = "true" ] && FLAGS="$FLAGS --draft"
+
+          gh release delete "$TAG" --repo "$PUBLIC_REPO" --yes || true
+
+          gh release create "$TAG" \
+            --repo "$PUBLIC_REPO" \
+            --title "${{ steps.meta.outputs.title }}" \
+            --notes-file /tmp/notes.md \
+            --target "$(gh api repos/$PUBLIC_REPO --jq .default_branch)" \
+            $FLAGS
+
+      - name: Upload assets to public release
+        run: |
+          for asset in release-assets/*; do
+            echo "Uploading: $asset"
+
+            gh release upload "$TAG" \
+              --repo "$PUBLIC_REPO" \
+              "$asset" \
+              --clobber
+          done
+
+      - name: Job summary
+        run: |
+          echo "### ✅ Mirrored to public repo" >> $GITHUB_STEP_SUMMARY
+          echo "**Release:** https://github.com/$PUBLIC_REPO/releases/tag/$TAG" >> $GITHUB_STEP_SUMMARY

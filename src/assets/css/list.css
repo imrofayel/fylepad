@@ -1,0 +1,259 @@
+:root {
+    overflow-wrap: break-word;
+    -moz-text-size-adjust: none;
+    text-size-adjust: none;
+    text-rendering: optimizelegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    --tt-gray-light-a-50: #3838380a;
+    --tt-gray-light-a-100: #0f16240d;
+    --tt-gray-light-a-200: #25272d1a;
+    --tt-gray-light-a-300: #2f323733;
+    --tt-gray-light-a-400: #282c336b;
+    --tt-gray-light-a-500: #34373ca3;
+    --tt-gray-light-a-600: #24272ec7;
+    --tt-gray-light-a-700: #23252ade;
+    --tt-gray-light-a-800: #1e2024f2;
+    --tt-gray-light-a-900: #1d1e20fa;
+    --tt-gray-light-50: #fafafa;
+    --tt-gray-light-100: #f4f4f5;
+    --tt-gray-light-200: #eaeaeb;
+    --tt-gray-light-300: #d5d6d7;
+    --tt-gray-light-400: #a6a7ab;
+    --tt-gray-light-500: #7d7f82;
+    --tt-gray-light-600: #53565a;
+    --tt-gray-light-700: #404145;
+    --tt-gray-light-800: #2c2d30;
+    --tt-gray-light-900: #222325;
+    --tt-gray-dark-a-50: #e8e8fd0d;
+    --tt-gray-dark-a-100: #e7e7f312;
+    --tt-gray-dark-a-200: #eeeef61c;
+    --tt-gray-dark-a-300: #efeff538;
+    --tt-gray-dark-a-400: #f4f4ff5e;
+    --tt-gray-dark-a-500: #eceefd80;
+    --tt-gray-dark-a-600: #f7f7fda3;
+    --tt-gray-dark-a-700: #fbfbfebf;
+    --tt-gray-dark-a-800: #fdfdfde0;
+    --tt-gray-dark-a-900: #fffffff5;
+    --tt-gray-dark-50: #19191a;
+    --tt-gray-dark-100: #202022;
+    --tt-gray-dark-200: #2d2d2f;
+    --tt-gray-dark-300: #464649;
+    --tt-gray-dark-400: #636369;
+    --tt-gray-dark-500: #7c7c83;
+    --tt-gray-dark-600: #a3a3a8;
+    --tt-gray-dark-700: #c0c0c3;
+    --tt-gray-dark-800: #e0e0e1;
+    --tt-gray-dark-900: #f5f5f5;
+    --white: #fff;
+    --black: #0e0e11;
+    --transparent: #fff0;
+    --tt-shadow-elevated-md: 0px 16px 48px 0px #1118270a, 0px 12px 24px 0px #1118270a, 0px 6px 8px 0px #11182705, 0px 2px 3px 0px #11182705;
+    --tt-radius-xxs: .125rem;
+    --tt-radius-xs: .25rem;
+    --tt-radius-sm: .375rem;
+    --tt-radius-md: .5rem;
+    --tt-radius-lg: .75rem;
+    --tt-radius-xl: 1rem;
+    --tt-transition-duration-short: .1s;
+    --tt-transition-duration-default: .2s;
+    --tt-transition-duration-long: .64s;
+    --tt-transition-easing-default: cubic-bezier(.46, .03, .52, .96);
+    --tt-transition-easing-cubic: cubic-bezier(.65, .05, .36, 1);
+    --tt-transition-easing-quart: cubic-bezier(.77, 0, .18, 1);
+    --tt-transition-easing-circ: cubic-bezier(.79, .14, .15, .86);
+    --tt-transition-easing-back: cubic-bezier(.68, -.55, .27, 1.55);
+    --tt-accent-contrast: 8%;
+    --tt-destructive-contrast: 8%;
+    --tt-foreground-contrast: 8%
+}
+
+ .tiptap.ProseMirror {
+    --tt-checklist-bg-color: var(--tt-gray-light-a-100);
+    --tt-checklist-bg-active-color: var(--tt-gray-light-a-900);
+    --tt-checklist-border-color: var(--tt-gray-light-a-200);
+    --tt-checklist-border-active-color: var(--tt-gray-light-a-900);
+    --tt-checklist-check-icon-color: var(--white);
+    --tt-checklist-text-active: var(--tt-gray-light-a-500)
+}
+
+.dark .tiptap.ProseMirror {
+    --tt-checklist-bg-color: var(--tt-gray-dark-a-100);
+    --tt-checklist-bg-active-color: var(--tt-gray-dark-a-900);
+    --tt-checklist-border-color: var(--tt-gray-dark-a-200);
+    --tt-checklist-border-active-color: var(--tt-gray-dark-a-900);
+    --tt-checklist-check-icon-color: var(--black);
+    --tt-checklist-text-active: var(--tt-gray-dark-a-500)
+}
+
+.tiptap.ProseMirror ol,.tiptap.ProseMirror ul {
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+    padding-left: 1.5em
+}
+
+.tiptap.ProseMirror ol:first-child,.tiptap.ProseMirror ul:first-child {
+    margin-top: 0
+}
+
+.tiptap.ProseMirror ol:last-child,.tiptap.ProseMirror ul:last-child {
+    margin-bottom: 0
+}
+
+.tiptap.ProseMirror ol ol,.tiptap.ProseMirror ol ul,.tiptap.ProseMirror ul ol,.tiptap.ProseMirror ul ul {
+    margin-top: 0;
+    margin-bottom: 0
+}
+
+.tiptap.ProseMirror li p {
+    margin-top: 0;
+    line-height: 1.6
+}
+
+.tiptap.ProseMirror ol {
+    list-style: decimal
+}
+
+.tiptap.ProseMirror ol ol {
+    list-style: lower-alpha
+}
+
+.tiptap.ProseMirror ol ol ol {
+    list-style: lower-roman
+}
+
+.tiptap.ProseMirror ol ol ol ol {
+    list-style: decimal
+}
+
+.tiptap.ProseMirror ol ol ol ol ol {
+    list-style: lower-alpha
+}
+
+.tiptap.ProseMirror ol ol ol ol ol ol {
+    list-style: lower-roman
+}
+
+.tiptap.ProseMirror ol ol ol ol ol ol ol {
+    list-style: decimal
+}
+
+.tiptap.ProseMirror ol ol ol ol ol ol ol ol {
+    list-style: lower-alpha
+}
+
+.tiptap.ProseMirror ol ol ol ol ol ol ol ol ol {
+    list-style: lower-roman
+}
+
+.tiptap.ProseMirror ul:not([data-type=taskList]) {
+    list-style: outside
+}
+
+.tiptap.ProseMirror ul:not([data-type=taskList]) ul {
+    list-style: circle
+}
+
+.tiptap.ProseMirror ul:not([data-type=taskList]) ul ul {
+    list-style: square
+}
+
+.tiptap.ProseMirror ul:not([data-type=taskList]) ul ul ul {
+    list-style: outside
+}
+
+.tiptap.ProseMirror ul:not([data-type=taskList]) ul ul ul ul {
+    list-style: circle
+}
+
+.tiptap.ProseMirror ul:not([data-type=taskList]) ul ul ul ul ul {
+    list-style: square
+}
+
+.tiptap.ProseMirror ul:not([data-type=taskList]) ul ul ul ul ul ul {
+    list-style: outside
+}
+
+.tiptap.ProseMirror ul:not([data-type=taskList]) ul ul ul ul ul ul ul {
+    list-style: circle
+}
+
+.tiptap.ProseMirror ul:not([data-type=taskList]) ul ul ul ul ul ul ul ul {
+    list-style: square
+}
+
+.tiptap.ProseMirror ul[data-type=taskList] {
+    padding-left: .25em
+}
+
+.tiptap.ProseMirror ul[data-type=taskList] li {
+    flex-direction: row;
+    align-items: flex-start;
+    display: flex
+}
+
+.tiptap.ProseMirror ul[data-type=taskList] li:not(:has(>p:first-child)) {
+    list-style-type: none
+}
+
+/* .tiptap.ProseMirror ul[data-type=taskList] li[data-checked=true]>div>p {
+    opacity: .5;
+    text-decoration: line-through
+}
+
+.tiptap.ProseMirror ul[data-type=taskList] li[data-checked=true]>div>p span {
+    text-decoration: line-through
+} */
+
+.tiptap.ProseMirror ul[data-type=taskList] li label {
+    padding-top: .375rem;
+    padding-right: .5rem;
+    position: relative
+}
+
+.tiptap.ProseMirror ul[data-type=taskList] li label input[type=checkbox] {
+    opacity: 0;
+    width: 0;
+    height: 0;
+    position: absolute
+}
+
+.tiptap.ProseMirror ul[data-type=taskList] li label span {
+    border: 1px solid var(--tt-checklist-border-color);
+    border-radius: var(--tt-radius-xs,.25rem);
+    cursor: pointer;
+    background-color: var(--tt-checklist-bg-color);
+    width: 0.9em;
+    height: 0.9em;
+    transition: background-color 80ms ease-out,border-color 80ms ease-out;
+    display: block;
+    position: relative
+}
+
+.tiptap.ProseMirror ul[data-type=taskList] li label span:before {
+    content: "";
+    background-color: var(--tt-checklist-check-icon-color);
+    opacity: 0;
+    width: .6em;
+    height: .6em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    -webkit-mask: url(data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22currentColor%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M21.4142%204.58579C22.1953%205.36683%2022.1953%206.63317%2021.4142%207.41421L10.4142%2018.4142C9.63317%2019.1953%208.36684%2019.1953%207.58579%2018.4142L2.58579%2013.4142C1.80474%2012.6332%201.80474%2011.3668%202.58579%2010.5858C3.36683%209.80474%204.63317%209.80474%205.41421%2010.5858L9%2014.1716L18.5858%204.58579C19.3668%203.80474%2020.6332%203.80474%2021.4142%204.58579Z%22%20fill%3D%22currentColor%22%2F%3E%3C%2Fsvg%3E) 50%/contain no-repeat;
+    mask: url(data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22currentColor%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20fill-rule%3D%22evenodd%22%20clip-rule%3D%22evenodd%22%20d%3D%22M21.4142%204.58579C22.1953%205.36683%2022.1953%206.63317%2021.4142%207.41421L10.4142%2018.4142C9.63317%2019.1953%208.36684%2019.1953%207.58579%2018.4142L2.58579%2013.4142C1.80474%2012.6332%201.80474%2011.3668%202.58579%2010.5858C3.36683%209.80474%204.63317%209.80474%205.41421%2010.5858L9%2014.1716L18.5858%204.58579C19.3668%203.80474%2020.6332%203.80474%2021.4142%204.58579Z%22%20fill%3D%22currentColor%22%2F%3E%3C%2Fsvg%3E) 50%/contain no-repeat
+}
+
+.tiptap.ProseMirror ul[data-type=taskList] li label input[type=checkbox]:checked+span {
+    background: var(--tt-checklist-bg-active-color);
+    border-color: var(--tt-checklist-border-active-color)
+}
+
+.tiptap.ProseMirror ul[data-type=taskList] li label input[type=checkbox]:checked+span:before {
+    opacity: 1
+}
+
+.tiptap.ProseMirror ul[data-type=taskList] li div {
+    flex: 1;
+    min-width: 0
+}
